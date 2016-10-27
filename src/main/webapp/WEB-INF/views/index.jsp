@@ -7,6 +7,6 @@
 <title>HelloWorld page</title>
 </head>
 <body>
-    <img src="resources/thor.png">${greeting}
+    <img src="resources/thor.png">${greeting} . Our system has ${numberOfUsers} users.
 </body>
 </html>
