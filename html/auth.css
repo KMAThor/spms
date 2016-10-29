@@ -1,0 +1,53 @@
+html{
+    background: #03A9F5;
+    color: #EEF4F8;
+}
+
+.container{
+    background: #465a65;
+    width: 30%;
+    
+    margin: auto;
+    margin-top: 10%;
+}
+
+.login-label{
+    padding-top: 10%;
+    padding-bottom: 10%;
+    width: 10%;
+    margin: auto;
+    font-family: 'Oswald', sans-serif;
+    font-size: 150%;
+}
+
+.form{
+    margin-left: 5%;
+    margin-bottom: 5%;
+}
+
+.text{
+    width: 94%;
+    font-size: 100%;
+    padding-top: 2.5%;
+    padding-bottom: 2.5%;
+    padding-left: 2.5%;
+}
+
+.check{
+    width: 5%;
+    margin: 0;
+}
+
+button{
+    width: 94%;
+    margin-bottom: 10%;
+    background: #02A8F4;
+    color: #EEF4F8;
+    border-style: none;
+    padding: 5%;
+    font-family: 'Oswald', sans-serif;
+}
+
+.label{
+    font-family: 'BenchNine', sans-serif;
+}
