@@ -1,5 +1,9 @@
 body {
-  padding-top: 20px;
+	padding-top: 20px;
+}
+
+a {
+  	text-decoration: none;
 }
 
 .background{
@@ -7,7 +11,12 @@ body {
 }
 
 .navbar {
-  margin-bottom: 20px;
+	margin-bottom: 20px;
+}
+
+.mypanel{
+	max-height: 330px;
+	background-color: white;
 }
 
 .main{
@@ -24,6 +33,12 @@ body {
 .content{
     text-align: center;
     display: inline-block;
+}
+
+.panel-center{
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 30px;
 }
 
 .bigicon {    
