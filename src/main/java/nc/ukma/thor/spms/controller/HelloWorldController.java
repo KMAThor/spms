@@ -18,7 +18,7 @@ public class HelloWorldController {
     @RequestMapping(method = RequestMethod.GET)
     public String sayHello(ModelMap model) {
         model.addAttribute("greeting", "Hello World!");
-        model.addAttribute("numberOfUsers", userRepository.getNumberOfUsers());;
+        //model.addAttribute("numberOfUsers", userRepository.getNumberOfUsers());;
         
         return "index";
     }

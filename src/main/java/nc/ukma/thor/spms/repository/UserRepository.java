@@ -1,7 +1,14 @@
 package nc.ukma.thor.spms.repository;
 
+import java.util.List;
+
+import nc.ukma.thor.spms.entity.Team;
+import nc.ukma.thor.spms.entity.User;
+
 public interface UserRepository {
-	//just for test
-	public long getNumberOfUsers();
+	
+	public User getUserById(long id);
+	public User getUserByEmail(String email);
+	public List<User> getUserByTeam(Team team);
 
 }

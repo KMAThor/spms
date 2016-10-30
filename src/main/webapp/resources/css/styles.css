@@ -1,0 +1,92 @@
+body {
+	padding-top: 20px;
+}
+
+a {
+  	text-decoration: none;
+}
+
+.background{
+	background-image: url(../img/background.jpg);
+}
+
+.navbar {
+	margin-bottom: 20px;
+}
+
+.mypanel{
+	max-height: 330px;
+	background-color: white;
+}
+
+.main{
+    text-align: center;
+    display: block;
+	position: absolute;
+    top: 25%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+}
+
+.content{
+    text-align: center;
+    display: inline-block;
+}
+
+.panel-center{
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+
+.bigicon {    
+    color:white;
+}
+
+ul.dropdown-cart{
+    min-width:250px;
+    border: 2px solid #343434;
+    padding: 2px;
+    margin: 7px;
+    margin-top: 11px;
+}
+ul.dropdown-cart li .item{
+    display:block;
+    padding:3px 10px;
+    margin: 3px 0;
+    
+}
+ul.dropdown-cart li .item:hover{
+    background-color:#c3c5c5;
+    
+}
+ul.dropdown-cart li .item:after{
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+ul.dropdown-cart li .item-left{
+    float:left;
+}
+ul.dropdown-cart li .item-left img,
+ul.dropdown-cart li .item-left span.item-info{
+    float:left;
+}
+ul.dropdown-cart li .item-left span.item-info{
+    margin-left:10px;   
+}
+ul.dropdown-cart li .item-left span.item-info span{
+    display:block;
+}
+ul.dropdown-cart li .item-right{
+    float:right;
+}
+ul.dropdown-cart li .item-right button{
+    margin-top:14px;
+}
