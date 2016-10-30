@@ -59,24 +59,24 @@ public class TraitFeedbackRepositoryJdbcImpl implements TraitFeedbackRepository{
 
 	@Override
 	public void delete(TraitFeedback f) {
-		jdbcTemplate.update("DELETE FROM trait_feedback where id=?;",f.getId());
+		jdbcTemplate.update("DELETE FROM trait_feedback WHERE id=?;",f.getId());
 	}
 
 	@Override
 	public TraitFeedback getById(long id) {
-		List<TraitFeedback> tfList =  jdbcTemplate.query("SELECT * FROM trait_feedback where id=?;",
+		List<TraitFeedback> tfs =  jdbcTemplate.query("SELECT * FROM trait_feedback WHERE id=?;",
 				new Object[] { id },
 				new TraitFeedbackMapper());
-		if(tfList.isEmpty()) return null;
-		else return tfList.get(0);
+		if(tfs.isEmpty()) return null;
+		else return tfs.get(0);
 	}
 
 	@Override
 	public List<TraitFeedback> getAllAppendedTo(long appendedToId) {
-		List<TraitFeedback> tfList = jdbcTemplate.query("SELECT * FROM trait_feedback where feedback_id=?;",
+		List<TraitFeedback> tfs = jdbcTemplate.query("SELECT * FROM trait_feedback WHERE feedback_id=?;",
 				new Object[] { appendedToId },
 				new TraitFeedbackMapper());
-		return tfList;
+		return tfs;
 	}
 	
 	private static final class TraitFeedbackMapper implements RowMapper<TraitFeedback> {
