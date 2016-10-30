@@ -6,7 +6,6 @@ import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 public interface ProjectService {
@@ -36,13 +35,13 @@ public interface ProjectService {
     boolean addTeam(String project, Team team);
     boolean changeTeamName(String project, String team, String newName);
     boolean deleteTeam(String project, String team);
-    boolean addUser(String project, String team, String user);
+    boolean addUser(String project, String team, User user);
     boolean deleteUser(String project, String team, String user);
     Team getTeam(String project, String team);
     List<Team> getAllTeams(String project);
 
     // file functionality at the project
-    boolean uploadFile(String project, String file);
+    boolean uploadFile(String project, File file);
     boolean deleteFile(String project, String file);
     File getFile(String project, String file);
 
