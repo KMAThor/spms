@@ -7,6 +7,10 @@ public class Trait {
 	
 	public Trait() {}
 
+	public Trait(long id) {
+		this.id = id;
+	}
+
 	public long getId() {
 		return id;
 	}

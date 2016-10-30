@@ -6,6 +6,7 @@ public class Team {
 
 	private long id;
 	private String name;
+	private List<User> members;
 	private List<Meeting> meetings;
 	
 	public Team() {}
@@ -24,6 +25,14 @@ public class Team {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<User> getMembers() {
+		return members;
+	}
+
+	public void setMembers(List<User> members) {
+		this.members = members;
 	}
 
 	public List<Meeting> getMeetings() {

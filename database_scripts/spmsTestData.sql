@@ -40,3 +40,15 @@ INSERT INTO user_role VALUES(4,3);
 INSERT INTO project VALUES (4, 'KMA 2016',
 								DEFAULT, DEFAULT,
 								'2016-12-1 00:00:00', DEFAULT, 1);
+
+INSERT INTO team VALUES (5, 'Thor', 4);
+INSERT INTO user_team VALUES (4, 5);
+INSERT INTO user_team VALUES (2, 5);
+
+INSERT INTO meeting VALUES (6, 'Docs Review', '2016-11-1 15:00:00', 5);
+INSERT INTO presentce VALUES (4, 6);
+
+INSERT INTO meeting_feedback VALUES (7, 'Well Done', 4, 6, 2);
+
+INSERT INTO trait_category VALUES (8, 'Soft skills');
+INSERT INTO trait VALUES (9, 'Communication skills', 8);

@@ -1,6 +1,7 @@
 package nc.ukma.thor.spms.entity;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 public class Meeting {
 	
@@ -8,6 +9,7 @@ public class Meeting {
 	private String topic;
 	private Timestamp date;
 	private List<MeetingFeedback> feedbacks;
+	private Map<Long, Boolean> presence;
 	
 	public Meeting() {}
 

@@ -50,7 +50,7 @@ CREATE TABLE team(
 CREATE TABLE user_team(
 	user_id BIGINT NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
 	team_id BIGINT NOT NULL REFERENCES team(id) ON DELETE CASCADE,
-	status_id BIGINT NOT NULL REFERENCES status(id) ON DELETE RESTRICT,
+	status_id BIGINT DEFAULT NULL REFERENCES status(id) ON DELETE RESTRICT,
 	comment TEXT DEFAULT NULL,
 	PRIMARY KEY(user_id, team_id)
 );
@@ -119,3 +119,25 @@ CREATE TABLE file(
  /*select 'DROP TABLE "' || tablename || '" CASCADE;' 
   from pg_tables
  where schemaname = 'public'; */
+ /*DROP SCRIPT
+
+ DROP TABLE "project" CASCADE;
+ DROP TABLE "role" CASCADE;
+ DROP TABLE "user_role" CASCADE;
+ DROP TABLE "status" CASCADE;
+ DROP TABLE "meeting" CASCADE;
+ DROP TABLE "user" CASCADE;
+ DROP TABLE "meeting_feedback" CASCADE;
+ DROP TABLE "user_team" CASCADE;
+ DROP TABLE "team" CASCADE;
+ DROP TABLE "hr_feedback" CASCADE;
+ DROP TABLE "presentce" CASCADE;
+ DROP TABLE "trait_category" CASCADE;
+ DROP TABLE "trait_feedback" CASCADE;
+ DROP TABLE "trait" CASCADE;
+ DROP TABLE "trait_project" CASCADE;
+ DROP TABLE "file" CASCADE;
+ DROP TABLE "application_form" CASCADE;
+ DROP SEQUENCE "seq_ids";
+
+  */

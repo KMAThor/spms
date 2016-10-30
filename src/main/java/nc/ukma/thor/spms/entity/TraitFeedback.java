@@ -8,6 +8,12 @@ public class TraitFeedback {
 	private Trait trait;
 	
 	public TraitFeedback() {}
+	
+	public TraitFeedback(int score, String comment, Trait trait) {
+		this.score = score;
+		this.comment = comment;
+		this.trait = trait;
+	}
 
 	public long getId() {
 		return id;
@@ -39,6 +45,11 @@ public class TraitFeedback {
 
 	public void setTrait(Trait trait) {
 		this.trait = trait;
+	}
+
+	@Override
+	public String toString() {
+		return "TraitFeedback [id=" + id + ", score=" + score + ", comment=" + comment + ", trait=" + trait + "]";
 	}
 
 }
