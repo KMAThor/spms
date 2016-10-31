@@ -43,10 +43,11 @@ INSERT INTO project VALUES (4, 'KMA 2016',
 
 INSERT INTO team VALUES (5, 'Thor', 4);
 INSERT INTO user_team VALUES (4, 5);
+INSERT INTO user_team VALUES (1, 5);
 INSERT INTO user_team VALUES (2, 5);
 
 INSERT INTO meeting VALUES (6, 'Docs Review', '2016-11-1 15:00:00', 5);
-INSERT INTO presentce VALUES (4, 6);
+INSERT INTO presence VALUES (4, 6);
 
 INSERT INTO meeting_feedback VALUES (7, 'Well Done', 4, 6, 2);
 

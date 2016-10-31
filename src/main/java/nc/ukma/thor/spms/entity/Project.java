@@ -16,7 +16,17 @@ public class Project {
 	private List<File> files;
 	private List<Trait> traits;
 	
-	public Project() {}
+	public Project() { }
+
+	public Project(String name, String description, Timestamp startDate, Timestamp endDate, boolean isCompleated,
+			User chiefUser) {
+		this.name = name;
+		this.description = description;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.isCompleated = isCompleated;
+		this.chiefUser = chiefUser;
+	}
 
 	public long getId() {
 		return id;
@@ -96,6 +106,13 @@ public class Project {
 
 	public void setTraits(List<Trait> traits) {
 		this.traits = traits;
+	}
+
+	@Override
+	public String toString() {
+		return "Project [id=" + id + ", name=" + name + ", description=" + description + ", startDate=" + startDate
+				+ ", endDate=" + endDate + ", isCompleated=" + isCompleated + ", chiefUser=" + chiefUser + ", teams="
+				+ teams + ", files=" + files + ", traits=" + traits + "]";
 	}
 	
 }

@@ -49,11 +49,13 @@ public class TraitFeedbackRepositoryJdbcImpl implements TraitFeedbackRepository{
 	@Override
 	public void update(TraitFeedback f) {
 		jdbcTemplate.update(
-				"UPDATE trait_feedback SET score=?, comment=?, trait_id=?;",
+				"UPDATE trait_feedback SET score=?, comment=?, trait_id=? "
+				+ "WHERE id=?;",
 		new Object[] {
 				f.getScore(), 
 				f.getComment(), 
 				f.getTrait().getId(), 
+				f.getId()
 		});
 	}
 

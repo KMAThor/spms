@@ -3,21 +3,21 @@ CREATE SEQUENCE seq_ids MINVALUE 1000; /*1 till 1000 is reserved for test data*/
 CREATE TABLE "user"(
 	id BIGSERIAL PRIMARY KEY,
 	email VARCHAR(254) UNIQUE NOT NULL,
-	first_name VARCHAR(255),
-	second_name VARCHAR(255),
-	last_name VARCHAR(255),
+	first_name VARCHAR(255) NOT NULL,
+	second_name VARCHAR(255) NOT NULL,
+	last_name VARCHAR(255) NOT NULL,
 	password VARCHAR(60) NOT NULL,
-	is_active BOOLEAN NOT NULL DEFAULT FALSE  
+	is_active BOOLEAN NOT NULL DEFAULT TRUE  
 );
 
 CREATE TABLE application_form(
 	user_id BIGINT PRIMARY KEY REFERENCES "user"(id) ON DELETE CASCADE,
-	photo_scope TEXT NOT NULL
+	photo_scope TEXT NOT NULL 
 );
 
 CREATE TABLE status(
 	id BIGINT PRIMARY KEY DEFAULT nextval('seq_ids'),
-	name VARCHAR(255) NOT NULL
+	name VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE TABLE role(
@@ -37,8 +37,8 @@ CREATE TABLE project(
 	description TEXT DEFAULT NULL,
 	start_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	end_date TIMESTAMP NOT NULL,
-	is_compleated BOOLEAN NOT NULL DEFAULT FALSE,
-	chief_user_id BIGINT NOT NULL REFERENCES "user"(id) ON DELETE RESTRICT
+	is_completed BOOLEAN NOT NULL DEFAULT FALSE,
+	chief_mentor_id BIGINT NOT NULL REFERENCES "user"(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE team(
@@ -51,7 +51,7 @@ CREATE TABLE user_team(
 	user_id BIGINT NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
 	team_id BIGINT NOT NULL REFERENCES team(id) ON DELETE CASCADE,
 	status_id BIGINT DEFAULT NULL REFERENCES status(id) ON DELETE RESTRICT,
-	comment TEXT DEFAULT NULL,
+	comment VARCHAR(255) DEFAULT NULL,
 	PRIMARY KEY(user_id, team_id)
 );
 
@@ -62,7 +62,7 @@ CREATE TABLE meeting(
 	team_id BIGINT NOT NULL REFERENCES team(id) ON DELETE CASCADE
 );
 
-CREATE TABLE presentce(
+CREATE TABLE presence(
 	user_id BIGINT NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
 	meeting_id BIGINT NOT NULL REFERENCES meeting(id) ON DELETE CASCADE,
 	PRIMARY KEY(user_id, meeting_id)
@@ -78,7 +78,7 @@ CREATE TABLE meeting_feedback(
 
 CREATE TABLE hr_feedback(
 	id BIGINT PRIMARY KEY DEFAULT nextval('seq_ids'),
-	topic VARCHAR(255) DEFAULT NULL,
+	topic VARCHAR(255) NOT NULL,
 	summary TEXT DEFAULT NULL,
 	student_id BIGINT NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
 	added_by_id BIGINT NOT NULL REFERENCES "user"(id) ON DELETE RESTRICT,
@@ -107,12 +107,13 @@ CREATE TABLE trait_feedback(
 
 CREATE TABLE trait_project(
 	trait_id BIGINT NOT NULL REFERENCES trait(id) ON DELETE RESTRICT,
-	project_id BIGINT REFERENCES project(id) ON DELETE CASCADE,
+	project_id BIGINT NOT NULL REFERENCES project(id) ON DELETE CASCADE,
 	PRIMARY KEY(trait_id, project_id)
 );
 
 CREATE TABLE file(
 	id BIGINT PRIMARY KEY DEFAULT nextval('seq_ids'),
+	path TEXT NOT NULL,
 	appended_to_id BIGINT NOT NULL /*REFERENCES to project(id) or team(id)*/
 );
 

@@ -6,9 +6,9 @@ import nc.ukma.thor.spms.entity.TraitFeedback;
 
 public interface TraitFeedbackRepository {
 	
-	public void add(TraitFeedback f, long appendedToId);
-	public void update(TraitFeedback f);
-	public void delete(TraitFeedback f);
+	public void add(TraitFeedback tf, long appendedToId);
+	public void update(TraitFeedback tf);
+	public void delete(TraitFeedback tf);
 	
 	public TraitFeedback getById(long id);
 	public List<TraitFeedback> getAllAppendedTo(long id);
