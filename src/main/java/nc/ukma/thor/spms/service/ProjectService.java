@@ -1,9 +1,6 @@
 package nc.ukma.thor.spms.service;
 
-import nc.ukma.thor.spms.entity.File;
-import nc.ukma.thor.spms.entity.Meeting;
-import nc.ukma.thor.spms.entity.Team;
-import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.entity.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -12,41 +9,55 @@ public interface ProjectService {
 /*
  ProjectService interface describes all functionality for projects
  */
-    boolean createProject(String project);
-    boolean deleteProject(String project);
-    boolean changeProjectName(String project, String newProjectName);
+    boolean createProject(Project project);
+    boolean deleteProject(long projectId);
+    boolean changeProjectName(long projectId, String newProjectName);
 
     // timestamp
-    boolean setTimeStamp(String project, boolean start, Timestamp date);
-    boolean changeTimeStamp(String project, boolean start, Timestamp date);
+    boolean setTimeStamp(long projectId, boolean start, Timestamp date);
+    boolean changeTimeStamp(long projectId, boolean start, Timestamp date);
 
     //description of the project
-    boolean setDescription(String project, String description);
-    boolean changeDescription(String project, String descritpion);
-    boolean deleteDescription(String project);
+    boolean setDescription(long projectId, String description);
+    boolean changeDescription(long projectId, String descritpion);
+    boolean deleteDescription(long projectId);
 
     // chief mentor
-    boolean setChiefUser(String project, User chief);
-    boolean deleteChiefUser(String project);
-    boolean changeChiefUser(String project, User newChief);
+    boolean setChiefUser(long projectId, User chief);
+    boolean deleteChiefUser(long projectId);
+    boolean changeChiefUser(long projectId, User newChief);
 
 
     // team functionality
-    boolean addTeam(String project, Team team);
-    boolean changeTeamName(String project, String team, String newName);
-    boolean deleteTeam(String project, String team);
-    boolean addUser(String project, String team, User user);
-    boolean deleteUser(String project, String team, String user);
-    Team getTeam(String project, String team);
-    List<Team> getAllTeams(String project);
+    boolean addTeam(long projectId, Team team);
+    boolean addTeams(long projectId, List<Team> team);
+    boolean changeTeamName(long projectId, long teamId, String newName);
+    boolean deleteTeam(long projectId, long teamId);
+
+    Team getTeam(long projectId, long teamId);
+    List<Team> getAllTeams(long projectId);
+
+    // user
+    boolean addUser(long projectId, long teamId, User user);
+    boolean addUsers(long projectId, List<User> users);
+    boolean deleteUser(long projectId, long Id, String user);
+
+    User getUser(long projectId, String user);
+    List<User> getAllUsers(long projectId);
 
     // file functionality at the project
-    boolean uploadFile(String project, File file);
-    boolean deleteFile(String project, String file);
-    File getFile(String project, String file);
+    boolean uploadFile(long projectId, File file);
+    boolean deleteFile(long projectId, long fileId);
+    File getFile(long projectId, long  fileId);
 
     // traits
+    boolean setTraits(long projectId, List<Trait> traits);
+    boolean setTrait(long projectId, Trait trait);
 
+    boolean deleteTrait(long projectId, long traitId);
+    boolean deleteTraits(long projectId, List<Trait> traits);
+    Trait getTrait(long projectId, long traitId);
+    List<Trait> getTraits(long projectId);
 
-    String getInfo(String project);
+    String getInfo(long projectId);
 }
