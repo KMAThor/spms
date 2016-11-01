@@ -8,5 +8,5 @@ public interface ProjectRepository {
 	public void update(Project p);
 	public void delete(Project p);
 	
-	public Project getProjectById(long id);
+	public Project getById(long id);
 }

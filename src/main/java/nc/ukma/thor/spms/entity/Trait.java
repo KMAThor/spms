@@ -4,6 +4,7 @@ public class Trait {
 
 	private long id;
 	private String name;
+	private TraitCategory traitCategory;
 	
 	public Trait() {}
 
@@ -25,5 +26,13 @@ public class Trait {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public TraitCategory getTraitCategory() {
+		return traitCategory;
+	}
+
+	public void setTraitCategory(TraitCategory traitCategory) {
+		this.traitCategory = traitCategory;
 	}
 }

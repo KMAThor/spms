@@ -18,7 +18,7 @@ import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.User;
 
 @Repository
-public class ProjectRepositoryImpl implements ProjectRepository{
+public class ProjectRepositoryImpl extends AbstractRepository<Project> implements ProjectRepository{
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -70,15 +70,6 @@ public class ProjectRepositoryImpl implements ProjectRepository{
 	public void delete(Project p) {
 		jdbcTemplate.update("DELETE FROM project WHERE id=?;",p.getId());
 	}
-
-	@Override
-	public Project getProjectById(long projectId) {
-			List<Project> tfList =  jdbcTemplate.query("SELECT * FROM project WHERE id=?;",
-					new Object[] { projectId },
-					new ProjectMapper());
-			if(tfList.isEmpty()) return null;
-			else return tfList.get(0);
-	}
 	
 	private static final class ProjectMapper implements RowMapper<Project> {
 		@Override
@@ -93,5 +84,14 @@ public class ProjectRepositoryImpl implements ProjectRepository{
 			pr.setChiefUser(new User(rs.getLong("chief_mentor_id")));
 			return pr;
 		}
+	}
+
+	@Override
+	public Project getById(long id) {
+		List<Project> tfList =  jdbcTemplate.query("SELECT * FROM project WHERE id=?;",
+				new Object[] { id },
+				new ProjectMapper());
+		if(tfList.isEmpty()) return null;
+		else return tfList.get(0);
 	}
 }

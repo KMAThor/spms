@@ -18,29 +18,18 @@ import nc.ukma.thor.spms.repository.ProjectRepository;
 import nc.ukma.thor.spms.repository.RoleRepository;
 import nc.ukma.thor.spms.repository.TraitFeedbackRepository;
 import nc.ukma.thor.spms.repository.UserRepository;
+import nc.ukma.thor.spms.service.ProjectServiceImpl;
 
 @Controller
 @RequestMapping("/")
 public class HelloWorldController {
-	
-	@Autowired
-	private UserRepository userRepository;
- 
-	@Autowired
-	private RoleRepository roleRepository;
-	
-	@Autowired
-	private ProjectRepository projectRepository;
-	
-
+		
 	
     @RequestMapping(method = RequestMethod.GET)
     public String sayHello(ModelMap model) {
-    
-    	
+        	
         model.addAttribute("greeting", "Hello World!");
 
-        
         return "index";
     }
   
