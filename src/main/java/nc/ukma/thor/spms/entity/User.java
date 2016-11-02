@@ -13,6 +13,10 @@ public class User {
 	
 	public User() {}
 
+	public User(long id) {
+		this.id = id;
+	}
+
 	public long getId() {
 		return id;
 	}

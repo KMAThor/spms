@@ -3,7 +3,7 @@ package nc.ukma.thor.spms.entity;
 import java.util.List;
 
 /**
- * Entity which describes feedback about student
+ * This entity describes feedback about student
  * which mentor can leave after team meeting
  **/
 

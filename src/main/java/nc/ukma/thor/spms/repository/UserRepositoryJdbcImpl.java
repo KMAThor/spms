@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 
@@ -49,13 +50,19 @@ public class UserRepositoryJdbcImpl implements UserRepository{
 	}
 
 	@Override
-	public List<User> getUserByTeam(Team team) {
+	public List<User> getUsersByTeam(Team team) {
 		List<User> users = jdbcTemplate.query("SELECT * FROM \"user\" INNER JOIN user_team ON id=user_id WHERE team_id=?",
 				new Object[]{ team.getId() }, new UserMapper());
 		for(User user: users){
 			user.setRole(roleRepository.getRoleByUser(user));
 		}
 		return users;
+	}
+	
+	@Override
+	public List<User> getUsersPresentAtMeeting(Meeting meeting) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	private static final class UserMapper implements RowMapper<User> {

@@ -4,6 +4,7 @@ public class File {
 	
 	private long id;
 	private String path;
+	private Project project;
 	
 	public File() {}
 
@@ -21,5 +22,13 @@ public class File {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
 	}
 }
