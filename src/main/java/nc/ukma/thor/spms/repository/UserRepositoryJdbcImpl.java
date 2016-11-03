@@ -5,68 +5,81 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import nc.ukma.thor.spms.entity.Meeting;
+import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 
 @Repository
 public class UserRepositoryJdbcImpl implements UserRepository{
+	
+	private static final String GET_USER_BY_ID_SQL = "SELECT * FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "WHERE id = ?";
+	
+	private static final String GET_USER_BY_EMAIL_SQL = "SELECT * FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "WHERE email = ?";
 
+	private static final String GET_USERS_BY_TEAM_SQL = "SELECT * FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
+			+ "WHERE team_id = ?";
+	
+	private static final String GET_USERS_BY_MEETING_SQL = "SELECT * FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN presence ON \"user\".id = presence.user_id "
+			+ "WHERE meeting_id = ?";
+	
+	private static final RowMapper<User> USER_MAPPER = new UserMapper();
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	@Autowired
-	private RoleRepository roleRepository;
 	
 	@Override
 	public User getUserById(long id) {
-		List<User> users = jdbcTemplate.query("SELECT * FROM \"user\" WHERE id=?",
-				new Object[]{ id }, new UserMapper());
-		if(users.isEmpty()) {
-			return null;
-		}
-		else {
-			User user = users.get(0);
-			user.setRole(roleRepository.getRoleByUser(user));
+		try{
+			User user = jdbcTemplate.queryForObject(GET_USER_BY_ID_SQL,
+					new Object[]{ id }, USER_MAPPER);
 			return user;
+		}catch(EmptyResultDataAccessException e){
+			return null;
 		}
 	}
 
 	@Override
 	public User getUserByEmail(String email) {
-		List<User> users = jdbcTemplate.query("SELECT * FROM \"user\" WHERE email=?",
-				new Object[]{ email }, new UserMapper());
-		if(users.isEmpty()) {
-			return null;
-		}
-		else {
-			User user = users.get(0);
-			user.setRole(roleRepository.getRoleByUser(user));
+		try{
+			User user = jdbcTemplate.queryForObject(GET_USER_BY_EMAIL_SQL,
+					new Object[]{ email }, USER_MAPPER);
 			return user;
+		}catch(EmptyResultDataAccessException e){
+			return null;
 		}
 	}
 
 	@Override
 	public List<User> getUsersByTeam(Team team) {
-		List<User> users = jdbcTemplate.query("SELECT * FROM \"user\" INNER JOIN user_team ON id=user_id WHERE team_id=?",
-				new Object[]{ team.getId() }, new UserMapper());
-		for(User user: users){
-			user.setRole(roleRepository.getRoleByUser(user));
-		}
-		return users;
+		return jdbcTemplate.query(GET_USERS_BY_TEAM_SQL,
+				new Object[]{ team.getId() }, USER_MAPPER);
 	}
 	
 	@Override
 	public List<User> getUsersPresentAtMeeting(Meeting meeting) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query(GET_USERS_BY_MEETING_SQL,
+				new Object[]{ meeting.getId() }, USER_MAPPER);
 	}
 	
 	private static final class UserMapper implements RowMapper<User> {
-
 		@Override
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 			User user = new User();
@@ -77,6 +90,9 @@ public class UserRepositoryJdbcImpl implements UserRepository{
 			user.setLastName(rs.getString("last_name"));
 			user.setPassword(rs.getString("password"));
 			user.setActive(rs.getBoolean("is_active"));
+			user.setRole(new Role(rs.getShort("role_id")));
+			String  linkToPhoto = rs.getString("photo_scope");
+			if(!rs.wasNull()) user.setLinkToPhoto(linkToPhoto);
 			return user;
 		}
 	}

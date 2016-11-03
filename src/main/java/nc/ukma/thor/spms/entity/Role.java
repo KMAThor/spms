@@ -2,17 +2,21 @@ package nc.ukma.thor.spms.entity;
 
 public class Role {
 	
-	private long id;
+	private short id;
 	private String name;
 	
 	public Role() {}
+
+	public Role(short id) {
+		this.id = id;
+	}
 
 	public long getId() {
 		return id;
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		this.id = (short) id;
 	}
 
 	public String getName() {
@@ -27,4 +31,6 @@ public class Role {
 	public String toString() {
 		return "Role [id=" + id + ", name=" + name + "]";
 	}
+	
+	public static enum Roles { ADMIN, MENTOR, HR, STUDENT};
 }

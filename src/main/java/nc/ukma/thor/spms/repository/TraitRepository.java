@@ -11,7 +11,7 @@ public interface TraitRepository {
 	public void update(Trait trait);
 	public void delete(Trait trait);
 	
-	public Trait getTraitById(Long id);
+	public Trait getById(long id);
 	public List<Trait> getTraitsByTraitCategory(TraitCategory traitCategory);
 
 }

@@ -6,10 +6,22 @@ public class Trait {
 	private String name;
 	private TraitCategory traitCategory;
 	
-	public Trait() {}
+	public Trait() { }
 
 	public Trait(long id) {
 		this.id = id;
+	}
+	
+	public Trait(String name, TraitCategory traitCategory) {
+		this.name = name;
+		this.traitCategory = traitCategory;
+	}
+
+	
+
+	public Trait(long id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 
 	public long getId() {
@@ -34,5 +46,10 @@ public class Trait {
 
 	public void setTraitCategory(TraitCategory traitCategory) {
 		this.traitCategory = traitCategory;
+	}
+
+	@Override
+	public String toString() {
+		return "Trait [id=" + id + ", name=" + name + ", traitCategory=" + traitCategory + "]";
 	}
 }

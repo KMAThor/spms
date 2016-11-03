@@ -2,12 +2,12 @@ package nc.ukma.thor.spms.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import nc.ukma.thor.spms.repository.AbstractRepository;
+import nc.ukma.thor.spms.repository.MyRepository;
 
 public abstract class AbstractService<T> {
 	
 	@Autowired
-	private AbstractRepository<T> repository;
+	private MyRepository<T> repository;
 	
 	public void create(T t){
 		repository.add(t);

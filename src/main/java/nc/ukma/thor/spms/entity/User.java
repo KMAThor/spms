@@ -9,6 +9,7 @@ public class User {
 	private String lastName;
 	private String password;
 	private boolean isActive;
+	private String linkToPhoto;
 	private Role role;
 	
 	public User() {}
@@ -73,6 +74,14 @@ public class User {
 		this.isActive = isActive;
 	}
 
+	public String getLinkToPhoto() {
+		return linkToPhoto;
+	}
+
+	public void setLinkToPhoto(String linkToPhoto) {
+		this.linkToPhoto = linkToPhoto;
+	}
+
 	public Role getRole() {
 		return role;
 	}
@@ -84,8 +93,8 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", firstName=" + firstName + ", secondName=" + secondName
-				+ ", lastName=" + lastName + ", password=" + password + ", isActive=" + isActive + ", role=" + role
-				+ "]";
+				+ ", lastName=" + lastName + ", password=" + password + ", isActive=" + isActive + ", linkToPhoto="
+				+ linkToPhoto + ", role=" + role + "]";
 	}
 	
 }

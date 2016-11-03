@@ -7,11 +7,22 @@ public class Meeting {
 	
 	private long id;
 	private String topic;
-	private Timestamp date;
+	private Timestamp startDate;
+	private Team team;
 	private List<MeetingFeedback> feedbacks;
-	private Map<Long, Boolean> presence;
+	private List<User> participants;
 	
 	public Meeting() {}
+	
+	public Meeting(int id) {
+		this.id = id;
+	}
+
+	public Meeting(String topic, Timestamp startDate, Team team) {
+		this.topic = topic;
+		this.startDate = startDate;
+		this.team = team;
+	}
 
 	public long getId() {
 		return id;
@@ -29,12 +40,20 @@ public class Meeting {
 		this.topic = topic;
 	}
 
-	public Timestamp getDate() {
-		return date;
+	public Timestamp getStartDate() {
+		return startDate;
 	}
 
-	public void setDate(Timestamp date) {
-		this.date = date;
+	public void setStartDate(Timestamp date) {
+		this.startDate = date;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
 	}
 
 	public List<MeetingFeedback> getFeedbacks() {
@@ -45,4 +64,17 @@ public class Meeting {
 		this.feedbacks = feedbacks;
 	}
 
+	public List<User> getParticipants() {
+		return participants;
+	}
+
+	public void setParticipants(List<User> participants) {
+		this.participants = participants;
+	}
+
+	@Override
+	public String toString() {
+		return "Meeting [id=" + id + ", topic=" + topic + ", startDate=" + startDate + ", team=" + team + ", feedbacks="
+				+ feedbacks + ", participants=" + participants + "]";
+	}
 }

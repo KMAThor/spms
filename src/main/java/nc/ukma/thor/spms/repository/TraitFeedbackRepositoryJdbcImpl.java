@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitFeedback;
-
+@Deprecated/*=)*/
 @Repository
 public class TraitFeedbackRepositoryJdbcImpl implements TraitFeedbackRepository{
 

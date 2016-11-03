@@ -3,8 +3,6 @@ package nc.ukma.thor.spms.entity;
 import java.util.List;
 import java.util.Map;
 
-import javax.net.ssl.SSLEngineResult.Status;
-
 public class Team {
 
 	private long id;
@@ -14,6 +12,15 @@ public class Team {
 	private List<Meeting> meetings;
 	
 	public Team() {}
+
+	public Team(long id) {
+		this.id = id;
+	}
+	
+	public Team(String name, Project project) {
+		this.name = name;
+		this.project = project;
+	}
 
 	public long getId() {
 		return id;
@@ -53,5 +60,11 @@ public class Team {
 
 	public void setMeetings(List<Meeting> meetings) {
 		this.meetings = meetings;
+	}
+
+	@Override
+	public String toString() {
+		return "Team [id=" + id + ", name=" + name + ", project=" + project + ", members=" + members + ", meetings="
+				+ meetings + "]";
 	}
 }

@@ -41,7 +41,12 @@
 			<artifactId>postgresql</artifactId>
 			<version>${postgresql.driver.version}</version>
 		</dependency>
-
+		<!-- Library which implements Database Connection Pooling -->
+		<dependency>
+  			<groupId>org.apache.commons</groupId>
+	    	<artifactId>commons-dbcp2</artifactId>
+    		<version>2.1.1</version>
+		</dependency>
 		<!-- Javax servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

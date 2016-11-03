@@ -3,7 +3,7 @@ package nc.ukma.thor.spms.entity;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class Project {
+public class Project{
 	
 	private long id;
 	private String name;
@@ -26,6 +26,10 @@ public class Project {
 		this.endDate = endDate;
 		this.isCompleated = isCompleated;
 		this.chiefUser = chiefUser;
+	}
+
+	public Project(long id) {
+		this.id = id;
 	}
 
 	public long getId() {
@@ -76,11 +80,11 @@ public class Project {
 		this.isCompleated = isCompleated;
 	}
 
-	public User getChiefUser() {
+	public User getChiefMentor() {
 		return chiefUser;
 	}
 
-	public void setChiefUser(User chiefUser) {
+	public void setChiefMentor(User chiefUser) {
 		this.chiefUser = chiefUser;
 	}
 

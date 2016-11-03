@@ -3,7 +3,7 @@ INSERT INTO "user" VALUES (0,'admin@admin.com',
 							'Thor','Ivanovych', 'Ivanov', /*Password is adminpassword (crypted with B-crypt)*/
 							'$2a$06$6my9F/YPq8K/NWMPtbeWO.P8xjEPwJj04bRSkUbG0EIeSBKkkjlym',
 							TRUE);
-
+INSERT INTO "application_form" VALUES (0,'thor.png');
 INSERT INTO "user" VALUES (1,'mentor@mentor.com',
 							'Odin', 'Semenovych', 'Semenov', /*Password is mentorpassword (crypted with B-crypt)*/
 							'$2a$06$hdjnRjWPY1gdK6JMBHOeQOemT0TAp2kCblLndi6oGWwbULaWnGslq',
@@ -21,6 +21,11 @@ INSERT INTO "user" VALUES (3,'hr@hr.com',
 
 INSERT INTO "user" VALUES (4,'student@student.com',
 							'Андрій', 'Андрійович', 'Андрюхов', /*Password is sudentpassword (crypted with B-crypt)*/
+							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
+							TRUE);
+
+INSERT INTO "user" VALUES (5,'student2@student.com',
+							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
 							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
 							TRUE);
 
@@ -45,6 +50,11 @@ INSERT INTO team VALUES (5, 'Thor', 4);
 INSERT INTO user_team VALUES (4, 5);
 INSERT INTO user_team VALUES (1, 5);
 INSERT INTO user_team VALUES (2, 5);
+INSERT INTO user_team VALUES (5, 5);
+
+
+INSERT INTO team VALUES (2, 'Loky', 4);
+INSERT INTO user_team VALUES (2, 2);
 
 INSERT INTO meeting VALUES (6, 'Docs Review', '2016-11-1 15:00:00', 5);
 INSERT INTO presence VALUES (4, 6);
@@ -53,3 +63,12 @@ INSERT INTO meeting_feedback VALUES (7, 'Well Done', 4, 6, 2);
 
 INSERT INTO trait_category VALUES (8, 'Soft skills');
 INSERT INTO trait VALUES (9, 'Communication skills', 8);
+INSERT INTO trait VALUES (10, 'Eating skills', 8);
+
+INSERT INTO trait_category VALUES (20, 'Technical skills');
+INSERT INTO trait VALUES (21, 'Java knowledge', 20);
+INSERT INTO trait VALUES (22, 'SQL knowledge', 20);
+INSERT INTO trait VALUES (23, 'Algorithms knowledge', 20);
+
+INSERT INTO trait_category VALUES (30, 'Other skills');
+
