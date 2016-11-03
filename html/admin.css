@@ -1,0 +1,37 @@
+body{
+    background: #03A9F5;
+    color: #EEF4F8;
+}
+
+.container{
+    margin-top: 100px;
+}
+
+.col-md-4{
+    background: #465a65;
+    border: none;
+    border-style: solid;
+    border-color: #03A9F5;
+    padding: 0;
+}
+
+.block1{
+    padding: 5% 25% 5% 25%;
+}
+
+.block2{
+    margin: 0;
+    padding: 0 35% 5% 35%;
+}
+
+img{
+    height: 180px;
+}
+
+button{
+    background: #02A8F4;
+    color: #EEF4F8;
+    border-style: none;
+    font-family: 'Oswald', sans-serif;
+    padding: 5% 20% 5% 20%;
+}

@@ -1,14 +1,16 @@
-html{
+body{
+    margin: 0;
+    padding: 0 15px;
     background: #03A9F5;
     color: #EEF4F8;
 }
-
 .container{
+    padding: 0;
     background: #465a65;
-    width: 30%;
+    max-width: 350px;
     
     margin: auto;
-    margin-top: 10%;
+    margin-top: 120px;
 }
 
 .login-label{
@@ -23,14 +25,16 @@ html{
 .form{
     margin-left: 5%;
     margin-bottom: 5%;
+    margin-right: 3%;
 }
 
 .text{
-    width: 94%;
+    width: 97%;
     font-size: 100%;
     padding-top: 2.5%;
     padding-bottom: 2.5%;
     padding-left: 2.5%;
+    color: #465a65;
 }
 
 .check{
@@ -39,7 +43,7 @@ html{
 }
 
 button{
-    width: 94%;
+    width: 97%;
     margin-bottom: 10%;
     background: #02A8F4;
     color: #EEF4F8;
@@ -49,5 +53,7 @@ button{
 }
 
 .label{
+    padding-left: 0;
     font-family: 'BenchNine', sans-serif;
+    font-size: 110%;
 }
