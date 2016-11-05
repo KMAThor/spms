@@ -43,9 +43,9 @@
 		</dependency>
 		<!-- Library which implements Database Connection Pooling -->
 		<dependency>
-  			<groupId>org.apache.commons</groupId>
-	    	<artifactId>commons-dbcp2</artifactId>
-    		<version>2.1.1</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>2.1.1</version>
 		</dependency>
 		<!-- Javax servlet -->
 		<dependency>
@@ -54,24 +54,25 @@
 			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>javax.servlet.jsp-api</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-        
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>javax.servlet.jsp-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
+
 		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.13</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.3.1</version>
 		</dependency>
-		
+
 	</dependencies>
 	<build>
 		<pluginManagement>

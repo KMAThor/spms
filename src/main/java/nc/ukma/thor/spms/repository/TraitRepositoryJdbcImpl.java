@@ -17,7 +17,7 @@ import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
 
 @Repository
-public class TraitRepositoryJdbcImpl implements MyRepository<Trait>, TraitRepository{
+public class TraitRepositoryJdbcImpl implements TraitRepository{
 	
 	private static final String INSERT_TRAIT_SQL = "INSERT INTO trait (name, category_id) VALUES(?,?);";
 	private static final String UPDATE_TRAIT_SQL = "UPDATE trait SET name=?, category_id=? WHERE id=?;";

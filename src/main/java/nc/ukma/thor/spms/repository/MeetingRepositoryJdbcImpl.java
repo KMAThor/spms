@@ -3,9 +3,7 @@ package nc.ukma.thor.spms.repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,7 +18,7 @@ import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 
 @Repository
-public class MeetingRepositoryJdbcImpl implements MyRepository<Meeting>, MeetingRepository{
+public class MeetingRepositoryJdbcImpl implements MeetingRepository{
 	
 	private static final String INSERT_MEETING_SQL = "INSERT INTO meeting (topic, start_date, team_id) VALUES(?,?,?);";
 	private static final String UPDATE_MEETING_SQL = "UPDATE meeting SET topic=?, start_date=?, team_id=? WHERE id = ?;";

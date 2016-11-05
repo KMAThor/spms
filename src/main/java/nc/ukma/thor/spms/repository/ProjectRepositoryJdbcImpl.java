@@ -17,7 +17,7 @@ import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.User;
 
 @Repository
-public class ProjectRepositoryJdbcImpl implements MyRepository<Project>, ProjectRepository{
+public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	
 	private static final String INSERT_PROJECT_SQL =
 			"INSERT INTO project (name, description, start_date, end_date, is_completed, chief_mentor_id) "

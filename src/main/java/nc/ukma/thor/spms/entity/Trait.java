@@ -24,6 +24,12 @@ public class Trait {
 		this.name = name;
 	}
 
+	public Trait(long id, String name, TraitCategory traitCategory) {
+		this.id = id;
+		this.name = name;
+		this.traitCategory = traitCategory;
+	}
+
 	public long getId() {
 		return id;
 	}

@@ -4,12 +4,9 @@ import java.util.List;
 
 import nc.ukma.thor.spms.entity.TraitFeedback;
 
-public interface TraitFeedbackRepository {
+public interface TraitFeedbackRepository extends MyRepository<TraitFeedback>{
 	
 	public void add(TraitFeedback tf, long appendedToId);
-	public void update(TraitFeedback tf);
-	public void delete(TraitFeedback tf);
-	
-	public TraitFeedback getById(long id);
+
 	public List<TraitFeedback> getAllAppendedTo(long id);
 }

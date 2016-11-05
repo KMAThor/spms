@@ -1,5 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
+<!DOCTYPE html>
 <html lang="en">
-
 	<head>
 		<title>SPMS</title>
 		
@@ -14,9 +16,11 @@
     	
     	<!-- Bootstrap Core CSS -->
     	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    	
+    	<!-- Icons -->
+        <script src="https://use.fontawesome.com/7b15c48d6d.js"></script>
     	<!-- CSS -->
-    	<link href="./resources/css/styles.css" rel="stylesheet">
+    	<link href="/spms/resources/css/styles.css" rel="stylesheet">
+        <script src="/spms/resources/js/main.js"></script>
 	</head>
 	
 	<body>

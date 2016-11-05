@@ -29,28 +29,21 @@ public class RepositoriesTestController {
 	
 	@Autowired
 	private ProjectServiceImpl projectService;
-	
 	@Autowired
 	private ProjectRepository projectRepository;
-	
 	@Autowired
 	private TeamRepository teamRepository;
-	
 	@Autowired
 	private MeetingRepository meetingRepository;
-	
 	@Autowired
 	private UserRepository userRepository;
-	
 	@Autowired
 	private TraitRepository traitRepository;
-	
 	@Autowired
 	private TraitCategoryRepository traitCategoryRepository;
 	
 	@RequestMapping(value="project", method = RequestMethod.GET)
     public String testProjectRepository(ModelMap model) {
-		
 		Timestamp t = new Timestamp(0);
 		Project p = new Project("Super project3", "Some description3", t, t, false, null);
     	

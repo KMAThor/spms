@@ -5,13 +5,8 @@ import java.util.List;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
 
-public interface TraitCategoryRepository {
-
-	public void add(TraitCategory tc);
-	public void update(TraitCategory tc);
-	public void delete(TraitCategory tc);
+public interface TraitCategoryRepository extends MyRepository<TraitCategory>{
 	
-	public TraitCategory getById(short id);
 	public TraitCategory getCategoryByTrait(Trait tc);
 	public List<TraitCategory> getAllCategoriesWithTraits();
 }

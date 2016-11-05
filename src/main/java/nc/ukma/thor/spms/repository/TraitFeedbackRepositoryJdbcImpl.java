@@ -92,5 +92,11 @@ public class TraitFeedbackRepositoryJdbcImpl implements TraitFeedbackRepository{
 			return tf;
 		}
 	}
+
+	@Override
+	public void add(TraitFeedback entity) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

@@ -1,13 +1,14 @@
 package nc.ukma.thor.spms.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import nc.ukma.thor.spms.repository.MyRepository;
 
-public abstract class AbstractService<T> {
-	
-	@Autowired
+public abstract class AbstractService<T> implements Service<T>{
+
 	private MyRepository<T> repository;
+	
+	public AbstractService(MyRepository<T> repository){
+		this.repository = repository;
+	}
 	
 	public void create(T t){
 		repository.add(t);

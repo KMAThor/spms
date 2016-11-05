@@ -33,7 +33,8 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 	private static final String GET_ALL_TRAITCATEGORIS_WITH_TRAITS_SQL = "SELECT "
 			+ "trait_category.id AS trait_category_id, trait_category.name AS trait_category_name, "
 			+ "trait.id AS trait_id, trait.name AS trait_name FROM trait_category "
-			+ "LEFT JOIN trait ON trait_category.id = trait.category_id;";
+			+ "LEFT JOIN trait ON trait_category.id = trait.category_id "
+			+ "ORDER BY trait_category_id;";
 	
 	private static final RowMapper<TraitCategory> TRAITCATEGORY_MAPPER = new TraitCategoryMapper();
 
@@ -62,7 +63,7 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 	}
 
 	@Override
-	public TraitCategory getById(short id) {
+	public TraitCategory getById(long id) {
 		try{
 			return jdbcTemplate.queryForObject(GET_TRAITCATEGORY_BY_ID_SQL, 
 					new Object [] { id }, TRAITCATEGORY_MAPPER);
