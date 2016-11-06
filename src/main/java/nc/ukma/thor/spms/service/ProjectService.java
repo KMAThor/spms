@@ -2,19 +2,9 @@ package nc.ukma.thor.spms.service;
 
 import nc.ukma.thor.spms.entity.*;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 public interface ProjectService{
-
-    boolean changeProjectName(long projectId, String newProjectName);
-
-    // timestamp
-    boolean setTimeStamp(long projectId, boolean start, Timestamp date);
-
-    //description of the project
-    boolean setDescription(long projectId, String description);
-    boolean deleteDescription(long projectId);
 
     // chief mentor
     boolean setChiefUser(long projectId, User chief);
@@ -23,7 +13,7 @@ public interface ProjectService{
 
     // team functionality
     boolean addTeams(long projectId, List<Team> team);
-    boolean changeTeamName(long projectId, long teamId, String newName);
+
     boolean deleteTeam(long projectId, long teamId);
 
     Team getTeam(long projectId, long teamId);
