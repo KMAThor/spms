@@ -19,16 +19,32 @@
     	<!-- CSS -->
     	<link href="./resources/css/styles.css" type="text/css" rel="stylesheet">
 	</head>
-	
-	<body class="background">
-		<div class="container" style="width: 300px;">
-    <c:url value="/j_spring_security_check" var="loginUrl" />
-    <form action="${loginUrl}" method="post">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="form-control" name="j_username" placeholder="Email address" required="required" autofocus="autofocus">
-        <input type="password" class="form-control" name="j_password" placeholder="Password" value="" required="required">
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Enter</button>
-    </form>
-</div>
 	</body>
+	<body class="background">
+	
+		<div class="main">
+			<div class="content">
+        		<div class="login-panel panel panel-default">
+            		<div class="panel-heading">
+                    	<h1 class="panel-title">Sign In</h1>
+                	</div>
+                	<div class="panel-body">
+                	<c:url value="/j_spring_security_check" var="loginUrl" />
+                    	 <form action="${loginUrl}" method="post">
+                        	<fieldset>
+                            	<div class="form-group">
+                               		<input class="form-control" placeholder="Email addresse" name="j_username" type="text" required="required" autofocus="autofocus"/>
+                            	</div>
+                            	<div class="form-group">
+                                	<input class="form-control" placeholder="Password" name="j_password" type="password" value="" required="required"/>
+                            	</div>
+                            	<button type="submit" class="btn btn-sm btn-default">Sign in</button>
+                        	</fieldset>
+                    	</form>
+                	</div>
+            	</div>
+        	</div>
+    	</div>
+	</body>
+	
 </html>

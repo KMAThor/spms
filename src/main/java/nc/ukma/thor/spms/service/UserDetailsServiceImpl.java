@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     	User user = userService.getUser(email);
         Set<GrantedAuthority> roles = new HashSet<>();
         roles.add(new SimpleGrantedAuthority(user.getRole().getName()));
-       // System.out.println(user.getRole().getName());
+      //  System.out.println(user.getRole().getName());
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(
         		user.getEmail(), user.getPassword(), roles);
  

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -68,10 +69,12 @@
     							</a>						
     						</li>
     						<li style="border: 1px;">
+    						<security:authorize access="hasAuthority('admin')">
         						<a href="/spms/traitManager/">
     								<img src="/spms/resources/img/trait_manager.png" style="width:30px; height:30px">
     								Trait Manager
-    							</a>						
+    							</a>	
+    						</security:authorize>						
     						</li>
       					</ul>
     				</div>
@@ -79,7 +82,8 @@
     					<ul class="nav navbar-nav navbar-right">
     						<li>
     						<c:url value="" var="logoutUrl" />							
-        						<a href="j_spring_security_logout">Logout</a>
+        						<a href="/spms/j_spring_security_logout">Logout</a>
+        						<!-- <a href="j_spring_security_logout">Logout</a> CSS -->
         					</li>
       					</ul>
     				</div>
