@@ -96,6 +96,11 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
     }
 
     @Override
+    public List<Project> getAllActiveProjects() {
+        return null;
+    }
+
+    @Override
     public String getInfo(long projectId) {
         return null;
     }

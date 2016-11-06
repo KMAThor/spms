@@ -19,15 +19,14 @@ import java.util.LinkedList;
 public class ProjectController {
 
     @Autowired
-    public ProjectServiceImpl projectServiceImpl;
+    private ProjectServiceImpl projectServiceImpl;
 
     @ResponseBody
     @RequestMapping(path="/testApi/project/", method = RequestMethod.POST)
     public Project testProject(){
-        Project project = new Project("training", "for the best students/n and only for them", new Timestamp(1234L),
+         return new Project("training", "for the best students/n and only for them", new Timestamp(1234L),
                 new Timestamp(2345L), false, new User(1231242342L));
-        return project;
-    }
+           }
 
     @ResponseBody
     @RequestMapping(path="/project/create/", method = RequestMethod.POST)
@@ -44,8 +43,10 @@ public class ProjectController {
 
         LinkedList<Team> teams = new LinkedList<>();
         teams.add(team);
-        projectServiceImpl.addTeams(projectId, teams);
-        return "ok";
+        if (projectServiceImpl.addTeams(projectId, teams)){
+         return "ok";
+        }
+        return "failed";
     }
 
     @ResponseBody
