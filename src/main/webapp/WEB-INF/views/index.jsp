@@ -2,6 +2,33 @@
 	<div  class="panel-center">
 		<h1>Welcome to Student Practice Management System!</h1>
 	</div>
+	<hr>
+	<div  class="panel-center">
+		<h3>Active projects:</h3>
+	</div>
+	
+	<div class="div-table">
+		<table id="projectsTable" class="table">
+			<thead>
+				<tr>
+					<td>Id</td>
+					<td>Name</td>
+					<td>Start Date</td>
+					<td>End Date</td>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${projects}" var="project">
+					<tr>
+						<td>${project.id}</td> <!-- delete!!! -->
+						<td><a href="<c:url value="/project/${project.id}" />">${project.name}</a></td>
+						<td>${project.startDate}</td>
+						<td>${project.endDate}</td>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+	<!-- 
     <div class="container">
     <hr>
     	<div class="row">
@@ -138,6 +165,9 @@
     		</div>
     	</div>
     <hr>
-    </div>
+    </div> -->
     <!-- <img src="resources/thor.png">${greeting} . Our system has ${numberOfUsers} users. -->
+    <script>
+    $('#projectsTable').DataTable();
+    </script>
 <%@include file="footer.jsp"%>
