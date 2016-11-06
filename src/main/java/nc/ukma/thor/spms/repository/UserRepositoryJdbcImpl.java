@@ -21,22 +21,26 @@ public class UserRepositoryJdbcImpl implements UserRepository{
 	private static final String GET_USER_BY_ID_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id "
 			+ "WHERE id = ?";
 	
 	private static final String GET_USER_BY_EMAIL_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id "
 			+ "WHERE email = ?";
 
 	private static final String GET_USERS_BY_TEAM_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
 			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id "
 			+ "WHERE team_id = ?";
 	
 	private static final String GET_USERS_BY_MEETING_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id "
 			+ "INNER JOIN presence ON \"user\".id = presence.user_id "
 			+ "WHERE meeting_id = ?";
 	
@@ -90,7 +94,7 @@ public class UserRepositoryJdbcImpl implements UserRepository{
 			user.setLastName(rs.getString("last_name"));
 			user.setPassword(rs.getString("password"));
 			user.setActive(rs.getBoolean("is_active"));
-			user.setRole(new Role(rs.getShort("role_id")));
+			user.setRole(new Role(rs.getShort("role_id"), rs.getString("role")));
 			String  linkToPhoto = rs.getString("photo_scope");
 			if(!rs.wasNull()) user.setLinkToPhoto(linkToPhoto);
 			return user;

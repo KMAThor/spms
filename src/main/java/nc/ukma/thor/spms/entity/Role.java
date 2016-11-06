@@ -11,6 +11,11 @@ public class Role {
 		this.id = id;
 	}
 
+	public Role(short id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
 	public long getId() {
 		return id;
 	}

@@ -5,8 +5,8 @@
 	<head>
 		<title>SPMS</title>
 		
-		<!-- Shortcut -->
-		<link href="/resources/img/shortcut.ico" rel="shortcut icon">
+		<!-- Shortcut >
+		<link href="/resources/img/shortcut.ico" rel="shortcut icon"-->
 		
 		<!-- jQuery -->
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -19,7 +19,7 @@
     	<!-- Icons -->
         <script src="https://use.fontawesome.com/7b15c48d6d.js"></script>
     	<!-- CSS -->
-    	<link href="/spms/resources/css/styles.css" rel="stylesheet">
+    	<link href="/spms/resources/css/styles.css" type="text/css" rel="stylesheet">
         <script src="/spms/resources/js/main.js"></script>
 	</head>
 	
@@ -41,7 +41,8 @@
     				<div>  
     					<ul class="nav navbar-nav navbar-right">
     						<li>
-        						<a href="/logout">Logout</a>
+    						<c:url value="" var="logoutUrl" />							
+        						<a href="j_spring_security_logout">Logout</a>
         					</li>
       					</ul>
     				</div>
