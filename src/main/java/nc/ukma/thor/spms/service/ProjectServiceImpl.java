@@ -31,20 +31,7 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
         return false;
     }
 
-    @Override
-    public boolean setTimeStamp(long projectId, boolean start, Timestamp date) {
-        return false;
-    }
-
-    @Override
-    public boolean setDescription(long projectId, String description) {
-        return false;
-    }
-
-    @Override
-    public boolean deleteDescription(long projectId) {
-        return false;
-    }
+   
 
     @Override
     public boolean setChiefUser(long projectId, User chief) {
@@ -61,11 +48,7 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
         return false;
     }
 
-    @Override
-    public boolean changeTeamName(long projectId, long teamId, String newName) {
-        return false;
-    }
-
+  
     @Override
     public boolean deleteTeam(long projectId, long teamId) {
         return false;
