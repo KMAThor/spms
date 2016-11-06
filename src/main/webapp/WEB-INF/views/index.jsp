@@ -4,7 +4,14 @@
 	</div>
 	<hr>
 	<div  class="panel-center">
-		<h3>Active projects:</h3>
+		<h3>
+			Active projects
+			<button type="button" class="btn btn-success"
+					data-toggle="modal" data-target="#createProjectModal">
+				<i class="fa fa-plus-circle" aria-hidden="true"></i>
+				Create project
+			</button>
+		</h3>
 	</div>
 	
 	<div class="div-table">
@@ -28,144 +35,44 @@
 			</tbody>
 		</table>
 	</div>
-	<!-- 
-    <div class="container">
-    <hr>
-    	<div class="row">
-    		<div class="col-lg-3">
-    			<div class="mypanel">
-    				<div class="panel-body panel-center">
-						<div style="width: 100%; height: 240px; overflow: hidden;" >
-    						<a href="">
-    							<img src="./resources/img/create_project.png" class="img-responsive">
-    						</a>
-    					</div>
-    					<div class="clearfix" style="width: 100%; height: 60px; overflow: hidden;">
-    						<a href="">
-    							<h3>Create Project</h3>
-    						</a>
-    					</div>
-    				</div>
-    			</div>
-    		</div>
-    		<div class="col-lg-3">
-    			<div class="mypanel">
-    				<div class="panel-body panel-center">
-						<div style="width: 100%; height: 240px; overflow: hidden;" >
-    						<a href="">
-    							<img src="./resources/img/view_projects.png" class="img-responsive">
-    						</a>
-    					</div>
-    					<div class="clearfix" style="width: 100%; height: 60px; overflow: hidden;">
-    						<a href="">
-    							<h3>View Projects</h3>
-    						</a>
-    					</div>
-    				</div>
-    			</div>
-    		</div>
-    		<div class="col-lg-3">
-    			<div class="mypanel">
-    				<div class="panel-body panel-center">
-						<div style="width: 100%; height: 240px; overflow: hidden;" >
-    						<a href="">
-    							<img src="./resources/img/create_team.png" class="img-responsive">
-    						</a>
-    					</div>
-    					<div class="clearfix" style="width: 100%; height: 60px; overflow: hidden;">
-    						<a href="">
-    							<h3>Create Team</h3>
-    						</a>
-    					</div>
-    				</div>
-    			</div>
-    		</div>
-    		<div class="col-lg-3">
-    			<div class="mypanel">
-    				<div class="panel-body panel-center">
-						<div style="width: 100%; height: 240px; overflow: hidden;" >
-    						<a href="">
-    							<img src="./resources/img/view_teams.png" class="img-responsive">
-    						</a>
-    					</div>
-    					<div class="clearfix" style="width: 100%; height: 60px; overflow: hidden;">
-    						<a href="">
-    							<h3>View Teams</h3>
-    						</a>
-    					</div>
-    				</div>
-    			</div>
-    		</div>
-    	</div>
-    	<hr>
-    	<div class="row">
-    		<div class="col-lg-3">
-    			<div class="mypanel">
-    				<div class="panel-body panel-center">
-						<div style="width: 100%; height: 240px; overflow: hidden;" >
-    						<a href="">
-    							<img src="./resources/img/view_schedule.png" class="img-responsive">
-    						</a>
-    					</div>
-    					<div class="clearfix" style="width: 100%; height: 60px; overflow: hidden;">
-    						<a href="">
-    							<h3>View Schedule</h3>
-    						</a>
-    					</div>
-    				</div>
-    			</div>
-    		</div>
-    		<div class="col-lg-3">
-    			<div class="mypanel">
-    				<div class="panel-body panel-center">
-						<div style="width: 100%; height: 240px; overflow: hidden;" >
-    						<a href="">
-    							<img src="./resources/img/make_a_review.png" class="img-responsive">
-    						</a>
-    					</div>
-    					<div class="clearfix" style="width: 100%; height: 60px; overflow: hidden;">
-    						<a href="">
-    							<h3>Make a Review</h3>
-    						</a>
-    					</div>
-    				</div>
-    			</div>
-    		</div>
-    		<div class="col-lg-3">
-    			<div class="mypanel">
-    				<div class="panel-body panel-center">
-						<div style="width: 100%; height: 240px; overflow: hidden;" >
-    						<a href="">
-    							<img src="./resources/img/upload_file.png" class="img-responsive">
-    						</a>
-    					</div>
-    					<div class="clearfix" style="width: 100%; height: 60px; overflow: hidden;">
-    						<a href="">
-    							<h3>Upload File</h3>
-    						</a>
-    					</div>
-    				</div>
-    			</div>
-    		</div>
-    		<div class="col-lg-3">
-    			<div class="mypanel">
-    				<div class="panel-body panel-center">
-						<div style="width: 100%; height: 240px; overflow: hidden;" >
-    						<a href="">
-    							<img src="./resources/img/view_students.png" class="img-responsive">
-    						</a>
-    					</div>
-    					<div class="clearfix" style="width: 100%; height: 60px; overflow: hidden;">
-    						<a href="">
-    							<h3>View Students</h3>
-    						</a>
-    					</div>
-    				</div>
-    			</div>
-    		</div>
-    	</div>
-    <hr>
-    </div> -->
+	
+	<!-- createProjectModal -->
+	<div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Create Project</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form>
+				<div class="form-group">
+					<label for="newCategoryName">Project name:</label>
+				    <input type="text" class="form-control" id="newProjectName" placeholder="Enter new project name">
+				</div>
+				<div class="form-group">
+					<label for="newCategoryName">Project description:</label>
+				    <textarea class="form-control" rows="3" id="description" placeholder="Enter project description"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="newCategoryName">Start date:</label>
+				    <input type="text" class="form-control" id="startDate" placeholder="Enter start date">
+				</div>
+				<div class="form-group">
+					<label for="newCategoryName">End Date:</label>
+				    <input type="text" class="form-control" id="endDate" placeholder="Enter end date">
+				</div>
+			</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	        <button type="button" class="btn btn-primary" onclick="createProject();">Create</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	
     <!-- <img src="resources/thor.png">${greeting} . Our system has ${numberOfUsers} users. -->
     <script>
     $('#projectsTable').DataTable();

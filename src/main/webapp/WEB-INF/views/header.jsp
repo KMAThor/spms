@@ -44,13 +44,6 @@
     				<div>
       					<ul class="nav navbar-nav">
         					<li>
-        						<a href="/spms/createProject/">
-    								<img src="/spms/resources/img/create_project.png" style="width:30px; height:30px">
-    								Create project
-    							</a>						
-    						</li>
-    						
-        					<li>
         						<a href="/spms/reports/">
     								<img src="/spms/resources/img/view_reports.png" style="width:30px; height:30px">
     								View Reports

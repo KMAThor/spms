@@ -4,8 +4,8 @@
 	<head>
 		<title>SPMS</title>
 		
-		<!-- Shortcut >
-		<link href="./resources/img/shortcut.ico" rel="shortcut icon"-->
+		<!-- Shortcut -->
+		<link href="/spms/resources/img/shortcut.ico" rel="shortcut icon">
 		
 		<!-- jQuery -->
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -17,7 +17,7 @@
     	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     	
     	<!-- CSS -->
-    	<link href="./resources/css/styles.css" type="text/css" rel="stylesheet">
+    	<link href="/spms/resources/css/styles.css" type="text/css" rel="stylesheet">
 	</head>
 	</body>
 	<body class="background">
