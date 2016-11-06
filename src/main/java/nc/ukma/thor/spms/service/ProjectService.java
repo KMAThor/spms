@@ -42,6 +42,8 @@ public interface ProjectService{
     boolean deleteTraits(long projectId, List<Trait> traits);
     Trait getTrait(long projectId, long traitId);
     List<Trait> getTraits(long projectId);
+    
+    List<Project> getAllActiveProjects();
 
     String getInfo(long projectId);
 }

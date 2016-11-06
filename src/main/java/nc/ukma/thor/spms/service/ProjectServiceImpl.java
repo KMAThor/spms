@@ -13,11 +13,19 @@ import java.util.List;
 @Service
 public class ProjectServiceImpl extends AbstractService<Project> implements ProjectService{
 
+	private ProjectRepository projectReposotiry;
+	
 	@Autowired
-	public ProjectServiceImpl(ProjectRepository repository) {
-		super(repository);
+	public ProjectServiceImpl(ProjectRepository projectReposotiry) {
+		super(projectReposotiry);
+		this.projectReposotiry = projectReposotiry;
 	}
-
+	
+	@Override
+	public List<Project> getAllActiveProjects(){
+		return projectReposotiry.getAllActiveProjects();
+	}
+	
     @Override
     public boolean changeProjectName(long projectId, String newProjectName) {
         return false;
