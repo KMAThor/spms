@@ -1,6 +1,7 @@
 package nc.ukma.thor.spms.service;
 
 import nc.ukma.thor.spms.entity.*;
+import nc.ukma.thor.spms.repository.ProjectRepositoryJdbcImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +14,10 @@ import java.util.List;
 @Service
 public class ProjectServiceImpl extends AbstractService<Project> implements ProjectService{
 
-	@Autowired
+    @Autowired
 	public ProjectServiceImpl(ProjectRepository repository) {
 		super(repository);
 	}
-
-
 
     @Override
     public boolean setChiefUser(long projectId, User chief) {
@@ -34,6 +33,7 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
     public boolean addTeams(long projectId, List<Team> team) {
         return false;
     }
+
 
     @Override
     public boolean deleteTeam(long projectId, long teamId) {

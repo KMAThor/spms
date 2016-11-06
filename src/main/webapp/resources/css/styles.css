@@ -35,10 +35,22 @@ a {
     display: inline-block;
 }
 
+.div-table{
+	max-width: 70%;
+	text-align: center;
+	margin: auto;
+	background-color: #D3D3D3;
+	border-radius: 20px;
+	padding: 30px 30px 30px 30px;
+}
+
+.padtop{
+	padding-top: 20px;
+}
+
 .panel-center{
     text-align: center;
-    padding-top: 20px;
-    padding-bottom: 30px;
+    padding-bottom: 20px;
 }
 
 .bigicon {    
