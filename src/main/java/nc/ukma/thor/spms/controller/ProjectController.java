@@ -6,6 +6,8 @@ import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.UserRepository;
 import nc.ukma.thor.spms.service.ProjectService;
 import nc.ukma.thor.spms.service.ProjectServiceImpl;
+import nc.ukma.thor.spms.service.TraitCategoryService;
+import nc.ukma.thor.spms.service.TraitService;
 import nc.ukma.thor.spms.service.UserService;
 import nc.ukma.thor.spms.service.UserServiceImpl;
 import nc.ukma.thor.spms.util.DateUtil;
@@ -33,7 +35,11 @@ public class ProjectController {
     
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private TraitCategoryService traitCategoryService;
+    
+    @Autowired
+    private TraitService traitService;
     @ResponseBody
     @RequestMapping(path="/testApi/project/", method = RequestMethod.POST)
     public Project testProject(){
@@ -85,6 +91,8 @@ public class ProjectController {
     	User chiefMentor = project.getChiefMentor();
     	if(chiefMentor != null) project.setChiefMentor(userService.getUserById(chiefMentor.getId()));
     	model.addAttribute("project", project);
+    	model.addAttribute("traitCategories", traitCategoryService.getAllCategoriesWithTraits());
+    	model.addAttribute("traitsAssociatedWithProject", traitService.getTraitsWithoutNamesByProject(project));
         return "project";
     }
     
