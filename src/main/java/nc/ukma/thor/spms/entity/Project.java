@@ -10,7 +10,7 @@ public class Project{
 	private String description;
 	private Timestamp startDate;
 	private Timestamp endDate;
-	private boolean isCompleated;
+	private boolean isCompleted;
 	private User chiefUser;
 	private List<Team> teams;
 	private List<File> files;
@@ -24,7 +24,7 @@ public class Project{
 		this.description = description;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.isCompleated = isCompleated;
+		this.isCompleted = isCompleated;
 		this.chiefUser = chiefUser;
 	}
 
@@ -72,12 +72,15 @@ public class Project{
 		this.endDate = endDate;
 	}
 
-	public boolean isCompleated() {
-		return isCompleated;
+	public boolean isCompleted() {
+		return isCompleted;
+	}
+	public boolean	getIsCompleted() {
+		return isCompleted;
 	}
 
-	public void setCompleated(boolean isCompleated) {
-		this.isCompleated = isCompleated;
+	public void setIsCompleted(boolean isCompleated) {
+		this.isCompleted = isCompleated;
 	}
 
 	public User getChiefMentor() {
@@ -115,7 +118,7 @@ public class Project{
 	@Override
 	public String toString() {
 		return "Project [id=" + id + ", name=" + name + ", description=" + description + ", startDate=" + startDate
-				+ ", endDate=" + endDate + ", isCompleated=" + isCompleated + ", chiefUser=" + chiefUser + ", teams="
+				+ ", endDate=" + endDate + ", isCompleted=" + isCompleted + ", chiefUser=" + chiefUser + ", teams="
 				+ teams + ", files=" + files + ", traits=" + traits + "]";
 	}
 	

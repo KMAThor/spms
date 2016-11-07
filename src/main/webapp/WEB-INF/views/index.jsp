@@ -1,41 +1,45 @@
 <%@include file="header.jsp"%>
-	<div  class="panel-center">
-		<h1>Welcome to Student Practice Management System!</h1>
+	<div class="row">
+		<div class="col-sm-10 col-sm-offset-1">
+			<div  class="panel-center">
+				<h1>Welcome to Student Practice Management System!</h1>
+			</div>
+			<hr>
+			<div  class="panel-center">
+				<h3>
+					Active projects
+					<button type="button" class="btn btn-success"
+							data-toggle="modal" data-target="#createProjectModal">
+						<i class="fa fa-plus-circle" aria-hidden="true"></i>
+						Create project
+					</button>
+				</h3>
+			</div>
+			
+			<div class="div-table">
+				<table id="projectsTable" class="table table-striped table-hover table-bordered">
+					<thead>
+						<tr>
+							<td>Id</td>
+							<td>Name</td>
+							<td>Start Date</td>
+							<td>End Date</td>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${projects}" var="project">
+							<tr>
+								<td>${project.id}</td> <!-- delete!!! -->
+								<td><a href="<c:url value="/view/project/${project.id}/" />">${project.name}</a></td>
+								<td>${project.startDate}</td>
+								<td>${project.endDate}</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
-	<hr>
-	<div  class="panel-center">
-		<h3>
-			Active projects
-			<button type="button" class="btn btn-success"
-					data-toggle="modal" data-target="#createProjectModal">
-				<i class="fa fa-plus-circle" aria-hidden="true"></i>
-				Create project
-			</button>
-		</h3>
-	</div>
-	
-	<div class="div-table">
-		<table id="projectsTable" class="table">
-			<thead>
-				<tr>
-					<td>Id</td>
-					<td>Name</td>
-					<td>Start Date</td>
-					<td>End Date</td>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${projects}" var="project">
-					<tr>
-						<td>${project.id}</td> <!-- delete!!! -->
-						<td><a href="<c:url value="/project/${project.id}" />">${project.name}</a></td>
-						<td>${project.startDate}</td>
-						<td>${project.endDate}</td>
-				</c:forEach>
-			</tbody>
-		</table>
-	</div>
-	
 	<!-- createProjectModal -->
 	<div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
@@ -44,30 +48,60 @@
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	        <h4 class="modal-title" id="myModalLabel">Create Project</h4>
 	      </div>
-	      <div class="modal-body">
-	        <form>
+	      <form name="createProjectForm" id="createProjectForm" onsubmit="onSubmitCreateProjectForm();"
+	        	action="/spms/create/project/" method="post">
+	      	<div class="modal-body">
+	        
 				<div class="form-group">
-					<label for="newCategoryName">Project name:</label>
-				    <input type="text" class="form-control" id="newProjectName" placeholder="Enter new project name">
+					<label for="name">Project name:</label>
+				    <input type="text" class="form-control" name="name" id="newProjectName" placeholder="Enter new project name" required>
 				</div>
 				<div class="form-group">
-					<label for="newCategoryName">Project description:</label>
-				    <textarea class="form-control" rows="3" id="description" placeholder="Enter project description"></textarea>
+					<label for="description">Project description:</label>
+				    <textarea class="form-control" rows="3" name="description" id="newProjectDescription" placeholder="Enter project description"></textarea>
 				</div>
-				<div class="form-group">
-					<label for="newCategoryName">Start date:</label>
-				    <input type="text" class="form-control" id="startDate" placeholder="Enter start date">
-				</div>
-				<div class="form-group">
-					<label for="newCategoryName">End Date:</label>
-				    <input type="text" class="form-control" id="endDate" placeholder="Enter end date">
-				</div>
-			</form>
+
+		        <div class="form-group">
+		        	<label for="startDate">Start date:</label>
+		            <div class='input-group date' id='datetimepicker6'>
+		                <input type='text' class="form-control" name="startDate" id="endProjectStartDate" placeholder="Enter start date" required/>
+		                <span class="input-group-addon">
+		                    <span class="glyphicon glyphicon-calendar"></span>
+		                </span>
+		            </div>
+		        </div>
+
+		        <div class="form-group">
+		        	<label for="endDate">End Date:</label>
+		            <div class='input-group date' id='datetimepicker7'>
+		                <input type='text' class="form-control" name="endDate" id="endProjectStartDate" placeholder="Enter end date" required/>
+		                <span class="input-group-addon">
+		                    <span class="glyphicon glyphicon-calendar"></span>
+		                </span>
+		            </div>
+		        </div>
+			
+				<script type="text/javascript">
+				    $(function () {
+				        $('#datetimepicker6').datetimepicker();
+				        $('#datetimepicker7').datetimepicker({
+				            useCurrent: false //Important! See issue #1075
+				        });
+				        $("#datetimepicker6").on("dp.change", function (e) {
+				            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+				        });
+				        $("#datetimepicker7").on("dp.change", function (e) {
+				            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+				        });
+				    });
+				</script>
+			
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	        <button type="button" class="btn btn-primary" onclick="createProject();">Create</button>
+	        <button type="submit" value="Submit" class="btn btn-primary" >Create</button>
 	      </div>
+	      </form>
 	    </div>
 	  </div>
 	</div>

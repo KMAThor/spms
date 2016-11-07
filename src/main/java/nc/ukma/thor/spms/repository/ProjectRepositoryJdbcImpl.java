@@ -67,7 +67,7 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 				p.getDescription(), 
 				p.getStartDate(),
 				p.getEndDate(),
-				p.isCompleated(),
+				p.isCompleted(),
 				null,
 				p.getId()
 		};
@@ -121,11 +121,11 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			pr.setDescription(rs.getString("description"));
 			pr.setStartDate(rs.getTimestamp("start_date"));
 			pr.setEndDate(rs.getTimestamp("end_date"));
-			pr.setCompleated(rs.getBoolean("is_completed"));
+			pr.setIsCompleted(rs.getBoolean("is_completed"));
 			Long chiefMentorId = rs.getLong("chief_mentor_id");
 			if(!rs.wasNull()) pr.setChiefMentor(new User(chiefMentorId));
 			return pr;
 		}
 	}
-
+	
 }

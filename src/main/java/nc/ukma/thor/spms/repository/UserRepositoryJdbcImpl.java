@@ -22,7 +22,7 @@ public class UserRepositoryJdbcImpl implements UserRepository{
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
 			+ "INNER JOIN role ON role.id = user_role.role_id "
-			+ "WHERE id = ?";
+			+ "WHERE \"user\".id = ?";
 	
 	private static final String GET_USER_BY_EMAIL_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "

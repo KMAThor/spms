@@ -133,6 +133,9 @@ INSERT INTO status VALUES (3,'got job offer');
 INSERT INTO project VALUES (4, 'KMA 2016',
 								DEFAULT, DEFAULT,
 								'2016-12-1 00:00:00', DEFAULT, 1);
+INSERT INTO project VALUES (6, 'KPI 2016',
+								'Not so cool as kma projects, but still not bad ;)', DEFAULT,
+								'2016-12-1 00:00:00', DEFAULT, 1);
 
 INSERT INTO team VALUES (5, 'Thor', 4);
 INSERT INTO user_team VALUES (4, 5);

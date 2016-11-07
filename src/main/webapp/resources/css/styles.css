@@ -36,14 +36,25 @@ a {
 }
 
 .div-table{
-	max-width: 70%;
+	
 	text-align: center;
 	margin: auto;
-	background-color: #D3D3D3;
+	/*background-color: #D3D3D3;*/
 	border-radius: 20px;
-	padding: 30px 30px 30px 30px;
+}
+table.table thead{
+    background-color: #DDDDDD;
+    border-color: #DDDDDD;
 }
 
+table.table{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#projectsTable_length{
+    display: none;
+}
 .padtop{
 	padding-top: 20px;
 }

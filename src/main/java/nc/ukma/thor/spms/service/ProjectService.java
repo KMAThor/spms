@@ -5,7 +5,7 @@ import nc.ukma.thor.spms.entity.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface ProjectService{
+public interface ProjectService extends Service<Project>{
 
     // chief mentor
     boolean setChiefUser(long projectId, User chief);
