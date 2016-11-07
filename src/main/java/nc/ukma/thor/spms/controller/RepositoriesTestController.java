@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.Project;
+import nc.ukma.thor.spms.entity.Status;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
@@ -78,6 +79,21 @@ public class RepositoriesTestController {
 		team.setName(team.getName() + "_UPDATED");
 		teamRepository.update(team);
 		System.out.println("Get just updated team:" + teamRepository.getById(team.getId()));
+		
+		System.out.println("Get users from this team:" + userRepository.getUsersByTeam(team));
+		User user = new User(4);
+		System.out.println("Add user to team.");
+		teamRepository.addUserToTeam(user, team);
+		System.out.println("Get users from this team:" + userRepository.getUsersByTeam(team));
+		
+		System.out.println("Get user status in this team:" + teamRepository.getUserStatusInTeam(user, team));
+		System.out.println("Change user in this team.");
+		teamRepository.changeUserStatusInTeam(user, team, new Status((short) 0, "new status for this guy"));
+		System.out.println("Get user status in this team:" + teamRepository.getUserStatusInTeam(user, team));
+		
+		System.out.println("Delete user from team.");
+		teamRepository.deleteUserFromTeam(user, team);
+		System.out.println("Get users from this team:" + userRepository.getUsersByTeam(team));
 		
 		teamRepository.delete(team);
 		System.out.println("Get just deleted team:" + teamRepository.getById(team.getId()));
@@ -148,6 +164,15 @@ public class RepositoriesTestController {
 		
 		System.out.println("Get all trait of category with id 9:" + traitRepository.getTraitsByTraitCategory(traitCategory));
 		
+		Project project = new Project(4);
+		
+		System.out.println("Get all trait of project:" + traitRepository.getTraitsWithoutNamesByProject(project));
+		System.out.println("Add trait to this project");
+		projectRepository.addTraitToProject(trait2, project);
+		System.out.println("Get all trait of project:" + traitRepository.getTraitsWithoutNamesByProject(project));
+		System.out.println("Delete trait from project.");
+		projectRepository.deleteTraitFromProject(trait2, project);
+		System.out.println("Get all trait of project:" + traitRepository.getTraitsWithoutNamesByProject(project));
 		traitRepository.delete(trait2);
 		System.out.println("Get just deleted trait:" + traitRepository.getById(trait2.getId()));
 		return "authentication";

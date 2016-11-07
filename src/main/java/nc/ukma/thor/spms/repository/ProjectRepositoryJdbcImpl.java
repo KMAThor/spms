@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import nc.ukma.thor.spms.entity.Project;
+import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.User;
 
 @Repository
@@ -33,6 +34,9 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	private static final String GET_PROJECT_BY_ID_SQL = "SELECT * FROM project WHERE id=?;";
 	private static final String GET_ALL_ACTIVE_PROJECTS_SQL = "SELECT * FROM project WHERE is_completed = FALSE;";
 	private static final String GET_ALL_PROJECTS_SQL = "SELECT * FROM project;";
+	
+	private static final String ADD_TRAIT_TO_PROJECT_SQL = "INSERT INTO trait_project (trait_id, project_id) VALUES(?,?);";
+	private static final String DELETE_TRAIT_FROM_PROJECT_SQL = "DELETE FROM trait_project WHERE trait_id=? AND project_id=?;";
 	
 	private static final RowMapper<Project> PROJECT_MAPPER = new ProjectMapper();
 
@@ -96,6 +100,17 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	public List<Project> getAllProjects() {
 		return jdbcTemplate.query(GET_ALL_PROJECTS_SQL, PROJECT_MAPPER);
 	}
+	
+
+	@Override
+	public void addTraitToProject(Trait trait, Project project) {
+		jdbcTemplate.update(ADD_TRAIT_TO_PROJECT_SQL, trait.getId(), project.getId());
+	}	
+	@Override
+	public void deleteTraitFromProject(Trait trait, Project project) {
+		jdbcTemplate.update(DELETE_TRAIT_FROM_PROJECT_SQL, trait.getId(), project.getId());
+	}	
+		
 		
 	private static final class ProjectMapper implements RowMapper<Project> {
 		@Override
@@ -111,5 +126,6 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			if(!rs.wasNull()) pr.setChiefMentor(new User(chiefMentorId));
 			return pr;
 		}
-	}	
+	}
+
 }

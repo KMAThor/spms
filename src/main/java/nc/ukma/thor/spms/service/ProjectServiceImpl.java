@@ -14,9 +14,12 @@ import java.util.List;
 @Service
 public class ProjectServiceImpl extends AbstractService<Project> implements ProjectService{
 
+	private ProjectRepository projectRepository;
+	
     @Autowired
 	public ProjectServiceImpl(ProjectRepository repository) {
 		super(repository);
+		this.projectRepository = repository;
 	}
 
     @Override
@@ -99,4 +102,9 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
     public String getInfo(long projectId) {
         return null;
     }
+
+	@Override
+	public List<Project> getAllActiveProjects() {
+		return projectRepository.getAllActiveProjects();
+	}
 }

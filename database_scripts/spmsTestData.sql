@@ -1,4 +1,4 @@
-/*user*/
+/*user */
 INSERT INTO "user" VALUES (0,'admin@admin.com',
 							'Thor','Ivanovych', 'Ivanov', /*Password is adminpassword (crypted with B-crypt)*/
 							'$2a$06$6my9F/YPq8K/NWMPtbeWO.P8xjEPwJj04bRSkUbG0EIeSBKkkjlym',
@@ -28,7 +28,88 @@ INSERT INTO "user" VALUES (5,'student2@student.com',
 							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
 							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
 							TRUE);
+INSERT INTO "user" VALUES (6,'mentor3@mentor.com',
+							'Odin', 'Semenovych', 'Semenov', /*Password is mentorpassword (crypted with B-crypt)*/
+							'$2a$06$hdjnRjWPY1gdK6JMBHOeQOemT0TAp2kCblLndi6oGWwbULaWnGslq',
+							TRUE);
 
+INSERT INTO "user" VALUES (7,'mentor4@mentor.com',
+							'Loki', 'Petrovych', 'Petrov', /*Password is mentorpassword (crypted with B-crypt)*/
+							'$2a$06$hdjnRjWPY1gdK6JMBHOeQOemT0TAp2kCblLndi6oGWwbULaWnGslq',
+							TRUE);
+INSERT INTO "user" VALUES (8,'mentor5@mentor.com',
+							'Odin', 'Semenovych', 'Semenov', /*Password is mentorpassword (crypted with B-crypt)*/
+							'$2a$06$hdjnRjWPY1gdK6JMBHOeQOemT0TAp2kCblLndi6oGWwbULaWnGslq',
+							TRUE);
+
+INSERT INTO "user" VALUES (9,'mentor6@mentor.com',
+							'Loki', 'Petrovych', 'Petrov', /*Password is mentorpassword (crypted with B-crypt)*/
+							'$2a$06$hdjnRjWPY1gdK6JMBHOeQOemT0TAp2kCblLndi6oGWwbULaWnGslq',
+							TRUE);
+INSERT INTO "user" VALUES (10,'mentor7@mentor.com',
+							'Loki', 'Petrovych', 'Petrov', /*Password is mentorpassword (crypted with B-crypt)*/
+							'$2a$06$hdjnRjWPY1gdK6JMBHOeQOemT0TAp2kCblLndi6oGWwbULaWnGslq',
+							TRUE);
+INSERT INTO "user" VALUES (11,'mentor8@mentor.com',
+							'Loki', 'Petrovych', 'Petrov', /*Password is mentorpassword (crypted with B-crypt)*/
+							'$2a$06$hdjnRjWPY1gdK6JMBHOeQOemT0TAp2kCblLndi6oGWwbULaWnGslq',
+							TRUE);
+INSERT INTO "user" VALUES (12,'mentor9@mentor.com',
+							'Loki', 'Petrovych', 'Petrov', /*Password is mentorpassword (crypted with B-crypt)*/
+							'$2a$06$hdjnRjWPY1gdK6JMBHOeQOemT0TAp2kCblLndi6oGWwbULaWnGslq',
+							TRUE);
+INSERT INTO "user" VALUES (13,'mentor10@mentor.com',
+							'Loki', 'Petrovych', 'Petrov', /*Password is mentorpassword (crypted with B-crypt)*/
+							'$2a$06$hdjnRjWPY1gdK6JMBHOeQOemT0TAp2kCblLndi6oGWwbULaWnGslq',
+							TRUE);
+INSERT INTO "user" VALUES (14,'student3@student.com',
+							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
+							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
+							TRUE);
+INSERT INTO "user" VALUES (14,'student4@student.com',
+							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
+							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
+							TRUE);
+INSERT INTO "user" VALUES (14,'student5@student.com',
+							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
+							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
+							TRUE);
+INSERT INTO "user" VALUES (14,'student6@student.com',
+							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
+							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
+							TRUE);
+INSERT INTO "user" VALUES (14,'student7@student.com',
+							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
+							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
+							TRUE);
+INSERT INTO "user" VALUES (14,'student8@student.com',
+							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
+							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
+							TRUE);
+INSERT INTO "user" VALUES (14,'student9@student.com',
+							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
+							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
+							TRUE);
+INSERT INTO "user" VALUES (14,'student10@student.com',
+							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
+							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
+							TRUE);
+INSERT INTO "user" VALUES (14,'student11@student.com',
+							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
+							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
+							TRUE);
+INSERT INTO "user" VALUES (14,'student12@student.com',
+							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
+							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
+							TRUE);
+INSERT INTO "user" VALUES (14,'student13@student.com',
+							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
+							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
+							TRUE);
+INSERT INTO "user" VALUES (14,'student3@student.com',
+							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
+							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
+							TRUE);
 /*role*/
 INSERT INTO role VALUES (0,'admin');
 INSERT INTO role VALUES (1,'mentor');
@@ -41,6 +122,13 @@ INSERT INTO user_role VALUES(1,1);
 INSERT INTO user_role VALUES(2,1);
 INSERT INTO user_role VALUES(3,2);
 INSERT INTO user_role VALUES(4,3);
+
+/*status*/
+INSERT INTO status VALUES (0,'active');
+INSERT INTO status VALUES (1,'inactive');
+INSERT INTO status VALUES (2,'interview was scheduled');
+INSERT INTO status VALUES (3,'got job offer');
+
 /*prject*/
 INSERT INTO project VALUES (4, 'KMA 2016',
 								DEFAULT, DEFAULT,

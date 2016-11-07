@@ -26,6 +26,7 @@ function createTraitCategory() {
 		},
 		type : "POST",
 		dataType : "json",
+		timeout: 15000
 	})
 	.done(function(category) {
 		$( "#categoriesPanelGroup" ).append( '<div id="category-'+category.id+'" class="panel panel-default">\
@@ -63,7 +64,8 @@ function createTraitCategory() {
 		$('#loadingModal').modal('hide');
 	})
 	.fail(function(xhr, status, errorThrown) {
-
+		$('#loadingModal').modal('hide');
+		$('#networkErrorModal').modal('show');
 	})
 	.always(function( xhr, status ) {
 	});
@@ -90,6 +92,7 @@ function createTrait() {
 		},
 		type : "POST",
 		dataType : "json",
+		timeout: 15000
 	})
 	.done(function(trait) {
 		$('#category-'+trait.traitCategory.id+'-traits').append('<ul id="trait-'+trait.id+'" class="list-group traits-list">\
@@ -120,6 +123,8 @@ function createTrait() {
 		$('#loadingModal').modal('hide');
 	})
 	.fail(function(xhr, status, errorThrown) {
+		$('#loadingModal').modal('hide');
+		$('#networkErrorModal').modal('show');
 	})
 	.always(function( xhr, status ) {
 	});
@@ -152,12 +157,15 @@ function updateTraitCategory() {
 	    },
 	    type: "POST",
 	    dataType : "text",
+		timeout: 15000
 	})
 	.done(function(message) {
 		$('#traitCategory-'+id+'-name').text(name);
 	    $('#loadingModal').modal('hide');
 	})
 	.fail(function( xhr, status, errorThrown ) {
+		$('#loadingModal').modal('hide');
+		$('#networkErrorModal').modal('show');
 	})
 	.always(function( xhr, status ) {
 	});
@@ -192,12 +200,15 @@ function updateTrait() {
 	    },
 	    type: "POST",
 	    dataType : "text",
+		timeout: 15000
 	})
 	.done(function(message) {
 		$('#trait-'+id+'-name').text(name);
 	    $('#loadingModal').modal('hide');
 	})
 	.fail(function( xhr, status, errorThrown ) {
+		$('#loadingModal').modal('hide');
+		$('#networkErrorModal').modal('show');
 	})
 	.always(function( xhr, status ) {
 	});
@@ -212,12 +223,15 @@ function deleteTraitCategory(id) {
 	    },
 	    type: "POST",
 	    dataType : "text",
+		timeout: 15000
 	})
 	.done(function( json ) {
 		$('#category-'+ id).remove();
 	    $('#loadingModal').modal('hide');
 	})
 	.fail(function( xhr, status, errorThrown ) {
+		$('#loadingModal').modal('hide');
+		$('#networkErrorModal').modal('show');
 	})
 	.always(function( xhr, status ) {
 	});
@@ -233,12 +247,15 @@ function deleteTrait(id) {
 	    },
 	    type: "POST",
 	    dataType : "text",
+		timeout: 15000
 	})
 	.done(function( json ) {
 		$('#trait-'+ id).remove();
 	    $('#loadingModal').modal('hide');
 	})
 	.fail(function( xhr, status, errorThrown ) {
+		$('#loadingModal').modal('hide');
+		$('#networkErrorModal').modal('show');
 	})
 	.always(function( xhr, status ) {
 	});

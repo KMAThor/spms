@@ -2,6 +2,7 @@ package nc.ukma.thor.spms.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,6 +21,7 @@ public class RoleRepositoryImpl implements RoleRepository{
 	private static final String GET_ROLE_BY_USER_SQL = "SELECT * FROM role "
 			+ "INNER JOIN user_role ON id=role_id "
 			+ "WHERE user_id=?;";
+	private static final String GET_ALL_ROLES_SQL = "SELECT * FROM role;";
 	
 	private static final RowMapper<Role> ROLE_MAPPER = new RoleMapper();
 	@Autowired
@@ -54,7 +56,11 @@ public class RoleRepositoryImpl implements RoleRepository{
 			return null;
 		}
 	}
-
+	
+	@Override
+	public List<Role> getAllRoles() {
+		return jdbcTemplate.query(GET_ALL_ROLES_SQL, ROLE_MAPPER);
+	}
 	
 	private static final class RoleMapper implements RowMapper<Role>{
 		@Override
@@ -65,5 +71,4 @@ public class RoleRepositoryImpl implements RoleRepository{
 			return role;
 		}
 	}
-
 }

@@ -8,10 +8,9 @@ import nc.ukma.thor.spms.entity.User;
 
 public interface MeetingFeedbackRepository extends MyRepository<MeetingFeedback>{
 
-	public List<MeetingFeedback> getMeetingFeedbacksByMeeting(Meeting id);
-	public List<MeetingFeedback> getMeetingFeedbacksByStudent(User id);
-	public List<MeetingFeedback> getMeetingFeedbacksByMentor(User id);
+	public List<MeetingFeedback> getMeetingFeedbacksByMeeting(Meeting meeting);
+	public List<MeetingFeedback> getMeetingFeedbacksByStudent(User student);
+	public List<MeetingFeedback> getMeetingFeedbacksByMentor(User mentor);
+	public List<MeetingFeedback> getMeetingFeedbacksByMeetingAndStudent(Meeting meeting, User user);
 	
 }
-
-

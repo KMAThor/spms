@@ -33,5 +33,6 @@ public interface ProjectService{
     List<Trait> getTraits(long projectId);
 
     String getInfo(long projectId);
+	List<Project> getAllActiveProjects();
 }
 

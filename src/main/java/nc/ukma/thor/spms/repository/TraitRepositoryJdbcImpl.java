@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
 
@@ -24,6 +25,7 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 	private static final String DELETE_TRAIT_SQL = "DELETE FROM trait WHERE id=?;";
 	private static final String GET_TRAIT_BY_ID_SQL = "SELECT * FROM trait WHERE id=?;";
 	private static final String GET_TRAITS_BY_TRAITCATEGORY_TRAIT_SQL = "SELECT * FROM trait WHERE category_id=?;";
+	private static final String GET_TRAITS_BY_PROJECT_SQL = "SELECT * FROM trait_project WHERE project_id=?;";
 	
 	private static final RowMapper<Trait> TRAIT_MAPPER = new TraitMapper();
 	
@@ -79,6 +81,16 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 			trait.setTraitCategory(new TraitCategory(rs.getShort("category_id")));
 			return trait;
 		}
+	}
+
+	@Override
+	public List<Trait> getTraitsWithoutNamesByProject(Project project) {
+		return jdbcTemplate.query(GET_TRAITS_BY_PROJECT_SQL, new Object[] {project.getId()},
+				(rs, rowNum)->{
+					Trait trait = new Trait();
+					trait.setId(rs.getLong("trait_id"));
+					return trait;
+				});
 	}
 
 }

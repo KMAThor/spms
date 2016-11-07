@@ -120,3 +120,7 @@ ul.dropdown-cart li .item-right button{
     text-indent: 20px;
     margin-bottom: 0; 
 }
+
+p.errorMessageInModal{
+    color: white;
+}
