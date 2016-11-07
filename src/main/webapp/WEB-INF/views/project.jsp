@@ -94,7 +94,11 @@
 						Create team
 				</button>
 			</h2>
-			
+			<c:forEach items="${teams}" var="team">
+					<h3>
+						<a href="<c:url value="/view/project/${project.id}/${team.id}" />" class="btn btn-default">${team.name}</a>
+					</h3>
+			</c:forEach>
 		</div>
 	</div>
 

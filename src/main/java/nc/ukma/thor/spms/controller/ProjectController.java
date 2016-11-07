@@ -3,13 +3,12 @@ package nc.ukma.thor.spms.controller;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
-import nc.ukma.thor.spms.repository.UserRepository;
+import nc.ukma.thor.spms.service.MeetingService;
 import nc.ukma.thor.spms.service.ProjectService;
-import nc.ukma.thor.spms.service.ProjectServiceImpl;
+import nc.ukma.thor.spms.service.TeamService;
 import nc.ukma.thor.spms.service.TraitCategoryService;
 import nc.ukma.thor.spms.service.TraitService;
 import nc.ukma.thor.spms.service.UserService;
-import nc.ukma.thor.spms.service.UserServiceImpl;
 import nc.ukma.thor.spms.util.DateUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +24,18 @@ import java.sql.Timestamp;
 import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 
 @Controller
 public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
-    
+    @Autowired
+    private TeamService teamService;
     @Autowired
     private UserService userService;
+    //@Autowired
+    //private MeetingService meetingService;
     @Autowired
     private TraitCategoryService traitCategoryService;
     
@@ -91,6 +92,7 @@ public class ProjectController {
     	User chiefMentor = project.getChiefMentor();
     	if(chiefMentor != null) project.setChiefMentor(userService.getUserById(chiefMentor.getId()));
     	model.addAttribute("project", project);
+    	model.addAttribute("teams", teamService.getTeamsByProject(project));
     	model.addAttribute("traitCategories", traitCategoryService.getAllCategoriesWithTraits());
     	model.addAttribute("traitsAssociatedWithProject", traitService.getTraitsWithoutNamesByProject(project));
         return "project";
@@ -125,6 +127,15 @@ public class ProjectController {
     	Project project = new Project(id);
     	projectService.delete(project);
         return "redirect:/";
+    }
+    
+    @RequestMapping(path="/view/project/{project_id}/{team_id}", method = RequestMethod.GET)
+    public String viewTeam(@PathVariable long project_id, @PathVariable long team_id, Model model ){
+    	Team team = teamService.getById(team_id);
+    	model.addAttribute("team", team);
+    	model.addAttribute("students", userService.getUsersByTeam(team));
+    	//model.addAttribute("meetings", meetingService.getMeetingsByTeam(team));
+        return "team";
     }
   
 }

@@ -79,8 +79,7 @@
     					<ul class="nav navbar-nav navbar-right">
     						<li>
     						<c:url value="" var="logoutUrl" />							
-        						<a href="/spms/j_spring_security_logout">Logout</a>
-        						<!-- <a href="j_spring_security_logout">Logout</a> CSS -->
+        						<a href="/spms/j_spring_security_logout" style="padding-top: 18px;">Logout</a>
         					</li>
       					</ul>
     				</div>
