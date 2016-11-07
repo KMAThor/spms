@@ -34,9 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
     	http.authorizeRequests().antMatchers("/resources/**").permitAll();
     	http
+    		.csrf().disable()
 			.authorizeRequests()
-				
-				.antMatchers("/traitManager/**").access("hasRole('admin')")
+				.antMatchers("/traitManager/**").hasAuthority("admin")
+
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()
@@ -49,11 +50,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	   			.and()
 			.logout()
 	   	        .permitAll()
-	   	        .logoutUrl("/j_spring_security_logout")
-	   	        .logoutSuccessUrl("/authentication?logout") //or "/authentication"
+	   	        .logoutUrl("/j_spring_security_logout")// .logoutUrl("/j_spring_security_logout")
+	   	        .logoutSuccessUrl("/authentication?logout") //or "/authentication?logout"
 	   	        .invalidateHttpSession(true)
-	   			.and()
-			.csrf().disable();    	
+	   			.and();
+			   	
     }
         
     public BCryptPasswordEncoder getBCryptPasswordEncoder(){
