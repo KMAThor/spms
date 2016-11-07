@@ -35,6 +35,5 @@ public interface ProjectService{
     List <Project> getAllActiveProjects();
 
     String getInfo(long projectId);
-	List<Project> getAllActiveProjects();
 }
 
