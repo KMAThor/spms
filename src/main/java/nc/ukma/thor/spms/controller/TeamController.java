@@ -42,7 +42,7 @@ public class TeamController {
     public String viewTeam(@PathVariable long id, Model model ){
     	Team team = teamService.getById(id);
     	model.addAttribute("team", team);
-    	model.addAttribute("students", userService.getUsersByTeam(team));
+    	model.addAttribute("users", userService.getUsersByTeam(team));
     	//model.addAttribute("meetings", meetingService.getMeetingsByTeam(team));
         return "team";
     }
