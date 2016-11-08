@@ -56,6 +56,7 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 
 	@Override
 	public void update(Team t) {
+		System.out.println(t);
 		jdbcTemplate.update(UPDATE_TEAM_SQL, new Object[] {t.getName(), t.getProject().getId(), t.getId()});
 	}
 
@@ -118,7 +119,7 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 			Team team = new Team();
 			team.setId(rs.getLong("id"));
 			team.setName(rs.getString("name"));
-			team.setProject(new Project(rs.getLong("id")));
+			team.setProject(new Project(rs.getLong("project_id")));
 			return team;
 		}
 	}

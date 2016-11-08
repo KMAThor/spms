@@ -51,4 +51,31 @@
 			</c:forEach>
 		</div>
 	</div>
+	
+	<!-- editTeamNameModal -->
+	<div class="modal fade" id="editTeamNameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        		<h4 class="modal-title" id="myModalLabel">Edit Team Name</h4>
+	      		</div>
+	      		<form name="createProjectForm" id="createProjectForm" onsubmit="onSubmitEditTeamNameForm();"
+	        		  action="/spms/update/team/${team.id}/" method="post">
+	      			<div class="modal-body">
+	        
+						<div class="form-group">
+							<label for="name">New Team Name</label>
+				    		<input type="text" class="form-control" name="name" id="newTeamName" placeholder="Enter new team name" value="${team.name}" required>
+						</div>
+
+	      			</div>
+	      			<div class="modal-footer">
+	        			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	        			<button type="submit" value="Submit" class="btn btn-primary" >Update</button>
+	     			</div>
+	      		</form>
+	    	</div>
+	  	</div>
+	</div>
 <%@include file="footer.jsp"%>

@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import nc.ukma.thor.spms.entity.Project;
+import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.User;
 
@@ -101,7 +102,6 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 		return jdbcTemplate.query(GET_ALL_PROJECTS_SQL, PROJECT_MAPPER);
 	}
 	
-
 	@Override
 	public void addTraitToProject(Trait trait, Project project) {
 		jdbcTemplate.update(ADD_TRAIT_TO_PROJECT_SQL, trait.getId(), project.getId());

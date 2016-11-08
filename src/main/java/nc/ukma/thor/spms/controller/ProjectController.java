@@ -57,17 +57,7 @@ public class ProjectController {
         return newProject;
     }*/
 
-    @ResponseBody
-    @RequestMapping(path="/project/create/add_team/", method = RequestMethod.POST)
-    public String addTeam(@RequestParam long projectId, @RequestParam Team team){
-
-        LinkedList<Team> teams = new LinkedList<>();
-        teams.add(team);
-        if (projectService.addTeams(projectId, teams)){
-         return "ok";
-        }
-        return "failed";
-    }
+    
 /*
     @ResponseBody
     @RequestMapping(path="/project/delete/", method= RequestMethod.POST)
@@ -127,15 +117,6 @@ public class ProjectController {
     	Project project = new Project(id);
     	projectService.delete(project);
         return "redirect:/";
-    }
-    
-    @RequestMapping(path="/view/project/{project_id}/{team_id}", method = RequestMethod.GET)
-    public String viewTeam(@PathVariable long project_id, @PathVariable long team_id, Model model ){
-    	Team team = teamService.getById(team_id);
-    	model.addAttribute("team", team);
-    	model.addAttribute("students", userService.getUsersByTeam(team));
-    	//model.addAttribute("meetings", meetingService.getMeetingsByTeam(team));
-        return "team";
     }
   
 }

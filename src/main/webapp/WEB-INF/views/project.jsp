@@ -85,6 +85,7 @@
 		</div>
 	</div>
 	<hr>
+	
 	<div class="row">
 		<div class="col-sm-10 col-sm-offset-1">
 			<h2>Teams
@@ -96,7 +97,7 @@
 			</h2>
 			<c:forEach items="${teams}" var="team">
 					<h3>
-						<a href="<c:url value="/view/project/${project.id}/${team.id}" />" class="btn btn-default">${team.name}</a>
+						<a href="<c:url value="/view/team/${team.id}" />" class="btn btn-warning">${team.name}</a>
 					</h3>
 			</c:forEach>
 		</div>
@@ -252,6 +253,33 @@
 				</c:forEach>
 			</div>
 	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- createTeamModal -->
+	<div class="modal fade" id="createTeamModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Create Team</h4>
+	      </div>
+	      <form name="createTeamForm" id="createTeamForm" onsubmit="onSubmitCreateTeamForm();"
+	        	action="/spms/${project.id}/create/team/" method="post">
+	      	<div class="modal-body">
+	        
+				<div class="form-group">
+					<label for="name">Team name:</label>
+				    <input type="text" class="form-control" name="name" id="newTeamName" placeholder="Enter new team name" required>
+				</div>
+
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	        <button type="submit" value="Submit" class="btn btn-primary" >Create</button>
+	      </div>
+	      </form>
 	    </div>
 	  </div>
 	</div>

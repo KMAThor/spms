@@ -3,6 +3,7 @@ package nc.ukma.thor.spms.repository;
 import java.util.List;
 
 import nc.ukma.thor.spms.entity.Project;
+import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.Trait;
 
 public interface ProjectRepository extends MyRepository<Project>{
