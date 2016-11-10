@@ -36,11 +36,11 @@ a {
 }
 
 .div-table{
-	
 	text-align: center;
 	margin: auto;
 	/*background-color: #D3D3D3;*/
 	border-radius: 20px;
+	
 }
 table.table thead{
     background-color: #DDDDDD;

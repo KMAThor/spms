@@ -29,6 +29,16 @@ public class TeamServiceImpl extends AbstractService<Team> implements TeamServic
 	public List<Team> getTeamsByProject(Project project){
 		return teamRepository.getTeamsByProject(project);
 	}
+	
+	@Override
+	public void addMember(User user, Team team) {
+		teamRepository.addUserToTeam(user, team);
+	}
+	
+	@Override
+	public void deleteMember(User user, Team team) {
+		teamRepository.deleteUserFromTeam(user, team);
+	}
 
 	@Override
 	public String getTeamName(long teamId) {
@@ -38,21 +48,6 @@ public class TeamServiceImpl extends AbstractService<Team> implements TeamServic
 	@Override
 	public Project getProject(long teamId) {
 		return null;
-	}
-
-	@Override
-	public boolean addMember(long teamId, long userId) {
-		return false;
-	}
-
-	@Override
-	public boolean addMembers(long teamId, Map<User, Status> members) {
-		return false;
-	}
-
-	@Override
-	public boolean deleteMember(long teamId, long userId) {
-		return false;
 	}
 
 	@Override
@@ -67,11 +62,6 @@ public class TeamServiceImpl extends AbstractService<Team> implements TeamServic
 
 	@Override
 	public boolean addMeeting(long teamId, long meetingId) {
-		return false;
-	}
-
-	@Override
-	public boolean addMeetings(long teamId, List<Meeting> meetings) {
 		return false;
 	}
 

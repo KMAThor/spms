@@ -10,4 +10,5 @@ public interface UserService {
     User getUser(String login);
     User getUserById(long id);
     List<User> getUsersByTeam(Team team);
+    List<User> getAllUsers();
 }

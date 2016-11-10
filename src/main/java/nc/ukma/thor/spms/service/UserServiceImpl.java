@@ -31,7 +31,11 @@ public class UserServiceImpl implements UserService {
 	public List<User> getUsersByTeam(Team team) {
 		return userRepo.getUsersByTeam(team);
 	}
+	
+	@Override
+	public List<User> getAllUsers() {
+		return userRepo.getAllUsers();
+	}
 
- 
 }
 

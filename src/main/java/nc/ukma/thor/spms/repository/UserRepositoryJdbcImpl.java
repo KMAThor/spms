@@ -44,6 +44,11 @@ public class UserRepositoryJdbcImpl implements UserRepository{
 			+ "INNER JOIN presence ON \"user\".id = presence.user_id "
 			+ "WHERE meeting_id = ?";
 	
+	private static final String GET_ALL_USERS_SQL = "SELECT * FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id ";
+	
 	private static final RowMapper<User> USER_MAPPER = new UserMapper();
 	
 	@Autowired
@@ -75,6 +80,11 @@ public class UserRepositoryJdbcImpl implements UserRepository{
 	public List<User> getUsersByTeam(Team team) {
 		return jdbcTemplate.query(GET_USERS_BY_TEAM_SQL,
 				new Object[]{ team.getId() }, USER_MAPPER);
+	}
+	
+	@Override
+	public List<User> getAllUsers() {
+		return jdbcTemplate.query(GET_ALL_USERS_SQL, USER_MAPPER);
 	}
 	
 	@Override

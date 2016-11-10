@@ -19,16 +19,14 @@ public interface TeamService extends Service<Team>{
     Project getProject(long teamId);
     
     //team members
-    boolean addMember(long teamId, long userId);
-    boolean addMembers(long teamId, Map<User, Status> members);
-    boolean deleteMember(long teamId, long userId);
+    void addMember(User user, Team team);
+    void deleteMember(User user, Team team);
     
     User getMember(long teamId, long userId);
     Map<User, Status> getMembers(long teamId);
     
     //team meetings
     boolean addMeeting(long teamId, long meetingId);
-    boolean addMeetings(long teamId, List<Meeting> meetings);
     boolean deleteMeeting(long teamId, long meetingId);
     
     Meeting getMeeting(long teamId, long meetingId);

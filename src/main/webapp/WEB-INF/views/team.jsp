@@ -32,25 +32,93 @@
   				<div class="tab-pane fade in active" id="mentors">
   					<div  class="panel-center">
   						<button type="button" class="btn btn-success"
-						data-toggle="modal" data-target="#addMentorToTeamModal">
+						data-toggle="modal" data-target="#addMentorModal">
 							<i class="fa fa-plus-circle" aria-hidden="true"></i>
 							Add mentor
 						</button>
 					</div>
+					<div class="div-table">
+						<table id="mentorsTable" class="table table-striped table-hover table-bordered" style="min-width: 100%;">
+							<thead>
+								<tr>
+									<td>Id</td>
+									<td>Email</td>
+									<td>First Name</td>
+									<td>Second Name</td>
+									<td>Last Name</td>
+									<td data-orderable="false"></td>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${users}" var="user">
+									<c:if test="${user.role.id == 1}">
+										<tr>
+   											<td>${user.id}</td>
+   											<td>${user.email}</td>
+   											<td>${user.firstName}</td>
+   											<td>${user.secondName}</td>
+   											<td>${user.lastName}</td>
+   											<td>
+   												<a href="<c:url value="/${team.id}/deleteUser/${user.id}/" />"
+													data-original-title="Delete" data-toggle="tooltip"
+													type="button" class="btn btn-sm btn-danger">Delete
+													<i class="glyphicon glyphicon-remove"></i>
+												</a>
+											</td>
+   										</tr>
+									</c:if>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
   				</div>
   				<div class="tab-pane fade" id="students">
-  					<div  class="panel-center">
+  					<div class="panel-center">
   						<button type="button" class="btn btn-success"
-						data-toggle="modal" data-target="#addStudentToTeamModal">
+						data-toggle="modal" data-target="#addStudentModal">
 							<i class="fa fa-plus-circle" aria-hidden="true"></i>
 							Add student
 						</button>
+					</div>
+					<div class="div-table">
+						<table id="studentsTable" class="table table-striped table-hover table-bordered" style="min-width: 100%;">
+							<thead>
+								<tr>
+									<td>Id</td>
+									<td>Email</td>
+									<td>First Name</td>
+									<td>Second Name</td>
+									<td>Last Name</td>
+									<td data-orderable="false"></td>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${users}" var="user">
+									<c:if test="${user.role.id == 3}">
+										<tr>
+   											<td>${user.id}</td>
+   											<td>${user.email}</td>
+   											<td>${user.firstName}</td>
+   											<td>${user.secondName}</td>
+   											<td>${user.lastName}</td>
+   											<td>
+   												<a href="<c:url value="/${team.id}/deleteUser/${user.id}/" />"
+													data-original-title="Delete" data-toggle="tooltip"
+													type="button" class="btn btn-sm btn-danger">Delete
+													<i class="glyphicon glyphicon-remove"></i>
+												</a>
+											</td>
+   										</tr>
+									</c:if>
+								</c:forEach>
+							</tbody>
+						</table>
 					</div>
   				</div>
   				<div class="tab-pane fade" id="meetings">
   					<div  class="panel-center">
   						<button type="button" class="btn btn-success"
-						data-toggle="modal" data-target="#addMeetingToTeamModal">
+						data-toggle="modal" data-target="#addMeetingModal">
 							<i class="fa fa-plus-circle" aria-hidden="true"></i>
 							Add meeting
 						</button>
@@ -95,22 +163,116 @@
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	        <h4 class="modal-title" id="myModalLabel">Create Team</h4>
 	      </div>
-	      <form name="addMentorToTeamForm" id="addMentorToTeamForm" onsubmit="onSubmitAddMentorToTeamForm();"
-	        	action="/spms/${team.id}/add/mentor/" method="post">
+	      <form name="addMentorToTeamForm" id="addMentorToTeamForm" method="post">
 	      	<div class="modal-body">
 	        
 				<div class="form-group">
 					<label for="name">Add mentor: </label>
-				    
+				    <table id="allMentorsTable" class="table table-striped table-hover table-bordered" style="min-width: 100%;">
+							<thead>
+								<tr>
+									<td>Id</td>
+									<td>Email</td>
+									<td>First Name</td>
+									<td>Second Name</td>
+									<td>Last Name</td>
+									<td data-orderable="false"></td>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${all_users}" var="user">
+									<c:if test="${user.role.id == 1}">
+										<tr>
+   											<td>${user.id}</td>
+   											<td>${user.email}</td>
+   											<td>${user.firstName}</td>
+   											<td>${user.secondName}</td>
+   											<td>${user.lastName}</td>
+   											<td>
+   												<a href="<c:url value="/${team.id}/addUser/${user.id}/" />"
+													data-original-title="Edit" data-toggle="tooltip"
+													type="button" class="btn btn-sm btn-warning">Add
+													<i class="glyphicon glyphicon-edit"></i>
+												</a>
+   											</td>
+   										</tr>
+									</c:if>
+								</c:forEach>
+							</tbody>
+						</table>
 				</div>
 
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	        <button type="submit" value="Submit" class="btn btn-primary" >Add</button>
 	      </div>
 	      </form>
 	    </div>
 	  </div>
 	</div>
+	
+	<!-- addStudentToTeamModal -->
+	<div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Create Team</h4>
+	      </div>
+	      <form name="addStudentToTeamForm" id="addMentorToTeamForm" method="post">
+	      	<div class="modal-body">
+	        
+				<div class="form-group">
+					<label for="name">Add student: </label>
+				    <table id="allStudentsTable" class="table table-striped table-hover table-bordered" style="min-width: 100%;">
+							<thead>
+								<tr>
+									<td>Id</td>
+									<td>Email</td>
+									<td>First Name</td>
+									<td>Second Name</td>
+									<td>Last Name</td>
+									<td data-orderable="false"></td>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${all_users}" var="user">
+									<c:if test="${user.role.id == 3}">
+										<tr>
+   											<td>${user.id}</td>
+   											<td>${user.email}</td>
+   											<td>${user.firstName}</td>
+   											<td>${user.secondName}</td>
+   											<td>${user.lastName}</td>
+   											<td>
+   												<a href="<c:url value="/${team.id}/addUser/${user.id}/" />"
+													data-original-title="Edit" data-toggle="tooltip"
+													type="button" class="btn btn-sm btn-warning">Add
+													<i class="glyphicon glyphicon-edit"></i>
+												</a>
+   											</td>
+   										</tr>
+									</c:if>
+								</c:forEach>
+							</tbody>
+						</table>
+				</div>
+
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+	
+<script>
+
+	$('#mentorsTable').DataTable();
+	$('#studentsTable').DataTable();
+	$('#allMentorsTable').DataTable();	
+	$('#allStudentsTable').DataTable();
+
+</script>
 <%@include file="footer.jsp"%>
