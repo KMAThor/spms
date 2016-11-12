@@ -25,7 +25,7 @@ public class GlobalDefaultExceptionHandler {
 		mav.setViewName(DEFAULT_ERROR_VIEW);
 	    return mav;
 	  }
-	
+	/*  org.springframework.security.authentication.InternalAuthenticationServiceException*/
 	@ExceptionHandler(value = Exception.class)
 	public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
 		// If the exception is annotated with @ResponseStatus rethrow it and let

@@ -13,5 +13,7 @@ public interface UserRepository {
 	public List<User> getUsersByTeam(Team team);
 	public List<User> getAllUsers();
 	public List<User> getUsersPresentAtMeeting(Meeting meeting);
+	public List<User> getUsers(long offset, long length);
+	public Long count();
 
 }

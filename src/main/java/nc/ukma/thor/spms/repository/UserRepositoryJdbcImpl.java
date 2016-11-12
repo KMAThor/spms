@@ -22,32 +22,41 @@ public class UserRepositoryJdbcImpl implements UserRepository{
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
 			+ "INNER JOIN role ON role.id = user_role.role_id "
-			+ "WHERE \"user\".id = ?";
+			+ "WHERE \"user\".id = ?;";
 	
 	private static final String GET_USER_BY_EMAIL_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
 			+ "INNER JOIN role ON role.id = user_role.role_id "
-			+ "WHERE email = ?";
+			+ "WHERE email = ?;";
 
 	private static final String GET_USERS_BY_TEAM_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
 			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
 			+ "INNER JOIN role ON role.id = user_role.role_id "
-			+ "WHERE team_id = ?";
+			+ "WHERE team_id = ?;";
 	
 	private static final String GET_USERS_BY_MEETING_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
 			+ "INNER JOIN role ON role.id = user_role.role_id "
 			+ "INNER JOIN presence ON \"user\".id = presence.user_id "
-			+ "WHERE meeting_id = ?";
+			+ "WHERE meeting_id = ?;";
 	
 	private static final String GET_ALL_USERS_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
-			+ "INNER JOIN role ON role.id = user_role.role_id ";
+			+ "INNER JOIN role ON role.id = user_role.role_id;";
+	
+	private static final String GET_USERS_BY_PAGE_SQL = "SELECT * FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id "
+			+ "ORDER BY \"user\".id "
+			+ "LIMIT ? OFFSET ?;";
+	
+	private static final String COUNT_USERS_SQL = "SELECT COUNT(*) FROM \"user\";";
 	
 	private static final RowMapper<User> USER_MAPPER = new UserMapper();
 	
@@ -109,6 +118,17 @@ public class UserRepositoryJdbcImpl implements UserRepository{
 			if(!rs.wasNull()) user.setLinkToPhoto(linkToPhoto);
 			return user;
 		}
+	}
+
+	@Override
+	public List<User> getUsers(long offset, long length) {
+		return jdbcTemplate.query(GET_USERS_BY_PAGE_SQL,
+				new Object[]{ length, offset}, USER_MAPPER);
+	}
+
+	@Override
+	public Long count() {
+		return this.jdbcTemplate.queryForObject(COUNT_USERS_SQL, Long.class);
 	}
 	
 }

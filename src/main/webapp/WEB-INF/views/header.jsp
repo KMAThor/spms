@@ -60,9 +60,9 @@
     							</a>						
     						</li>
         					<li>
-        						<a href="/spms/students/">
+        						<a href="/spms/users/">
     								<img src="/spms/resources/img/students.png" style="width:30px; height:30px">
-    								Students
+    								Users
     							</a>						
     						</li>
     						<li style="border: 1px;">

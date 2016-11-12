@@ -66,47 +66,43 @@ INSERT INTO "user" VALUES (14,'student3@student.com',
 							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
 							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
 							TRUE);
-INSERT INTO "user" VALUES (14,'student4@student.com',
+INSERT INTO "user" VALUES (15,'student4@student.com',
 							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
 							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
 							TRUE);
-INSERT INTO "user" VALUES (14,'student5@student.com',
+INSERT INTO "user" VALUES (16,'student5@student.com',
 							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
 							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
 							TRUE);
-INSERT INTO "user" VALUES (14,'student6@student.com',
+INSERT INTO "user" VALUES (17,'student6@student.com',
 							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
 							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
 							TRUE);
-INSERT INTO "user" VALUES (14,'student7@student.com',
+INSERT INTO "user" VALUES (18,'student7@student.com',
 							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
 							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
 							TRUE);
-INSERT INTO "user" VALUES (14,'student8@student.com',
+INSERT INTO "user" VALUES (19,'student8@student.com',
 							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
 							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
 							TRUE);
-INSERT INTO "user" VALUES (14,'student9@student.com',
+INSERT INTO "user" VALUES (20,'student9@student.com',
 							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
 							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
 							TRUE);
-INSERT INTO "user" VALUES (14,'student10@student.com',
+INSERT INTO "user" VALUES (21,'student10@student.com',
 							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
 							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
 							TRUE);
-INSERT INTO "user" VALUES (14,'student11@student.com',
+INSERT INTO "user" VALUES (22,'student11@student.com',
 							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
 							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
 							TRUE);
-INSERT INTO "user" VALUES (14,'student12@student.com',
+INSERT INTO "user" VALUES (23,'student12@student.com',
 							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
 							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
 							TRUE);
-INSERT INTO "user" VALUES (14,'student13@student.com',
-							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
-							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
-							TRUE);
-INSERT INTO "user" VALUES (14,'student3@student.com',
+INSERT INTO "user" VALUES (24,'student13@student.com',
 							'Андрій2', 'Андрійович2', 'Андрюхов2', /*Password is sudentpassword (crypted with B-crypt)*/
 							'$2a$06$egLA1gY3hbXDRQd0rq/ERuXvq/fvVcx/mLGxqOViMRMD.p1LL1Uo2',
 							TRUE);
@@ -122,6 +118,28 @@ INSERT INTO user_role VALUES(1,1);
 INSERT INTO user_role VALUES(2,1);
 INSERT INTO user_role VALUES(3,2);
 INSERT INTO user_role VALUES(4,3);
+INSERT INTO user_role VALUES(5,3);
+INSERT INTO user_role VALUES(6,1);
+INSERT INTO user_role VALUES(7,1);
+INSERT INTO user_role VALUES(8,1);
+INSERT INTO user_role VALUES(9,1);
+INSERT INTO user_role VALUES(10,1);
+INSERT INTO user_role VALUES(11,1);
+INSERT INTO user_role VALUES(12,1);
+INSERT INTO user_role VALUES(13,1);
+INSERT INTO user_role VALUES(14,3);
+INSERT INTO user_role VALUES(15,3);
+INSERT INTO user_role VALUES(16,3);
+INSERT INTO user_role VALUES(17,3);
+INSERT INTO user_role VALUES(18,3);
+INSERT INTO user_role VALUES(19,3);
+INSERT INTO user_role VALUES(20,3);
+INSERT INTO user_role VALUES(21,3);
+INSERT INTO user_role VALUES(22,3);
+INSERT INTO user_role VALUES(23,3);
+INSERT INTO user_role VALUES(24,3);
+
+
 
 /*status*/
 INSERT INTO status VALUES (0,'active');

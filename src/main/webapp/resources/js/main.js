@@ -1,3 +1,5 @@
+
+
 $(document).on('click', '[data-toggle=collapse] .btn-group', function(e) {
 	e.stopPropagation();
 });
