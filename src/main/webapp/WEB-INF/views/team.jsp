@@ -118,9 +118,9 @@
   				<div class="tab-pane fade" id="meetings">
   					<div  class="panel-center">
   						<button type="button" class="btn btn-success"
-						data-toggle="modal" data-target="#addMeetingModal">
+						data-toggle="modal" data-target="#createMeetingModal">
 							<i class="fa fa-plus-circle" aria-hidden="true"></i>
-							Add meeting
+							Create meeting
 						</button>
 					</div>
   				</div>
@@ -219,7 +219,8 @@
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	        <h4 class="modal-title" id="myModalLabel">Create Team</h4>
 	      </div>
-	      <form name="addStudentToTeamForm" id="addMentorToTeamForm" method="post">
+	      <form name="addMeetingForm" id="addMeetingForm" onsubmit="onSubmitAddMeetingForm();"
+	        	action="/spms/${team.id}/add/meeting/" method="post">
 	      	<div class="modal-body">
 	        
 				<div class="form-group">
@@ -261,6 +262,51 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- createMeetingModal -->
+	<div class="modal fade" id="createMeetingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Create meeting</h4>
+	      </div>
+	      <form name="createMeetingForm" id="createMeetinhForm" onsubmit="onSubmitCreateMeetingForm();"
+	        	action="/spms/${team.id}/create/meeting/" method="post">
+	      	<div class="modal-body">
+	        
+				<div class="form-group">
+					<label for="name">Topic:</label>
+				    <input type="text" class="form-control" name="topic" id="topic" placeholder="Enter topic" required>
+				</div>
+
+		        <div class="form-group">
+		        	<label for="startDate">Start date:</label>
+		            <div class='input-group date' id='datetimepicker'>
+		                <input type='text' class="form-control" name="startDate" id="meetingStartDate" placeholder="Enter start date" required/>
+		                <span class="input-group-addon">
+		                    <span class="glyphicon glyphicon-calendar"></span>
+		                </span>
+		            </div>
+		        </div>
+			
+				<script type="text/javascript">
+				    $(function () {
+				        $('#datetimepicker').datetimepicker({
+				            useCurrent: false
+				        });
+				    });
+				</script>
+			
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	        <button type="submit" value="Submit" class="btn btn-primary" >Create</button>
 	      </div>
 	      </form>
 	    </div>
