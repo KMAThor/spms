@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.service.MeetingService;
 import nc.ukma.thor.spms.service.ProjectService;
 import nc.ukma.thor.spms.service.TeamService;
 import nc.ukma.thor.spms.service.UserService;
@@ -25,8 +26,8 @@ public class TeamController {
     private TeamService teamService;
     @Autowired
     private UserService userService;
-    //@Autowired
-    //private MeetingService meetingService;
+    @Autowired
+    private MeetingService meetingService;
 
     @RequestMapping(path="/{project_id}/create/team/", method = RequestMethod.POST)
     public String createTeam(@PathVariable long project_id, HttpServletRequest request, Model model){
@@ -43,7 +44,7 @@ public class TeamController {
     	model.addAttribute("team", team);
     	model.addAttribute("users", userService.getUsersByTeam(team));
     	model.addAttribute("all_users", userService.getAllUsers());
-    	//model.addAttribute("meetings", meetingService.getMeetingsByTeam(team));
+    	model.addAttribute("meetings", meetingService.getMeetingsByTeam(team));
         return "team";
     }
 	
