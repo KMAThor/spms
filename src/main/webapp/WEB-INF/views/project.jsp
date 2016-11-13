@@ -131,7 +131,7 @@
 		                    <span class="glyphicon glyphicon-calendar"></span>
 		                </span>
 		            </div>
-		        </div>
+		        </div>ц
 
 		        <div class="form-group">
 		        	<label for="endDate">End Date:</label>
@@ -142,6 +142,14 @@
 		                </span>
 		            </div>
 		        </div>
+				<div class="form-group dropdown">
+					<label for="chiefMentor"><p>Change chief mentor </p>2</label>
+					<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">curent chief <span class="caret"></span></button>
+					<ul class="dropdown-menu">
+						<li>anton</li>
+						<li>nastya</li>
+					</ul>
+				</div>
 		        <script type="text/javascript">
 				    $(function () {
 				    	console.log(new Date('${project.startDate}'));
