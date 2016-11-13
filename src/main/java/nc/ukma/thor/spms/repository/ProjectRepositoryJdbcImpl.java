@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import nc.ukma.thor.spms.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,11 +13,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import nc.ukma.thor.spms.entity.Project;
-import nc.ukma.thor.spms.entity.Team;
-import nc.ukma.thor.spms.entity.Trait;
-import nc.ukma.thor.spms.entity.User;
 
 @Repository
 public class ProjectRepositoryJdbcImpl implements ProjectRepository{
@@ -109,9 +105,39 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	@Override
 	public void deleteTraitFromProject(Trait trait, Project project) {
 		jdbcTemplate.update(DELETE_TRAIT_FROM_PROJECT_SQL, trait.getId(), project.getId());
-	}	
-		
-		
+	}
+
+	@Override
+	public void setChiefUser(User chief, Project project) {
+
+	}
+
+	@Override
+	public void deleteChiefUser(Project project) {
+
+	}
+
+	@Override
+	public void addTeam(Project project, Team team) {
+
+	}
+
+	@Override
+	public void deleteTeam(Project project, long teamId) {
+
+	}
+
+	@Override
+	public void uploadFile(Project project, File file) {
+
+	}
+
+	@Override
+	public void deleteFile(Project project, long fileId) {
+
+	}
+
+
 	private static final class ProjectMapper implements RowMapper<Project> {
 		@Override
 		public Project mapRow(ResultSet rs, int rowNum) throws SQLException {

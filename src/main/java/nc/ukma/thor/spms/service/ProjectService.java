@@ -5,14 +5,14 @@ import nc.ukma.thor.spms.entity.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface ProjectService extends Service<Project>{
+public interface ProjectService  extends Service<Project>{
 
     // chief mentor
     boolean setChiefUser(long projectId, User chief);
     boolean deleteChiefUser(long projectId);
 
     // team functionality
-    boolean addTeams(long projectId, List<Team> team);
+    boolean addTeam(long projectId, Team team);
     boolean deleteTeam(long projectId, long teamId);
 
     Team getTeam(long projectId, long teamId);
@@ -24,15 +24,14 @@ public interface ProjectService extends Service<Project>{
     File getFile(long projectId, long  fileId);
 
     // traits
-    boolean setTraits(long projectId, List<Trait> traits);
     boolean setTrait(long projectId, Trait trait);
 
     boolean deleteTrait(long projectId, long traitId);
-    boolean deleteTraits(long projectId, List<Trait> traits);
     Trait getTrait(long projectId, long traitId);
     List<Trait> getTraits(long projectId);
 
     List <Project> getAllActiveProjects();
+    Project getProject(long projectId);
 
     String getInfo(long projectId);
 }
