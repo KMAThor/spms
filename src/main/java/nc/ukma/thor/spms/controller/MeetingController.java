@@ -26,7 +26,6 @@ public class MeetingController {
     @RequestMapping(path="/{team_id}/create/meeting/", method = RequestMethod.POST)
     public String createMeeting(@PathVariable long team_id, HttpServletRequest request, Model model){
     	Team team = teamService.getById(team_id);
-    	System.out.println(team);
     	Meeting meeting = new Meeting();
     	meeting.setTopic(request.getParameter("topic"));
     	meeting.setStartDate(DateUtil.getTimeStamp(request.getParameter("startDate")));
@@ -35,12 +34,20 @@ public class MeetingController {
     	model.addAttribute("meeting", meeting);
         return "meeting";
     }
+    
+    @RequestMapping(path="/{meeting_id}/delete/meeting", method = RequestMethod.GET)
+    public String deleteMeeting(@PathVariable long meeting_id){
+    	Meeting meeting = meetingService.getById(meeting_id);
+    	long team_id = meeting.getTeam().getId();
+    	meetingService.delete(meeting);
+    	return "redirect:/view/team/" + team_id + "/";
+    }
 	
-	/*@RequestMapping(path="/view/meeting/{id}/", method = RequestMethod.GET)
+	@RequestMapping(path="/view/meeting/{id}/", method = RequestMethod.GET)
     public String viewMeeting(@PathVariable long id, Model model ){
     	Meeting meeting = meetingService.getById(id);
     	model.addAttribute("meeting", meeting);
         return "meeting";
-    }*/
+    }
 	
 }

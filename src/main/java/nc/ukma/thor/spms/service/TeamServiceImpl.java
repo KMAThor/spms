@@ -61,26 +61,6 @@ public class TeamServiceImpl extends AbstractService<Team> implements TeamServic
 	}
 
 	@Override
-	public boolean addMeeting(long teamId, long meetingId) {
-		return false;
-	}
-
-	@Override
-	public boolean deleteMeeting(long teamId, long meetingId) {
-		return false;
-	}
-
-	@Override
-	public Meeting getMeeting(long teamId, long meetingId) {
-		return null;
-	}
-
-	@Override
-	public List<Meeting> getMeetings(long teamId) {
-		return null;
-	}
-
-	@Override
 	public String getInfo(long teamId) {
 		return null;
 	}

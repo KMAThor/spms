@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
@@ -61,7 +62,6 @@ public class TeamController {
     public String deleteProject(@PathVariable long id){
 		Team team = teamService.getById(id);
 		long projectId = team.getProject().getId();
-    	team = new Team(id);
     	teamService.delete(team);
         return "redirect:/view/project/" + projectId + "/";
     }

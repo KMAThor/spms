@@ -123,7 +123,35 @@
 							Create meeting
 						</button>
 					</div>
-  				</div>
+  					<div class="div-table">
+						<table id="meetingsTable" class="table table-striped table-hover table-bordered" style="min-width: 100%;">
+							<thead>
+								<tr>
+									<td>ID</td>
+									<td data-orderable="false">Topic</td>
+									<td>Date</td>
+									<td data-orderable="false"></td>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${meetings}" var="meeting">
+									<tr>
+   										<td>${meeting.id}</td>
+   										<td>${meeting.topic}</td>
+   										<td>${meeting.startDate}</td>
+   										<td>
+   											<a href="<c:url value="/${meeting.id}/delete/meeting" />"
+												data-original-title="Delete" data-toggle="tooltip"
+												type="button" class="btn btn-sm btn-danger">Delete
+												<i class="glyphicon glyphicon-remove"></i>
+											</a>
+										</td>
+   									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</div>
   			</div>
 		</div>
 	</div>
@@ -319,6 +347,7 @@
 	$('#studentsTable').DataTable();
 	$('#allMentorsTable').DataTable();	
 	$('#allStudentsTable').DataTable();
+	$('#meetingsTable').DataTable();
 
 </script>
 <%@include file="footer.jsp"%>

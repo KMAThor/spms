@@ -25,13 +25,6 @@ public interface TeamService extends Service<Team>{
     User getMember(long teamId, long userId);
     Map<User, Status> getMembers(long teamId);
     
-    //team meetings
-    boolean addMeeting(long teamId, long meetingId);
-    boolean deleteMeeting(long teamId, long meetingId);
-    
-    Meeting getMeeting(long teamId, long meetingId);
-    List<Meeting> getMeetings(long teamId);
-    
     List<Team> getTeamsByProject(Project project);
     
     //team info
