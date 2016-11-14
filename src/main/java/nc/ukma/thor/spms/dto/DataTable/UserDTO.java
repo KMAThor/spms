@@ -75,7 +75,6 @@ public class UserDTO {
 		this.role = role;
 	}
 
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

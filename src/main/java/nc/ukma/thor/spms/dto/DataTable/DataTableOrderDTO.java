@@ -1,9 +1,11 @@
 package nc.ukma.thor.spms.dto.DataTable;
 
+import nc.ukma.thor.spms.util.SortingOrder;
+
 public class DataTableOrderDTO {
 	
 	private int column;
-	private String dir;
+	private SortingOrder dir;
 	
 	public int getColumn() {
 		return column;
@@ -11,13 +13,13 @@ public class DataTableOrderDTO {
 	public void setColumn(int column) {
 		this.column = column;
 	}
-	public String getDir() {
+	public SortingOrder getDir() {
 		return dir;
 	}
-	public void setDir(String dir) {
+	public void setDir(SortingOrder dir) {
 		this.dir = dir;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -37,10 +39,7 @@ public class DataTableOrderDTO {
 		DataTableOrderDTO other = (DataTableOrderDTO) obj;
 		if (column != other.column)
 			return false;
-		if (dir == null) {
-			if (other.dir != null)
-				return false;
-		} else if (!dir.equals(other.dir))
+		if (dir != other.dir)
 			return false;
 		return true;
 	}
@@ -49,5 +48,5 @@ public class DataTableOrderDTO {
 	public String toString() {
 		return "DataTableOrderDTO [column=" + column + ", dir=" + dir + "]";
 	}
-
+	
 }
