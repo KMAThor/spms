@@ -133,3 +133,7 @@ ul.dropdown-cart li .item-right button{
 p.errorMessageInModal{
     color: white;
 }
+
+input[type=checkbox]{
+    margin: 5px 10px 0 0;
+}

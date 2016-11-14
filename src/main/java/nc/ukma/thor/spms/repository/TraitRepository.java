@@ -10,5 +10,8 @@ public interface TraitRepository extends MyRepository<Trait>{
 	
 	public List<Trait> getTraitsByTraitCategory(TraitCategory traitCategory);
 	public List<Trait> getTraitsWithoutNamesByProject(Project project);
+	public List<Trait> getTraitsByTraitCategoryAndProject(TraitCategory traitCategory, Project project);
+	public List<Trait> getTraitsByTraitCategoryAndNotFromProject(TraitCategory traitCategory, Project project);
+	
 
 }

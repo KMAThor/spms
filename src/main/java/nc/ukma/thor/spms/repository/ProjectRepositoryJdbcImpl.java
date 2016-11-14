@@ -3,6 +3,7 @@ package nc.ukma.thor.spms.repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.Trait;
+import nc.ukma.thor.spms.entity.TraitCategory;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.util.SortingOrder;
 
@@ -57,6 +59,9 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private TraitRepository traitRepository;
 
 	@Override
 	public void add(Project p) {
@@ -146,7 +151,31 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 	@Override
 	public void deleteTraitFromProject(Trait trait, Project project) {
 		jdbcTemplate.update(DELETE_TRAIT_FROM_PROJECT_SQL, trait.getId(), project.getId());
+	}
+	
+	@Override
+	public int[] addTraitCategoryToProject(TraitCategory traitCategory, Project project) {
+		List<Trait> traits = traitRepository.getTraitsByTraitCategoryAndNotFromProject(traitCategory, project);
+        return jdbcTemplate.batchUpdate(ADD_TRAIT_TO_PROJECT_SQL,
+        		prepareTraitsToBanchUpdate(traits, traitCategory,project));
 	}	
+	@Override
+	public int[] deleteTraitCategoryFromProject(TraitCategory traitCategory, Project project) {
+		List<Trait> traits = traitRepository.getTraitsByTraitCategoryAndProject(traitCategory, project);
+		return jdbcTemplate.batchUpdate(DELETE_TRAIT_FROM_PROJECT_SQL,
+        		prepareTraitsToBanchUpdate(traits, traitCategory,project));
+	}
+	
+	private List<Object[]> prepareTraitsToBanchUpdate(List<Trait> traits, TraitCategory traitCategory, Project project){
+		List<Object[]> batch = new ArrayList<Object[]>();
+        for (Trait trait : traits) {
+            Object[] values = new Object[] {
+            		trait.getId(),
+                    project.getId()};
+            batch.add(values);
+        }
+        return batch;
+	}
 		
 		
 	private static final class ProjectMapper implements RowMapper<Project> {

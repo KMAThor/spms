@@ -6,6 +6,8 @@ import nc.ukma.thor.spms.dto.DataTable.ProjectTableDTO;
 import nc.ukma.thor.spms.dto.DataTable.UserTableDTO;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
+import nc.ukma.thor.spms.entity.Trait;
+import nc.ukma.thor.spms.entity.TraitCategory;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.ProjectRepository;
 import nc.ukma.thor.spms.service.MeetingService;
@@ -105,8 +107,6 @@ public class ProjectController {
 				dataTableRequest.getDraw(),
 				numberOfUsers, numberOfUsersToShow,
 				ProjectTableDTO.convertFrom(projectsToShow));
-		//System.out.println(dataTableRequest);
-		//System.out.println(dataTableResponse);
 		return dataTableResponse;
 	}
     
@@ -119,6 +119,7 @@ public class ProjectController {
     	model.addAttribute("teams", teamService.getTeamsByProject(project));
     	model.addAttribute("traitCategories", traitCategoryService.getAllCategoriesWithTraits());
     	model.addAttribute("traitsAssociatedWithProject", traitService.getTraitsWithoutNamesByProject(project));
+    	System.out.println(traitService.getTraitsWithoutNamesByProject(project));
         return "project";
     }
     
@@ -151,6 +152,34 @@ public class ProjectController {
     	Project project = new Project(id);
     	projectService.delete(project);
         return "redirect:/";
+    }
+    
+    @ResponseBody
+    @RequestMapping(path="/update/project/{projectId}/addTrait/{traitId}/", method = RequestMethod.GET)
+    public String addTraitToProject(@PathVariable long projectId, @PathVariable long traitId){
+    	projectRepository.addTraitToProject(new Trait(traitId), new Project(projectId));
+        return "success";
+    }
+    
+    @ResponseBody
+    @RequestMapping(path="/update/project/{projectId}/deleteTrait/{traitId}/", method = RequestMethod.GET)
+    public String deleteTraitFromProject(@PathVariable long projectId, @PathVariable long traitId){
+    	projectRepository.deleteTraitFromProject(new Trait(traitId), new Project(projectId));
+        return "success";
+    }
+    
+    @ResponseBody
+    @RequestMapping(path="/update/project/{projectId}/addTraitCategory/{traitCategoryId}/", method = RequestMethod.GET)
+    public String addTraitCategoryToProject(@PathVariable long projectId, @PathVariable short traitCategoryId){
+    	projectRepository.addTraitCategoryToProject(new TraitCategory(traitCategoryId), new Project(projectId));
+        return "success";
+    }
+    
+    @ResponseBody
+    @RequestMapping(path="/update/project/{projectId}/deleteTraitCategory/{traitCategoryId}/", method = RequestMethod.GET)
+    public String deleteTraitCategoryFromProject(@PathVariable long projectId, @PathVariable short traitCategoryId){
+    	projectRepository.deleteTraitCategoryFromProject(new TraitCategory(traitCategoryId), new Project(projectId));
+        return "success";
     }
   
 }

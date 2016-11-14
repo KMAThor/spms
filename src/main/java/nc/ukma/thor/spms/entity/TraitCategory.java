@@ -11,8 +11,8 @@ public class TraitCategory {
 	
 	public TraitCategory() {}
 	
-	public TraitCategory(short id){
-		this.id = id;
+	public TraitCategory(short traitCategoryId){
+		this.id = traitCategoryId;
 	}
 	
 	public TraitCategory(short id, String name) {
