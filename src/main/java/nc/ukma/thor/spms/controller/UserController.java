@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import nc.ukma.thor.spms.dto.DataTable.DataTableOrderDTO;
 import nc.ukma.thor.spms.dto.DataTable.DataTableRequestDTO;
 import nc.ukma.thor.spms.dto.DataTable.DataTableResponseDTO;
-import nc.ukma.thor.spms.dto.DataTable.UserDTO;
+import nc.ukma.thor.spms.dto.DataTable.UserTableDTO;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.UserRepository;
@@ -35,20 +35,22 @@ public class UserController {
     }
 	
 	@ResponseBody
-    @RequestMapping(path="/view/users/", method = RequestMethod.POST)
-    public DataTableResponseDTO<UserDTO> viewUsers(HttpServletRequest req, @RequestBody DataTableRequestDTO dataTableRequest){
-		List<User> usersToShow = /*userRepository.getUsers(dataTableRequest.getStart(), dataTableRequest.getLength());*/
-		  userRepository.getUsers(dataTableRequest.getStart(),
+	@RequestMapping(path = "/view/users/", method = RequestMethod.POST)
+	public DataTableResponseDTO<UserTableDTO> viewUsers(HttpServletRequest req,
+			@RequestBody DataTableRequestDTO dataTableRequest) {
+		List<User> usersToShow = userRepository.getUsers(
+				dataTableRequest.getStart(),
 				dataTableRequest.getLength(),
 				dataTableRequest.getOrder().get(0).getColumn(),
 				dataTableRequest.getOrder().get(0).getDir(),
 				dataTableRequest.getSearch().getValue());
-		Long numberOfUsers = userRepository.count(dataTableRequest.getSearch().getValue());
-		DataTableResponseDTO<UserDTO> dataTableResponse = new DataTableResponseDTO<UserDTO>(
-				dataTableRequest.getDraw(), numberOfUsers, numberOfUsers, UserDTO.convertFrom(usersToShow));
-		System.out.println(dataTableRequest);
-		System.out.println(dataTableResponse);
-        return dataTableResponse;
-    }
+		Long numberOfUsers = userRepository.count();
+		Long numberOfUsersToShow = userRepository.count(dataTableRequest.getSearch().getValue());
+		DataTableResponseDTO<UserTableDTO> dataTableResponse = new DataTableResponseDTO<UserTableDTO>(dataTableRequest.getDraw(),
+				numberOfUsers, numberOfUsersToShow, UserTableDTO.convertFrom(usersToShow));
+		//System.out.println(dataTableRequest);
+		//System.out.println(dataTableResponse);
+		return dataTableResponse;
+	}
 
 }

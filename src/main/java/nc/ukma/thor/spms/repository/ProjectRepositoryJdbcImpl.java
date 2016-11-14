@@ -17,6 +17,7 @@ import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.util.SortingOrder;
 
 @Repository
 public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
@@ -38,6 +39,19 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 	
 	private static final String ADD_TRAIT_TO_PROJECT_SQL = "INSERT INTO trait_project (trait_id, project_id) VALUES(?,?);";
 	private static final String DELETE_TRAIT_FROM_PROJECT_SQL = "DELETE FROM trait_project WHERE trait_id=? AND project_id=?;";
+	
+	private static final String GET_PROJECTS_BY_PAGE_SQL = "SELECT * FROM project "
+			+ "WHERE name ILIKE ? "
+			+ "OR to_char(start_date, 'HH12:MI:SS') ILIKE ? "
+			+ "OR to_char(end_date, 'HH12:MI:SS') ILIKE ? "
+			+ "ORDER BY %s %s, id "//default ordering by id, it is important for pagination
+			+ "LIMIT ? OFFSET ?;";
+	
+	private static final String COUNT_PROJECTS_SQL = "SELECT COUNT (*) FROM project;";
+	private static final String COUNT_PROJECTS_FILTERED_SQL = "SELECT COUNT (*) FROM project "
+			+ "WHERE name ILIKE ? "
+			+ "OR to_char(start_date, 'HH12:MI:SS') ILIKE ? "
+			+ "OR to_char(end_date, 'HH12:MI:SS') ILIKE ?;";
 	
 	private static final RowMapper<Project> PROJECT_MAPPER = new ProjectMapper();
 
@@ -91,6 +105,29 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 			return null;
 		}
 	}
+	@Override
+	public List<Project> getProjects(long offset, int length, int orderBy, SortingOrder order, String searchValue) {
+		String query = String.format(GET_PROJECTS_BY_PAGE_SQL,
+				OrdableColumn.values()[orderBy].getColumnName(), order);
+		String searchParam = "%" + searchValue + "%";
+		return jdbcTemplate.query(query,
+				new Object[] { searchParam,searchParam, searchParam, length, offset }, PROJECT_MAPPER);
+	}
+
+	
+	
+	
+	@Override
+	public Long count() {
+		return this.jdbcTemplate.queryForObject(COUNT_PROJECTS_SQL, Long.class);
+	}
+	
+	@Override
+	public Long count(String searchValue) {
+		String searchParam = "%" + searchValue + "%";
+		return this.jdbcTemplate.queryForObject(COUNT_PROJECTS_FILTERED_SQL,
+				new Object[] { searchParam, searchParam, searchParam}, Long.class);
+	}
 	
 	@Override
 	public List<Project> getAllActiveProjects() {
@@ -127,5 +164,18 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 			return pr;
 		}
 	}
+	
+	public static enum OrdableColumn {
+		ID("id"), NAME("name"), START_DATE("start_date"), END_DATE("end_date"), IS_CMPLETED("is_completed");
+		private String columnName;
+
+		private OrdableColumn(String columnName) {
+			this.columnName = columnName;
+		}
+		public String getColumnName(){
+			return columnName;
+		}
+	}
+
 	
 }

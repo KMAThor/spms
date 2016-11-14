@@ -5,7 +5,7 @@ import java.util.List;
 
 import nc.ukma.thor.spms.entity.User;
 
-public class UserDTO {
+public class UserTableDTO {
 	
 	private Long id;
 	private String email;
@@ -14,11 +14,11 @@ public class UserDTO {
 	private String lastName;
 	private String role;
 
-	public UserDTO(){
+	public UserTableDTO(){
 		
 	}
 	
-	public UserDTO(User user){
+	public UserTableDTO(User user){
 		id = user.getId();
 		email = user.getEmail();
 		firstName = user.getFirstName();
@@ -96,7 +96,7 @@ public class UserDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserDTO other = (UserDTO) obj;
+		UserTableDTO other = (UserTableDTO) obj;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -136,10 +136,10 @@ public class UserDTO {
 				+ ", lastName=" + lastName + ", role=" + role + "]";
 	}
 
-	public static List<UserDTO> convertFrom(List<User> users){
-		List<UserDTO> usersDTO = new ArrayList<UserDTO>();
+	public static List<UserTableDTO> convertFrom(List<User> users){
+		List<UserTableDTO> usersDTO = new ArrayList<UserTableDTO>();
 		for(User user: users){
-			usersDTO.add(new UserDTO(user));
+			usersDTO.add(new UserTableDTO(user));
 		}
 		return usersDTO;
 	}

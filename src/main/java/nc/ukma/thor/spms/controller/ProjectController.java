@@ -1,8 +1,13 @@
 package nc.ukma.thor.spms.controller;
 
+import nc.ukma.thor.spms.dto.DataTable.DataTableRequestDTO;
+import nc.ukma.thor.spms.dto.DataTable.DataTableResponseDTO;
+import nc.ukma.thor.spms.dto.DataTable.ProjectTableDTO;
+import nc.ukma.thor.spms.dto.DataTable.UserTableDTO;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.repository.ProjectRepository;
 import nc.ukma.thor.spms.service.MeetingService;
 import nc.ukma.thor.spms.service.ProjectService;
 import nc.ukma.thor.spms.service.TeamService;
@@ -15,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.Timestamp;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,6 +41,9 @@ public class ProjectController {
     private TeamService teamService;
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private ProjectRepository projectRepository;
     //@Autowired
     //private MeetingService meetingService;
     @Autowired
@@ -75,6 +85,30 @@ public class ProjectController {
         projectService.update(update);
         return "ok";
     }
+    
+
+    
+    @ResponseBody
+	@RequestMapping(path = "/view/projects/", method = RequestMethod.POST)
+	public DataTableResponseDTO<ProjectTableDTO> viewProjects(HttpServletRequest req,
+			@RequestBody DataTableRequestDTO dataTableRequest) {
+		List<Project> projectsToShow = projectRepository.getProjects(
+				dataTableRequest.getStart(),
+				dataTableRequest.getLength(),
+				dataTableRequest.getOrder().get(0).getColumn(),
+				dataTableRequest.getOrder().get(0).getDir(),
+				dataTableRequest.getSearch().getValue());
+		
+		Long numberOfUsers = projectRepository.count();
+		Long numberOfUsersToShow = projectRepository.count(dataTableRequest.getSearch().getValue());
+		DataTableResponseDTO<ProjectTableDTO> dataTableResponse = new DataTableResponseDTO<ProjectTableDTO>(
+				dataTableRequest.getDraw(),
+				numberOfUsers, numberOfUsersToShow,
+				ProjectTableDTO.convertFrom(projectsToShow));
+		//System.out.println(dataTableRequest);
+		//System.out.println(dataTableResponse);
+		return dataTableResponse;
+	}
     
     @RequestMapping(path="/view/project/{id}/", method = RequestMethod.GET)
     public String viewProject(@PathVariable long id, Model model ){
