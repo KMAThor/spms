@@ -22,7 +22,7 @@ import nc.ukma.thor.spms.entity.User;
 public class TeamRepositoryJdbcImpl implements TeamRepository{
 	
 	private static final String INSERT_TEAM_SQL = "INSERT INTO team (name, project_id) VALUES(?,?);";
-	private static final String UPDATE_TEAM_SQL = "UPDATE team SET name=?, project_id=? WHERE id = ?;";
+	private static final String UPDATE_TEAM_SQL = "UPDATE team SET name=? WHERE id = ?;";
 	private static final String DELETE_TEAM_SQL = "DELETE FROM team WHERE id = ?;";
 	private static final String GET_TEAM_BY_ID_SQL = "SELECT * FROM team WHERE id = ?;";
 	private static final String GET_TEAMS_BY_USER_SQL = "SELECT * FROM team "
@@ -56,8 +56,7 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 
 	@Override
 	public void update(Team t) {
-		System.out.println(t);
-		jdbcTemplate.update(UPDATE_TEAM_SQL, new Object[] {t.getName(), t.getProject().getId(), t.getId()});
+		jdbcTemplate.update(UPDATE_TEAM_SQL, new Object[] {t.getName(), t.getId()});
 	}
 
 	@Override

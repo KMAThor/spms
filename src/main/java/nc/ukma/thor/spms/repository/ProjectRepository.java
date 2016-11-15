@@ -2,10 +2,7 @@ package nc.ukma.thor.spms.repository;
 
 import java.util.List;
 
-import nc.ukma.thor.spms.entity.Project;
-import nc.ukma.thor.spms.entity.Team;
-import nc.ukma.thor.spms.entity.Trait;
-import nc.ukma.thor.spms.entity.TraitCategory;
+import nc.ukma.thor.spms.entity.*;
 import nc.ukma.thor.spms.util.SortingOrder;
 
 public interface ProjectRepository extends MyRepository<Project>{
@@ -32,5 +29,11 @@ public interface ProjectRepository extends MyRepository<Project>{
 	public default int[] deleteTraitCategoryFromProject(TraitCategory traitCategory, Project project){
 		return deleteTraitCategoryFromProject(traitCategory.getId(), project.getId());
 	}
-	
+
+
+    // need to implement
+    void setChiefUser(User chief, Project project);
+    void deleteChiefUser(Project project);
+    void uploadFile(Project project, File file);
+    void deleteFile(Project project, long fileId);
 }

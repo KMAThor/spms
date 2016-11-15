@@ -12,7 +12,7 @@ public interface ProjectService extends Service<Project>{
     boolean deleteChiefUser(long projectId);
 
     // team functionality
-    boolean addTeams(long projectId, List<Team> team);
+    boolean addTeam(Team team);
     boolean deleteTeam(long projectId, long teamId);
 
     Team getTeam(long projectId, long teamId);
@@ -33,6 +33,7 @@ public interface ProjectService extends Service<Project>{
     List<Trait> getTraits(long projectId);
 
     List <Project> getAllActiveProjects();
+    Project getProject(long projectId);
 
     String getInfo(long projectId);
 }

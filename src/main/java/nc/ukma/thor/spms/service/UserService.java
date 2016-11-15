@@ -11,4 +11,6 @@ public interface UserService {
     User getUserById(long id);
     List<User> getUsersByTeam(Team team);
     List<User> getAllUsers();
+
+    List<User> getMentors();
 }

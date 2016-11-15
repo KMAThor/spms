@@ -183,14 +183,14 @@ public class RepositoriesTestController {
 		TraitCategory traitCategory = new TraitCategory("Some category");
 		traitCategoryRepository.add(traitCategory);
 		System.out.println(traitCategory);
-		System.out.println("Get just added category: " + traitCategoryRepository.getById(traitCategory.getId()));
+		System.out.println("Get just added category: " + traitCategoryRepository.getById((long) traitCategory.getId()));
 		
 		traitCategory.setName(traitCategory.getName()+"_UPDATED");
 		traitCategoryRepository.update(traitCategory);
-		System.out.println("Get just updated category: " + traitCategoryRepository.getById(traitCategory.getId()));
+		System.out.println("Get just updated category: " + traitCategoryRepository.getById((long) traitCategory.getId()));
 		
 		traitCategoryRepository.delete(traitCategory);
-		System.out.println("Get just deleted category: " + traitCategoryRepository.getById(traitCategory.getId()));
+		System.out.println("Get just deleted category: " + traitCategoryRepository.getById((long) traitCategory.getId()));
 		
 		Trait trait = new Trait((long) 21);
 		

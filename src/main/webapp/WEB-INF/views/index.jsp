@@ -43,7 +43,7 @@
 
 				    serverSide: true,
 			        ajax: {
-				        url: '<c:url value="/view/projects/"/>',
+						url: '<c:url value="/view/projects/"/>',
 				        type: 'POST',
 				        data: function ( d ) {
 						      return JSON.stringify( d );

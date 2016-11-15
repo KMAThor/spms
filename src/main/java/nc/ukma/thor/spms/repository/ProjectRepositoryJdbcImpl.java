@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import nc.ukma.thor.spms.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,7 +23,7 @@ import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.util.SortingOrder;
 
 @Repository
-public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
+public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	
 	private static final String INSERT_PROJECT_SQL =
 			"INSERT INTO project (name, description, start_date, end_date, is_completed, chief_mentor_id) "
@@ -48,18 +49,18 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 			+ "OR to_char(end_date, 'HH12:MI:SS') ILIKE ? "
 			+ "ORDER BY %s %s, id "//default ordering by id, it is important for pagination
 			+ "LIMIT ? OFFSET ?;";
-	
+
 	private static final String COUNT_PROJECTS_SQL = "SELECT COUNT (*) FROM project;";
 	private static final String COUNT_PROJECTS_FILTERED_SQL = "SELECT COUNT (*) FROM project "
 			+ "WHERE name ILIKE ? "
 			+ "OR to_char(start_date, 'HH12:MI:SS') ILIKE ? "
 			+ "OR to_char(end_date, 'HH12:MI:SS') ILIKE ?;";
-	
+
 	private static final RowMapper<Project> PROJECT_MAPPER = new ProjectMapper();
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
+
 	@Autowired
 	private TraitRepository traitRepository;
 
@@ -110,6 +111,7 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 			return null;
 		}
 	}
+
 	@Override
 	public List<Project> getProjects(long offset, int length, int orderBy, SortingOrder order, String searchValue) {
 		String query = String.format(GET_PROJECTS_BY_PAGE_SQL,
@@ -119,21 +121,42 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 				new Object[] { searchParam,searchParam, searchParam, length, offset }, PROJECT_MAPPER);
 	}
 
-	
-	
-	
+
+
+
 	@Override
 	public Long count() {
 		return this.jdbcTemplate.queryForObject(COUNT_PROJECTS_SQL, Long.class);
 	}
-	
+
 	@Override
 	public Long count(String searchValue) {
 		String searchParam = "%" + searchValue + "%";
 		return this.jdbcTemplate.queryForObject(COUNT_PROJECTS_FILTERED_SQL,
 				new Object[] { searchParam, searchParam, searchParam}, Long.class);
 	}
-	
+
+	@Override
+	public void setChiefUser(User chief, Project project) {
+		project.setChiefMentor(chief);
+		update(project);
+	}
+
+	@Override
+	public void deleteChiefUser(Project project) {
+		project.setChiefMentor(null);
+		update(project);
+	}
+
+	@Override
+	public void uploadFile(Project project, File file) {
+	}
+
+	@Override
+	public void deleteFile(Project project, long fileId) {
+
+	}
+
 	@Override
 	public List<Project> getAllActiveProjects() {
 		return jdbcTemplate.query(GET_ALL_ACTIVE_PROJECTS_SQL, PROJECT_MAPPER);
@@ -152,13 +175,14 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 	public void deleteTraitFromProject(Long traitId, Long projectId) {
 		jdbcTemplate.update(DELETE_TRAIT_FROM_PROJECT_SQL, traitId, projectId);
 	}
-	
+
 	@Override
 	public int[] addTraitCategoryToProject(Short traitCategoryId, Long projectId) {
 		List<Trait> traits = traitRepository.getTraitsByTraitCategoryAndNotFromProject(traitCategoryId, projectId);
         return jdbcTemplate.batchUpdate(ADD_TRAIT_TO_PROJECT_SQL,
         		prepareTraitsToBanchUpdate(traits, projectId));
 	}	
+
 	@Override
 	public int[] deleteTraitCategoryFromProject(Short traitCategoryId, Long projectId) {
 		List<Trait> traits = traitRepository.getTraitsByTraitCategoryAndProject(traitCategoryId, projectId);
@@ -167,6 +191,7 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 	}
 	
 	private List<Object[]> prepareTraitsToBanchUpdate(List<Trait> traits, Long projectId){
+
 		List<Object[]> batch = new ArrayList<Object[]>();
         for (Trait trait : traits) {
             Object[] values = new Object[] {
@@ -193,7 +218,7 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 		}
 	}
 	
-	public static enum OrdableColumn {
+	private static enum OrdableColumn {
 		ID("id"), NAME("name"), START_DATE("start_date"), END_DATE("end_date"), IS_CMPLETED("is_completed");
 		private String columnName;
 

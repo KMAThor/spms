@@ -9,9 +9,12 @@
 				  		<i class="fa fa-pencil" aria-hidden="true"></i>
 				  		Edit Team Name
 				  	</button>
-				  		<a class="btn btn-danger" href="<c:url value="/delete/team/${team.id}/" />">
-				  		<i class="fa fa-trash" aria-hidden="true"></i>
-				  		Delete Team 	</a>
+				  	<button type="button" class="btn btn-danger"
+				  		  data-toggle="modal" data-target="#deleteTeamModal"
+				  		  >
+				  		<i class="fa fa-pencil" aria-hidden="true"></i>
+				  		Delete Team
+				  	</button>
 				</div>
 			</h1>
 			<h6><a href="/spms/view/project/${team.project.id}/"><--- Back to Project</a></h6>
@@ -164,8 +167,7 @@
 	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	        		<h4 class="modal-title" id="myModalLabel">Edit Team Name</h4>
 	      		</div>
-	      		<form name="createProjectForm" id="createProjectForm" onsubmit="onSubmitEditTeamNameForm();"
-	        		  action="/spms/update/team/${team.id}/" method="post">
+	      		<form name="createProjectForm" id="createProjectForm" action="/spms/update/team/${team.id}/" method="post">
 	      			<div class="modal-body">
 	        
 						<div class="form-group">
@@ -176,7 +178,33 @@
 	      			</div>
 	      			<div class="modal-footer">
 	        			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	        			<button type="submit" value="Submit" class="btn btn-primary" >Update</button>
+	        			<button type="submit" value="Submit" class="btn btn-warning" >Update</button>
+	     			</div>
+	      		</form>
+	    	</div>
+	  	</div>
+	</div>
+	
+	<!-- deleteTeamModal -->
+	<div class="modal fade" id="deleteTeamModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        		<h4 class="modal-title" id="myModalLabel">Delete Team</h4>
+	      		</div>
+	      		<form name="deleteTeamForm" id="deleteTeamForm" action="/spms/delete/team/${team.id}/" method="post">
+	      			<div class="modal-body">
+	        
+						<div class="form-group">
+							<label>Are you sure to delete team ${team.name}???</label>
+							<input type="hidden" name="project_id" value="${team.project.id}">
+				    	</div>
+
+	      			</div>
+	      			<div class="modal-footer">
+	        			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	        			<button type="submit" value="Submit" class="btn btn-danger" >Delete</button>
 	     			</div>
 	      		</form>
 	    	</div>
@@ -189,13 +217,12 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Create Team</h4>
+	        <h4 class="modal-title" id="myModalLabel">Add mentor</h4>
 	      </div>
 	      <form name="addMentorToTeamForm" id="addMentorToTeamForm" method="post">
 	      	<div class="modal-body">
 	        
 				<div class="form-group">
-					<label for="name">Add mentor: </label>
 				    <table id="allMentorsTable" class="table table-striped table-hover table-bordered" style="min-width: 100%;">
 							<thead>
 								<tr>
@@ -245,14 +272,13 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Create Team</h4>
+	        <h4 class="modal-title" id="myModalLabel">Add student</h4>
 	      </div>
 	      <form name="addMeetingForm" id="addMeetingForm" onsubmit="onSubmitAddMeetingForm();"
 	        	action="/spms/${team.id}/add/meeting/" method="post">
 	      	<div class="modal-body">
 	        
 				<div class="form-group">
-					<label for="name">Add student: </label>
 				    <table id="allStudentsTable" class="table table-striped table-hover table-bordered" style="min-width: 100%;">
 							<thead>
 								<tr>
