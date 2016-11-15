@@ -53,12 +53,12 @@
     								View Reports
     							</a>						
     						</li>
-        					<li>
+        					<!--<li>
         						<a href="/spms/archive/">
     								<img src="/spms/resources/img/project_archive.png" style="width:30px; height:30px">
     								Project Archive
     							</a>						
-    						</li>
+    						</li>-->
         					<li>
         						<a href="/spms/users/">
     								<img src="/spms/resources/img/students.png" style="width:30px; height:30px">

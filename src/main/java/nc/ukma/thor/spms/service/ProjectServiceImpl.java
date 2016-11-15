@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 public class ProjectServiceImpl extends AbstractService<Project> implements ProjectService{
 
+    @Autowired
 	private ProjectRepository projectRepository;
 
     @Autowired
@@ -43,14 +44,14 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
     }
 
     @Override
-    public boolean addTeam(long projectId, Team team) {
-        projectRepository.addTeam(projectRepository.getById(projectId), team);
+    public boolean addTeam(Team team) {
+        teamRepository.add(team);
         return true;
     }
 
     @Override
-    public boolean deleteTeam(long projectId, long teamId) {
-        projectRepository.deleteTeam(projectRepository.getById(projectId), teamId);
+    public boolean deleteTeam(long projectId,  long teamId) {
+       teamRepository.delete(getTeam(projectId, teamId));
         return true;
     }
 
@@ -99,6 +100,10 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
         return null;
     }
 
+    @Override
+    public boolean setTraits(long projectId, List<Trait> traits) {
+        return false;
+    }
 
 
     @Override
@@ -112,6 +117,11 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 
         projectRepository.deleteTraitFromProject(new Trait(traitId), projectRepository.getById(projectId));
         return true;
+    }
+
+    @Override
+    public boolean deleteTraits(long projectId, List<Trait> traits) {
+        return false;
     }
 
 

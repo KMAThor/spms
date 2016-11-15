@@ -181,3 +181,4 @@ INSERT INTO trait VALUES (23, 'Algorithms knowledge', 20);
 
 INSERT INTO trait_category VALUES (30, 'Other skills');
 
+INSERT INTO trait_project VALUES (21, 4);

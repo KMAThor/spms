@@ -58,7 +58,7 @@
 			</p>
 		</div>
 		<div class="col-sm-5">
-				<h3>Cheid Mentor</h3>
+				<h3>Cheif Mentor</h3>
 				<p>
 					<c:choose>
 						<c:when test="${project.chiefMentor ne null}">
@@ -126,7 +126,7 @@
 				<div class="form-group">
 		        	<label for="startDate">Start date:</label>
 		            <div class='input-group date' id='datetimepicker6'>
-		                <input type='text' class="form-control" name="startDate" id="endProjectStartDate" placeholder="Enter start date"  required/>
+		                <input type='text' class="form-control" name="startDate" id="newProjectStartDate" placeholder="Enter start date"  required/>
 		                <span class="input-group-addon">
 		                    <span class="glyphicon glyphicon-calendar"></span>
 		                </span>
@@ -136,15 +136,23 @@
 		        <div class="form-group">
 		        	<label for="endDate">End Date:</label>
 		            <div class='input-group date' id='datetimepicker7'>
-		                <input type='text' class="form-control" name="endDate" id="endProjectStartDate" placeholder="Enter end date" required/>
+		                <input type='text' class="form-control" name="endDate" id="newProjectEndDate" placeholder="Enter end date" required/>
 		                <span class="input-group-addon">
 		                    <span class="glyphicon glyphicon-calendar"></span>
 		                </span>
 		            </div>
 		        </div>
 				<div class="form-group dropdown">
-					<label for="chiefMentor"><p>Change chief mentor </p>2</label>
-					<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">curent chief <span class="caret"></span></button>
+					<label for="chiefMentor">Change chief mentor:</label>
+					<button class="btn btn-primary dropdown-toggle" id="mentorsDropdown" type="button" data-toggle="dropdown" value="${project.chiefMentor}">
+						<c:choose>
+							<c:when test="${project.chiefMentor ne null}">
+							${project.chiefMentor.firstName} ${project.chiefMentor.lastName}
+						   </c:when>
+						   <c:otherwise>
+							Not assigned yet
+						   	</c:otherwise>
+					</c:choose> <span class="caret"></span></button>
 					<ul class="dropdown-menu">
 						<li>anton</li>
 						<li>nastya</li>
@@ -188,55 +196,66 @@
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	        <h4 class="modal-title" id="myModalLabel">Project Traits Manager
-	        	<button type="button" class="btn btn-success"
-						data-toggle="modal" data-target="#createTraitCategoryModal">
-					<i class="fa fa-plus-circle" aria-hidden="true"></i>
-					Add Trait Category
-				</button>
+	       
+		      
 			</h4>
 	      </div>
 	      
 	       <div class="modal-body">
 	        <div id="categoriesPanelGroup" class="panel-group">
 				<c:forEach var="traitCategory" items="${traitCategories}">
-				  	<div id="category-${traitCategory.id}" class="panel panel-default">
+				  	<div id="category-${traitCategory.id}" class="panel panel-default" >
 					    <div class="panel-heading clickable" data-toggle="collapse" href="#category-${traitCategory.id}-traits">
 					    	<div class="row">
 								<div class="col-sm-7">
-							      <h3 id="traitCategory-${traitCategory.id}-name" class="categoryTitle">${traitCategory.name}</h3>
+								  	
+							      	<h3 id="traitCategory-${traitCategory.id}-name" class="categoryTitle">${traitCategory.name}
+							      		
+
+							      	</h3>
 							    </div>
 							    <div class="col-sm-5 text-right" >
-							      	<div class="btn-group btn-group-xs" role="group" aria-label="..."  >
-									  <button type="button" class="btn btn-success"
-									  		  data-toggle="modal" data-target="#createTraitModal"
-									  		  onclick="selectTraitCategory(${traitCategory.id});">
-									  	<i class="fa fa-plus-circle" aria-hidden="true"></i>
-									  	Add Trait
-									  </button>
-									  <button type="button" class="btn btn-warning"
-									  		  data-toggle="modal" data-target="#editTraitCategoryModal"
-									  		  onclick="editTraitCategory(${traitCategory.id}, '${traitCategory.name}');">
-									  	<i class="fa fa-pencil" aria-hidden="true"></i>
-									  	Edit
-									  </button>
-									  <button type="button" class="btn btn-danger"
-									  		 onclick="deleteTraitCategory(${traitCategory.id});">
-									  	<i class="fa fa-trash" aria-hidden="true"></i>
-									  	Delete
+							    	<div class="btn-group btn-group-xs" role="group"  >
+									  	<button type="button" class="btn btn-success"
+									  		onclick="selectAllTraitAction(${traitCategory.id}, ${project.id})">
+										  	<i class="fa fa-check-square-o " aria-hidden="true"></i>
+									  		Select All
+									  	</button>
+									  	<button type="button" class="btn btn-warning"
+									  	onclick="deselectAllTraitAction(${traitCategory.id}, ${project.id})">
+									  		<i class="fa fa-square-o" aria-hidden="true"></i>
+									  		Deselect All
 									  	</button>
 									</div>
-								</div>
+							    </div>
 							</div>  
 				    	</div>
 
-					    <div id="category-${traitCategory.id}-traits" class="panel-collapse collapse">
+					    <div id="category-${traitCategory.id}-traits" class="panel-collapse collapse in">
 					    	<c:forEach var="trait" items="${traitCategory.traits}">
 						      	<ul id="trait-${trait.id}" class="list-group traits-list">
 									<li class="list-group-item">
 										<div class="row">
 											<div class="col-sm-9">
-												<p id="trait-${trait.id}-name">${trait.name}</p>
+												<p id="trait-${trait.id}-name">
+												<input type="checkbox"
+													onchange="traitCheckboxAction(this,${trait.id},${project.id})" 
+													<c:set var="contains" value="false" />
+													<c:forEach var="item" items="${traitsAssociatedWithProject}">
+													  <c:if test="${item.id eq trait.id}">
+													    <c:set var="contains" value="true" />
+													    <c:out value="checked"/>
+													  </c:if>
+													</c:forEach>
+												/>
+													${trait.name}
+												</p>
 											</div>
+											<!--<c:if test="${contains}">
+												    		<c:out value="checked"/>
+												  		</c:if>
+
+
 											<div class="col-sm-3 text-right" >
 										      	<div class="btn-group btn-group-xs" role="group" aria-label="..."  >
 												  <button type="button" class="btn btn-warning"
@@ -251,7 +270,7 @@
 												  	Delete
 												  	</button>
 												</div>
-											</div>
+											</div>-->
 										</div>
 									</li>
 						      	</ul>
