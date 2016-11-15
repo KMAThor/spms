@@ -15,10 +15,10 @@
 				  		<i class="fa fa-pencil" aria-hidden="true"></i>
 				  		Edit Project
 				  	</button>
-				  		<a class="btn btn-danger" href="<c:url value="/delete/project/${project.id}/" />">
+				  	<a class="btn btn-danger" href="<c:url value="/delete/project/${project.id}/" />">
 				  		<i class="fa fa-trash" aria-hidden="true"></i>
-				  		Delete Project 	</a>
-				  	</button>
+				  		Delete Project 	
+				  	</a>
 				</div>
 			</h1>
 			<h3>Description</h3>
@@ -277,7 +277,7 @@
 	        <h4 class="modal-title" id="myModalLabel">Create Team</h4>
 	      </div>
 	      <form name="createTeamForm" id="createTeamForm" onsubmit="onSubmitCreateTeamForm();"
-	        	action="/spms/${project.id}/create/team/" method="post">
+	        	action="/spms/create/team/${project.id}" method="post">
 	      	<div class="modal-body">
 	        
 				<div class="form-group">
