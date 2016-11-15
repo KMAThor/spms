@@ -8,11 +8,13 @@
 			<div  class="panel-center">
 				<h3>
 					Active projects
+					<security:authorize access="hasAuthority('admin')">
 					<button type="button" class="btn btn-success"
 							data-toggle="modal" data-target="#createProjectModal">
 						<i class="fa fa-plus-circle" aria-hidden="true"></i>
 						Create project
 					</button>
+					</security:authorize>
 				</h3>
 			</div>
 			

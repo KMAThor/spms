@@ -37,6 +37,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     		.csrf().disable()
 			.authorizeRequests()
 				.antMatchers("/traitManager/**").hasAuthority("admin")
+				.antMatchers("/create/project/","/update/project/{id}", "/delete/project/{id}").hasAuthority("admin")
+				.antMatchers("/{project_id}/create/team/","/delete/team/{id}/","/update/team/{id}/").hasAuthority("admin")
+				.antMatchers("/{team_id}/addUser/{user_id}/","/{team_id}/deleteUser/{user_id}/").hasAuthority("admin")//add mentor
+				.antMatchers("/team/{id}/add/meeting/","/team/{id}/meetings/{meeting_id}/{user_id}/Review").hasAnyAuthority("admin","mentor")
+				.antMatchers("/project/{id}/upload/files/","/project/{id}/delete/files/").hasAnyAuthority("admin","mentor")
+				.antMatchers("/{team_id}/{user_id}/status","/{team_id}/{user_id}/feedback").hasAnyAuthority("admin","hr")
+				
 
 				.anyRequest().authenticated()
 				.and()

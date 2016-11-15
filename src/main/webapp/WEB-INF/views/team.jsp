@@ -2,6 +2,7 @@
 	<div class="row">
 		<div class="col-sm-10 col-sm-offset-1">
 			<h1>${team.name}
+			<security:authorize access="hasAuthority('admin')">
 		    	<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
 				  	<button type="button" class="btn btn-warning"
 				  		  data-toggle="modal" data-target="#editTeamNameModal"
@@ -13,6 +14,7 @@
 				  		<i class="fa fa-trash" aria-hidden="true"></i>
 				  		Delete Team 	</a>
 				</div>
+				</security:authorize>
 			</h1>
 			<h6><a href="/spms/view/project/${team.project.id}/"><--- Back to Project</a></h6>
 		</div>
@@ -30,6 +32,7 @@
 
 			<div class="tab-content padtop">
   				<div class="tab-pane fade in active" id="mentors">
+  					<security:authorize access="hasAuthority('admin')">
   					<div  class="panel-center">
   						<button type="button" class="btn btn-success"
 						data-toggle="modal" data-target="#addMentorModal">
@@ -37,6 +40,7 @@
 							Add mentor
 						</button>
 					</div>
+					</security:authorize>
 					<div class="div-table">
 						<table id="mentorsTable" class="table table-striped table-hover table-bordered" style="min-width: 100%;">
 							<thead>
@@ -73,6 +77,7 @@
 					</div>
   				</div>
   				<div class="tab-pane fade" id="students">
+  					<security:authorize access="hasAuthority('admin')">
   					<div class="panel-center">
   						<button type="button" class="btn btn-success"
 						data-toggle="modal" data-target="#addStudentModal">
@@ -80,6 +85,7 @@
 							Add student
 						</button>
 					</div>
+					</security:authorize>
 					<div class="div-table">
 						<table id="studentsTable" class="table table-striped table-hover table-bordered" style="min-width: 100%;">
 							<thead>
@@ -101,6 +107,7 @@
    											<td>${user.firstName}</td>
    											<td>${user.secondName}</td>
    											<td>${user.lastName}</td>
+   											<security:authorize access="hasAuthority('admin')">
    											<td>
    												<a href="<c:url value="/${team.id}/deleteUser/${user.id}/" />"
 													data-original-title="Delete" data-toggle="tooltip"
@@ -108,6 +115,7 @@
 													<i class="glyphicon glyphicon-remove"></i>
 												</a>
 											</td>
+											</security:authorize>
    										</tr>
 									</c:if>
 								</c:forEach>
@@ -117,11 +125,13 @@
   				</div>
   				<div class="tab-pane fade" id="meetings">
   					<div  class="panel-center">
+  						<security:authorize access="hasAuthority('admin','mentor')">
   						<button type="button" class="btn btn-success"
 						data-toggle="modal" data-target="#createMeetingModal">
 							<i class="fa fa-plus-circle" aria-hidden="true"></i>
 							Create meeting
 						</button>
+						</security:authorize>
 					</div>
   					<div class="div-table">
 						<table id="meetingsTable" class="table table-striped table-hover table-bordered" style="min-width: 100%;">

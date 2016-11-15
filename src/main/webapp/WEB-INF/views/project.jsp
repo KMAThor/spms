@@ -2,6 +2,7 @@
 	<div class="row">
 		<div class="col-sm-10 col-sm-offset-1">
 			<h1>${project.name}
+		    	<security:authorize access="hasAuthority('admin')">
 		    	<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
 		    		<button type="button" class="btn btn-primary"
 				  		  data-toggle="modal" data-target="#projectTraitsManagerModal"
@@ -9,6 +10,7 @@
 				  		<i class="fa fa-bars" aria-hidden="true"></i>
 				  		Project Traits Manager
 				  	</button>
+				  	
 				  	<button type="button" class="btn btn-warning"
 				  		  data-toggle="modal" data-target="#editProjectModal"
 				  		  >
@@ -20,6 +22,7 @@
 				  		Delete Project 	</a>
 				  	</button>
 				</div>
+				</security:authorize>
 			</h1>
 			<h3>Description</h3>
 			<p> <c:choose>
@@ -75,11 +78,13 @@
 	<div class="row">
 		<div class="col-sm-10 col-sm-offset-1">
 			<h2>Files
+			<security:authorize access="hasAnyAuthority('admin','mentor')">
 				<button type="button" class="btn btn-success"
 					data-toggle="modal" data-target="#addFileToProjectModal">
 					<i class="fa fa-plus-circle" aria-hidden="true"></i>
 						Add file
 				</button>
+			</security:authorize>
 			</h2>
 			
 		</div>
@@ -89,11 +94,13 @@
 	<div class="row">
 		<div class="col-sm-10 col-sm-offset-1">
 			<h2>Teams
+			<security:authorize access="hasAuthority('admin')">
 				<button type="button" class="btn btn-success"
 					data-toggle="modal" data-target="#createTeamModal">
 					<i class="fa fa-plus-circle" aria-hidden="true"></i>
 						Create team
 				</button>
+				</security:authorize>
 			</h2>
 			<c:forEach items="${teams}" var="team">
 					<h3>
