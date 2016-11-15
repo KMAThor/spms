@@ -2,13 +2,13 @@ package nc.ukma.thor.spms.entity;
 
 public class Trait {
 
-	private long id;
+	private Long id;
 	private String name;
 	private TraitCategory traitCategory;
 	
 	public Trait() { }
 
-	public Trait(long id) {
+	public Trait(Long id) {
 		this.id = id;
 	}
 	
@@ -19,22 +19,22 @@ public class Trait {
 
 	
 
-	public Trait(long id, String name) {
+	public Trait(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
-	public Trait(long id, String name, TraitCategory traitCategory) {
+	public Trait(Long id, String name, TraitCategory traitCategory) {
 		this.id = id;
 		this.name = name;
 		this.traitCategory = traitCategory;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

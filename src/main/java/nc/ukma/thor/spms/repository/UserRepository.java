@@ -10,12 +10,11 @@ import nc.ukma.thor.spms.util.SortingOrder;
 public interface UserRepository {
 	
 
-	public User getUserById(long id);
+	public User getUserById(Long id);
 	public User getUserByEmail(String email);
 	public List<User> getUsersByTeam(Team team);
 	public List<User> getAllUsers();
 	public List<User> getUsersPresentAtMeeting(Meeting meeting);
-//	public List<User> getUsers(long offset, int length);
 	public Long count(String string);
 	public List<User> getUsers(long start, int length, int column, SortingOrder dir, String search);
 	public Long count();

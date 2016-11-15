@@ -5,17 +5,17 @@ import java.util.List;
 
 public class TraitCategory {
 	
-	private short id;
+	private Short id;
 	private String name;
 	private List<Trait> traits = new ArrayList<Trait>();
 	
 	public TraitCategory() {}
 	
-	public TraitCategory(short traitCategoryId){
+	public TraitCategory(Short traitCategoryId){
 		this.id = traitCategoryId;
 	}
 	
-	public TraitCategory(short id, String name) {
+	public TraitCategory(Short id, String name) {
 		this.id = id;
 		this.name = name;
 	}
@@ -24,11 +24,11 @@ public class TraitCategory {
 		this.name = name;
 	}
 
-	public short getId() {
+	public Short getId() {
 		return id;
 	}
 
-	public void setId(short id) {
+	public void setId(Short id) {
 		this.id = id;
 	}
 

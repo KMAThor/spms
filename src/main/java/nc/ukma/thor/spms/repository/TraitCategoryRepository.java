@@ -7,6 +7,10 @@ import nc.ukma.thor.spms.entity.TraitCategory;
 
 public interface TraitCategoryRepository extends MyRepository<TraitCategory>{
 	
-	public TraitCategory getCategoryByTrait(Trait tc);
+	public TraitCategory getCategoryByTrait(Long traitId);
 	public List<TraitCategory> getAllCategoriesWithTraits();
+	
+	public default TraitCategory getCategoryByTrait(Trait trait){
+		return getCategoryByTrait(trait.getId());
+	}
 }

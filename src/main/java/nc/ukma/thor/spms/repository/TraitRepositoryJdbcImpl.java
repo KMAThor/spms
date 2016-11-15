@@ -63,7 +63,7 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 	}
 
 	@Override
-	public Trait getById(long id) {
+	public Trait getById(Long id) {
 		try{
 			return jdbcTemplate.queryForObject(GET_TRAIT_BY_ID_SQL,
 					new Object[] { id }, TRAIT_MAPPER);
@@ -91,8 +91,8 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 	}
 
 	@Override
-	public List<Trait> getTraitsWithoutNamesByProject(Project project) {
-		return jdbcTemplate.query(GET_TRAITS_BY_PROJECT_SQL, new Object[] {project.getId()},
+	public List<Trait> getTraitsWithoutNamesByProject(Long projectId) {
+		return jdbcTemplate.query(GET_TRAITS_BY_PROJECT_SQL, new Object[] {projectId},
 				(rs, rowNum)->{
 					Trait trait = new Trait();
 					trait.setId(rs.getLong("trait_id"));
@@ -101,16 +101,16 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 	}
 
 	@Override
-	public List<Trait> getTraitsByTraitCategoryAndProject(TraitCategory traitCategory, Project project) {
+	public List<Trait> getTraitsByTraitCategoryAndProject(Short traitCategoryId, Long projectId) {
 		return jdbcTemplate.query(GET_TRAITS_BY_TRAITCATEGORY_AND_PROJECT_SQL,
-				new Object[] { traitCategory.getId(), project.getId() },
+				new Object[] { traitCategoryId, projectId },
 				TRAIT_MAPPER);
 	}
 
 	@Override
-	public List<Trait> getTraitsByTraitCategoryAndNotFromProject(TraitCategory traitCategory, Project project) {
+	public List<Trait> getTraitsByTraitCategoryAndNotFromProject(Short traitCategoryId, Long projectId) {
 		return jdbcTemplate.query(GET_TRAITS_BY_TRAITCATEGORY_AND_NOT_FROM_PROJECT_SQL,
-				new Object[] { traitCategory.getId(), project.getId() },
+				new Object[] { traitCategoryId, projectId },
 				TRAIT_MAPPER);
 	}
 

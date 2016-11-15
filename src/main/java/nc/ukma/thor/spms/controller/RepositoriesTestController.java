@@ -70,7 +70,7 @@ public class RepositoriesTestController {
 	
 	@RequestMapping(value="team", method = RequestMethod.GET)
     public String testTeamRepository(ModelMap model) {
-		Project project = new Project(4);
+		Project project = new Project((long) 4);
 		Team team = new Team("New life", project);
 		
 		teamRepository.add(team);
@@ -81,7 +81,7 @@ public class RepositoriesTestController {
 		System.out.println("Get just updated team:" + teamRepository.getById(team.getId()));
 		
 		System.out.println("Get users from this team:" + userRepository.getUsersByTeam(team));
-		User user = new User(4);
+		User user = new User((long) 4);
 		System.out.println("Add user to team.");
 		teamRepository.addUserToTeam(user, team);
 		System.out.println("Get users from this team:" + userRepository.getUsersByTeam(team));
@@ -98,16 +98,16 @@ public class RepositoriesTestController {
 		teamRepository.delete(team);
 		System.out.println("Get just deleted team:" + teamRepository.getById(team.getId()));
 		
-		System.out.println("Get teams by user:" + teamRepository.getTeamsByUser(new User(2)));
+		System.out.println("Get teams by user:" + teamRepository.getTeamsByUser(new User((long) 2)));
 		System.out.println("Get teams by project:" + teamRepository.getTeamsByProject(project));
-		System.out.println("Get teams by project:" + teamRepository.getTeamsByProject(new Project(0)));
+		System.out.println("Get teams by project:" + teamRepository.getTeamsByProject(new Project((long) 0)));
 		
         return "authentication";
     }
 	
 	@RequestMapping(value="meeting", method = RequestMethod.GET)
     public String testMeetingRepository(ModelMap model) {
-		Meeting meeting = new Meeting("Architecture planing", new Timestamp(2141324), new Team(5));
+		Meeting meeting = new Meeting("Architecture planing", new Timestamp(2141324), new Team((long) 5));
 		
 		meetingRepository.add(meeting);
 		System.out.println("Get just created meeting:" + meetingRepository.getById(meeting.getId()));
@@ -119,32 +119,32 @@ public class RepositoriesTestController {
 		meetingRepository.delete(meeting);
 		System.out.println("Get just deleted meeting:" + meetingRepository.getById(meeting.getId()));
 		
-		Meeting meeting2 = new Meeting(6);
+		Meeting meeting2 = new Meeting((long) 6);
 		System.out.println("Get presence for meeting with id 6:" + meetingRepository.getUsersPresentAtMeeting(meeting2));
 		
 		System.out.println("Mark user with id 5 as presente at meeting with id 6");
-		meetingRepository.addUserToMeeting(new User(5), meeting2);
+		meetingRepository.addUserToMeeting(new User((long) 5), meeting2);
 		System.out.println("Get presence for meeting with id 6:" + meetingRepository.getUsersPresentAtMeeting(meeting2));
 		
 		System.out.println("Mark user with id 5 as absent at meeting with id 6");
-		meetingRepository.deleteUserFromMeeting(new User(5), meeting2);
+		meetingRepository.deleteUserFromMeeting(new User((long) 5), meeting2);
 		System.out.println("Get presence for meeting with id 6:" + meetingRepository.getUsersPresentAtMeeting(meeting2));
 		
-		System.out.println("Get meeting of team with id 5:" + meetingRepository.getMeetingsByTeam(new Team(5)));
+		System.out.println("Get meeting of team with id 5:" + meetingRepository.getMeetingsByTeam(new Team((long) 5)));
         return "authentication";
     }
 	
 	@RequestMapping(value="user", method = RequestMethod.GET)
     public String testUserRepository(ModelMap model) {
-		System.out.println("Get user with id = 0: " + userRepository.getUserById(0));
+		System.out.println("Get user with id = 0: " + userRepository.getUserById((long) 0));
 		System.out.println("Get user with email = hr@hr.com: " + userRepository.getUserByEmail("hr@hr.com"));
 		
 		Team team = new Team();
-		team.setId(5);
+		team.setId((long) 5);
 		System.out.println("Get users from team with id = 5 " + userRepository.getUsersByTeam(team));
 		
 		Meeting meeting = new Meeting();
-		meeting.setId(6);
+		meeting.setId((long) 6);
 		System.out.println("Get users present at meeting with id = 6 " + userRepository.getUsersPresentAtMeeting(meeting));
 		
 		return "authentication";
@@ -164,7 +164,7 @@ public class RepositoriesTestController {
 		
 		System.out.println("Get all trait of category with id 9:" + traitRepository.getTraitsByTraitCategory(traitCategory));
 		
-		Project project = new Project(4);
+		Project project = new Project((long) 4);
 		
 		System.out.println("Get all trait of project:" + traitRepository.getTraitsWithoutNamesByProject(project));
 		System.out.println("Add trait to this project");
@@ -192,7 +192,7 @@ public class RepositoriesTestController {
 		traitCategoryRepository.delete(traitCategory);
 		System.out.println("Get just deleted category: " + traitCategoryRepository.getById(traitCategory.getId()));
 		
-		Trait trait = new Trait(21);
+		Trait trait = new Trait((long) 21);
 		
 		System.out.println("Get category by trait: " + traitCategoryRepository.getCategoryByTrait(trait));
 		

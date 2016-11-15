@@ -35,7 +35,7 @@ public class MeetingController {
         return "meeting";
     }
     
-    @RequestMapping(path="/{meeting_id}/delete/meeting", method = RequestMethod.GET)
+    @RequestMapping(path="/{meeting_id}/delete/meeting/", method = RequestMethod.GET)
     public String deleteMeeting(@PathVariable long meeting_id){
     	Meeting meeting = meetingService.getById(meeting_id);
     	long team_id = meeting.getTeam().getId();

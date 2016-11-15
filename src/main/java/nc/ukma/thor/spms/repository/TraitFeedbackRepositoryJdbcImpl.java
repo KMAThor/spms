@@ -24,7 +24,7 @@ public class TraitFeedbackRepositoryJdbcImpl implements TraitFeedbackRepository{
 	private JdbcTemplate jdbcTemplate;
 	
 	@Override
-	public void add(TraitFeedback f, long appendedToId) {
+	public void add(TraitFeedback f, Long appendedToId) {
 		final String INSERT_SQL =
 				"INSERT INTO trait_feedback (score, comment, trait_id, feedback_id) "
 				+"VALUES (?,?,?,?);";
@@ -65,7 +65,7 @@ public class TraitFeedbackRepositoryJdbcImpl implements TraitFeedbackRepository{
 	}
 
 	@Override
-	public TraitFeedback getById(long id) {
+	public TraitFeedback getById(Long id) {
 		List<TraitFeedback> tfs =  jdbcTemplate.query("SELECT * FROM trait_feedback WHERE id=?;",
 				new Object[] { id },
 				new TraitFeedbackMapper());
@@ -74,7 +74,7 @@ public class TraitFeedbackRepositoryJdbcImpl implements TraitFeedbackRepository{
 	}
 
 	@Override
-	public List<TraitFeedback> getAllAppendedTo(long appendedToId) {
+	public List<TraitFeedback> getAllAppendedTo(Long appendedToId) {
 		List<TraitFeedback> tfs = jdbcTemplate.query("SELECT * FROM trait_feedback WHERE feedback_id=?;",
 				new Object[] { appendedToId },
 				new TraitFeedbackMapper());

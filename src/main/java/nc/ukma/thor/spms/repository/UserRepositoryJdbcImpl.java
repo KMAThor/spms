@@ -70,7 +70,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public User getUserById(long id) {
+	public User getUserById(Long id) {
 		try {
 			User user = jdbcTemplate.queryForObject(GET_USER_BY_ID_SQL, new Object[] { id }, USER_MAPPER);
 			return user;
@@ -125,7 +125,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 
 	public List<User> getUsers(long offset, int length, int orderBy, SortingOrder order, String search) {
 		String query = String.format(GET_USERS_BY_PAGE_SQL,
-				OrdableColumn.values()[orderBy].getColumnName(),
+				OrderableColumn.values()[orderBy].getColumnName(),
 				order);
 		String searchParam = "%" + search + "%";
 		return jdbcTemplate.query(query,
@@ -144,12 +144,12 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 				new Object[] { searchParam, searchParam, searchParam, searchParam, searchParam}, Long.class);
 	}
 
-	public static enum OrdableColumn {
+	public static enum OrderableColumn {
 		ID("\"user\".id"), EMAIL("email"), FIRST_NAME("first_name"), SECOND_NAME("second_name"), LAST_NAME("last_name"), ROLE("role");
 
 		private String columnName;
 
-		private OrdableColumn(String columnName) {
+		private OrderableColumn(String columnName) {
 			this.columnName = columnName;
 		}
 		public String getColumnName(){

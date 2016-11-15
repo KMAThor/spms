@@ -63,7 +63,7 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 	}
 
 	@Override
-	public TraitCategory getById(long id) {
+	public TraitCategory getById(Long id) {
 		try{
 			return jdbcTemplate.queryForObject(GET_TRAITCATEGORY_BY_ID_SQL, 
 					new Object [] { id }, TRAITCATEGORY_MAPPER);
@@ -73,10 +73,10 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 	}
 
 	@Override
-	public TraitCategory getCategoryByTrait(Trait t) {
+	public TraitCategory getCategoryByTrait(Long traitId) {
 		try{
 			return jdbcTemplate.queryForObject(GET_TRAITCATEGORY_BY_TRAIT_SQL, 
-					new Object [] { t.getId() }, TRAITCATEGORY_MAPPER);
+					new Object [] { traitId }, TRAITCATEGORY_MAPPER);
 		}catch(EmptyResultDataAccessException e){
 			return null;
 		}

@@ -9,10 +9,24 @@ import nc.ukma.thor.spms.entity.User;
 public interface MeetingRepository extends MyRepository<Meeting>{
 
 	/*Mark user presence at meeting*/
-	public void addUserToMeeting(User user, Meeting meeting);
-	public void deleteUserFromMeeting(User user, Meeting meeting);
+	public void addUserToMeeting(Long userId, Long meetingId);
+	public void deleteUserFromMeeting(Long userId, Long meetingId);
 	
-	public List<Meeting> getMeetingsByTeam(Team team);
-	public List<User> getUsersPresentAtMeeting(Meeting meeting);
+	public List<Meeting> getMeetingsByTeam(Long teamId);
+	public List<User> getUsersPresentAtMeeting(Long meetingId);
+	
+	public default void addUserToMeeting(User user, Meeting meeting){
+		addUserToMeeting(user.getId(), meeting.getId());
+	}
+	public default void deleteUserFromMeeting(User user, Meeting meeting){
+		deleteUserFromMeeting(user.getId(), meeting.getId());
+	}
+	
+	public default List<Meeting> getMeetingsByTeam(Team team){
+		return getMeetingsByTeam(team.getId());
+	}
+	public default List<User> getUsersPresentAtMeeting(Meeting meeting){
+		return getUsersPresentAtMeeting(meeting.getId());
+	}
 	
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Project{
 	
-	private long id;
+	private Long id;
 	private String name;
 	private String description;
 	private Timestamp startDate;
@@ -28,15 +28,15 @@ public class Project{
 		this.chiefUser = chiefUser;
 	}
 
-	public Project(long id) {
+	public Project(Long id) {
 		this.id = id;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

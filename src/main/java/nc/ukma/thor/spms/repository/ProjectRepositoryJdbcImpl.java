@@ -101,7 +101,7 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 	}
 	
 	@Override
-	public Project getById(long id) {
+	public Project getById(Long id) {
 		try{
 			return jdbcTemplate.queryForObject(GET_PROJECT_BY_ID_SQL,
 						new Object[] { id },
@@ -145,38 +145,37 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 	}
 	
 	@Override
-	public void addTraitToProject(Trait trait, Project project) {
-		jdbcTemplate.update(ADD_TRAIT_TO_PROJECT_SQL, trait.getId(), project.getId());
+	public void addTraitToProject(Long traitId, Long projectId) {
+		jdbcTemplate.update(ADD_TRAIT_TO_PROJECT_SQL, traitId, projectId);
 	}	
 	@Override
-	public void deleteTraitFromProject(Trait trait, Project project) {
-		jdbcTemplate.update(DELETE_TRAIT_FROM_PROJECT_SQL, trait.getId(), project.getId());
+	public void deleteTraitFromProject(Long traitId, Long projectId) {
+		jdbcTemplate.update(DELETE_TRAIT_FROM_PROJECT_SQL, traitId, projectId);
 	}
 	
 	@Override
-	public int[] addTraitCategoryToProject(TraitCategory traitCategory, Project project) {
-		List<Trait> traits = traitRepository.getTraitsByTraitCategoryAndNotFromProject(traitCategory, project);
+	public int[] addTraitCategoryToProject(Short traitCategoryId, Long projectId) {
+		List<Trait> traits = traitRepository.getTraitsByTraitCategoryAndNotFromProject(traitCategoryId, projectId);
         return jdbcTemplate.batchUpdate(ADD_TRAIT_TO_PROJECT_SQL,
-        		prepareTraitsToBanchUpdate(traits, traitCategory,project));
+        		prepareTraitsToBanchUpdate(traits, projectId));
 	}	
 	@Override
-	public int[] deleteTraitCategoryFromProject(TraitCategory traitCategory, Project project) {
-		List<Trait> traits = traitRepository.getTraitsByTraitCategoryAndProject(traitCategory, project);
+	public int[] deleteTraitCategoryFromProject(Short traitCategoryId, Long projectId) {
+		List<Trait> traits = traitRepository.getTraitsByTraitCategoryAndProject(traitCategoryId, projectId);
 		return jdbcTemplate.batchUpdate(DELETE_TRAIT_FROM_PROJECT_SQL,
-        		prepareTraitsToBanchUpdate(traits, traitCategory,project));
+        		prepareTraitsToBanchUpdate(traits, projectId));
 	}
 	
-	private List<Object[]> prepareTraitsToBanchUpdate(List<Trait> traits, TraitCategory traitCategory, Project project){
+	private List<Object[]> prepareTraitsToBanchUpdate(List<Trait> traits, Long projectId){
 		List<Object[]> batch = new ArrayList<Object[]>();
         for (Trait trait : traits) {
             Object[] values = new Object[] {
             		trait.getId(),
-                    project.getId()};
+                    projectId};
             batch.add(values);
         }
         return batch;
 	}
-		
 		
 	private static final class ProjectMapper implements RowMapper<Project> {
 		@Override
@@ -206,5 +205,4 @@ public class ProjectRepositoryJdbcImpl  implements ProjectRepository{
 		}
 	}
 
-	
 }

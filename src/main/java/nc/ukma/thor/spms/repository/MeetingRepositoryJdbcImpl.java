@@ -59,17 +59,17 @@ public class MeetingRepositoryJdbcImpl implements MeetingRepository{
 	}
 	
 	@Override
-	public void addUserToMeeting(User user, Meeting meeting) {
-		jdbcTemplate.update(ADD_USER_TO_MEETING_SQL, user.getId(), meeting.getId());
+	public void addUserToMeeting(Long userId, Long meetingId) {
+		jdbcTemplate.update(ADD_USER_TO_MEETING_SQL, userId, meetingId);
 	}
 	
 	@Override
-	public void deleteUserFromMeeting(User user, Meeting meeting) {
-		jdbcTemplate.update(DELETE_USER_FROM_MEETING_SQL, user.getId(), meeting.getId());
+	public void deleteUserFromMeeting(Long userId, Long meetingId) {
+		jdbcTemplate.update(DELETE_USER_FROM_MEETING_SQL, userId, meetingId);
 	}
 
 	@Override
-	public Meeting getById(long id) {
+	public Meeting getById(Long id) {
 		try{
 			return jdbcTemplate.queryForObject(GET_MEETING_BY_ID_SQL,
 					new Object[] {id}, MEETING_MAPPER);
@@ -79,15 +79,15 @@ public class MeetingRepositoryJdbcImpl implements MeetingRepository{
 	}
 	
 	@Override
-	public List<Meeting> getMeetingsByTeam(Team team) {
+	public List<Meeting> getMeetingsByTeam(Long teamId) {
 			return jdbcTemplate.query(GET_MEETINGS_BY_TEAM_SQL,
-					new Object[] { team.getId() }, MEETING_MAPPER);
+					new Object[] { teamId }, MEETING_MAPPER);
 	}
 
 	@Override
-	public List<User> getUsersPresentAtMeeting(Meeting meeting) {
+	public List<User> getUsersPresentAtMeeting(Long meetingId) {
 		return jdbcTemplate.query(GET_PRESENCE_FOR_MEETING_SQL,
-				new Object [] {meeting.getId()},
+				new Object [] { meetingId },
 				(rs, rowNum) -> {
 					User user = new User(rs.getLong("user_id"));
 					return user;

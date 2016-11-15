@@ -28,7 +28,7 @@ public class RoleRepositoryImpl implements RoleRepository{
 	JdbcTemplate jdbcTemplate;
 
 	@Override
-	public Role getRoleById(long id) {
+	public Role getRoleById(Long id) {
 		try {
 			return jdbcTemplate.queryForObject(GET_ROLE_BY_ID_SQL,
 						new Object[] { id }, ROLE_MAPPER);
@@ -48,10 +48,10 @@ public class RoleRepositoryImpl implements RoleRepository{
 	}
 	
 	@Override
-	public Role getRoleByUser(User user) {
+	public Role getRoleByUser(Long userId) {
 		try{
 			return jdbcTemplate.queryForObject(GET_ROLE_BY_USER_SQL,
-						new Object[] { user.getId() }, ROLE_MAPPER);
+						new Object[] { userId }, ROLE_MAPPER);
 		}catch(EmptyResultDataAccessException e){
 			return null;
 		}
@@ -66,7 +66,7 @@ public class RoleRepositoryImpl implements RoleRepository{
 		@Override
 		public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Role role = new Role();
-			role.setId(rs.getLong("id"));
+			role.setId(rs.getShort("id"));
 			role.setName(rs.getString("role"));
 			return role;
 		}
