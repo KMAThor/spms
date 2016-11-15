@@ -160,14 +160,28 @@
 							$('#datetimepicker6').data("DateTimePicker").date(moment('${project.startDate}'));
 							$('#datetimepicker7').data("DateTimePicker").date(moment('${project.endDate}'));
 						});
-
 					</script>
+					<div class="form-group">
+						<lablel for="chief">Choose chief mentor:</lablel>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Press button to choose <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" id="mentors-list">
+								<c:forEach items="${mentors}" var="mentor">
+									<li><button class="btn btn-defualt">${mentor.name} ${mentor.surname}</button></li>
+								</c:forEach>
+							</ul>
+					</div>
+						<script type="text/javascript">
+
+						</script>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 					<button type="submit" value="Submit" class="btn btn-primary" >Update</button>
 				</div>
-			</form>
+	</div>		</form>
 		</div>
 	</div>
 </div>

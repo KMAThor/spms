@@ -1,5 +1,5 @@
 package UserService;
 
-public interface UserService {
+public interface        UserService {
 
 }
