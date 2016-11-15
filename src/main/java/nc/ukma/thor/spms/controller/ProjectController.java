@@ -120,6 +120,8 @@ public class ProjectController {
     	model.addAttribute("teams", teamService.getTeamsByProject(project));
     	model.addAttribute("traitCategories", traitCategoryService.getAllCategoriesWithTraits());
     	model.addAttribute("traitsAssociatedWithProject", traitService.getTraitsWithoutNamesByProject(project));
+        List<User> mentors = userService.getMentors();
+        model.addAttribute("mentors",  mentors);
     	System.out.println(traitService.getTraitsWithoutNamesByProject(project));
         return "project";
     }

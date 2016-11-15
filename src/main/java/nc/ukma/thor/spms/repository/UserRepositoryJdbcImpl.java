@@ -104,6 +104,11 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 		return jdbcTemplate.query(GET_USERS_BY_MEETING_SQL, new Object[] { meeting.getId() }, USER_MAPPER);
 	}
 
+	@Override
+	public List<User> getMentors() {
+		return null;
+	}
+
 	private static final class UserMapper implements RowMapper<User> {
 		@Override
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {

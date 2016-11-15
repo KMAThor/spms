@@ -19,6 +19,7 @@ public interface UserRepository {
 	public Long count(String string);
 	public List<User> getUsers(long start, int length, int column, SortingOrder dir, String search);
 	public Long count();
-	
+	List<User> getMentors();
+
 
 }
