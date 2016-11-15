@@ -189,13 +189,12 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Create Team</h4>
+	        <h4 class="modal-title" id="myModalLabel">Add mentor</h4>
 	      </div>
 	      <form name="addMentorToTeamForm" id="addMentorToTeamForm" method="post">
 	      	<div class="modal-body">
 	        
 				<div class="form-group">
-					<label for="name">Add mentor: </label>
 				    <table id="allMentorsTable" class="table table-striped table-hover table-bordered" style="min-width: 100%;">
 							<thead>
 								<tr>
@@ -245,14 +244,13 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Create Team</h4>
+	        <h4 class="modal-title" id="myModalLabel">Add student</h4>
 	      </div>
 	      <form name="addMeetingForm" id="addMeetingForm" onsubmit="onSubmitAddMeetingForm();"
 	        	action="/spms/${team.id}/add/meeting/" method="post">
 	      	<div class="modal-body">
 	        
 				<div class="form-group">
-					<label for="name">Add student: </label>
 				    <table id="allStudentsTable" class="table table-striped table-hover table-bordered" style="min-width: 100%;">
 							<thead>
 								<tr>
