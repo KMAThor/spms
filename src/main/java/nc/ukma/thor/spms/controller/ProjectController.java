@@ -111,7 +111,7 @@ public class ProjectController {
 		return dataTableResponse;
 	}
 
-    @RequestMapping(path="/spms/view/project/{id}/", method = RequestMethod.GET)
+    @RequestMapping(path="/view/project/{id}/", method = RequestMethod.GET)
     public String viewProject(@PathVariable long id, Model model ){
     	Project project = projectService.getById(id);
     	User chiefMentor = project.getChiefMentor();
