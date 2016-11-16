@@ -137,3 +137,35 @@ p.errorMessageInModal{
 input[type=checkbox]{
     margin: 5px 10px 0 0;
 }
+
+.sliderContainer .slider.slider-vertical{
+	margin-top: 6pt;
+	height: 140px;	
+}
+.slider-handle{
+	cursor:pointer;
+}
+.gradesDescriptionBlock p {
+	text-align: left;
+	margin-bottom: 7px;
+}
+.gradeIcon{
+	height: 20px;
+	margin-right: 10px;
+}
+
+.gradeComment.form-control{
+	width: 100%;
+	height: 160px;
+}
+.traitFeedbackContainer h3.traitFeedbackContainer__title,
+.traitFeedbackContainer h4.traitFeedbackContainer__title,
+{
+	font-weight: 700;	
+}
+
+
+
+
+
+

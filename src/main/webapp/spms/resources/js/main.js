@@ -343,3 +343,5 @@ function deselectAllTraitAction(traitCategoryId, projectId) {
 	.always(function( xhr, status ) {
 	});
 }
+
+
