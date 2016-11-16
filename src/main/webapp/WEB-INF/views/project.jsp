@@ -337,10 +337,8 @@
 					    <div class="panel-heading clickable" data-toggle="collapse" href="#category-${traitCategory.id}-traits">
 					    	<div class="row">
 								<div class="col-sm-7">
-								  	
-							      	<h3 id="traitCategory-${traitCategory.id}-name" class="categoryTitle">${traitCategory.name}
-							      		
-
+							      	<h3 id="traitCategory-${traitCategory.id}-name" class="categoryTitle">
+							      	${traitCategory.name}	
 							      	</h3>
 							    </div>
 							    <div class="col-sm-5 text-right" >
@@ -362,7 +360,7 @@
 
 					    <div id="category-${traitCategory.id}-traits" class="panel-collapse collapse in">
 					    	<c:forEach var="trait" items="${traitCategory.traits}">
-						      	<ul id="trait-${trait.id}" class="list-group traits-list">
+								<ul id="trait-${trait.id}" class="list-group traits-list">
 									<li class="list-group-item">
 										<div class="row">
 											<div class="col-sm-9">

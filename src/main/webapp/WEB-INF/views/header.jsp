@@ -33,8 +33,13 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker.min.css">
 	<!-- Icons -->
 	<script src="https://use.fontawesome.com/7b15c48d6d.js"></script>
+	
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.4.1/css/bootstrap-slider.min.css" type="text/css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.4.1/bootstrap-slider.min.js"></script>
 	<!-- CSS -->
 	<link href="/spms/resources/css/styles.css" type="text/css" rel="stylesheet">
+	
+	
 	<script src="/spms/resources/js/main.js"></script>
 </head>
 
@@ -86,4 +91,4 @@
 		</div>
 	</nav>
 </div>
-<div class="container"></div>
+<div class="container">
