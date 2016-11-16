@@ -26,19 +26,51 @@
 							<td>Name</td>
 							<td>Start Date</td>
 							<td>End Date</td>
+							<td>Status</td>
 						</tr>
 					</thead>
-					<tbody>
+					<!--<tbody>
 						<c:forEach items="${projects}" var="project">
 							<tr>
-								<td>${project.id}</td> <!-- delete!!! -->
+								<td>${project.id}</td> 
 								<td><a href="<c:url value="/view/project/${project.id}/" />">${project.name}</a></td>
 								<td>${project.startDate}</td>
 								<td>${project.endDate}</td>
 							</tr>
 						</c:forEach>
-					</tbody>
+					</tbody>-->
 				</table>
+							<script type="text/javascript">
+				$('#projectsTable').DataTable( {
+
+				    serverSide: true,
+			        ajax: {
+						url: '<c:url value="/view/projects/"/>',
+				        type: 'POST',
+				        data: function ( d ) {
+						      return JSON.stringify( d );
+						    },	        
+					    contentType: "application/json; charset=utf-8",
+					    dataType: "json",
+					    dataSrc: function ( json ) {
+					    	for(var i=0, ien=json.data.length; i<ien ; i++ ) {
+					        	json.data[i]["name"] = '<a href="/spms/view/project/'+json.data[i]["id"]+'/">'+json.data[i]["name"]+'</a>';
+					        	if(json.data[i]["completed"] === true) json.data[i]["completed"] = "completed";
+					        	if(json.data[i]["completed"] === false) json.data[i]["completed"] = "active";
+
+					      	}
+					      	return json.data;
+						}
+				    },
+				    columns: [
+					    { data: "id" },
+					    { data: "name" },
+					    { data: "startDate" },
+					    { data: "endDate" },
+					    { data: "completed" }
+					  ]
+				} );
+			</script>
 			</div>
 		</div>
 	</div>

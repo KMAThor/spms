@@ -37,5 +37,10 @@ public class UserServiceImpl implements UserService {
 		return userRepo.getAllUsers();
 	}
 
+	@Override
+	public List<User> getMentors() {
+		return userRepo.getMentors();
+	}
+
 }
 

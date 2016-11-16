@@ -27,6 +27,13 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 	private static final String GET_TRAITS_BY_TRAITCATEGORY_TRAIT_SQL = "SELECT * FROM trait WHERE category_id=?;";
 	private static final String GET_TRAITS_BY_PROJECT_SQL = "SELECT * FROM trait_project WHERE project_id=?;";
 	
+	private static final String GET_TRAITS_BY_TRAITCATEGORY_AND_PROJECT_SQL = "SELECT * FROM trait "
+			+ "INNER JOIN trait_project ON trait.id=trait_project.trait_id "
+			+ "WHERE category_id=? AND project_id=?;";
+	private static final String GET_TRAITS_BY_TRAITCATEGORY_AND_NOT_FROM_PROJECT_SQL = "SELECT * FROM trait "
+			+ "LEFT JOIN trait_project ON trait.id=trait_project.trait_id "
+			+ "WHERE category_id=? AND (project_id!=? OR project_id IS NULL);";
+	
 	private static final RowMapper<Trait> TRAIT_MAPPER = new TraitMapper();
 	
 	@Autowired
@@ -91,6 +98,20 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 					trait.setId(rs.getLong("trait_id"));
 					return trait;
 				});
+	}
+
+	@Override
+	public List<Trait> getTraitsByTraitCategoryAndProject(TraitCategory traitCategory, Project project) {
+		return jdbcTemplate.query(GET_TRAITS_BY_TRAITCATEGORY_AND_PROJECT_SQL,
+				new Object[] { traitCategory.getId(), project.getId() },
+				TRAIT_MAPPER);
+	}
+
+	@Override
+	public List<Trait> getTraitsByTraitCategoryAndNotFromProject(TraitCategory traitCategory, Project project) {
+		return jdbcTemplate.query(GET_TRAITS_BY_TRAITCATEGORY_AND_NOT_FROM_PROJECT_SQL,
+				new Object[] { traitCategory.getId(), project.getId() },
+				TRAIT_MAPPER);
 	}
 
 }
