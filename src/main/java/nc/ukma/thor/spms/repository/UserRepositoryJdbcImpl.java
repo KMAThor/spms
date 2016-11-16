@@ -120,7 +120,11 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			user.setLastName(rs.getString("last_name"));
 			user.setPassword(rs.getString("password"));
 			user.setActive(rs.getBoolean("is_active"));
-			user.setRole(new Role(rs.getShort("role_id"), rs.getString("role")));
+			
+			Role role = Role.valueOf(rs.getString("role").toUpperCase());
+			role.setId(rs.getShort("role_id"));
+			user.setRole(role);
+			
 			String linkToPhoto = rs.getString("photo_scope");
 			if (!rs.wasNull())
 				user.setLinkToPhoto(linkToPhoto);

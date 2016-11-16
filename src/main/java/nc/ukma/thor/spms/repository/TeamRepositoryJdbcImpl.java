@@ -17,6 +17,7 @@ import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Status;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.entity.UserStatus;
 
 @Repository
 public class TeamRepositoryJdbcImpl implements TeamRepository{
@@ -31,13 +32,17 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 	private static final String GET_TEAMS_BY_PROJECT_SQL = "SELECT * FROM team WHERE project_id = ?;";
 	private static final String ADD_USER_TO_TEAM_SQL = "INSERT INTO user_team (user_id, team_id) VALUES (?,?);";
 	private static final String DELETE_USER_FROM_TEAM_SQL = "DELETE FROM user_team WHERE user_id=? AND team_id=?;";
-	private static final String GET_USER_STATUS_IN_TEAM_SQL = "SELECT * FROM user_team WHERE user_id=? AND team_id=?;";
-	private static final String CHANGE_USER_STATUS_IN_TEAM_SQL = "UPDATE user_team SET status_id=?, comment=? "
+	
+	private static final String GET_USER_STATUS_IN_TEAM_SQL = "SELECT * FROM user_team "
+			+ "INNER JOIN status ON user_team.status_id = status.id "
+			+ "WHERE user_id=? AND team_id=?;";
+	private static final String CHANGE_USER_STATUS_IN_TEAM_SQL = "UPDATE user_team "
+			+ "SET status_id=(SELECT id FROM status WHERE name=?), comment=? "
 			+ "WHERE user_id=? AND team_id=?;";
 	
 	
 	private static final RowMapper<Team> TEAM_MAPPER = new TeamMapper();
-	private static final RowMapper<Status> STATUS_MAPPER = new StatusMapper();
+	private static final RowMapper<UserStatus> STATUS_MAPPER = new UserStatusMapper();
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -97,7 +102,7 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 	}
 	
 	@Override
-	public Status getUserStatusInTeam(Long userId, Long teamId) {
+	public UserStatus getUserStatusInTeam(Long userId, Long teamId) {
 		try{
 			return jdbcTemplate.queryForObject(GET_USER_STATUS_IN_TEAM_SQL, new Object[]{userId, teamId},
 					STATUS_MAPPER);
@@ -107,9 +112,9 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 	}
 
 	@Override
-	public void changeUserStatusInTeam(Long userId, Long teamId, Status status) {
+	public void changeUserStatusInTeam(Long userId, Long teamId, UserStatus userStatus) {
 		jdbcTemplate.update(CHANGE_USER_STATUS_IN_TEAM_SQL,
-				new Object[]{status.getId(), status.getComment(), userId, teamId});
+				new Object[]{ userStatus.getStatus().getName(), userStatus.getComment(), userId, teamId});
 	}
 	
 	private static final class TeamMapper implements RowMapper<Team>{
@@ -123,13 +128,14 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 		}
 	}
 	
-	private static final class StatusMapper implements RowMapper<Status>{
+	private static final class UserStatusMapper implements RowMapper<UserStatus>{
 		@Override
-		public Status mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Status status = new Status();
+		public UserStatus mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Status status = Status.valueOf(rs.getString("name").toUpperCase());
 			status.setId(rs.getShort("status_id"));
-			status.setComment(rs.getString("comment"));
-			return status;
+			
+			UserStatus userStatus = new UserStatus(status, rs.getString("comment"));
+			return userStatus;
 		}
 	}	
 }

@@ -1,18 +1,13 @@
 package nc.ukma.thor.spms.entity;
 
-public class Role {
+public enum Role {
+	
+	ADMIN("admin"), MENTOR("mentor"), HR("hr"), STUDENT("student");
 	
 	private Short id;
 	private String name;
 	
-	public Role() {}
-
-	public Role(Short id) {
-		this.id = id;
-	}
-
-	public Role(Short id, String name) {
-		this.id = id;
+	private Role(String name) {
 		this.name = name;
 	}
 
@@ -37,5 +32,4 @@ public class Role {
 		return "Role [id=" + id + ", name=" + name + "]";
 	}
 	
-	public static enum Roles { ADMIN, MENTOR, HR, STUDENT};
 }

@@ -8,7 +8,7 @@ public class Team {
 	private Long id;
 	private String name;
 	private Project project;
-	private Map<User, Status> members;
+	private Map<User, UserStatus> members;
 	private List<Meeting> meetings;
 	
 	public Team() {}
@@ -46,11 +46,11 @@ public class Team {
 		this.project = project;
 	}
 
-	public Map<User, Status> getMembers() {
+	public Map<User, UserStatus> getMembers() {
 		return members;
 	}
 
-	public void setMembers(Map<User, Status> members) {
+	public void setMembers(Map<User, UserStatus> members) {
 		this.members = members;
 	}
 

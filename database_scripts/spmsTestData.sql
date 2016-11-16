@@ -143,9 +143,9 @@ INSERT INTO user_role VALUES(24,3);
 
 /*status*/
 INSERT INTO status VALUES (0,'active');
-INSERT INTO status VALUES (1,'inactive');
-INSERT INTO status VALUES (2,'interview was scheduled');
-INSERT INTO status VALUES (3,'got job offer');
+INSERT INTO status VALUES (1,'left_project');
+INSERT INTO status VALUES (2,'interview_was_scheduled');
+INSERT INTO status VALUES (3,'got_job_offer');
 
 /*prject*/
 INSERT INTO project VALUES (4, 'KMA 2016',

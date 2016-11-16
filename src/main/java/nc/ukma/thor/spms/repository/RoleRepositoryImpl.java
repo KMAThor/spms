@@ -65,9 +65,8 @@ public class RoleRepositoryImpl implements RoleRepository{
 	private static final class RoleMapper implements RowMapper<Role>{
 		@Override
 		public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Role role = new Role();
+			Role role = Role.valueOf(rs.getString("role").toUpperCase());
 			role.setId(rs.getShort("id"));
-			role.setName(rs.getString("role"));
 			return role;
 		}
 	}

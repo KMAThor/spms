@@ -16,6 +16,7 @@ import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.entity.UserStatus;
 import nc.ukma.thor.spms.repository.MeetingRepository;
 import nc.ukma.thor.spms.repository.ProjectRepository;
 import nc.ukma.thor.spms.repository.TeamRepository;
@@ -88,7 +89,7 @@ public class RepositoriesTestController {
 		
 		System.out.println("Get user status in this team:" + teamRepository.getUserStatusInTeam(user, team));
 		System.out.println("Change user in this team.");
-		teamRepository.changeUserStatusInTeam(user, team, new Status((short) 0, "new status for this guy"));
+		teamRepository.changeUserStatusInTeam(user, team, new UserStatus(Status.ACTIVE, "new status for this guy"));
 		System.out.println("Get user status in this team:" + teamRepository.getUserStatusInTeam(user, team));
 		
 		System.out.println("Delete user from team.");
