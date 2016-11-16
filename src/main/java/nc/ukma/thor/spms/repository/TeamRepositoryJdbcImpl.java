@@ -65,7 +65,7 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 	}
 
 	@Override
-	public Team getById(long id) {
+	public Team getById(Long id) {
 		try{
 			return jdbcTemplate.queryForObject(GET_TEAM_BY_ID_SQL,
 					new Object[] {id}, TEAM_MAPPER);
@@ -75,31 +75,31 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 	}
 	
 	@Override
-	public List<Team> getTeamsByUser(User user) {
+	public List<Team> getTeamsByUser(Long userId) {
 		return jdbcTemplate.query(GET_TEAMS_BY_USER_SQL,
-				new Object[] { user.getId() }, TEAM_MAPPER);
+				new Object[] { userId }, TEAM_MAPPER);
 	}
 
 	@Override
-	public List<Team> getTeamsByProject(Project project) {
+	public List<Team> getTeamsByProject(Long projectId) {
 		return jdbcTemplate.query(GET_TEAMS_BY_PROJECT_SQL,
-					new Object[] { project.getId() }, TEAM_MAPPER);
+					new Object[] { projectId }, TEAM_MAPPER);
 	}
 	
 	@Override
-	public void addUserToTeam(User user, Team team) {
-		jdbcTemplate.update(ADD_USER_TO_TEAM_SQL, user.getId(), team.getId());
+	public void addUserToTeam(Long userId, Long teamId) {
+		jdbcTemplate.update(ADD_USER_TO_TEAM_SQL, userId, teamId);
 	}
 
 	@Override
-	public void deleteUserFromTeam(User user, Team team) {
-		jdbcTemplate.update(DELETE_USER_FROM_TEAM_SQL, user.getId(), team.getId());
+	public void deleteUserFromTeam(Long userId, Long teamId) {
+		jdbcTemplate.update(DELETE_USER_FROM_TEAM_SQL, userId, teamId);
 	}
 	
 	@Override
-	public Status getUserStatusInTeam(User user, Team team) {
+	public Status getUserStatusInTeam(Long userId, Long teamId) {
 		try{
-			return jdbcTemplate.queryForObject(GET_USER_STATUS_IN_TEAM_SQL, new Object[]{user.getId(), team.getId()},
+			return jdbcTemplate.queryForObject(GET_USER_STATUS_IN_TEAM_SQL, new Object[]{userId, teamId},
 					STATUS_MAPPER);
 		}catch(EmptyResultDataAccessException e){
 			return null;
@@ -107,9 +107,9 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 	}
 
 	@Override
-	public void changeUserStatusInTeam(User user, Team team, Status status) {
+	public void changeUserStatusInTeam(Long userId, Long teamId, Status status) {
 		jdbcTemplate.update(CHANGE_USER_STATUS_IN_TEAM_SQL,
-				new Object[]{status.getId(), status.getComment(), user.getId(), team.getId()});
+				new Object[]{status.getId(), status.getComment(), userId, teamId});
 	}
 	
 	private static final class TeamMapper implements RowMapper<Team>{

@@ -2,7 +2,7 @@ package nc.ukma.thor.spms.entity;
 
 public class TraitFeedback {
 	
-	private long id;
+	private Long id;
 	private int score;
 	private String comment;
 	private Trait trait;
@@ -15,11 +15,11 @@ public class TraitFeedback {
 		this.trait = trait;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -14,7 +14,7 @@ public class User{
 	
 	public User() {}
 
-	public User(long id) {
+	public User(Long id) {
 		this.id = id;
 	}
 

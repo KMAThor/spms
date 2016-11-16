@@ -7,8 +7,12 @@ import nc.ukma.thor.spms.entity.User;
 
 public interface RoleRepository {
 	
-	Role getRoleById(long id);
-	Role getRoleByName(String name);
-	Role getRoleByUser(User user);
-	List<Role> getAllRoles();
+	public Role getRoleById(Long id);
+	public Role getRoleByName(String name);
+	public Role getRoleByUser(Long userId);
+	public List<Role> getAllRoles();
+	
+	public default Role getRoleByUser(User user){
+		return getRoleByUser(user.getId());
+	}
 }

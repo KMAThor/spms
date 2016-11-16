@@ -6,5 +6,5 @@ public interface MyRepository<T> {
 	public void update(T entity);
 	public void delete(T entity);
 	
-	public T getById(long entity);
+	public T getById(Long entity);
 }

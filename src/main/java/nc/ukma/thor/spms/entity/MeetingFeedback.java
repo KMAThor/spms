@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MeetingFeedback {
 	
-	private long id;
+	private Long id;
 	private String summary;
 	private User student;
 	private User author;
@@ -17,11 +17,11 @@ public class MeetingFeedback {
 	
 	public MeetingFeedback() {}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

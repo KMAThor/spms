@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Meeting {
 	
-	private long id;
+	private Long id;
 	private String topic;
 	private Timestamp startDate;
 	private Team team;
@@ -14,7 +14,7 @@ public class Meeting {
 	
 	public Meeting() {}
 	
-	public Meeting(int id) {
+	public Meeting(Long id) {
 		this.id = id;
 	}
 
@@ -24,11 +24,11 @@ public class Meeting {
 		this.team = team;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

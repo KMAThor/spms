@@ -80,8 +80,54 @@
 			<h2>Files
 			<security:authorize access="hasAnyAuthority('admin','mentor')">
 				<button type="button" class="btn btn-success"
-					data-toggle="modal" data-target="#addFileToProjectModal">
-					<i class="fa fa-plus-circle" aria-hidden="true"></i><div class="row">
+					data-toggle="modal" data-target="#addFileToProjectModal" onclick="toggleFileDialog();">
+					<i class="fa fa-plus-circle" aria-hidden="true"></i>
+						Add file
+						
+				</button>
+			</security:authorize>
+				<form name="upload" id="add-file" style="display:none">
+					<input type="file" name="myfile" id="exampleInputFile"> 
+					<button type="submit" class="btn btn-default">Submit</button>
+					<div id="log">Progress</div>
+				</form>
+			</h2>
+		
+		</div>
+		<script>
+    function log(html) {
+      document.getElementById('log').innerHTML = html;
+    }
+
+    document.forms.upload.onsubmit = function() {
+      var file = this.elements.myfile.files[0];
+      if (file) {
+        upload(file);
+      }
+      return false;
+    }
+
+
+    function upload(file) {
+      var xhr = new XMLHttpRequest();
+      xhr.onload = xhr.onerror = function() {
+        if (this.status == 200) {
+          log("success");
+        } else {
+          log("error " + this.status);
+        }
+      };
+      xhr.upload.onprogress = function(event) {
+        log(event.loaded + ' / ' + event.total);
+      }
+
+      xhr.open("POST", "upload", true);
+      xhr.send(file);
+
+    }
+  </script>
+	</div>
+<div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h1>${project.name}
 			<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
@@ -366,7 +412,6 @@
 	    </div>
 	  </div>
 	</div>
-
 
 <!-- createTeamModal -->
 <div class="modal fade" id="createTeamModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

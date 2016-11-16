@@ -2,17 +2,17 @@ package nc.ukma.thor.spms.entity;
 
 public class File {
 	
-	private long id;
+	private Long id;
 	private String path;
 	private Project project;
 	
 	public File() {}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

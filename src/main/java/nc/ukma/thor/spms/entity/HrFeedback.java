@@ -4,7 +4,7 @@ import java.util.List;
 
 public class HrFeedback {
 	
-	private long id;
+	private Long id;
 	private String topic;
 	private String summary;
 	private User student;
@@ -14,11 +14,11 @@ public class HrFeedback {
 	
 	public HrFeedback() {};
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

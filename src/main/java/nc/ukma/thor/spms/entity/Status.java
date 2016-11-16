@@ -2,25 +2,25 @@ package nc.ukma.thor.spms.entity;
 
 public class Status {
 	
-	private short id;
+	private Short id;
 	private String status;
 	private String comment;
 	
 	public Status() {}
 	
-	public Status(short id){
+	public Status(Short id){
 		this.id = id;
 	}
 	
-	public Status(short id, String comment) {
+	public Status(Short id, String comment) {
 		this.id = id;
 		this.comment = comment;
 	}
 
-	public short getId() {
+	public Short getId() {
 		return id;
 	}
-	public void setId(short id) {
+	public void setId(Short id) {
 		this.id = id;
 	}
 	public String getStatus() {

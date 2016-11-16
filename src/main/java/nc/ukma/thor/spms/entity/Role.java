@@ -2,26 +2,26 @@ package nc.ukma.thor.spms.entity;
 
 public class Role {
 	
-	private short id;
+	private Short id;
 	private String name;
 	
 	public Role() {}
 
-	public Role(short id) {
+	public Role(Short id) {
 		this.id = id;
 	}
 
-	public Role(short id, String name) {
+	public Role(Short id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
-	public long getId() {
+	public Short getId() {
 		return id;
 	}
 
-	public void setId(long id) {
-		this.id = (short) id;
+	public void setId(Short id) {
+		this.id = id;
 	}
 
 	public String getName() {

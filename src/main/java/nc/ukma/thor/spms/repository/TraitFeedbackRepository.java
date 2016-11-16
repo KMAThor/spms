@@ -6,7 +6,7 @@ import nc.ukma.thor.spms.entity.TraitFeedback;
 
 public interface TraitFeedbackRepository extends MyRepository<TraitFeedback>{
 	
-	public void add(TraitFeedback tf, long appendedToId);
+	public void add(TraitFeedback tf, Long appendedToId);
 
-	public List<TraitFeedback> getAllAppendedTo(long id);
+	public List<TraitFeedback> getAllAppendedTo(Long id);
 }

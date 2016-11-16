@@ -25,7 +25,7 @@ public class FileRepositoryJdbcImpl implements FileRepository {
     }
 
     @Override
-    public File getById(long entity) {
+    public File getById(Long id) {
         return null;
     }
 
