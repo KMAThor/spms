@@ -19,9 +19,10 @@ public interface ProjectService extends Service<Project>{
     List<Team> getAllTeams(long projectId);
 
     // file functionality at the project
-    boolean uploadFile(long projectId, File file);
-    boolean deleteFile(long projectId, long fileId);
-    File getFile(long projectId, long  fileId);
+    boolean uploadFile(File file);
+    boolean deleteFile(File file);
+    File getFile(long  fileId);
+    List<File> getAllFiles(long  projectId);
 
     // traits
     boolean setTraits(long projectId, List<Trait> traits);

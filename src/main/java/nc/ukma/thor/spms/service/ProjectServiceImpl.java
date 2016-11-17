@@ -75,29 +75,27 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
     }
 
     @Override
-    public boolean uploadFile(long projectId, File file) {
+    public boolean uploadFile(File file) {
 
-        projectRepository.uploadFile(projectRepository.getById(projectId), file);
+        fileRepository.add(file);
         return true;
     }
 
     @Override
-    public boolean deleteFile(long projectId, long fileId) {
+    public boolean deleteFile(File file) {
 
-        projectRepository.deleteFile(projectRepository.getById(projectId), fileId);
+        fileRepository.delete(file);
         return true;
     }
 
     @Override
-    public File getFile(long projectId, long fileId) {
-
-        List<File> files = fileRepository.getFilesByProject(projectRepository.getById(projectId));
-        for (File file: files){
-            if(file.getId() == fileId){
-                return file;
-            }
-        }
-        return null;
+    public File getFile(long fileId) {
+        return fileRepository.getById(fileId);
+    }
+    
+    @Override
+    public List<File> getAllFiles(long projectId) {
+        return fileRepository.getFilesByProject(projectId);
     }
 
     @Override

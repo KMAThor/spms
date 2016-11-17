@@ -34,6 +34,4 @@ public interface ProjectRepository extends MyRepository<Project>{
     // need to implement
     void setChiefUser(User chief, Project project);
     void deleteChiefUser(Project project);
-    void uploadFile(Project project, File file);
-    void deleteFile(Project project, long fileId);
 }
