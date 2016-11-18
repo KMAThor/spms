@@ -5,7 +5,6 @@ import nc.ukma.thor.spms.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -16,9 +15,6 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 
     @Autowired
     private TeamRepository teamRepository;
-
-    @Autowired
-    private FileRepository fileRepository;
 
     @Autowired
     private TraitRepository traitRepository;
@@ -72,32 +68,6 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
     public List<Team> getAllTeams(long projectId) {
 
         return teamRepository.getTeamsByProject(projectRepository.getById(projectId));
-    }
-
-    @Override
-    public boolean uploadFile(long projectId, File file) {
-
-        projectRepository.uploadFile(projectRepository.getById(projectId), file);
-        return true;
-    }
-
-    @Override
-    public boolean deleteFile(long projectId, long fileId) {
-
-        projectRepository.deleteFile(projectRepository.getById(projectId), fileId);
-        return true;
-    }
-
-    @Override
-    public File getFile(long projectId, long fileId) {
-
-        List<File> files = fileRepository.getFilesByProject(projectRepository.getById(projectId));
-        for (File file: files){
-            if(file.getId() == fileId){
-                return file;
-            }
-        }
-        return null;
     }
 
     @Override

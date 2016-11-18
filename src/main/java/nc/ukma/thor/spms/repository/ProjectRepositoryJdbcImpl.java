@@ -149,15 +149,6 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	}
 
 	@Override
-	public void uploadFile(Project project, File file) {
-	}
-
-	@Override
-	public void deleteFile(Project project, long fileId) {
-
-	}
-
-	@Override
 	public List<Project> getAllActiveProjects() {
 		return jdbcTemplate.query(GET_ALL_ACTIVE_PROJECTS_SQL, PROJECT_MAPPER);
 	}
