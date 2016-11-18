@@ -419,23 +419,24 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Create Team</h4>
 			</div>
-			<form name="createTeamForm" id="createTeamForm" onsubmit="onSubmitCreateTeamForm();"
-				  action="/spms/${project.id}/create/team/" method="post">
+			<form>
 				<div class="modal-body">
 
 					<div class="form-group">
 						<label for="name">Team name:</label>
+						<input type="hidden" name="project_id" id="project_id" value="${project.id}">
 						<input type="text" class="form-control" name="name" id="newTeamName" placeholder="Enter new team name" required>
 					</div>
 
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<button type="submit" value="Submit" class="btn btn-primary" >Create</button>
+					<button type="button" class="btn btn-warning" onclick="createTeam();">Create</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+
 <%@include file="traitManagerModals.jsp"%>
 <%@include file="footer.jsp"%>

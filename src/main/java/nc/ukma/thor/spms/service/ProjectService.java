@@ -2,7 +2,6 @@ package nc.ukma.thor.spms.service;
 
 import nc.ukma.thor.spms.entity.*;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 public interface ProjectService extends Service<Project>{
@@ -17,12 +16,6 @@ public interface ProjectService extends Service<Project>{
 
     Team getTeam(long projectId, long teamId);
     List<Team> getAllTeams(long projectId);
-
-    // file functionality at the project
-    boolean uploadFile(File file);
-    boolean deleteFile(File file);
-    File getFile(long  fileId);
-    List<File> getAllFiles(long  projectId);
 
     // traits
     boolean setTraits(long projectId, List<Trait> traits);
