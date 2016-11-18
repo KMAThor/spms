@@ -30,9 +30,10 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 	private static final String GET_TRAITS_BY_TRAITCATEGORY_AND_PROJECT_SQL = "SELECT * FROM trait "
 			+ "INNER JOIN trait_project ON trait.id=trait_project.trait_id "
 			+ "WHERE category_id=? AND project_id=?;";
+
 	private static final String GET_TRAITS_BY_TRAITCATEGORY_AND_NOT_FROM_PROJECT_SQL = "SELECT * FROM trait "
-			+ "LEFT JOIN trait_project ON trait.id=trait_project.trait_id "
-			+ "WHERE category_id=? AND (project_id!=? OR project_id IS NULL);";
+			+ "WHERE category_id=? AND NOT EXISTS (SELECT * FROM trait_project "
+												+ "WHERE trait_id = trait.id AND project_id=?);";
 	
 	private static final RowMapper<Trait> TRAIT_MAPPER = new TraitMapper();
 	

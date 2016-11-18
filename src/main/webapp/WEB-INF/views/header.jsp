@@ -39,7 +39,6 @@
 	<!-- CSS -->
 	<link href="/spms/resources/css/styles.css" type="text/css" rel="stylesheet">
 	
-	
 	<script src="/spms/resources/js/main.js"></script>
 </head>
 

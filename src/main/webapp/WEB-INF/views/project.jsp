@@ -318,22 +318,21 @@
 </div>
 
 
-	<!-- projectTraitsManagerModal -->
-	<div class="modal fade" id="projectTraitsManagerModal" tabindex="-1" role="dialog">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Project Traits Manager
-	       
-		      
-			</h4>
-	      </div>
-	      
-	       <div class="modal-body">
-	        <div id="categoriesPanelGroup" class="panel-group">
-				<c:forEach var="traitCategory" items="${traitCategories}">
-				  	<div id="category-${traitCategory.id}" class="panel panel-default" >
+<!-- projectTraitsManagerModal -->
+<div class="modal fade" id="projectTraitsManagerModal" tabindex="-1" role="dialog">
+  	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+     		<div class="modal-header">
+     			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+        		<h4 class="modal-title" id="myModalLabel">Project Traits Manager</h4>
+      		</div>
+      
+       		<div class="modal-body">
+        		<div id="categoriesPanelGroup" class="panel-group">
+					<c:forEach var="traitCategory" items="${traitCategories}">
+			  		<div id="category-${traitCategory.id}" class="panel panel-default" >
 					    <div class="panel-heading clickable" data-toggle="collapse" href="#category-${traitCategory.id}-traits">
 					    	<div class="row">
 								<div class="col-sm-7">
@@ -358,76 +357,54 @@
 							</div>  
 				    	</div>
 
-					    <div id="category-${traitCategory.id}-traits" class="panel-collapse collapse in">
-					    	<c:forEach var="trait" items="${traitCategory.traits}">
-								<ul id="trait-${trait.id}" class="list-group traits-list">
-									<li class="list-group-item">
-										<div class="row">
-											<div class="col-sm-9">
-												<p id="trait-${trait.id}-name">
-												<input type="checkbox"
-													onchange="traitCheckboxAction(this,${trait.id},${project.id})" 
-													<c:set var="contains" value="false" />
-													<c:forEach var="item" items="${traitsAssociatedWithProject}">
-													  <c:if test="${item.id eq trait.id}">
-													    <c:set var="contains" value="true" />
-													    <c:out value="checked"/>
-													  </c:if>
-													</c:forEach>
-												/>
-													${trait.name}
-												</p>
-											</div>
-											<!--<c:if test="${contains}">
-												    		<c:out value="checked"/>
-												  		</c:if>
-
-
-											<div class="col-sm-3 text-right" >
-										      	<div class="btn-group btn-group-xs" role="group" aria-label="..."  >
-												  <button type="button" class="btn btn-warning"
-												  		  data-toggle="modal" data-target="#editTraitModal"
-												  		  onclick="editTrait(${trait.id}, '${trait.name}', ${traitCategory.id});">
-												  	<i class="fa fa-pencil" aria-hidden="true"></i>
-												  	Edit
-												  </button>
-												  <button type="button" class="btn btn-danger"
-												  		  onclick="deleteTrait(${trait.id});">
-												  	<i class="fa fa-trash" aria-hidden="true"></i>
-												  	Delete
-												  	</button>
-												</div>
-											</div>-->
+				    	<div id="category-${traitCategory.id}-traits" class="panel-collapse collapse in">
+				    		<c:forEach var="trait" items="${traitCategory.traits}">
+							<ul id="trait-${trait.id}" class="list-group traits-list">
+								<li class="list-group-item">
+									<div class="row">
+										<div class="col-sm-9">
+											<p id="trait-${trait.id}-name">
+											<input type="checkbox"
+												onchange="traitCheckboxAction(this,${trait.id},${project.id})" 
+												<c:set var="contains" value="false" />
+												<c:forEach var="item" items="${traitsAssociatedWithProject}">
+												  <c:if test="${item.id eq trait.id}">
+												    <c:set var="contains" value="true" />
+												    <c:out value="checked"/>
+												  </c:if>
+												</c:forEach>
+											/>
+												${trait.name}
+											</p>
 										</div>
-									</li>
-						      	</ul>
-					   		</c:forEach>
-					  	</div>
+									</div>
+								</li>
+					      	</ul>
+				   			</c:forEach>
+				  		</div>
 					</div>
-				</c:forEach>
-			</div>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+					</c:forEach>
+				</div>
+      		</div>
+    	</div>
+ 	</div>
+</div>
 
 <!-- createTeamModal -->
 <div class="modal fade" id="createTeamModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Create Team</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
 			<form name="createTeamForm" id="createTeamForm" onsubmit="onSubmitCreateTeamForm();"
 				  action="/spms/${project.id}/create/team/" method="post">
 				<div class="modal-body">
-
 					<div class="form-group">
 						<label for="name">Team name:</label>
 						<input type="text" class="form-control" name="name" id="newTeamName" placeholder="Enter new team name" required>
 					</div>
-
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -437,5 +414,6 @@
 		</div>
 	</div>
 </div>
-<%@include file="traitManagerModals.jsp"%>
+
+<%@include file="commonModalPopUps.jsp"%>
 <%@include file="footer.jsp"%>

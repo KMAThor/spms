@@ -90,7 +90,6 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 			return null;
 		}
 	}
-
 	
 	@Override
 	public List<TraitCategory> getAllCategoriesWithTraits() {
@@ -98,6 +97,13 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 		return TRAITCATEGORIS_WITH_TRAITS_MAPPER.mapRows(rows);
 	}
 	
+	@Override
+	public List<TraitCategory> getAllCategoriesWithTraitsByProject(Long projectId) {
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_ALL_TRAITCATEGORIS_WITH_TRAITS_BY_PROJECT_SQL, 
+				new Object[] { projectId });
+		return TRAITCATEGORIS_WITH_TRAITS_MAPPER.mapRows(rows);
+	}
+
 	private static final class TraitCategoryMapper implements RowMapper<TraitCategory>{
 		@Override
 		public TraitCategory mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -132,13 +138,5 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 			return traitCategories;
 		}
 	}
-
-	@Override
-	public List<TraitCategory> getAllCategoriesWithTraitsByProject(Long projectId) {
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_ALL_TRAITCATEGORIS_WITH_TRAITS_BY_PROJECT_SQL, 
-				new Object[] { projectId });
-		return TRAITCATEGORIS_WITH_TRAITS_MAPPER.mapRows(rows);
-	}
-
 	
 }
