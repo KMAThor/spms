@@ -9,10 +9,11 @@ public class TraitFeedback {
 	
 	public TraitFeedback() {}
 	
-	public TraitFeedback(short score, String comment, Trait trait) {
+	
+	public TraitFeedback(short score, String comment, Long traitId) {
 		this.score = score;
 		this.comment = comment;
-		this.trait = trait;
+		this.trait = new Trait(traitId);
 	}
 
 	public TraitFeedback(Long id, short score, String comment, Long traitId) {

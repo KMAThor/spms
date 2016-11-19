@@ -24,4 +24,14 @@ public class TraitCategoryServiceImpl extends AbstractService<TraitCategory> imp
 		return traitRepository.getAllCategoriesWithTraits();
 	}
 
+	@Override
+	public List<TraitCategory> getAllCategoriesWithTraitsByProject(long projectId) {
+		return traitRepository.getAllCategoriesWithTraitsByProject(projectId);
+	}
+
+	@Override
+	public List<TraitCategory> getAllCategoriesWithTraitsByMeeting(long meetingId) {
+		return traitRepository.getAllCategoriesWithTraitsByMeeting(meetingId);
+	}
+
 }

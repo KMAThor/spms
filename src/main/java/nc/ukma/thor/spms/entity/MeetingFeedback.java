@@ -19,6 +19,10 @@ public class MeetingFeedback {
 	
 	public MeetingFeedback() {}
 	
+	public MeetingFeedback(Long id) {
+		this.id = id;
+	}
+	
 	public MeetingFeedback(String summary, Long studentId, Long meetingId, Long authorId) {
 		this.summary = summary;
 		this.meeting = new Meeting(meetingId);
@@ -32,6 +36,21 @@ public class MeetingFeedback {
 		this.meeting = new Meeting(meetingId);
 		this.student = new User(studentId);
 		this.author = new User(authorId);
+	}
+
+	public MeetingFeedback(String summary, Long studentId, Long meetingId, User user) {
+		this.summary = summary;
+		this.meeting = new Meeting(meetingId);
+		this.student = new User(studentId);
+		this.author = user;
+	}
+	
+	public MeetingFeedback(Long id, String summary, Long studentId, Long meetingId, User user) {
+		this.id = id;
+		this.summary = summary;
+		this.meeting = new Meeting(meetingId);
+		this.student = new User(studentId);
+		this.author = user;
 	}
 
 	public Long getId() {

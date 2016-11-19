@@ -212,7 +212,7 @@ public class RepositoriesTestController {
 	@RequestMapping(value="meetingFeedback", method = RequestMethod.GET)
 	public String testMeetingFeedbackRepository() {
 		MeetingFeedback meetingFeedback = new MeetingFeedback("some summary", (long) 4, (long) 6, (long) 4); 
-		meetingFeedback.addTraitFeedback(new TraitFeedback((short) 5,"good", new Trait( (long) 21)));
+		meetingFeedback.addTraitFeedback(new TraitFeedback((short) 5,"good", (long) 21));
 		System.out.println("Add meeting feedback:" + meetingFeedback);
 		meetingFeedbackRepository.add(meetingFeedback);
 		System.out.println("Get meeting feedback by id:" + meetingFeedbackRepository.getById(meetingFeedback.getId()));
