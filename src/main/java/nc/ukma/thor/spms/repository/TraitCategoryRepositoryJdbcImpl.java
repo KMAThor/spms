@@ -34,7 +34,7 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 			+ "trait_category.id AS trait_category_id, trait_category.name AS trait_category_name, "
 			+ "trait.id AS trait_id, trait.name AS trait_name FROM trait_category "
 			+ "LEFT JOIN trait ON trait_category.id = trait.category_id "
-			+ "ORDER BY trait_category_id;";
+			+ "ORDER BY trait_category_id, trait_id;";
 	
 	private static final String GET_ALL_TRAITCATEGORIS_WITH_TRAITS_BY_PROJECT_SQL = "SELECT "
 			+ "trait_category.id AS trait_category_id, trait_category.name AS trait_category_name, "
@@ -42,7 +42,7 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 			+ "INNER JOIN trait ON trait_category.id = trait.category_id "
 			+ "INNER JOIN trait_project ON trait.id=trait_project.trait_id "
 			+ "WHERE trait_project.project_id = ? "
-			+ "ORDER BY trait_category_id;";
+			+ "ORDER BY trait_category_id, trait_id;";
 	
 	private static final RowMapper<TraitCategory> TRAITCATEGORY_MAPPER = new TraitCategoryMapper();
 	private static final TraitCategoriesWithTraitsMapper TRAITCATEGORIS_WITH_TRAITS_MAPPER = new TraitCategoriesWithTraitsMapper();

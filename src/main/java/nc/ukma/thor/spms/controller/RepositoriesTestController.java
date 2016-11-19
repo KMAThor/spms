@@ -8,15 +8,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import nc.ukma.thor.spms.entity.Meeting;
+import nc.ukma.thor.spms.entity.MeetingFeedback;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Status;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
+import nc.ukma.thor.spms.entity.TraitFeedback;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.entity.UserStatus;
+import nc.ukma.thor.spms.repository.MeetingFeedbackRepository;
 import nc.ukma.thor.spms.repository.MeetingRepository;
 import nc.ukma.thor.spms.repository.ProjectRepository;
 import nc.ukma.thor.spms.repository.TeamRepository;
@@ -43,6 +47,8 @@ public class RepositoriesTestController {
 	private TraitRepository traitRepository;
 	@Autowired
 	private TraitCategoryRepository traitCategoryRepository;
+	@Autowired
+	private MeetingFeedbackRepository meetingFeedbackRepository;
 	
 	@RequestMapping(value="project", method = RequestMethod.GET)
     public String testProjectRepository(ModelMap model) {
@@ -201,5 +207,27 @@ public class RepositoriesTestController {
 				+ traitCategoryRepository.getAllCategoriesWithTraits());
 		
 		return "authentication";
+	}
+	@ResponseBody
+	@RequestMapping(value="meetingFeedback", method = RequestMethod.GET)
+	public String testMeetingFeedbackRepository() {
+		MeetingFeedback meetingFeedback = new MeetingFeedback("some summary", (long) 4, (long) 6, (long) 4); 
+		meetingFeedback.addTraitFeedback(new TraitFeedback((short) 5,"good", new Trait( (long) 21)));
+		System.out.println("Add meeting feedback:" + meetingFeedback);
+		meetingFeedbackRepository.add(meetingFeedback);
+		System.out.println("Get meeting feedback by id:" + meetingFeedbackRepository.getById(meetingFeedback.getId()));
+		
+		meetingFeedback = meetingFeedbackRepository.getById(meetingFeedback.getId());
+		System.out.println("Update meeting feedback");
+		meetingFeedback.setSummary("new summary");
+		meetingFeedback.getTraitFeedbacks().get(0).setComment("super good");
+		meetingFeedbackRepository.update(meetingFeedback);
+		System.out.println("Get meeting feedback by id:" + meetingFeedbackRepository.getById(meetingFeedback.getId()));
+		
+		System.out.println("Delete meeting feedback:" + meetingFeedback);
+		meetingFeedbackRepository.delete(meetingFeedback);
+		System.out.println("Get meeting feedback by id:" + meetingFeedbackRepository.getById(meetingFeedback.getId()));
+		
+		return "ok";
 	}
 }

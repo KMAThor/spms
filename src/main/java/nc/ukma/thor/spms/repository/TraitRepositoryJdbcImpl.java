@@ -80,17 +80,6 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 				TRAIT_MAPPER);
 	}
 	
-	private static final class TraitMapper implements RowMapper<Trait>{
-		@Override
-		public Trait mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Trait trait = new Trait();
-			trait.setId(rs.getLong("id"));
-			trait.setName(rs.getString("name"));
-			trait.setTraitCategory(new TraitCategory(rs.getShort("category_id")));
-			return trait;
-		}
-	}
-
 	@Override
 	public List<Trait> getTraitsWithoutNamesByProject(Long projectId) {
 		return jdbcTemplate.query(GET_TRAITS_BY_PROJECT_SQL, new Object[] {projectId},
@@ -113,6 +102,17 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 		return jdbcTemplate.query(GET_TRAITS_BY_TRAITCATEGORY_AND_NOT_FROM_PROJECT_SQL,
 				new Object[] { traitCategoryId, projectId },
 				TRAIT_MAPPER);
+	}
+	
+	private static final class TraitMapper implements RowMapper<Trait>{
+		@Override
+		public Trait mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Trait trait = new Trait();
+			trait.setId(rs.getLong("id"));
+			trait.setName(rs.getString("name"));
+			trait.setTraitCategory(new TraitCategory(rs.getShort("category_id")));
+			return trait;
+		}
 	}
 
 }

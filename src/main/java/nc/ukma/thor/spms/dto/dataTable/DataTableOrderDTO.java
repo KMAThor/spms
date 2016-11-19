@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.dto.DataTable;
+package nc.ukma.thor.spms.dto.dataTable;
 
 import nc.ukma.thor.spms.util.SortingOrder;
 

@@ -1,9 +1,9 @@
 package nc.ukma.thor.spms.controller;
 
-import nc.ukma.thor.spms.dto.DataTable.DataTableRequestDTO;
-import nc.ukma.thor.spms.dto.DataTable.DataTableResponseDTO;
-import nc.ukma.thor.spms.dto.DataTable.ProjectTableDTO;
-import nc.ukma.thor.spms.dto.DataTable.UserTableDTO;
+import nc.ukma.thor.spms.dto.dataTable.DataTableRequestDTO;
+import nc.ukma.thor.spms.dto.dataTable.DataTableResponseDTO;
+import nc.ukma.thor.spms.dto.dataTable.ProjectTableDTO;
+import nc.ukma.thor.spms.dto.dataTable.UserTableDTO;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.Trait;

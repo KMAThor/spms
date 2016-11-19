@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import nc.ukma.thor.spms.dto.DataTable.DataTableOrderDTO;
-import nc.ukma.thor.spms.dto.DataTable.DataTableRequestDTO;
-import nc.ukma.thor.spms.dto.DataTable.DataTableResponseDTO;
-import nc.ukma.thor.spms.dto.DataTable.UserTableDTO;
+import nc.ukma.thor.spms.dto.dataTable.DataTableOrderDTO;
+import nc.ukma.thor.spms.dto.dataTable.DataTableRequestDTO;
+import nc.ukma.thor.spms.dto.dataTable.DataTableResponseDTO;
+import nc.ukma.thor.spms.dto.dataTable.UserTableDTO;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.UserRepository;
