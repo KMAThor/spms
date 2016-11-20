@@ -36,16 +36,11 @@ public class EmailSender {
 	    public static void sendScheduleChangesMassage(List<User> users, String newTime) {
 	        List<String> emails = users.stream().map((u) -> u.getEmail()).collect(Collectors.toList());
 
-	        String body = "<p>Meeting schedule changes</p> <p style=\"text-transform:none;\">New time: <b>";
+	        String body = "<p>Meeting schedule changes</p> New time: <b>";
 	        body += newTime;
 	        body += "</b></p>";   
 
 	        send(emails, "Meeting time has changed", body);
-	    }
-	    
-	    public static void sendEnvolvedMassage(List<User> users, String usersList) {
-	    	//
-	       
 	    }
 	    
 
@@ -54,8 +49,9 @@ public class EmailSender {
 			for(int user=0; user<= usersToNotify.size() - 1; user++){
 				userMails.add(usersToNotify.get(user).getEmail());
 			}
-			String body = "<p>Your NC students team name is</p>";
+			String body = "<p>Your NC students team name is: <b>";
 			body += teamName;
+			body += "</b></p>"; 
 			
 			send(userMails, "You Added to the team", body);
 		}
