@@ -227,7 +227,7 @@
 			</h2>
 			<c:forEach items="${teams}" var="team">
 					<h3>
-						<a href="<c:url value="/view/team/${team.id}/" />" class="btn btn-warning">${team.name}</a>
+						<a href="<c:url value="/team/view/${team.id}/" />" class="btn btn-warning">${team.name}</a>
 					</h3>
 			</c:forEach>
 		</div>

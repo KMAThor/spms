@@ -1,5 +1,6 @@
 package nc.ukma.thor.spms.service;
 
+import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.UserRepositoryJdbcImpl;
@@ -39,6 +40,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getMentors() {
 		return userRepo.getMentors();
+	}
+
+	@Override
+	public List<User> getUsersByMeeting(Meeting meeting) {
+		return userRepo.getUsersPresentAtMeeting(meeting);
 	}
 
 }

@@ -165,10 +165,10 @@ input[type=checkbox]{
 {
 	font-weight: 700;	
 }
-.modal-dialog{
+#projectTraitsManagerModal .modal-dialog{
     overflow-y: initial !important
 }
-.modal-body{
+#projectTraitsManagerModal .modal-body{
     height: 500px;
     overflow-y: auto;
 }

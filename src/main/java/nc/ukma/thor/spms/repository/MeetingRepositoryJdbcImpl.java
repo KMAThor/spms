@@ -21,7 +21,7 @@ import nc.ukma.thor.spms.entity.User;
 public class MeetingRepositoryJdbcImpl implements MeetingRepository{
 	
 	private static final String INSERT_MEETING_SQL = "INSERT INTO meeting (topic, start_date, team_id) VALUES(?,?,?);";
-	private static final String UPDATE_MEETING_SQL = "UPDATE meeting SET topic=?, start_date=?, team_id=? WHERE id = ?;";
+	private static final String UPDATE_MEETING_SQL = "UPDATE meeting SET topic=?, start_date=? WHERE id = ?;";
 	private static final String DELETE_MEETING_SQL = "DELETE FROM meeting WHERE id = ?;";
 	private static final String ADD_USER_TO_MEETING_SQL = "INSERT INTO presence (user_id, meeting_id) VALUES(?,?);";
 	private static final String DELETE_USER_FROM_MEETING_SQL = "DELETE FROM presence WHERE user_id=? AND meeting_id=?;";
@@ -50,7 +50,7 @@ public class MeetingRepositoryJdbcImpl implements MeetingRepository{
 	@Override
 	public void update(Meeting m) {
 		jdbcTemplate.update(UPDATE_MEETING_SQL,
-				new Object [] {m.getTopic(), m.getStartDate(), m.getTeam().getId(), m.getId()});	
+				new Object [] {m.getTopic(), m.getStartDate(), m.getId()});	
 	}
 
 	@Override
