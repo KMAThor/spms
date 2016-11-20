@@ -1,5 +1,8 @@
 package nc.ukma.thor.spms.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -7,7 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-
+import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.mail.EmailSender;
 import nc.ukma.thor.spms.service.ProjectService;
 
 @Controller
@@ -20,7 +24,7 @@ public class HelloWorldController {
     public String sayHello(ModelMap model) {
     	model.addAttribute("projects", projectService.getAllActiveProjects());
         model.addAttribute("greeting", "Hello World!");
-
+        
         return "index";
     }
     
@@ -31,7 +35,5 @@ public class HelloWorldController {
         model.addAttribute("greeting", "Hello World!");
 
         return "index";
-    }
-
-  
+    }  
 }
