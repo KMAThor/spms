@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
     	http.authorizeRequests().antMatchers("/resources/**").permitAll();
+    	http.authorizeRequests().antMatchers("/project/4/**").permitAll();
     	http
     		.csrf().disable()
 			.authorizeRequests()

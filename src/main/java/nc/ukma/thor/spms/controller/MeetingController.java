@@ -1,5 +1,8 @@
 package nc.ukma.thor.spms.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.Team;
+import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.mail.EmailSender;
+import nc.ukma.thor.spms.repository.UserRepository;
 import nc.ukma.thor.spms.service.MeetingService;
 import nc.ukma.thor.spms.service.TeamService;
 import nc.ukma.thor.spms.util.DateUtil;
@@ -32,6 +38,10 @@ public class MeetingController {
     	meeting.setTeam(team);
     	meetingService.create(meeting);
     	model.addAttribute("meeting", meeting);
+    	
+    	List<User> usersToNotify = new ArrayList<>(team.getMembers().keySet());
+		EmailSender.sendScheduleChangesMassage(usersToNotify, meeting.getStartDate().toString());	
+    	
         return "meeting";
     }
     

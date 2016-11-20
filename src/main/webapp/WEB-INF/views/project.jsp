@@ -98,7 +98,6 @@
     function log(html) {
       document.getElementById('log').innerHTML = html;
     }
-
     document.forms.upload.onsubmit = function() {
       var file = this.elements.myfile.files[0];
       if (file) {
@@ -106,8 +105,6 @@
       }
       return false;
     }
-
-
     function upload(file) {
       var xhr = new XMLHttpRequest();
       xhr.onload = xhr.onerror = function() {
@@ -120,10 +117,8 @@
       xhr.upload.onprogress = function(event) {
         log(event.loaded + ' / ' + event.total);
       }
-
       xhr.open("POST", "upload", true);
       xhr.send(file);
-
     }
   </script>
 	</div>
@@ -277,11 +272,9 @@
 						$(function () {
 							console.log(new Date('${project.startDate}'));
 							$('#datetimepicker6').datetimepicker();
-
 							$('#datetimepicker7').datetimepicker({
 								useCurrent: false //Important! See issue #1075
 							});
-
 							$("#datetimepicker6").on("dp.change", function (e) {
 								$('#datetimepicker7').data("DateTimePicker").minDate(e.date);
 							});
@@ -305,7 +298,6 @@
 							</ul>
 					</div>
 						<script type="text/javascript">
-
 						</script>
 				</div>
 				<div class="modal-footer">
@@ -381,8 +373,6 @@
 											<!--<c:if test="${contains}">
 												    		<c:out value="checked"/>
 												  		</c:if>
-
-
 											<div class="col-sm-3 text-right" >
 										      	<div class="btn-group btn-group-xs" role="group" aria-label="..."  >
 												  <button type="button" class="btn btn-warning"

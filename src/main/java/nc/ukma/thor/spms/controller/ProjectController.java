@@ -9,6 +9,8 @@ import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.entity.UserStatus;
+import nc.ukma.thor.spms.mail.EmailSender;
 import nc.ukma.thor.spms.repository.ProjectRepository;
 import nc.ukma.thor.spms.service.MeetingService;
 import nc.ukma.thor.spms.service.ProjectService;
@@ -29,8 +31,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -140,7 +145,7 @@ public class ProjectController {
 
     @RequestMapping(path="/update/project/{id}/", method = RequestMethod.POST)
     public String updateProject(@PathVariable long id, HttpServletRequest request, Model model ){
-    	Project project = new Project(id);
+    	Project project = projectService.getById(id);
     	project.setName(request.getParameter("name"));
     	project.setDescription(request.getParameter("description"));
     	project.setStartDate(DateUtil.getTimeStamp(request.getParameter("startDate")));
@@ -149,7 +154,29 @@ public class ProjectController {
     	model.addAttribute("project", project);
         return "project";
     }
-
+     
+    /*
+    //sendMessageTeamAddedToProject
+    @ResponseBody
+    @RequestMapping(path="/project/{projectId}/addTeam/{teamId}", method = RequestMethod.POST)
+    public String addTeamToProject(@PathVariable long projectId, @PathVariable long teamId, Model model){
+    	Project project = projectService.getProject(projectId);
+    	Team team = teamService.getById(teamId);
+    	if (project.getTeams() == null) {
+    		project.setTeams(new ArrayList<Team>());
+    	}
+    	project.getTeams().add(team);
+    	projectService.update(project);
+    	model.addAttribute("project", project);
+    	if (team.getMembers() == null) {
+    		team.setMembers(new HashMap<User, UserStatus>());
+    	}
+    	List<User> usersToNotify = new ArrayList<>(team.getMembers().keySet());
+    	EmailSender.sendMessageTeamAddedToProject(usersToNotify);
+    	return "project";
+    }
+    */
+    
     @RequestMapping(path="/delete/project/{id}/", method = RequestMethod.GET)
     public String deleteProject(@PathVariable long id){
     	Project project = new Project(id);
