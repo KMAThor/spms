@@ -130,8 +130,10 @@ ul.dropdown-cart li .item-right button{
     margin-bottom: 0; 
 }
 
-p.errorMessageInModal{
-    color: white;
+.errorMessageBody{
+    background-color: white;
+    border-radius: 15px;
+    padding: 5px;
 }
 
 input[type=checkbox]{
@@ -163,7 +165,13 @@ input[type=checkbox]{
 {
 	font-weight: 700;	
 }
-
+#projectTraitsManagerModal .modal-dialog{
+    overflow-y: initial !important
+}
+#projectTraitsManagerModal .modal-body{
+    height: 500px;
+    overflow-y: auto;
+}
 
 
 

@@ -3,60 +3,70 @@ package nc.ukma.thor.spms.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
-import nc.ukma.thor.spms.mail.EmailSender;
-import nc.ukma.thor.spms.repository.UserRepository;
 import nc.ukma.thor.spms.service.MeetingService;
-import nc.ukma.thor.spms.service.TeamService;
+import nc.ukma.thor.spms.service.UserService;
 import nc.ukma.thor.spms.util.DateUtil;
+import nc.ukma.thor.spms.mail.EmailSender;
 
 @Controller
 public class MeetingController {
 	
-	@Autowired
-    private TeamService teamService;
     @Autowired
     private MeetingService meetingService;
+    @Autowired
+    private UserService userService;
 
-    @RequestMapping(path="/{team_id}/create/meeting/", method = RequestMethod.POST)
-    public String createMeeting(@PathVariable long team_id, HttpServletRequest request, Model model){
-    	Team team = teamService.getById(team_id);
+    @ResponseBody
+    @RequestMapping(path="/meeting/create/", method = RequestMethod.POST)
+    public String createMeeting(@RequestParam long team_id, @RequestParam String topic, @RequestParam String start_date){
     	Meeting meeting = new Meeting();
-    	meeting.setTopic(request.getParameter("topic"));
-    	meeting.setStartDate(DateUtil.getTimeStamp(request.getParameter("startDate")));
+    	meeting.setTopic(topic);
+    	meeting.setStartDate(DateUtil.getTimeStamp(start_date));
+    	Team team = new Team(team_id);
     	meeting.setTeam(team);
     	meetingService.create(meeting);
-    	model.addAttribute("meeting", meeting);
     	
     	List<User> usersToNotify = new ArrayList<>(team.getMembers().keySet());
 		EmailSender.sendScheduleChangesMassage(usersToNotify, meeting.getStartDate().toString());	
-    	
-        return "meeting";
+		
+        return "/spms/meeting/view/" + meeting.getId() + "/";
     }
     
-    @RequestMapping(path="/{meeting_id}/delete/meeting/", method = RequestMethod.GET)
-    public String deleteMeeting(@PathVariable long meeting_id){
-    	Meeting meeting = meetingService.getById(meeting_id);
-    	long team_id = meeting.getTeam().getId();
+    @ResponseBody
+    @RequestMapping(path="/meeting/update/", method = RequestMethod.POST)
+    public String updateProject(@RequestParam long id, @RequestParam String topic, @RequestParam String start_date){
+    	Meeting meeting = new Meeting(id);
+    	meeting.setTopic(topic);
+    	meeting.setStartDate(DateUtil.getTimeStamp(start_date));
+    	meetingService.update(meeting);
+    	return "success";
+    }
+    
+    @ResponseBody
+    @RequestMapping(path="/meeting/delete/", method = RequestMethod.POST)
+    public String deleteMeeting(@RequestParam long id){
+    	Meeting meeting = new Meeting(id);
     	meetingService.delete(meeting);
-    	return "redirect:/view/team/" + team_id + "/";
+    	return "success";
     }
 	
-	@RequestMapping(path="/view/meeting/{id}/", method = RequestMethod.GET)
+	@RequestMapping(path="/meeting/view/{id}/", method = RequestMethod.GET)
     public String viewMeeting(@PathVariable long id, Model model ){
     	Meeting meeting = meetingService.getById(id);
     	model.addAttribute("meeting", meeting);
+    	model.addAttribute("members", userService.getUsersByMeeting(meeting));
         return "meeting";
     }
 	

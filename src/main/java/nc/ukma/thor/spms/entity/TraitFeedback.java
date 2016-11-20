@@ -3,16 +3,24 @@ package nc.ukma.thor.spms.entity;
 public class TraitFeedback {
 	
 	private Long id;
-	private int score;
+	private short score;
 	private String comment;
 	private Trait trait;
 	
 	public TraitFeedback() {}
 	
-	public TraitFeedback(int score, String comment, Trait trait) {
+	
+	public TraitFeedback(short score, String comment, Long traitId) {
 		this.score = score;
 		this.comment = comment;
-		this.trait = trait;
+		this.trait = new Trait(traitId);
+	}
+
+	public TraitFeedback(Long id, short score, String comment, Long traitId) {
+		this.id = id;
+		this.score = score;
+		this.comment = comment;
+		this.trait = new Trait(traitId);
 	}
 
 	public Long getId() {
@@ -23,11 +31,11 @@ public class TraitFeedback {
 		this.id = id;
 	}
 
-	public int getScore() {
+	public short getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	public void setScore(short score) {
 		this.score = score;
 	}
 

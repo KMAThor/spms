@@ -96,7 +96,5 @@ public class User{
 				+ ", lastName=" + lastName + ", password=" + password + ", isActive=" + isActive + ", linkToPhoto="
 				+ linkToPhoto + ", role=" + role + "]";
 	}
-
-
 	
 }

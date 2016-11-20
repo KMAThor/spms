@@ -45,7 +45,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
 			+ "INNER JOIN role ON role.id = user_role.role_id;";
-
+	/*ALL USERS PAGINATION*/
 	private static final String GET_USERS_BY_PAGE_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
@@ -63,7 +63,61 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "INNER JOIN role ON role.id = user_role.role_id " 
 			+ "WHERE email ILIKE ? OR first_name ILIKE ? OR second_name ILIKE ? "
 			+ "OR last_name ILIKE ? OR role ILIKE ?;";
-
+	
+	/*ALL USERS BY ROLE PAGINATION*/
+	private static final String GET_USERS_BY_ROLE_BY_PAGE_SQL = "SELECT * FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id " 
+			+ "WHERE (email ILIKE ? OR first_name ILIKE ? OR second_name ILIKE ? "
+			+ "OR last_name ILIKE ?) AND role=? " 
+			+ "ORDER BY %s %s, \"user\".id "//default ordering by user id, it is important for pagination
+			+ "LIMIT ? OFFSET ?;";
+	private static final String COUNT_USERS_BY_ROLE_SQL = "SELECT COUNT(*) FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id "
+			+ "WHERE role=?;";
+	private static final String COUNT_USERS_BY_ROLE_FILTERED_SQL = "SELECT COUNT(*) FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id " 
+			+ "WHERE (email ILIKE ? OR first_name ILIKE ? OR second_name ILIKE ? "
+			+ "OR last_name ILIKE ?) AND role=?;";
+	
+	/*FREE USERS BY ROLE PAGINATION*/
+	private static final String GET_FREE_USERS_BY_ROLE_BY_PAGE_SQL = "SELECT * FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id " 
+			+ "WHERE (email ILIKE ? OR first_name ILIKE ? OR second_name ILIKE ? "
+			+ "OR last_name ILIKE ?) AND role=? AND "
+			+ "NOT EXISTS (SELECT * FROM user_team "
+						+ "INNER JOIN team ON user_team.team_id=team.id "
+						+ "INNER JOIN project ON team.project_id=project.id "
+						+ "WHERE project.is_completed=FALSE AND user_team.user_id=\"user\".id) " 
+			+ "ORDER BY %s %s, \"user\".id "//default ordering by user id, it is important for pagination
+			+ "LIMIT ? OFFSET ?;";
+	private static final String COUNT_FREE_USERS_BY_ROLE_SQL = "SELECT COUNT(*) FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id "
+			+ "WHERE role=? AND "
+			+ "NOT EXISTS (SELECT * FROM user_team "
+						+ "INNER JOIN team ON user_team.team_id=team.id "
+						+ "INNER JOIN project ON team.project_id=project.id "
+						+ "WHERE project.is_completed=FALSE AND user_team.user_id=\"user\".id);";
+	private static final String COUNT_FREE_USERS_BY_ROLE_FILTERED_SQL = "SELECT COUNT(*) FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id " 
+			+ "WHERE (email ILIKE ? OR first_name ILIKE ? OR second_name ILIKE ? "
+			+ "OR last_name ILIKE ?) AND role=? AND "
+			+ "NOT EXISTS (SELECT * FROM user_team "
+						+ "INNER JOIN team ON user_team.team_id=team.id "
+						+ "INNER JOIN project ON team.project_id=project.id "
+						+ "WHERE project.is_completed=FALSE AND user_team.user_id=\"user\".id);";
+	
 	private static final RowMapper<User> USER_MAPPER = new UserMapper();
 
 	@Autowired
@@ -104,11 +158,90 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 		return jdbcTemplate.query(GET_USERS_BY_MEETING_SQL, new Object[] { meeting.getId() }, USER_MAPPER);
 	}
 
+	public List<User> getUsers(long offset, int length, int orderBy, SortingOrder order, String searchString) {
+		String query = String.format(GET_USERS_BY_PAGE_SQL,
+				OrderableColumn.values()[orderBy].getColumnName(),
+				order);
+		String searchParam = "%" + searchString + "%";
+		return jdbcTemplate.query(query,
+				new Object[] { searchParam,searchParam,searchParam, searchParam, searchParam, length, offset }, USER_MAPPER);
+	}
+	
 	@Override
-	public List<User> getMentors() {
-		return null;
+	public long count() {
+		return this.jdbcTemplate.queryForObject(COUNT_USERS_SQL, Long.class);
+	}
+	
+	@Override
+	public long countFiltered(String searchString) {
+		String searchParam = "%" + searchString + "%";
+		return this.jdbcTemplate.queryForObject(COUNT_USERS_FILTERED_SQL,
+				new Object[] { searchParam, searchParam, searchParam, searchParam, searchParam}, Long.class);
+	}
+	
+
+	@Override
+	public List<User> getUsersByRole(long offset, int length, int orderBy,
+									 SortingOrder order, String searchString, Role role) {
+		String query = String.format(GET_USERS_BY_ROLE_BY_PAGE_SQL,
+				OrderableColumn.values()[orderBy].getColumnName(),
+				order);
+		String searchParam = "%" + searchString + "%";
+		return jdbcTemplate.query(query,
+				new Object[] { searchParam,searchParam,searchParam, searchParam, role.getName(), length, offset }, USER_MAPPER);
 	}
 
+	@Override
+	public long countUsersByRole(Role role) {
+		return this.jdbcTemplate.queryForObject(COUNT_USERS_BY_ROLE_FILTERED_SQL,
+				new Object[] { role.getName()}, Long.class);
+	}
+
+	@Override
+	public long countUsersByRoleFiltered(Role role, String searchString) {
+		String searchParam = "%" + searchString + "%";
+		return this.jdbcTemplate.queryForObject(COUNT_USERS_BY_ROLE_FILTERED_SQL,
+				new Object[] { searchParam, searchParam, searchParam, searchParam, role.getName()}, Long.class);
+	}
+
+	@Override
+	public List<User> getFreeUsersByRole(long offset, int length, int orderBy, SortingOrder order, String searchString,
+			Role role) {
+		String query = String.format(GET_FREE_USERS_BY_ROLE_BY_PAGE_SQL,
+				OrderableColumn.values()[orderBy].getColumnName(),
+				order);
+		String searchParam = "%" + searchString + "%";
+		return jdbcTemplate.query(query,
+				new Object[] { searchParam, searchParam, searchParam, searchParam, role.getName(), length, offset }, USER_MAPPER);
+	}
+
+	@Override
+	public long countFreeUsersByRole(Role role) {
+		return this.jdbcTemplate.queryForObject(COUNT_FREE_USERS_BY_ROLE_FILTERED_SQL,
+				new Object[] { role.getName()}, Long.class);
+	}
+
+	@Override
+	public long countFreeUsersByRoleFiltered(Role role, String searchString) {
+		String searchParam = "%" + searchString + "%";
+		return this.jdbcTemplate.queryForObject(COUNT_FREE_USERS_BY_ROLE_FILTERED_SQL,
+				new Object[] { searchParam, searchParam, searchParam, searchParam, role.getName()}, Long.class);
+	}
+
+	
+	public static enum OrderableColumn {
+		ID("\"user\".id"), EMAIL("email"), FIRST_NAME("first_name"), SECOND_NAME("second_name"), LAST_NAME("last_name"), ROLE("role");
+
+		private String columnName;
+
+		private OrderableColumn(String columnName) {
+			this.columnName = columnName;
+		}
+		public String getColumnName(){
+			return columnName;
+		}
+	}
+	
 	private static final class UserMapper implements RowMapper<User> {
 		@Override
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -129,40 +262,6 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			if (!rs.wasNull())
 				user.setLinkToPhoto(linkToPhoto);
 			return user;
-		}
-	}
-
-	public List<User> getUsers(long offset, int length, int orderBy, SortingOrder order, String search) {
-		String query = String.format(GET_USERS_BY_PAGE_SQL,
-				OrderableColumn.values()[orderBy].getColumnName(),
-				order);
-		String searchParam = "%" + search + "%";
-		return jdbcTemplate.query(query,
-				new Object[] { searchParam,searchParam,searchParam, searchParam, searchParam, length, offset }, USER_MAPPER);
-	}
-	
-	@Override
-	public Long count() {
-		return this.jdbcTemplate.queryForObject(COUNT_USERS_SQL, Long.class);
-	}
-	
-	@Override
-	public Long count(String search) {
-		String searchParam = "%" + search + "%";
-		return this.jdbcTemplate.queryForObject(COUNT_USERS_FILTERED_SQL,
-				new Object[] { searchParam, searchParam, searchParam, searchParam, searchParam}, Long.class);
-	}
-
-	public static enum OrderableColumn {
-		ID("\"user\".id"), EMAIL("email"), FIRST_NAME("first_name"), SECOND_NAME("second_name"), LAST_NAME("last_name"), ROLE("role");
-
-		private String columnName;
-
-		private OrderableColumn(String columnName) {
-			this.columnName = columnName;
-		}
-		public String getColumnName(){
-			return columnName;
 		}
 	}
 

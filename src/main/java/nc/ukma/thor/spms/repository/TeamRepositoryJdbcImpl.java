@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Status;
 import nc.ukma.thor.spms.entity.Team;
-import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.entity.UserStatus;
 
 @Repository

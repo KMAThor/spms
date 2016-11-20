@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import nc.ukma.thor.spms.dto.DataTable.DataTableRequestDTO;
-import nc.ukma.thor.spms.dto.DataTable.DataTableResponseDTO;
-import nc.ukma.thor.spms.dto.DataTable.UserTableDTO;
+import nc.ukma.thor.spms.dto.dataTable.DataTableRequestDTO;
+import nc.ukma.thor.spms.dto.dataTable.DataTableResponseDTO;
+import nc.ukma.thor.spms.dto.dataTable.UserTableDTO;
 import nc.ukma.thor.spms.entity.User;
-import nc.ukma.thor.spms.mail.EmailSender;
 import nc.ukma.thor.spms.repository.UserRepository;
 
 @Controller
@@ -42,7 +40,7 @@ public class UserController {
 				dataTableRequest.getSearch().getValue());
         
 		Long numberOfUsers = userRepository.count();
-		Long numberOfUsersToShow = userRepository.count(dataTableRequest.getSearch().getValue());
+		Long numberOfUsersToShow = userRepository.countFiltered(dataTableRequest.getSearch().getValue());
 		DataTableResponseDTO<UserTableDTO> dataTableResponse = new DataTableResponseDTO<UserTableDTO>(dataTableRequest.getDraw(),
 				numberOfUsers, numberOfUsersToShow, UserTableDTO.convertFrom(usersToShow));
 		//System.out.println(dataTableRequest);

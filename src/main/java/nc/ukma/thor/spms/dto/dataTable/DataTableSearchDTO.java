@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.dto.DataTable;
+package nc.ukma.thor.spms.dto.dataTable;
 
 public class DataTableSearchDTO {
 

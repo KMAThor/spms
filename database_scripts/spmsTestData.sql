@@ -169,6 +169,7 @@ INSERT INTO meeting VALUES (6, 'Docs Review', '2016-11-1 15:00:00', 5);
 INSERT INTO presence VALUES (4, 6);
 
 INSERT INTO meeting_feedback VALUES (7, 'Well Done', 4, 6, 2);
+INSERT INTO trait_feedback VALUES (40, 5, 'Good Job',21, 7, NULL);
 
 INSERT INTO trait_category VALUES (8, 'Soft skills');
 INSERT INTO trait VALUES (9, 'Communication skills', 8);

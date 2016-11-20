@@ -6,9 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtil {
+	
+	private static final String dataFormat = "dd/MM/yyyy hh:mm a";
 
 	public static Timestamp getTimeStamp(String dateTimeString) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
+		SimpleDateFormat dateFormat = new SimpleDateFormat(dataFormat);
 		Date parsedDate;
 		try {
 			parsedDate = dateFormat.parse(dateTimeString);
@@ -22,7 +24,7 @@ public class DateUtil {
 	}
 
 	public static String getStringRepresentation(Timestamp timestamp) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
+		SimpleDateFormat dateFormat = new SimpleDateFormat(dataFormat);
 		Date date = new Date(timestamp.getTime());
 		return dateFormat.format(date);
 	}

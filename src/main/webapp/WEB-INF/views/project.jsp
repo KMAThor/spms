@@ -1,169 +1,53 @@
 <%@include file="header.jsp"%>
-	<div class="row">
-		<div class="col-sm-10 col-sm-offset-1">
-			<h1>${project.name}
-		    	<security:authorize access="hasAuthority('admin')">
-		    	<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
-		    		<button type="button" class="btn btn-primary"
-				  		  data-toggle="modal" data-target="#projectTraitsManagerModal"
-				  		  >
-				  		<i class="fa fa-bars" aria-hidden="true"></i>
-				  		Project Traits Manager
-				  	</button>
-				  	
-				  	<button type="button" class="btn btn-warning"
-				  		  data-toggle="modal" data-target="#editProjectModal"
-				  		  >
-				  		<i class="fa fa-pencil" aria-hidden="true"></i>
-				  		Edit Project
-				  	</button>
-				  	<a class="btn btn-danger" href="<c:url value="/delete/project/${project.id}/" />">
-				  		<i class="fa fa-trash" aria-hidden="true"></i>
-				  		Delete Project
-				  	</a>
-				</div>
-				</security:authorize>
-			</h1>
-			<h3>Description</h3>
-			<p> <c:choose>
-					<c:when test="${empty project.description}">
-						Empty
-					</c:when>
-					<c:otherwise>
-						${project.description}
-					</c:otherwise>
-				</c:choose>
-			</p>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm-5 col-sm-offset-1">
-			<h3>Start Date</h3>
-			<p>${project.startDate}</p>
-		</div>
-		<div class="col-sm-5">
-			<h3>End Date</h3>
-			<p>${project.endDate}</p>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm-5 col-sm-offset-1">
-			<h3>Status</h3>
-			<p>
-				<c:choose>
-					<c:when test="${project.isCompleted}">
-						Completed
-					</c:when>
-					<c:otherwise>
-						Active
-					</c:otherwise>
-				</c:choose>
-			</p>
-		</div>
-		<div class="col-sm-5">
-				<h3>Cheid Mentor</h3>
-				<p>
-					<c:choose>
-						<c:when test="${project.chiefMentor ne null}">
-							${project.chiefMentor.firstName} ${project.chiefMentor.lastName}
-						</c:when>
-						<c:otherwise>
-							Not assigned yet
-						</c:otherwise>
-					</c:choose>
-			</p>
-		</div>
-	</div>
-	<hr>
-	<div class="row">
-		<div class="col-sm-10 col-sm-offset-1">
-			<h2>Files
-			<security:authorize access="hasAnyAuthority('admin','mentor')">
-				<button type="button" class="btn btn-success"
-					data-toggle="modal" data-target="#addFileToProjectModal" onclick="toggleFileDialog();">
-					<i class="fa fa-plus-circle" aria-hidden="true"></i>
-						Add file
-						
-				</button>
-			</security:authorize>
-				<form name="upload" id="add-file" style="display:none">
-					<input type="file" name="myfile" id="exampleInputFile"> 
-					<button type="submit" class="btn btn-default">Submit</button>
-					<div id="log">Progress</div>
-				</form>
-			</h2>
-		
-		</div>
-		<script>
-    function log(html) {
-      document.getElementById('log').innerHTML = html;
-    }
-    document.forms.upload.onsubmit = function() {
-      var file = this.elements.myfile.files[0];
-      if (file) {
-        upload(file);
-      }
-      return false;
-    }
-    function upload(file) {
-      var xhr = new XMLHttpRequest();
-      xhr.onload = xhr.onerror = function() {
-        if (this.status == 200) {
-          log("success");
-        } else {
-          log("error " + this.status);
-        }
-      };
-      xhr.upload.onprogress = function(event) {
-        log(event.loaded + ' / ' + event.total);
-      }
-      xhr.open("POST", "upload", true);
-      xhr.send(file);
-    }
-  </script>
-	</div>
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h1>${project.name}
-			<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
-				<button type="button" class="btn btn-primary"
-						data-toggle="modal" data-target="#projectTraitsManagerModal"
-				>
-					<i class="fa fa-bars" aria-hidden="true"></i>
-					Project Traits Manager
-				</button>
-				<button type="button" class="btn btn-warning"
-						data-toggle="modal" data-target="#editProjectModal"
-				>
-					<i class="fa fa-pencil" aria-hidden="true"></i>
-					Edit Project
-				</button>
-				<a class="btn btn-danger" href="<c:url value="/delete/project/${project.id}/" />">
-					<i class="fa fa-trash" aria-hidden="true"></i>
-					Delete Project 	</a>
-				</button>
+	    	<security:authorize access="hasAuthority('admin')">
+	    	<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
+	    		<button type="button" class="btn btn-primary"
+			  		  data-toggle="modal" data-target="#projectTraitsManagerModal"
+			  		  >
+			  		<i class="fa fa-bars" aria-hidden="true"></i>
+			  		Project Traits Manager
+			  	</button>
+			  	
+			  	<button type="button" class="btn btn-warning"
+			  		  data-toggle="modal" data-target="#editProjectModal"
+			  		  >
+			  		<i class="fa fa-pencil" aria-hidden="true"></i>
+			  		Edit Project
+			  	</button>
+			  	<a class="btn btn-danger" href="<c:url value="/project/delete/${project.id}/" />">
+			  		<i class="fa fa-trash" aria-hidden="true"></i>
+			  		Delete Project
+			  	</a>
 			</div>
+			</security:authorize>
 		</h1>
 		<h3>Description</h3>
 		<p> <c:choose>
-			<c:when test="${empty project.description}">
-				Empty
-			</c:when>
-			<c:otherwise>
-				${project.description}
-			</c:otherwise>
-		</c:choose>
+				<c:when test="${empty project.description}">
+					Empty
+				</c:when>
+				<c:otherwise>
+					${project.description}
+				</c:otherwise>
+			</c:choose>
 		</p>
 	</div>
 </div>
 <div class="row">
 	<div class="col-sm-5 col-sm-offset-1">
 		<h3>Start Date</h3>
-		<p>${project.startDate}</p>
+		<fmt:parseDate value="${project.startDate}" var="dateObject"
+            pattern="yyyy-MM-dd HH:mm:ss"></fmt:parseDate>
+		<p><fmt:formatDate value="${dateObject }" pattern="dd/MM/yyyy hh:mm a"></fmt:formatDate></p>
 	</div>
 	<div class="col-sm-5">
 		<h3>End Date</h3>
-		<p>${project.endDate}</p>
+		<fmt:parseDate value="${project.endDate}" var="dateObject"
+            pattern="yyyy-MM-dd HH:mm:ss" ></fmt:parseDate>
+		<p><fmt:formatDate value="${dateObject }" pattern="dd/MM/yyyy hh:mm a"></fmt:formatDate></p>
 	</div>
 </div>
 <div class="row">
@@ -181,16 +65,16 @@
 		</p>
 	</div>
 	<div class="col-sm-5">
-		<h3>Cheid Mentor</h3>
-		<p>
-			<c:choose>
-				<c:when test="${project.chiefMentor ne null}">
-					${project.chiefMentor.firstName} ${project.chiefMentor.lastName}
-				</c:when>
-				<c:otherwise>
-					Not assigned yet
-				</c:otherwise>
-			</c:choose>
+			<h3>Cheid Mentor</h3>
+			<p>
+				<c:choose>
+					<c:when test="${project.chiefMentor ne null}">
+						${project.chiefMentor.firstName} ${project.chiefMentor.lastName}
+					</c:when>
+					<c:otherwise>
+						Not assigned yet
+					</c:otherwise>
+				</c:choose>
 		</p>
 	</div>
 </div>
@@ -198,134 +82,176 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h2>Files
+		<security:authorize access="hasAnyAuthority('admin','mentor')">
 			<button type="button" class="btn btn-success"
-					data-toggle="modal" data-target="#addFileToProjectModal">
+				data-toggle="modal" data-target="#addFileToProjectModal" onclick="toggleFileDialog();">
 				<i class="fa fa-plus-circle" aria-hidden="true"></i>
-				Add file
+					Add file
+					
 			</button>
-			</h2>
-			
-		</div>
+		</security:authorize>
+			<form name="upload" id="add-file" style="display:none">
+				<input type="file" name="myfile" id="exampleInputFile"> 
+				<button type="submit" class="btn btn-default">Submit</button>
+				<div id="log">Progress</div>
+			</form>
+		</h2>
 	</div>
-	<hr>
-	
-	<div class="row">
-		<div class="col-sm-10 col-sm-offset-1">
-			<h2>Teams
-			<security:authorize access="hasAuthority('admin')">
-				<button type="button" class="btn btn-success"
-					data-toggle="modal" data-target="#createTeamModal">
-					<i class="fa fa-plus-circle" aria-hidden="true"></i>
-						Create team
-				</button>
-				</security:authorize>
-			</h2>
-			<c:forEach items="${teams}" var="team">
-					<h3>
-						<a href="<c:url value="/view/team/${team.id}/" />" class="btn btn-warning">${team.name}</a>
-					</h3>
-			</c:forEach>
-		</div>
+	<script>
+	    function log(html) {
+	      document.getElementById('log').innerHTML = html;
+	    }
+
+	    document.forms.upload.onsubmit = function() {
+	      var file = this.elements.myfile.files[0];
+	      if (file) {
+	        upload(file);
+	      }
+	      return false;
+	    }
+
+
+	    function upload(file) {
+	      var xhr = new XMLHttpRequest();
+	      xhr.onload = xhr.onerror = function() {
+	        if (this.status == 200) {
+	          log("success");
+	        } else {
+	          log("error " + this.status);
+	        }
+	      };
+	      xhr.upload.onprogress = function(event) {
+	        log(event.loaded + ' / ' + event.total);
+	      }
+
+	      xhr.open("POST", "upload", true);
+	      xhr.send(file);
+
+	    }
+	  </script>
+</div>
+<hr>
+<div class="row">
+	<div class="col-sm-10 col-sm-offset-1">
+		<h2>Teams
+		<security:authorize access="hasAuthority('admin')">
+			<button type="button" class="btn btn-success"
+				data-toggle="modal" data-target="#createTeamModal">
+				<i class="fa fa-plus-circle" aria-hidden="true"></i>
+					Create team
+			</button>
+			</security:authorize>
+		</h2>
+		<c:forEach items="${teams}" var="team">
+				<h3>
+					<a href="<c:url value="/team/view/${team.id}/" />" class="btn btn-warning">${team.name}</a>
+				</h3>
+		</c:forEach>
 	</div>
 </div>
+
 
 <!-- editProjectModal -->
-	<div class="modal fade" id="editProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Edit Project</h4>
-	      </div>
-	      <form name="createProjectForm" id="createProjectForm" onsubmit="onSubmitEditProjectForm();"
-	        	action="/spms/update/project/${project.id}/" method="post">
-	      	<div class="modal-body">
-	        
-				<div class="form-group">
-					<label for="name">Project name:</label>
-				    <input type="text" class="form-control" name="name" id="newProjectName" placeholder="Enter new project name" value="${project.name}" required>
-				</div>
-				<div class="form-group">
-					<label for="description">Project description:</label>
-				    <textarea class="form-control" rows="3" name="description" id="newProjectDescription" placeholder="Enter project description" ></textarea>
-				</div>
-				<div class="form-group">
-		        	<label for="startDate">Start date:</label>
-		            <div class='input-group date' id='datetimepicker6'>
-		                <input type='text' class="form-control" name="startDate" id="newProjectStartDate" placeholder="Enter start date"  required/>
-		                <span class="input-group-addon">
-		                    <span class="glyphicon glyphicon-calendar"></span>
-		                </span>
-		            </div>
-		        </div>
+<div class="modal fade" id="editProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Project</h4>
+      </div>
+      	<form name="createProjectForm" id="createProjectForm" onsubmit="onSubmitEditProjectForm();"
+        	action="/spms/project/update/${project.id}/" method="post">
+      	<div class="modal-body">
+        
+			<div class="form-group">
+				<label for="name">Project name:</label>
+			    <input type="text" class="form-control" name="name" id="newProjectName" placeholder="Enter new project name" value="${project.name}" required>
+			</div>
+			<div class="form-group">
+				<label for="description">Project description:</label>
+			    <textarea class="form-control" rows="3" name="description" id="newProjectDescription" placeholder="Enter project description" ></textarea>
+			</div>
+			<div class="form-group">
+	        	<label for="startDate">Start date:</label>
+	            <div class='input-group date' id='datetimepicker6'>
+	                <input type='text' class="form-control" name="startDate" id="newProjectStartDate" placeholder="Enter start date"  required/>
+	                <span class="input-group-addon">
+	                    <span class="glyphicon glyphicon-calendar"></span>
+	                </span>
+	            </div>
+	        </div>
 
-		        <div class="form-group">
-		        	<label for="endDate">End Date:</label>
-		            <div class='input-group date' id='datetimepicker7'>
-		                <input type='text' class="form-control" name="endDate" id="newProjectEndDate" placeholder="Enter end date" required/>
-		                <span class="input-group-addon">
-		                    <span class="glyphicon glyphicon-calendar"></span>
-		                </span>
-						</div>
+	        <div class="form-group">
+	        	<label for="endDate">End Date:</label>
+	            <div class='input-group date' id='datetimepicker7'>
+	                <input type='text' class="form-control" name="endDate" id="newProjectEndDate" placeholder="Enter end date" required/>
+	                <span class="input-group-addon">
+	                    <span class="glyphicon glyphicon-calendar"></span>
+	                </span>
 					</div>
-					<script type="text/javascript">
-						$(function () {
-							console.log(new Date('${project.startDate}'));
-							$('#datetimepicker6').datetimepicker();
-							$('#datetimepicker7').datetimepicker({
-								useCurrent: false //Important! See issue #1075
-							});
-							$("#datetimepicker6").on("dp.change", function (e) {
-								$('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-							});
-							$("#datetimepicker7").on("dp.change", function (e) {
-								$('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-							});
-							$('#datetimepicker6').data("DateTimePicker").date(moment('${project.startDate}'));
-							$('#datetimepicker7').data("DateTimePicker").date(moment('${project.endDate}'));
+				</div>
+				<script type="text/javascript">
+					$(function () {
+						console.log(new Date('${project.startDate}'));
+						$('#datetimepicker6').datetimepicker({format: 'DD/MM/YYYY hh:mm a'});
+
+						$('#datetimepicker7').datetimepicker({
+							format: 'DD/MM/YYYY hh:mm a',
+							useCurrent: false //Important! See issue #1075
 						});
+
+						$("#datetimepicker6").on("dp.change", function (e) {
+							$('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+						});
+						$("#datetimepicker7").on("dp.change", function (e) {
+							$('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+						});
+						$('#datetimepicker6').data("DateTimePicker").date(moment('${project.startDate}'));
+						$('#datetimepicker7').data("DateTimePicker").date(moment('${project.endDate}'));
+					});
+				</script>
+				<div class="form-group">
+					<lablel for="chief">Choose chief mentor:</lablel>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Press button to choose <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" id="mentors-list">
+							<c:forEach items="${mentors}" var="mentor">
+								<li><button class="btn btn-defualt">${mentor.name} ${mentor.surname}</button></li>
+							</c:forEach>
+						</ul>
+				</div>
+					<script type="text/javascript">
+
 					</script>
-					<div class="form-group">
-						<lablel for="chief">Choose chief mentor:</lablel>
-						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Press button to choose <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" id="mentors-list">
-								<c:forEach items="${mentors}" var="mentor">
-									<li><button class="btn btn-defualt">${mentor.name} ${mentor.surname}</button></li>
-								</c:forEach>
-							</ul>
-					</div>
-						<script type="text/javascript">
-						</script>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<button type="submit" value="Submit" class="btn btn-primary" >Update</button>
-				</div>
-	</div>		</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="submit" value="Submit" class="btn btn-primary" >Update</button>
+			</div>
+		</div>
+		</form>
 		</div>
 	</div>
 </div>
 
 
-	<!-- projectTraitsManagerModal -->
-	<div class="modal fade" id="projectTraitsManagerModal" tabindex="-1" role="dialog">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Project Traits Manager
-	       
-		      
-			</h4>
-	      </div>
-	      
-	       <div class="modal-body">
-	        <div id="categoriesPanelGroup" class="panel-group">
-				<c:forEach var="traitCategory" items="${traitCategories}">
-				  	<div id="category-${traitCategory.id}" class="panel panel-default" >
+<!-- projectTraitsManagerModal -->
+<div class="modal fade" id="projectTraitsManagerModal" tabindex="-1" role="dialog">
+  	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+     		<div class="modal-header">
+     			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+        		<h4 class="modal-title" id="myModalLabel">Project Traits Manager</h4>
+      		</div>
+      
+       		<div class="modal-body">
+        		<div id="categoriesPanelGroup" class="panel-group">
+					<c:forEach var="traitCategory" items="${traitCategories}">
+			  		<div id="category-${traitCategory.id}" class="panel panel-default" >
 					    <div class="panel-heading clickable" data-toggle="collapse" href="#category-${traitCategory.id}-traits">
 					    	<div class="row">
 								<div class="col-sm-7">
@@ -350,82 +276,63 @@
 							</div>  
 				    	</div>
 
-					    <div id="category-${traitCategory.id}-traits" class="panel-collapse collapse in">
-					    	<c:forEach var="trait" items="${traitCategory.traits}">
-								<ul id="trait-${trait.id}" class="list-group traits-list">
-									<li class="list-group-item">
-										<div class="row">
-											<div class="col-sm-9">
-												<p id="trait-${trait.id}-name">
-												<input type="checkbox"
-													onchange="traitCheckboxAction(this,${trait.id},${project.id})" 
-													<c:set var="contains" value="false" />
-													<c:forEach var="item" items="${traitsAssociatedWithProject}">
-													  <c:if test="${item.id eq trait.id}">
-													    <c:set var="contains" value="true" />
-													    <c:out value="checked"/>
-													  </c:if>
-													</c:forEach>
-												/>
-													${trait.name}
-												</p>
-											</div>
-											<!--<c:if test="${contains}">
-												    		<c:out value="checked"/>
-												  		</c:if>
-											<div class="col-sm-3 text-right" >
-										      	<div class="btn-group btn-group-xs" role="group" aria-label="..."  >
-												  <button type="button" class="btn btn-warning"
-												  		  data-toggle="modal" data-target="#editTraitModal"
-												  		  onclick="editTrait(${trait.id}, '${trait.name}', ${traitCategory.id});">
-												  	<i class="fa fa-pencil" aria-hidden="true"></i>
-												  	Edit
-												  </button>
-												  <button type="button" class="btn btn-danger"
-												  		  onclick="deleteTrait(${trait.id});">
-												  	<i class="fa fa-trash" aria-hidden="true"></i>
-												  	Delete
-												  	</button>
-												</div>
-											</div>-->
+				    	<div id="category-${traitCategory.id}-traits" class="panel-collapse collapse in">
+				    		<c:forEach var="trait" items="${traitCategory.traits}">
+							<ul id="trait-${trait.id}" class="list-group traits-list">
+								<li class="list-group-item">
+									<div class="row">
+										<div class="col-sm-9">
+											<p id="trait-${trait.id}-name">
+											<input type="checkbox"
+												onchange="traitCheckboxAction(this,${trait.id},${project.id})" 
+												<c:set var="contains" value="false" />
+												<c:forEach var="item" items="${traitsAssociatedWithProject}">
+												  <c:if test="${item.id eq trait.id}">
+												    <c:set var="contains" value="true" />
+												    <c:out value="checked"/>
+												  </c:if>
+												</c:forEach>
+											/>
+												${trait.name}
+											</p>
 										</div>
-									</li>
-						      	</ul>
-					   		</c:forEach>
-					  	</div>
+									</div>
+								</li>
+					      	</ul>
+				   			</c:forEach>
+				  		</div>
 					</div>
-				</c:forEach>
-			</div>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+					</c:forEach>
+				</div>
+      		</div>
+    	</div>
+ 	</div>
+</div>
 
 <!-- createTeamModal -->
 <div class="modal fade" id="createTeamModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Create Team</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
-			<form name="createTeamForm" id="createTeamForm" onsubmit="onSubmitCreateTeamForm();"
-				  action="/spms/${project.id}/create/team/" method="post">
+			<form>
 				<div class="modal-body">
-
 					<div class="form-group">
 						<label for="name">Team name:</label>
+						<input type="hidden" name="project_id" id="project_id" value="${project.id}">
 						<input type="text" class="form-control" name="name" id="newTeamName" placeholder="Enter new team name" required>
 					</div>
-
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<button type="submit" value="Submit" class="btn btn-primary" >Create</button>
+					<button type="button" class="btn btn-warning" onclick="createTeam();">Create</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
-<%@include file="traitManagerModals.jsp"%>
+
+<%@include file="commonModalPopUps.jsp"%>
 <%@include file="footer.jsp"%>

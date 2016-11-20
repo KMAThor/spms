@@ -1,21 +1,23 @@
 package nc.ukma.thor.spms.controller;
 
+
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.mail.EmailSender;
+import nc.ukma.thor.spms.service.FileService;
 import nc.ukma.thor.spms.service.MeetingService;
 import nc.ukma.thor.spms.service.TeamService;
 import nc.ukma.thor.spms.service.UserService;
@@ -25,42 +27,45 @@ public class TeamController {
 	
 	@Autowired
     private TeamService teamService;
+	@Autowired
+    private MeetingService meetingService;
+	@Autowired
+    private FileService fileService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private MeetingService meetingService;
-    // 
-    @RequestMapping(path="/create/team/{project_id}", method = RequestMethod.POST)
-    public String createTeam(@PathVariable long project_id, HttpServletRequest request){
+    @ResponseBody
+    @RequestMapping(path="/team/create/", method = RequestMethod.POST)
+    public String createTeam(@RequestParam long project_id, @RequestParam String name){
     	Project project = new Project(project_id);
-    	Team team = new Team(request.getParameter("name"), project);
+    	Team team = new Team(name, project);
     	teamService.create(team);
-        return "redirect:/view/team/" + team.getId() + "/";
+        return "/spms/view/team/" + team.getId() + "/";
     }
     
-	@RequestMapping(path="/update/team/{team_id}", method = RequestMethod.POST)
-    public String updateProject(@PathVariable long team_id, HttpServletRequest request){
-    	Team team = new Team(team_id);
-    	team.setName(request.getParameter("name"));
+    @ResponseBody
+    @RequestMapping(path="/team/update/", method = RequestMethod.POST)
+    public String updateProject(@RequestParam long id, @RequestParam String name){
+    	Team team = new Team(id);
+    	team.setName(name);
     	teamService.update(team);
-    	return "redirect:/view/team/" + team.getId() + "/";
+    	return "success";
     }
 	
-	@RequestMapping(path="/delete/team/{team_id}", method = RequestMethod.POST)
-    public String deleteProject(@PathVariable long team_id, HttpServletRequest request){
-    	Team team = new Team(team_id);
+    @ResponseBody
+	@RequestMapping(path="/team/delete/", method = RequestMethod.POST)
+    public String deleteProject(@RequestParam long id){
+    	Team team = new Team(id);
     	teamService.delete(team);
-    	long projectId = Long.valueOf(request.getParameter("project_id"));
-        return "redirect:/view/project/" + projectId + "/";
+        return "success";
     }
 	
-	@RequestMapping(path="/view/team/{team_id}/", method = RequestMethod.GET)
+	@RequestMapping(path="/team/view/{team_id}/", method = RequestMethod.GET)
     public String viewTeam(@PathVariable long team_id, Model model ){
     	Team team = teamService.getById(team_id);
     	model.addAttribute("team", team);
-    	model.addAttribute("users", userService.getUsersByTeam(team));
-    	model.addAttribute("all_users", userService.getAllUsers());
     	model.addAttribute("meetings", meetingService.getMeetingsByTeam(team));
+    	model.addAttribute("files", fileService.getFilesByTeam(team_id));
+    	model.addAttribute("users", userService.getUsersByTeam(team));
         return "team";
     }
 	

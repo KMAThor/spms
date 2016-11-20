@@ -4,7 +4,8 @@
 		<h1>Leave Feedback</h1>
 	</div>
 </div>
-
+<form name="createMeetingFeedback" 
+	  action="/spms/meetingFeedback/create/${studentId}/${meetingId}/" method="post">
 <div class="row">
 	<div class="col-sm-offset-1 col-sm-10">
 
@@ -21,7 +22,8 @@
 							<div class="col-sm-3">
 								<h4 ><strong> Grade </strong></h4>
 								<div class="col-sm-2 sliderContainer">
-									<input id="mySlider" class="gradeSlider" type="text"
+									<input type="hidden" name="traitIds" value="${trait.id}">
+									<input name="scores" class="gradeSlider" type="text"
 										data-provide="slider" data-slider-min="0" data-slider-max="5"
 										data-slider-step="1" data-slider-value="0"
 										data-slider-reversed="true" data-slider-orientation="vertical"
@@ -43,9 +45,8 @@
 							</div>
 							<div class="col-sm-9">
 								<h4 ><strong> Comment</strong></h4>
-								<textarea class="gradeComment form-control" placeholder="This field is optional"></textarea>
+								<textarea name="comments" class="gradeComment form-control" placeholder="This field is optional"></textarea>
 							</div>
-
 						</div>
 					</c:forEach>
 				</div>
@@ -54,9 +55,16 @@
 	</div>
 </div>
 <div class="row">
+	<div class="col-sm-offset-1 col-sm-10">
+		<h2>Summary</h2>
+		<textarea name="summary" class="form-control" placeholder="This field is optional"></textarea>
+	</div>
+</div>
+<div class="row">
 	<div class="col-sm-offset-9 col-sm-2">
 		<br>
 		<button type="submit" value="Submit" class="form-control btn btn-success" >Submit Feedback</button>
 	</div>
 </div>
+</form>
 <%@include file="footer.jsp"%>

@@ -1,9 +1,12 @@
 package nc.ukma.thor.spms.service;
 
 import nc.ukma.thor.spms.entity.Role;
+import nc.ukma.thor.spms.entity.Meeting;
+
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.UserRepositoryJdbcImpl;
+import nc.ukma.thor.spms.util.SortingOrder;
 
 import java.util.List;
 
@@ -17,8 +20,8 @@ public class UserServiceImpl implements UserService {
 	private UserRepositoryJdbcImpl userRepo;
 	
     @Override
-    public User getUser(String login) {
-    	User usr = userRepo.getUserByEmail(login);
+    public User getUser(String email) {
+    	User usr = userRepo.getUserByEmail(email);
     	return usr;
     }
 
@@ -38,8 +41,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> getMentors() {
-		return userRepo.getMentors();
+	public List<User> getUsersByRole(long offset, int length, int orderBy, SortingOrder order, String search, Role role) {
+		return userRepo.getUsersByRole(offset, length, orderBy, order, search, role);
+	}
+
+	@Override
+	public List<User> getUsersByMeeting(Meeting meeting) {
+		return userRepo.getUsersPresentAtMeeting(meeting);
 	}
 
 }

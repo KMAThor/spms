@@ -1,11 +1,8 @@
-package nc.ukma.thor.spms.dto.DataTable;
+package nc.ukma.thor.spms.dto.dataTable;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import nc.ukma.thor.spms.entity.Project;
-import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.util.DateUtil;
 
 public class ProjectTableDTO {

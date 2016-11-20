@@ -8,7 +8,6 @@ import javax.net.ssl.SSLEngineResult.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
