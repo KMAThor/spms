@@ -45,7 +45,7 @@ public class UserController {
 				dataTableRequest.getOrder().get(0).getDir(),
 				dataTableRequest.getSearch().getValue());
 		Long numberOfUsers = userRepository.count();
-		Long numberOfUsersToShow = userRepository.count(dataTableRequest.getSearch().getValue());
+		Long numberOfUsersToShow = userRepository.countFiltered(dataTableRequest.getSearch().getValue());
 		DataTableResponseDTO<UserTableDTO> dataTableResponse = new DataTableResponseDTO<UserTableDTO>(dataTableRequest.getDraw(),
 				numberOfUsers, numberOfUsersToShow, UserTableDTO.convertFrom(usersToShow));
 		//System.out.println(dataTableRequest);

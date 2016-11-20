@@ -21,7 +21,7 @@
 				</security:authorize>
 			</h1>
 			<h6>
-				<a href="/spms/view/project/${team.project.id}/"><--- Back to Project</a>
+				<a href="/spms/project/view/${team.project.id}/"><--- Back to Project</a>
 			</h6>
 		</div>
 	</div>

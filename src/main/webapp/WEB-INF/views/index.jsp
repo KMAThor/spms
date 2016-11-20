@@ -29,48 +29,38 @@
 							<td>Status</td>
 						</tr>
 					</thead>
-					<!--<tbody>
-						<c:forEach items="${projects}" var="project">
-							<tr>
-								<td>${project.id}</td> 
-								<td><a href="<c:url value="/view/project/${project.id}/" />">${project.name}</a></td>
-								<td>${project.startDate}</td>
-								<td>${project.endDate}</td>
-							</tr>
-						</c:forEach>
-					</tbody>-->
 				</table>
-							<script type="text/javascript">
-				$('#projectsTable').DataTable( {
+				<script type="text/javascript">
+					$('#projectsTable').DataTable( {
 
-				    serverSide: true,
-			        ajax: {
-						url: '<c:url value="/view/projects/"/>',
-				        type: 'POST',
-				        data: function ( d ) {
-						      return JSON.stringify( d );
-						    },	        
-					    contentType: "application/json; charset=utf-8",
-					    dataType: "json",
-					    dataSrc: function ( json ) {
-					    	for(var i=0, ien=json.data.length; i<ien ; i++ ) {
-					        	json.data[i]["name"] = '<a href="/spms/view/project/'+json.data[i]["id"]+'/">'+json.data[i]["name"]+'</a>';
-					        	if(json.data[i]["completed"] === true) json.data[i]["completed"] = "completed";
-					        	if(json.data[i]["completed"] === false) json.data[i]["completed"] = "active";
+					    serverSide: true,
+				        ajax: {
+							url: '<c:url value="/project/view/"/>',
+					        type: 'POST',
+					        data: function ( d ) {
+							      return JSON.stringify( d );
+							    },	        
+						    contentType: "application/json; charset=utf-8",
+						    dataType: "json",
+						    dataSrc: function ( json ) {
+						    	for(var i=0, ien=json.data.length; i<ien ; i++ ) {
+						        	json.data[i]["name"] = '<a href="/spms/project/view/'+json.data[i]["id"]+'/">'+json.data[i]["name"]+'</a>';
+						        	if(json.data[i]["completed"] === true) json.data[i]["completed"] = "completed";
+						        	if(json.data[i]["completed"] === false) json.data[i]["completed"] = "active";
 
-					      	}
-					      	return json.data;
-						}
-				    },
-				    columns: [
-					    { data: "id" },
-					    { data: "name" },
-					    { data: "startDate" },
-					    { data: "endDate" },
-					    { data: "completed" }
-					  ]
-				} );
-			</script>
+						      	}
+						      	return json.data;
+							}
+					    },
+					    columns: [
+						    { data: "id" },
+						    { data: "name" },
+						    { data: "startDate" },
+						    { data: "endDate" },
+						    { data: "completed" }
+						  ]
+					} );
+				</script>
 			</div>
 		</div>
 	</div>
@@ -83,7 +73,7 @@
 	        <h4 class="modal-title" id="myModalLabel">Create Project</h4>
 	      </div>
 	      <form name="createProjectForm" id="createProjectForm" onsubmit="onSubmitCreateProjectForm();"
-	        	action="/spms/create/project/" method="post">
+	        	action="/spms/project/create/" method="post">
 	      	<div class="modal-body">
 	        
 				<div class="form-group">
@@ -117,8 +107,9 @@
 			
 				<script type="text/javascript">
 				    $(function () {
-				        $('#datetimepicker6').datetimepicker();
+				        $('#datetimepicker6').datetimepicker({ format: 'DD/MM/YYYY hh:mm a' });
 				        $('#datetimepicker7').datetimepicker({
+				        	format: 'DD/MM/YYYY hh:mm a',
 				            useCurrent: false //Important! See issue #1075
 				        });
 				        $("#datetimepicker6").on("dp.change", function (e) {
@@ -129,12 +120,11 @@
 				        });
 				    });
 				</script>
-			
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	        <button type="submit" value="Submit" class="btn btn-primary" >Create</button>
-	      </div>
+	      	</div>
+	      	<div class="modal-footer">
+	       		<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	        	<button type="submit" value="Submit" class="btn btn-primary" >Create</button>
+	      	</div>
 	      </form>
 	    </div>
 	  </div>

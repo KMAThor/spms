@@ -3,14 +3,11 @@ package nc.ukma.thor.spms.controller;
 import nc.ukma.thor.spms.dto.dataTable.DataTableRequestDTO;
 import nc.ukma.thor.spms.dto.dataTable.DataTableResponseDTO;
 import nc.ukma.thor.spms.dto.dataTable.ProjectTableDTO;
-import nc.ukma.thor.spms.dto.dataTable.UserTableDTO;
 import nc.ukma.thor.spms.entity.Project;
-import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.ProjectRepository;
-import nc.ukma.thor.spms.service.MeetingService;
 import nc.ukma.thor.spms.service.ProjectService;
 import nc.ukma.thor.spms.service.TeamService;
 import nc.ukma.thor.spms.service.TraitCategoryService;
@@ -25,74 +22,30 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.sql.Timestamp;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@RequestMapping("/project/")
 public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
     @Autowired
+    private ProjectRepository projectRepository;
+    @Autowired
     private TeamService teamService;
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private ProjectRepository projectRepository;
-    //@Autowired
-    //private MeetingService meetingService;
     @Autowired
     private TraitCategoryService traitCategoryService;
-
     @Autowired
     private TraitService traitService;
 
     @ResponseBody
-    @RequestMapping(path="/testApi/project/", method = RequestMethod.POST)
-    public Project testProject(){
-         return new Project("training", "for the best students/n and only for them", new Timestamp(1234L),
-                new Timestamp(2345L), false, new User(1231242342L));
-           }
-
-   /* @ResponseBody
-    @RequestMapping(path="/project/create/", method = RequestMethod.POST)
-    public Project createProject(@RequestParam long id ){
-
-        Project newProject = new Project(id);
-        projectService.create(newProject);
-        return newProject;
-    }*/
-
-    
-/*
-    @ResponseBody
-    @RequestMapping(path="/project/delete/", method= RequestMethod.POST)
-    public String deleteProject (@RequestParam long projectId){
-
-        Project project = projectService.getById(projectId);
-        projectService.delete(project);
-        return "ok";
-    }*/
-
-    @ResponseBody
-    @RequestMapping(path= "/project/update/", method = RequestMethod.POST)
-    public String updateProject(Project update){
-
-        projectService.update(update);
-        return "ok";
-    }
-
-
-
-    @ResponseBody
-	@RequestMapping(path = "/view/projects/", method = RequestMethod.POST)
+	@RequestMapping(path = "/view/", method = RequestMethod.POST)
 	public DataTableResponseDTO<ProjectTableDTO> viewProjects(HttpServletRequest req,
 			@RequestBody DataTableRequestDTO dataTableRequest) {
 		List<Project> projectsToShow = projectRepository.getProjects(
@@ -111,7 +64,7 @@ public class ProjectController {
 		return dataTableResponse;
 	}
 
-    @RequestMapping(path="/view/project/{id}/", method = RequestMethod.GET)
+    @RequestMapping(path="/view/{id}/", method = RequestMethod.GET)
     public String viewProject(@PathVariable long id, Model model ){
     	Project project = projectService.getById(id);
     	User chiefMentor = project.getChiefMentor();
@@ -120,13 +73,12 @@ public class ProjectController {
     	model.addAttribute("teams", teamService.getTeamsByProject(project));
     	model.addAttribute("traitCategories", traitCategoryService.getAllCategoriesWithTraits());
     	model.addAttribute("traitsAssociatedWithProject", traitService.getTraitsWithoutNamesByProject(project));
-        List<User> mentors = userService.getMentors();
-        model.addAttribute("mentors",  mentors);
-    	System.out.println(traitService.getTraitsWithoutNamesByProject(project));
+        /*List<User> mentors = userService.getMentors();
+        model.addAttribute("mentors",  mentors);*/
         return "project";
     }
 
-    @RequestMapping(path="/create/project/", method = RequestMethod.POST)
+    @RequestMapping(path="/create/", method = RequestMethod.POST)
     public String createProject(HttpServletRequest request, Model model ){
     	Project project = new Project();
     	project.setName(request.getParameter("name"));
@@ -134,11 +86,10 @@ public class ProjectController {
     	project.setStartDate(DateUtil.getTimeStamp(request.getParameter("startDate")));
     	project.setEndDate(DateUtil.getTimeStamp(request.getParameter("endDate")));
     	projectService.create(project);
-    	model.addAttribute("project", project);
-        return "project";
+    	return "redirect:/project/view/"+project.getId()+"/";
     }
 
-    @RequestMapping(path="/update/project/{id}/", method = RequestMethod.POST)
+    @RequestMapping(path="/update/{id}/", method = RequestMethod.POST)
     public String updateProject(@PathVariable long id, HttpServletRequest request, Model model ){
     	Project project = new Project(id);
     	project.setName(request.getParameter("name"));
@@ -146,11 +97,10 @@ public class ProjectController {
     	project.setStartDate(DateUtil.getTimeStamp(request.getParameter("startDate")));
     	project.setEndDate(DateUtil.getTimeStamp(request.getParameter("endDate")));
     	projectService.update(project);
-    	model.addAttribute("project", project);
-        return "project";
+        return "redirect:/project/view/"+id+"/";
     }
 
-    @RequestMapping(path="/delete/project/{id}/", method = RequestMethod.GET)
+    @RequestMapping(path="/delete/{id}/", method = RequestMethod.GET)
     public String deleteProject(@PathVariable long id){
     	Project project = new Project(id);
     	projectService.delete(project);
@@ -158,28 +108,28 @@ public class ProjectController {
     }
 
     @ResponseBody
-    @RequestMapping(path="/update/project/{projectId}/addTrait/{traitId}/", method = RequestMethod.GET)
+    @RequestMapping(path="/update/{projectId}/addTrait/{traitId}/", method = RequestMethod.GET)
     public String addTraitToProject(@PathVariable long projectId, @PathVariable long traitId){
     	projectRepository.addTraitToProject(new Trait(traitId), new Project(projectId));
         return "success";
     }
 
     @ResponseBody
-    @RequestMapping(path="/update/project/{projectId}/deleteTrait/{traitId}/", method = RequestMethod.GET)
+    @RequestMapping(path="/update/{projectId}/deleteTrait/{traitId}/", method = RequestMethod.GET)
     public String deleteTraitFromProject(@PathVariable long projectId, @PathVariable long traitId){
     	projectRepository.deleteTraitFromProject(new Trait(traitId), new Project(projectId));
         return "success";
     }
 
     @ResponseBody
-    @RequestMapping(path="/update/project/{projectId}/addTraitCategory/{traitCategoryId}/", method = RequestMethod.GET)
+    @RequestMapping(path="/update/{projectId}/addTraitCategory/{traitCategoryId}/", method = RequestMethod.GET)
     public String addTraitCategoryToProject(@PathVariable long projectId, @PathVariable short traitCategoryId){
     	projectRepository.addTraitCategoryToProject(new TraitCategory(traitCategoryId), new Project(projectId));
         return "success";
     }
 
     @ResponseBody
-    @RequestMapping(path="/update/project/{projectId}/deleteTraitCategory/{traitCategoryId}/", method = RequestMethod.GET)
+    @RequestMapping(path="/update/{projectId}/deleteTraitCategory/{traitCategoryId}/", method = RequestMethod.GET)
     public String deleteTraitCategoryFromProject(@PathVariable long projectId, @PathVariable short traitCategoryId){
     	projectRepository.deleteTraitCategoryFromProject(new TraitCategory(traitCategoryId), new Project(projectId));
         return "success";
