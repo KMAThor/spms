@@ -62,7 +62,7 @@
 							<tbody>
 								<c:forEach items="${meetings}" var="meeting">
 									<tr class="tr-${meeting.id}">
-   										<td>${meeting.topic}</td>
+   										<td><a href="<c:url value="/meeting/view/${meeting.id}/" />">${meeting.topic}</a></td>
    										<td>${meeting.startDate}</td>
    										<td>
    											<button type="button" class="btn btn-danger"
@@ -274,7 +274,7 @@
 	      			</div>
 	      			<div class="modal-footer">
 	        			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	        			<button type="button" class="btn btn-danger" onclick="deleteMeeting();">Delete</button>
+	        			<button type="button" class="btn btn-danger" onclick="deleteMeetingT();">Delete</button>
 	     			</div>
 	      		</form>
 	    	</div>

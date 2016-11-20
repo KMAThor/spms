@@ -98,7 +98,7 @@ function createTeam() {
 	var project_id = $('#project_id').val();
 
 	$.ajax({
-		url: "/spms/create/team/"	,
+		url: "/spms/team/create/"	,
 	    data: {
 	    	project_id: project_id,
 	        name: name
@@ -127,7 +127,7 @@ function updateTeamName(id) {
 	var name = $('#newTeamName').val();
 
 	$.ajax({
-	    url: "/spms/update/team/",
+	    url: "/spms/team/update/",
 	    data: {
 	    	id: id,
 	        name: name
@@ -156,7 +156,7 @@ function deleteTeam(id) {
 	var project_id = $('#project_id').val();
 
 	$.ajax({
-	    url: "/spms/delete/team/",
+	    url: "/spms/team/delete/",
 	    data: {
 	        id: id
 	    },
@@ -186,7 +186,7 @@ function createMeeting() {
 	var start_date = $('#meetingStartDate').val();
 
 	$.ajax({
-		url: "/spms/create/meeting/"	,
+		url: "/spms/meeting/create/"	,
 	    data: {
 	    	team_id: team_id,
 	    	topic: topic,
@@ -208,7 +208,7 @@ function createMeeting() {
 	});
 }
 
-function deleteMeeting() {
+function deleteMeetingT() {
 	
 	$('#deleteMeetingModal').modal('hide');
 	$('#loadingModal').modal('show');
@@ -216,7 +216,7 @@ function deleteMeeting() {
 	var id = idDelMeet;
 
 	$.ajax({
-	    url: "/spms/delete/meeting/",
+	    url: "/spms/meeting/delete/",
 	    data: {
 	        id: id
 	    },
@@ -224,7 +224,7 @@ function deleteMeeting() {
 	    dataType : "text",
 		timeout: 15000
 	})
-	.done(function( json ) {
+	.done(function(message) {
 		meetingsTable.row('.tr-' + id).remove().draw( false );
 	    $('#loadingModal').modal('hide');
 	})
@@ -242,4 +242,66 @@ function attachIdMeet(id) {
 
 function attachIdFile(id) {
 	idDelFile = id;
+}
+
+function editMeeting(id) {
+	
+	$('#editMeetingModal').modal('hide');
+	$('#loadingModal').modal('show');
+	
+	var topic = $('#topic').val();
+	alert(topic);
+	var start_date = $("#datetimepicker").find("input").val();
+	alert(start_date);
+	
+	$.ajax({
+	    url: "/spms/update/meeting/",
+	    data: {
+	    	id: id,
+	    	topic: topic,
+	        start_date: start_date
+	    },
+	    type: "POST",
+	    dataType : "text",
+		timeout: 15000
+	})
+	.done(function(message) {
+		$('#meetingTopic').text(topic);
+		$('#meetingStartDate').text(start_date);
+	    $('#loadingModal').modal('hide');
+	})
+	.fail(function( xhr, status, errorThrown ) {
+		$('#loadingModal').modal('hide');
+		$('#networkErrorModal').modal('show');
+	})
+	.always(function( xhr, status ) {
+	});;
+}
+
+function deleteMeetingM(id) {
+	
+	$('#deleteMeetingModal').modal('hide');
+	$('#loadingModal').modal('show');
+
+	var team_id = $('#team_id').val();
+	
+	$.ajax({
+	    url: "/spms/meeting/delete/",
+	    data: {
+	        id: id
+	    },
+	    type: "POST",
+	    dataType : "text",
+		timeout: 15000
+	})
+	.done(function(message) {
+	    $('#loadingModal').modal('hide');
+	    window.location = '/spms/team/view/' + team_id + '/';
+	})
+	.fail(function( xhr, status, errorThrown ) {
+		$('#loadingModal').modal('hide');
+		$('#networkErrorModal').modal('show');
+	})
+	.always(function( xhr, status ) {
+	});
 }

@@ -1,6 +1,8 @@
 package nc.ukma.thor.spms.service;
 
 import nc.ukma.thor.spms.entity.Role;
+import nc.ukma.thor.spms.entity.Meeting;
+
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.UserRepositoryJdbcImpl;
@@ -41,6 +43,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getUsersByRole(long offset, int length, int orderBy, SortingOrder order, String search, Role role) {
 		return userRepo.getUsersByRole(offset, length, orderBy, order, search, role);
+	}
+
+	@Override
+	public List<User> getUsersByMeeting(Meeting meeting) {
+		return userRepo.getUsersPresentAtMeeting(meeting);
 	}
 
 }

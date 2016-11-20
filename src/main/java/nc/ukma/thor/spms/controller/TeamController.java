@@ -1,7 +1,5 @@
 package nc.ukma.thor.spms.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +30,7 @@ public class TeamController {
     private UserService userService;
 
     @ResponseBody
-    @RequestMapping(path="/create/team/", method = RequestMethod.POST)
+    @RequestMapping(path="/team/сreate/", method = RequestMethod.POST)
     public String createTeam(@RequestParam long project_id, @RequestParam String name){
     	Project project = new Project(project_id);
     	Team team = new Team(name, project);
@@ -41,7 +39,7 @@ public class TeamController {
     }
     
     @ResponseBody
-    @RequestMapping(path="/update/team/", method = RequestMethod.POST)
+    @RequestMapping(path="/team/update/", method = RequestMethod.POST)
     public String updateProject(@RequestParam long id, @RequestParam String name){
     	Team team = new Team(id);
     	team.setName(name);
@@ -50,19 +48,20 @@ public class TeamController {
     }
 	
     @ResponseBody
-	@RequestMapping(path="/delete/team/", method = RequestMethod.POST)
+	@RequestMapping(path="/team/delete/", method = RequestMethod.POST)
     public String deleteProject(@RequestParam long id){
     	Team team = new Team(id);
     	teamService.delete(team);
         return "success";
     }
 	
-	@RequestMapping(path="/view/team/{team_id}/", method = RequestMethod.GET)
+	@RequestMapping(path="/team/view/{team_id}/", method = RequestMethod.GET)
     public String viewTeam(@PathVariable long team_id, Model model ){
     	Team team = teamService.getById(team_id);
     	model.addAttribute("team", team);
     	model.addAttribute("meetings", meetingService.getMeetingsByTeam(team));
     	model.addAttribute("files", fileService.getFilesByTeam(team_id));
+    	model.addAttribute("users", userService.getUsersByTeam(team));
         return "team";
     }
 	
