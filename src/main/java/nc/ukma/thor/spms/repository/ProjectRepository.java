@@ -13,9 +13,13 @@ public interface ProjectRepository extends MyRepository<Project>{
 	public void deleteTraitFromProject(Long traitId, Long projectId);
 	public int[] addTraitCategoryToProject(Short traitCategoryId, Long projectId);
 	public int[] deleteTraitCategoryFromProject(Short traitCategoryId, Long projectId);
-	public Long count();
-	public Long count(String string);
+	public long count();
+	public long count(String string);
 	public List<Project> getProjects(long offset, int length, int column, SortingOrder sortingOrder, String searchValue);
+	public long countProjectsByChiefMentor(long id);
+	public long countProjectsByChiefMentor(String string, long id);
+	public List<Project> getProjectsByChiefMentor(int offset, int length, int column, SortingOrder sortingOrder, String value,
+			Long id);
 	
 	public default void addTraitToProject(Trait trait, Project project){
 		addTraitToProject(trait.getId(), project.getId());
@@ -34,4 +38,5 @@ public interface ProjectRepository extends MyRepository<Project>{
     // need to implement
     void setChiefUser(User chief, Project project);
     void deleteChiefUser(Project project);
+
 }

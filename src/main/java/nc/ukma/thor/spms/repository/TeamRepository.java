@@ -8,6 +8,7 @@ import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.entity.UserStatus;
 
 public interface TeamRepository extends MyRepository<Team>{
+	public Team getActiveTeamByUser(Long id);
 	public List<Team> getTeamsByUser(Long userId);
 	public List<Team> getTeamsByProject(Long projectId);
 	public void addUserToTeam(Long userId, Long teamId);
@@ -32,5 +33,8 @@ public interface TeamRepository extends MyRepository<Team>{
 	}
 	public default UserStatus getUserStatusInTeam(User user, Team team){
 		return getUserStatusInTeam(user.getId(), team.getId());
+	}
+	public default Team getActiveTeamByUser(User user){
+		return getActiveTeamByUser(user.getId());
 	}
 }

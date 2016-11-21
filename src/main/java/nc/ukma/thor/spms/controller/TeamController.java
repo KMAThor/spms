@@ -39,7 +39,7 @@ public class TeamController {
     	Project project = new Project(project_id);
     	Team team = new Team(name, project);
     	teamService.create(team);
-        return "/spms/view/team/" + team.getId() + "/";
+        return "/spms/team/view/" + team.getId() + "/";
     }
     
     @ResponseBody
@@ -77,7 +77,7 @@ public class TeamController {
     	usersToNotify.add(user);
     	EmailSender.sendMessageUserAddedToProject(usersToNotify, team.getName());
     	teamService.addMember(user, team);
-    	return "redirect:/view/team/" + team_id + "/";
+    	return "redirect:/team/view/" + team_id + "/";
     }
 	
 	@RequestMapping(path="/{team_id}/deleteUser/{user_id}/", method = RequestMethod.GET)
@@ -85,7 +85,7 @@ public class TeamController {
 		Team team = teamService.getById(team_id);
     	User user = userService.getUserById(user_id);
     	teamService.deleteMember(user, team);
-    	return "redirect:/view/team/" + team_id + "/";
+    	return "redirect:/team/view/" + team_id + "/";
     }
 
 }

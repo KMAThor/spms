@@ -29,5 +29,7 @@ public interface TeamService extends Service<Team>{
     
     //team info
     String getInfo(long teamId);
+
+	public Team getActiveTeamByUser(User user);
 	
 }

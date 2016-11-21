@@ -32,6 +32,10 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 	private static final String ADD_USER_TO_TEAM_SQL = "INSERT INTO user_team (user_id, team_id) VALUES (?,?);";
 	private static final String DELETE_USER_FROM_TEAM_SQL = "DELETE FROM user_team WHERE user_id=? AND team_id=?;";
 	
+	private static final String GET_ACTIVE_TEAM_BY_USER_SQL = "SELECT * FROM team "
+			+ "INNER JOIN user_team ON team.id = user_team.team_id "
+			+ "INNER JOIN project ON team.project_id=project.id "
+			+ "WHERE user_team.user_id = ? AND project.is_completed=FALSE;";
 	private static final String GET_USER_STATUS_IN_TEAM_SQL = "SELECT * FROM user_team "
 			+ "INNER JOIN status ON user_team.status_id = status.id "
 			+ "WHERE user_id=? AND team_id=?;";
@@ -72,6 +76,16 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 	public Team getById(Long id) {
 		try{
 			return jdbcTemplate.queryForObject(GET_TEAM_BY_ID_SQL,
+					new Object[] {id}, TEAM_MAPPER);
+		}catch(EmptyResultDataAccessException e){
+			return null;
+		}
+	}
+	
+	@Override
+	public Team getActiveTeamByUser(Long id) {
+		try{
+			return jdbcTemplate.queryForObject(GET_ACTIVE_TEAM_BY_USER_SQL,
 					new Object[] {id}, TEAM_MAPPER);
 		}catch(EmptyResultDataAccessException e){
 			return null;

@@ -64,4 +64,11 @@ public class TeamServiceImpl extends AbstractService<Team> implements TeamServic
 		return null;
 	}
 
+	@Override
+	public Team getActiveTeamByUser(User user) {
+		return teamRepository.getActiveTeamByUser(user);
+	}
+	
+
+
 }

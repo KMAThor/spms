@@ -4,6 +4,7 @@ import nc.ukma.thor.spms.dto.dataTable.DataTableRequestDTO;
 import nc.ukma.thor.spms.dto.dataTable.DataTableResponseDTO;
 import nc.ukma.thor.spms.dto.dataTable.ProjectTableDTO;
 import nc.ukma.thor.spms.entity.Project;
+import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
 import nc.ukma.thor.spms.entity.User;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,13 +50,45 @@ public class ProjectController {
     @ResponseBody
 	@RequestMapping(path = "/view/", method = RequestMethod.POST)
 	public DataTableResponseDTO<ProjectTableDTO> viewProjects(HttpServletRequest req,
+			@RequestBody DataTableRequestDTO dataTableRequest, Principal principal) {
+    	
+    	
+    	List<Project> projectsToShow;
+    	Long numberOfProjectsToShow;
+    	Long numberOfProjects;
+    	User user = userService.getUser(principal.getName());
+    	if(user.getRole() == Role.MENTOR){
+    		projectsToShow = projectRepository.getProjectsByChiefMentor(
+    				dataTableRequest.getStart(),
+    				dataTableRequest.getLength(),
+    				dataTableRequest.getOrder().get(0).getColumn(),
+    				dataTableRequest.getOrder().get(0).getDir(),
+    				dataTableRequest.getSearch().getValue(),
+    				user.getId());
+    		numberOfProjects = projectRepository.countProjectsByChiefMentor(user.getId());
+    		numberOfProjectsToShow = projectRepository.countProjectsByChiefMentor(dataTableRequest.getSearch().getValue(), user.getId());
+    	}else{
+    		projectsToShow = projectRepository.getProjects(
+    				dataTableRequest.getStart(),
+    				dataTableRequest.getLength(),
+    				dataTableRequest.getOrder().get(0).getColumn(),
+    				dataTableRequest.getOrder().get(0).getDir(),
+    				dataTableRequest.getSearch().getValue());
+    		numberOfProjects = projectRepository.count();
+    		numberOfProjectsToShow = projectRepository.count(dataTableRequest.getSearch().getValue());
+    	}
+		
+		DataTableResponseDTO<ProjectTableDTO> dataTableResponse = new DataTableResponseDTO<ProjectTableDTO>(
+				dataTableRequest.getDraw(),
+				numberOfProjects, numberOfProjectsToShow,
+				ProjectTableDTO.convertFrom(projectsToShow));
+		return dataTableResponse;
+	}
+    /*  @ResponseBody
+	@RequestMapping(path = "/view/chiefMentor/{mentorId}/", method = RequestMethod.POST)
+	public DataTableResponseDTO<ProjectTableDTO> viewProjectsOfMentor(HttpServletRequest req,
 			@RequestBody DataTableRequestDTO dataTableRequest) {
-		List<Project> projectsToShow = projectRepository.getProjects(
-				dataTableRequest.getStart(),
-				dataTableRequest.getLength(),
-				dataTableRequest.getOrder().get(0).getColumn(),
-				dataTableRequest.getOrder().get(0).getDir(),
-				dataTableRequest.getSearch().getValue());
+		List<Project> projectsToShow = projectRepository.getActiveProjectsByMentor();
 
 		Long numberOfUsers = projectRepository.count();
 		Long numberOfUsersToShow = projectRepository.count(dataTableRequest.getSearch().getValue());
@@ -62,7 +97,7 @@ public class ProjectController {
 				numberOfUsers, numberOfUsersToShow,
 				ProjectTableDTO.convertFrom(projectsToShow));
 		return dataTableResponse;
-	}
+	}*/
 
     @RequestMapping(path="/view/{id}/", method = RequestMethod.GET)
     public String viewProject(@PathVariable long id, Model model ){
