@@ -36,8 +36,9 @@ public class MeetingFeedbackController {
 	
 	@RequestMapping(path= "/view/{id}/", method = RequestMethod.GET)
 	public String viewMeetingFeedbackForm(Model model, @PathVariable long id){
-		model.addAttribute("traitCategories", traitCategoryService.getAllCategoriesWithTraitsByMeeting(id));
-		model.addAttribute("meetingFeedback", meetingFeedbackService.getById(id));
+		MeetingFeedback meetingFeedback = meetingFeedbackService.getById(id);
+		model.addAttribute("traitCategories", traitCategoryService.getAllCategoriesWithTraitsByMeeting(meetingFeedback.getMeeting()));
+		model.addAttribute("meetingFeedback", meetingFeedback);
 		return "viewMeetingFeedback";
 	}
 	
@@ -65,7 +66,7 @@ public class MeetingFeedbackController {
 		}
 		meetingFeedbackService.create(meetingFeedback);
 		
-		return "redirect:/meetingFeedback/view/"+meetingFeedback.getId()+"/";
+		return "redirect:/meeting/view/"+meetingId+"/";
 	}
 	
 	@RequestMapping(path= "/edit/{meetingFeedbackId}/", method = RequestMethod.GET)
@@ -95,7 +96,7 @@ public class MeetingFeedbackController {
 		}
 		meetingFeedbackService.update(meetingFeedback);
 		
-		return "redirect:/meetingFeedback/view/"+meetingFeedback.getId()+"/";
+		return "redirect:/meeting/view/"+meetingId+"/";
 	}
 	
 	@RequestMapping(path="/delete/{id}/", method = RequestMethod.GET)

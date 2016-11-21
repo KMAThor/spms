@@ -1,5 +1,6 @@
 package nc.ukma.thor.spms.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import nc.ukma.thor.spms.entity.Meeting;
+import nc.ukma.thor.spms.entity.MeetingFeedback;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.service.MeetingService;
 import nc.ukma.thor.spms.service.UserService;
 import nc.ukma.thor.spms.util.DateUtil;
 import nc.ukma.thor.spms.mail.EmailSender;
+import nc.ukma.thor.spms.repository.MeetingFeedbackRepository;
 
 @Controller
 public class MeetingController {
@@ -27,6 +30,8 @@ public class MeetingController {
     private MeetingService meetingService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private MeetingFeedbackRepository meetingFeedbackRepository;
 
     @ResponseBody
     @RequestMapping(path="/meeting/create/", method = RequestMethod.POST)
@@ -63,10 +68,20 @@ public class MeetingController {
     }
 	
 	@RequestMapping(path="/meeting/view/{id}/", method = RequestMethod.GET)
-    public String viewMeeting(@PathVariable long id, Model model ){
+    public String viewMeeting(@PathVariable long id, Model model, Principal authUser){
     	Meeting meeting = meetingService.getById(id);
+    	User author = userService.getUser(authUser.getName());
     	model.addAttribute("meeting", meeting);
-    	model.addAttribute("members", userService.getActiveStudentsByTeam(meeting.getTeam()));
+    	List<User> members = userService.getActiveStudentsByTeam(meeting.getTeam());
+    	model.addAttribute("members", members);
+    	List<MeetingFeedback> feedbacks = new ArrayList<MeetingFeedback>();
+    	for(User member: members){
+    		MeetingFeedback meetingFeedback = meetingFeedbackRepository.getMeetingFeedbacksByMeetingStudentMentor(meeting, member, author);
+    		feedbacks.add(meetingFeedback);
+    	}
+    	System.out.println(feedbacks);
+    	
+    	model.addAttribute("feedbacks", feedbacks);
         return "meeting";
     }
 	

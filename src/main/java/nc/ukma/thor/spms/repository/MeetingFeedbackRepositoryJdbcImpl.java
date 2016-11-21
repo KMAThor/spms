@@ -40,6 +40,14 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 	private static final String GET_MEETING_FEEDBACK_BY_MENTOR_SQL = "";
 	private static final String GET_MEETING_FEEDBACK_BY_MEETING_AND_STUDENT_SQL = "";
 	
+	private static final String GET_MEETING_FEEDBACK_BY_MEETING_STUDENT_MENTOR_SQL = "SELECT "
+			+ "meeting_feedback.id AS meeting_feedback_id, summary, student_id, meeting_id, author_id,"
+			+ "trait_feedback.id AS trait_feedback_id, score, comment, trait_id "
+			+ "FROM meeting_feedback "
+			+ "INNER JOIN trait_feedback ON meeting_feedback.id=trait_feedback.meeting_feedback_id "
+			+ "WHERE meeting_id=? AND student_id=? AND author_id=? "
+			+ "ORDER BY meeting_feedback_id, trait_feedback_id;";
+	
 	private static final MeetingFeedbackExtractor MEETING_FEEDBACKS_EXTRACTOR = new MeetingFeedbackExtractor();
 	
 	@Autowired
@@ -134,6 +142,14 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 			meetingFeedbacks.add(meetingFeedback);
 			return meetingFeedbacks;
 		}
+	}
+
+	@Override
+	public MeetingFeedback getMeetingFeedbacksByMeetingStudentMentor(Meeting meeting, User student, User mentor) {
+		List<MeetingFeedback> meetingFeedbacks =jdbcTemplate.query(GET_MEETING_FEEDBACK_BY_MEETING_STUDENT_MENTOR_SQL,
+				new Object[] {meeting.getId(), student.getId(), mentor.getId() }, MEETING_FEEDBACKS_EXTRACTOR);
+		if(meetingFeedbacks.isEmpty()) return null;
+		else return meetingFeedbacks.get(0);
 	}
 	
 }

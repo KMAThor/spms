@@ -41,7 +41,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${members}" var="member">
+						<c:forEach items="${members}" var="member" varStatus="loop">
 							<c:if test="${member.role.id == 3}">
 								<tr>
    									<td>${member.id}</td>
@@ -50,7 +50,14 @@
    									<td>${member.secondName}</td>
    									<td>${member.lastName}</td>
    									<td>
-   										<a href="<c:url value="/meetingFeedback/create/${member.id}/${meeting.id}" />" class="btn btn-warning">Evaluate</a>
+   										<c:choose>
+										    <c:when test="${empty feedbacks[loop.index]}">
+										        <a href="<c:url value="/meetingFeedback/create/${member.id}/${meeting.id}/" />" class="btn btn-success">Leave feedback</a>
+										    </c:when>
+										    <c:otherwise>
+										        <a href="<c:url value="/meetingFeedback/edit/${feedbacks[loop.index].id}/" />" class="btn btn-warning">Edit feedback</a>
+										    </c:otherwise>
+										</c:choose>
 									</td>
    								</tr>
 							</c:if>
