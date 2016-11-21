@@ -52,7 +52,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "INNER JOIN role ON role.id = user_role.role_id " 
 			+ "WHERE email ILIKE ? OR first_name ILIKE ? OR second_name ILIKE ? "
 			+ "OR last_name ILIKE ? OR role ILIKE ? " 
-			+ "ORDER BY %s %s, \"user\".id "//default ordering by user id, it is important for pagination
+			+ "ORDER BY \"user\".%s %s, \"user\".id "//default ordering by user id, it is important for pagination
 			+ "LIMIT ? OFFSET ?;";
 
 	private static final String COUNT_USERS_SQL = "SELECT COUNT(*) FROM \"user\";";
@@ -71,7 +71,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "INNER JOIN role ON role.id = user_role.role_id " 
 			+ "WHERE (email ILIKE ? OR first_name ILIKE ? OR second_name ILIKE ? "
 			+ "OR last_name ILIKE ?) AND role=? " 
-			+ "ORDER BY %s %s, \"user\".id "//default ordering by user id, it is important for pagination
+			+ "ORDER BY \"user\".%s %s, \"user\".id "//default ordering by user id, it is important for pagination
 			+ "LIMIT ? OFFSET ?;";
 	private static final String COUNT_USERS_BY_ROLE_SQL = "SELECT COUNT(*) FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
@@ -84,39 +84,41 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "INNER JOIN role ON role.id = user_role.role_id " 
 			+ "WHERE (email ILIKE ? OR first_name ILIKE ? OR second_name ILIKE ? "
 			+ "OR last_name ILIKE ?) AND role=?;";
-	
+
 	/*FREE USERS BY ROLE PAGINATION*/
-	private static final String GET_FREE_USERS_BY_ROLE_BY_PAGE_SQL = "SELECT * FROM \"user\" "
-			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
-			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+	private static final String GET_FREE_USERS_BY_ROLE_BY_PAGE_SQL = "SELECT * "//DISTINCT \"user\".id, "
+		//	+ "email, first_name, second_name, last_name, password, is_active, role, role_id, photo_scope "
+			+ "FROM \"user\" AS X "
+			+ "LEFT JOIN application_form ON X.id = application_form.user_id "
+			+ "INNER JOIN user_role ON X.id = user_role.user_id "
 			+ "INNER JOIN role ON role.id = user_role.role_id " 
 			+ "WHERE (email ILIKE ? OR first_name ILIKE ? OR second_name ILIKE ? "
 			+ "OR last_name ILIKE ?) AND role=? AND "
 			+ "NOT EXISTS (SELECT * FROM user_team "
 						+ "INNER JOIN team ON user_team.team_id=team.id "
 						+ "INNER JOIN project ON team.project_id=project.id "
-						+ "WHERE project.is_completed=FALSE AND user_team.user_id=\"user\".id) " 
-			+ "ORDER BY %s %s, \"user\".id "//default ordering by user id, it is important for pagination
+						+ "WHERE project.is_completed=FALSE AND user_team.user_id=X.id) " 
+			+ "ORDER BY X.%s %s, X.id "//default ordering by user id, it is important for pagination
 			+ "LIMIT ? OFFSET ?;";
-	private static final String COUNT_FREE_USERS_BY_ROLE_SQL = "SELECT COUNT(*) FROM \"user\" "
-			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
-			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+	private static final String COUNT_FREE_USERS_BY_ROLE_SQL = "SELECT COUNT(*) FROM \"user\" AS X "
+			+ "LEFT JOIN application_form ON X.id = application_form.user_id "
+			+ "INNER JOIN user_role ON X.id = user_role.user_id "
 			+ "INNER JOIN role ON role.id = user_role.role_id "
 			+ "WHERE role=? AND "
 			+ "NOT EXISTS (SELECT * FROM user_team "
 						+ "INNER JOIN team ON user_team.team_id=team.id "
 						+ "INNER JOIN project ON team.project_id=project.id "
-						+ "WHERE project.is_completed=FALSE AND user_team.user_id=\"user\".id);";
-	private static final String COUNT_FREE_USERS_BY_ROLE_FILTERED_SQL = "SELECT COUNT(*) FROM \"user\" "
-			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
-			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+						+ "WHERE project.is_completed=FALSE AND user_team.user_id=X.id);";
+	private static final String COUNT_FREE_USERS_BY_ROLE_FILTERED_SQL = "SELECT COUNT(*) FROM \"user\" AS X "
+			+ "LEFT JOIN application_form ON X.id = application_form.user_id "
+			+ "INNER JOIN user_role ON X.id = user_role.user_id "
 			+ "INNER JOIN role ON role.id = user_role.role_id " 
 			+ "WHERE (email ILIKE ? OR first_name ILIKE ? OR second_name ILIKE ? "
 			+ "OR last_name ILIKE ?) AND role=? AND "
 			+ "NOT EXISTS (SELECT * FROM user_team "
 						+ "INNER JOIN team ON user_team.team_id=team.id "
 						+ "INNER JOIN project ON team.project_id=project.id "
-						+ "WHERE project.is_completed=FALSE AND user_team.user_id=\"user\".id);";
+						+ "WHERE project.is_completed=FALSE AND user_team.user_id=X.id);";
 	
 	private static final RowMapper<User> USER_MAPPER = new UserMapper();
 
@@ -179,7 +181,6 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 				new Object[] { searchParam, searchParam, searchParam, searchParam, searchParam}, Long.class);
 	}
 	
-
 	@Override
 	public List<User> getUsersByRole(long offset, int length, int orderBy,
 									 SortingOrder order, String searchString, Role role) {
@@ -190,10 +191,10 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 		return jdbcTemplate.query(query,
 				new Object[] { searchParam,searchParam,searchParam, searchParam, role.getName(), length, offset }, USER_MAPPER);
 	}
-
+	
 	@Override
 	public long countUsersByRole(Role role) {
-		return this.jdbcTemplate.queryForObject(COUNT_USERS_BY_ROLE_FILTERED_SQL,
+		return this.jdbcTemplate.queryForObject(COUNT_USERS_BY_ROLE_SQL,
 				new Object[] { role.getName()}, Long.class);
 	}
 
@@ -217,7 +218,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 
 	@Override
 	public long countFreeUsersByRole(Role role) {
-		return this.jdbcTemplate.queryForObject(COUNT_FREE_USERS_BY_ROLE_FILTERED_SQL,
+		return this.jdbcTemplate.queryForObject(COUNT_FREE_USERS_BY_ROLE_SQL,
 				new Object[] { role.getName()}, Long.class);
 	}
 
@@ -230,7 +231,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 
 	
 	public static enum OrderableColumn {
-		ID("\"user\".id"), EMAIL("email"), FIRST_NAME("first_name"), SECOND_NAME("second_name"), LAST_NAME("last_name"), ROLE("role");
+		ID("id"), EMAIL("email"), FIRST_NAME("first_name"), SECOND_NAME("second_name"), LAST_NAME("last_name"), ROLE("role");
 
 		private String columnName;
 

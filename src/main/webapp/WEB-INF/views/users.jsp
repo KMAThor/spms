@@ -26,7 +26,7 @@
 
 				    serverSide: true,
 			        ajax: {
-				        url: '<c:url value="/view/users/"/>',
+				        url: '<c:url value="/user/view/"/>',
 				        type: 'POST',
 				        data: function ( d ) {
 						      return JSON.stringify( d );

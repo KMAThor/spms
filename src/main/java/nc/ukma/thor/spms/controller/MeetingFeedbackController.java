@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import nc.ukma.thor.spms.entity.MeetingFeedback;
-import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.TraitFeedback;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.service.MeetingFeedbackService;

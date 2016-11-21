@@ -121,9 +121,6 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 				new Object[] { searchParam,searchParam, searchParam, length, offset }, PROJECT_MAPPER);
 	}
 
-
-
-
 	@Override
 	public Long count() {
 		return this.jdbcTemplate.queryForObject(COUNT_PROJECTS_SQL, Long.class);

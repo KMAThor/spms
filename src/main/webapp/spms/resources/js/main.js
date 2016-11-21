@@ -305,3 +305,9 @@ function deleteMeetingM(id) {
 	.always(function( xhr, status ) {
 	});
 }
+
+function chooseChiefMentor(id, name) {
+	$('#cheifMentorName').text(name);
+	$('#cheifMentorId').val(id);
+	$('#chooseChiefMentorModal').modal('hide');
+}

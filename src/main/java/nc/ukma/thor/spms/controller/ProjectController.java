@@ -73,8 +73,6 @@ public class ProjectController {
     	model.addAttribute("teams", teamService.getTeamsByProject(project));
     	model.addAttribute("traitCategories", traitCategoryService.getAllCategoriesWithTraits());
     	model.addAttribute("traitsAssociatedWithProject", traitService.getTraitsWithoutNamesByProject(project));
-        /*List<User> mentors = userService.getMentors();
-        model.addAttribute("mentors",  mentors);*/
         return "project";
     }
 
@@ -90,12 +88,14 @@ public class ProjectController {
     }
 
     @RequestMapping(path="/update/{id}/", method = RequestMethod.POST)
-    public String updateProject(@PathVariable long id, HttpServletRequest request, Model model ){
+    public String updateProject(@PathVariable long id, HttpServletRequest request, Model model){
     	Project project = new Project(id);
     	project.setName(request.getParameter("name"));
     	project.setDescription(request.getParameter("description"));
     	project.setStartDate(DateUtil.getTimeStamp(request.getParameter("startDate")));
     	project.setEndDate(DateUtil.getTimeStamp(request.getParameter("endDate")));
+    	if(request.getParameter("isCompleted") != null) project.setIsCompleted(true);
+    	project.setChiefMentor(new User(Long.valueOf(request.getParameter("cheifMentorId"))));
     	projectService.update(project);
         return "redirect:/project/view/"+id+"/";
     }
