@@ -50,7 +50,7 @@
    									<td>${member.secondName}</td>
    									<td>${member.lastName}</td>
    									<td>
-   										<a href="<c:url value="/feedback/${member.id}/" />" class="btn btn-warning">Evaluate</a>
+   										<a href="<c:url value="/meetingFeedback/create/${member.id}/${meeting.id}" />" class="btn btn-warning">Evaluate</a>
 									</td>
    								</tr>
 							</c:if>

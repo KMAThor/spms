@@ -40,7 +40,7 @@ public class MeetingController {
     	
     	List<User> usersToNotify = new ArrayList<>(team.getMembers().keySet());
 		EmailSender.sendScheduleChangesMassage(usersToNotify, meeting.getStartDate().toString());	
-		
+
         return "/spms/meeting/view/" + meeting.getId() + "/";
     }
     
@@ -66,7 +66,7 @@ public class MeetingController {
     public String viewMeeting(@PathVariable long id, Model model ){
     	Meeting meeting = meetingService.getById(id);
     	model.addAttribute("meeting", meeting);
-    	model.addAttribute("members", userService.getUsersByMeeting(meeting));
+    	model.addAttribute("members", userService.getActiveStudentsByTeam(meeting.getTeam()));
         return "meeting";
     }
 	

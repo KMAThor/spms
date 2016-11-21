@@ -34,6 +34,12 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
 			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
 			+ "INNER JOIN role ON role.id = user_role.role_id " + "WHERE team_id = ?;";
+	
+	private static final String GET_ACTIVE_STUDENTS_BY_TEAM_SQL = "SELECT * FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id " + "WHERE team_id = ? AND role_id=3;";
 
 	private static final String GET_USERS_BY_MEETING_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
@@ -148,6 +154,11 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 	@Override
 	public List<User> getUsersByTeam(Team team) {
 		return jdbcTemplate.query(GET_USERS_BY_TEAM_SQL, new Object[] { team.getId() }, USER_MAPPER);
+	}
+	
+	@Override
+	public List<User> getActiveStudentsByTeam(Team team) {
+		return jdbcTemplate.query(GET_ACTIVE_STUDENTS_BY_TEAM_SQL, new Object[] { team.getId() }, USER_MAPPER);
 	}
 
 	@Override

@@ -107,7 +107,8 @@
   					<security:authorize access="hasAuthority('admin')">
   						<div  class="panel-center">
   							<button type="button" class="btn btn-success"
-								data-toggle="modal" data-target="#addMentorModal">
+								data-toggle="modal" data-target="#addMentorModal"
+								onclick="getMentors();">
 								<i class="fa fa-plus-circle" aria-hidden="true"></i>
 								Add mentor
 							</button>
@@ -125,6 +126,26 @@
 									<td data-orderable="false"></td>
 								</tr>
 							</thead>
+							<tbody>
+								<c:forEach items="${users}" var="user">
+									<c:if test="${user.role.id == 1}">
+										<tr>
+   											<td>${user.id}</td>
+   											<td>${user.email}</td>
+   											<td>${user.firstName}</td>
+   											<td>${user.secondName}</td>
+   											<td>${user.lastName}</td>
+   											<td>
+   												<a href="<c:url value="/${team.id}/deleteUser/${user.id}/" />"
+													data-original-title="Delete" data-toggle="tooltip"
+													type="button" class="btn btn-sm btn-danger">Delete
+													<i class="glyphicon glyphicon-remove"></i>
+												</a>
+											</td>
+   										</tr>
+									</c:if>
+								</c:forEach>
+							</tbody>
 						</table>
 					</div>
   				</div>
@@ -132,7 +153,8 @@
   					<security:authorize access="hasAuthority('admin')">
   						<div class="panel-center">
   							<button type="button" class="btn btn-success"
-								data-toggle="modal" data-target="#addStudentModal">
+								data-toggle="modal" data-target="#addStudentModal"
+								onclick="getStudents();">
 								<i class="fa fa-plus-circle" aria-hidden="true"></i>
 								Add student
 							</button>
@@ -150,6 +172,26 @@
 									<td data-orderable="false"></td>
 								</tr>
 							</thead>
+							<tbody>
+								<c:forEach items="${users}" var="user">
+									<c:if test="${user.role.id == 3}">
+										<tr>
+   											<td>${user.id}</td>
+   											<td>${user.email}</td>
+   											<td>${user.firstName}</td>
+   											<td>${user.secondName}</td>
+   											<td>${user.lastName}</td>
+   											<td>
+   												<a href="<c:url value="/${team.id}/deleteUser/${user.id}/" />"
+													data-original-title="Delete" data-toggle="tooltip"
+													type="button" class="btn btn-sm btn-danger">Delete
+													<i class="glyphicon glyphicon-remove"></i>
+												</a>
+											</td>
+   										</tr>
+									</c:if>
+								</c:forEach>
+							</tbody>
 						</table>
 					</div>
   				</div>
@@ -379,6 +421,70 @@
 	var meetingsTable = $('#meetingsTable').DataTable();
 	var idDelMeet = 0;
 	var idDelFile = 0;
+	
+	function getMentors() {
+		$("#allMentorsTable").dataTable().fnDestroy();
+		$('#allMentorsTable').DataTable( {
+	
+		    serverSide: true,
+	        ajax: {
+		        url: '<c:url value="/user/view/free/mentor/"/>',
+		        type: 'POST',
+		        data: function ( d ) {
+				      return JSON.stringify( d );
+				    },	        
+			    contentType: "application/json; charset=utf-8",
+			    dataType: "json",
+			    dataSrc: function ( json ) {
+				    for(var i=0, ien=json.data.length; i<ien ; i++ ) {
+				        json.data[i]["role"] = '<a href="/spms/' + ${team.id} + '/addUser/' + json.data[i]["id"] + '/"> Add </a>';
+				      }
+				    return json.data;
+				}
+		    },
+		    columns: [
+			    { data: "id" },
+			    { data: "email" },
+			    { data: "firstName" },
+			    { data: "secondName" },
+			    { data: "lastName" },
+			    { data: "role" }
+			  ]
+		    
+		} );
+	}
+	
+	function getStudents() {
+		$("#allStudentsTable").dataTable().fnDestroy();
+		$('#allStudentsTable').DataTable( {
+	
+		    serverSide: true,
+	        ajax: {
+		        url: '<c:url value="/user/view/free/student/"/>',
+		        type: 'POST',
+		        data: function ( d ) {
+				      return JSON.stringify( d );
+				    },	        
+			    contentType: "application/json; charset=utf-8",
+			    dataType: "json",
+			    dataSrc: function ( json ) {
+				    for(var i=0, ien=json.data.length; i<ien ; i++ ) {
+				        json.data[i]["role"] = '<a href="/spms/' + ${team.id} + '/addUser/' + json.data[i]["id"] + '/"> Add </a>';
+				      }
+				    return json.data;
+				}
+		    },
+		    columns: [
+			    { data: "id" },
+			    { data: "email" },
+			    { data: "firstName" },
+			    { data: "secondName" },
+			    { data: "lastName" },
+			    { data: "role" }
+			  ]
+		    
+		} );
+	}
 
 </script>
 <%@include file="footer.jsp"%>

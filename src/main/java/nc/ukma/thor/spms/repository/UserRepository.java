@@ -14,6 +14,7 @@ public interface UserRepository {
 	public User getUserById(Long id);
 	public User getUserByEmail(String email);
 	public List<User> getUsersByTeam(Team team);
+	public List<User> getActiveStudentsByTeam(Team team);
 	public List<User> getAllUsers();
 	public List<User> getUsersPresentAtMeeting(Meeting meeting);
 	
