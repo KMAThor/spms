@@ -1,5 +1,9 @@
 package nc.ukma.thor.spms.controller;
 
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.mail.EmailSender;
 import nc.ukma.thor.spms.service.FileService;
 import nc.ukma.thor.spms.service.MeetingService;
 import nc.ukma.thor.spms.service.TeamService;
@@ -28,9 +33,8 @@ public class TeamController {
     private FileService fileService;
     @Autowired
     private UserService userService;
-
     @ResponseBody
-    @RequestMapping(path="/team/сreate/", method = RequestMethod.POST)
+    @RequestMapping(path="/team/create/", method = RequestMethod.POST)
     public String createTeam(@RequestParam long project_id, @RequestParam String name){
     	Project project = new Project(project_id);
     	Team team = new Team(name, project);
@@ -69,6 +73,9 @@ public class TeamController {
     public String addUser(@PathVariable long team_id, @PathVariable long user_id){
 		Team team = teamService.getById(team_id);
     	User user = userService.getUserById(user_id);
+    	List<User> usersToNotify = new ArrayList<>();
+    	usersToNotify.add(user);
+    	EmailSender.sendMessageUserAddedToProject(usersToNotify, team.getName());
     	teamService.addMember(user, team);
     	return "redirect:/view/team/" + team_id + "/";
     }

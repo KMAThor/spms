@@ -1,5 +1,8 @@
 package nc.ukma.thor.spms.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.Team;
+import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.service.MeetingService;
 import nc.ukma.thor.spms.service.UserService;
 import nc.ukma.thor.spms.util.DateUtil;
+import nc.ukma.thor.spms.mail.EmailSender;
 
 @Controller
 public class MeetingController {
@@ -32,6 +37,10 @@ public class MeetingController {
     	Team team = new Team(team_id);
     	meeting.setTeam(team);
     	meetingService.create(meeting);
+    	
+    	List<User> usersToNotify = new ArrayList<>(team.getMembers().keySet());
+		EmailSender.sendScheduleChangesMassage(usersToNotify, meeting.getStartDate().toString());	
+		
         return "/spms/meeting/view/" + meeting.getId() + "/";
     }
     

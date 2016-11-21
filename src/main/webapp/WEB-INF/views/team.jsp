@@ -42,7 +42,7 @@
 			<div class="tab-content padtop">
 				<div class="tab-pane fade in active" id="meetings">
   					<div  class="panel-center">
-  						<security:authorize access="hasAuthority('admin')">
+  							<security:authorize access="hasAnyAuthority('admin','mentor')">
   							<button type="button" class="btn btn-success"
 								data-toggle="modal" data-target="#createMeetingModal">
 								<i class="fa fa-plus-circle" aria-hidden="true"></i>

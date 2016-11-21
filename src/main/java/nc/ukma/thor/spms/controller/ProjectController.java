@@ -99,6 +99,29 @@ public class ProjectController {
     	projectService.update(project);
         return "redirect:/project/view/"+id+"/";
     }
+     
+    /*
+    //sendMessageTeamAddedToProject
+    @ResponseBody
+    @RequestMapping(path="/project/{projectId}/addTeam/{teamId}", method = RequestMethod.POST)
+    public String addTeamToProject(@PathVariable long projectId, @PathVariable long teamId, Model model){
+    	Project project = projectService.getProject(projectId);
+    	Team team = teamService.getById(teamId);
+    	if (project.getTeams() == null) {
+    		project.setTeams(new ArrayList<Team>());
+    	}
+    	project.getTeams().add(team);
+    	projectService.update(project);
+    	model.addAttribute("project", project);
+    	if (team.getMembers() == null) {
+    		team.setMembers(new HashMap<User, UserStatus>());
+    	}
+    	List<User> usersToNotify = new ArrayList<>(team.getMembers().keySet());
+    	EmailSender.sendMessageTeamAddedToProject(usersToNotify);
+    	return "project";
+    }
+    */
+    
 
     @RequestMapping(path="/delete/{id}/", method = RequestMethod.GET)
     public String deleteProject(@PathVariable long id){

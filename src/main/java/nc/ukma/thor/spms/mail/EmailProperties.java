@@ -2,7 +2,7 @@ package nc.ukma.thor.spms.mail;
 
 public enum EmailProperties {
 
-    GMIAL("smtp.gmail.com", 587);
+    GMAIL("smtp.gmail.com", 587);
 
 
     private String host;

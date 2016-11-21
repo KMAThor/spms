@@ -1,6 +1,5 @@
 package nc.ukma.thor.spms.controller;
 
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import nc.ukma.thor.spms.dto.dataTable.DataTableOrderDTO;
 import nc.ukma.thor.spms.dto.dataTable.DataTableRequestDTO;
 import nc.ukma.thor.spms.dto.dataTable.DataTableResponseDTO;
 import nc.ukma.thor.spms.dto.dataTable.UserTableDTO;
@@ -22,7 +19,6 @@ import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.UserRepository;
-import nc.ukma.thor.spms.repository.UserRepositoryJdbcImpl;
 
 @Controller
 @RequestMapping("/user/")
@@ -46,6 +42,7 @@ public class UserController {
 				dataTableRequest.getOrder().get(0).getColumn(),
 				dataTableRequest.getOrder().get(0).getDir(),
 				dataTableRequest.getSearch().getValue());
+        
 		Long numberOfUsers = userRepository.count();
 		Long numberOfUsersToShow = userRepository.countFiltered(dataTableRequest.getSearch().getValue());
 		DataTableResponseDTO<UserTableDTO> dataTableResponse = new DataTableResponseDTO<UserTableDTO>(dataTableRequest.getDraw(),
