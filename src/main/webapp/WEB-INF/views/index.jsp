@@ -7,7 +7,7 @@
 			<hr>
 			<div  class="panel-center">
 				<h3>
-					Active projects
+					Projects
 					<security:authorize access="hasAuthority('admin')">
 					<button type="button" class="btn btn-success"
 							data-toggle="modal" data-target="#createProjectModal">

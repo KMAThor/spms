@@ -24,6 +24,7 @@ import nc.ukma.thor.spms.mail.EmailSender;
 import nc.ukma.thor.spms.repository.MeetingFeedbackRepository;
 
 @Controller
+@RequestMapping("/meeting/")
 public class MeetingController {
 	
     @Autowired
@@ -34,8 +35,8 @@ public class MeetingController {
     private MeetingFeedbackRepository meetingFeedbackRepository;
 
     @ResponseBody
-    @RequestMapping(path="/meeting/create/", method = RequestMethod.POST)
-    public String createMeeting(@RequestParam long team_id, @RequestParam String topic, @RequestParam String start_date){
+    @RequestMapping(path="/create/", method = RequestMethod.POST)
+    public Long createMeeting(@RequestParam long team_id, @RequestParam String topic, @RequestParam String start_date){
     	Meeting meeting = new Meeting();
     	meeting.setTopic(topic);
     	meeting.setStartDate(DateUtil.getTimeStamp(start_date));
@@ -46,11 +47,11 @@ public class MeetingController {
     	List<User> usersToNotify = new ArrayList<>(team.getMembers().keySet());
 		EmailSender.sendScheduleChangesMassage(usersToNotify, meeting.getStartDate().toString());	
 
-        return "/spms/meeting/view/" + meeting.getId() + "/";
+        return meeting.getId();
     }
     
     @ResponseBody
-    @RequestMapping(path="/meeting/update/", method = RequestMethod.POST)
+    @RequestMapping(path="/update/", method = RequestMethod.POST)
     public String updateProject(@RequestParam long id, @RequestParam String topic, @RequestParam String start_date){
     	Meeting meeting = new Meeting(id);
     	meeting.setTopic(topic);
@@ -60,14 +61,14 @@ public class MeetingController {
     }
     
     @ResponseBody
-    @RequestMapping(path="/meeting/delete/", method = RequestMethod.POST)
+    @RequestMapping(path="/delete/", method = RequestMethod.POST)
     public String deleteMeeting(@RequestParam long id){
     	Meeting meeting = new Meeting(id);
     	meetingService.delete(meeting);
     	return "success";
     }
 	
-	@RequestMapping(path="/meeting/view/{id}/", method = RequestMethod.GET)
+	@RequestMapping(path="/view/{id}/", method = RequestMethod.GET)
     public String viewMeeting(@PathVariable long id, Model model, Principal authUser){
     	Meeting meeting = meetingService.getById(id);
     	User author = userService.getUser(authUser.getName());

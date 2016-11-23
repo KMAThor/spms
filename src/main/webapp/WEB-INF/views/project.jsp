@@ -134,13 +134,16 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h2>Teams
-		<security:authorize access="hasAuthority('admin')">
-			<button type="button" class="btn btn-success"
-				data-toggle="modal" data-target="#createTeamModal">
-				<i class="fa fa-plus-circle" aria-hidden="true"></i>
+			
+			<security:authorize access="hasAuthority('admin')">
+				<button type="button" class="btn btn-success"
+					data-toggle="modal" data-target="#createTeamModal"
+					id="createTeamButton">
+					<i class="fa fa-plus-circle" aria-hidden="true"></i>
 					Create team
-			</button>
+				</button>
 			</security:authorize>
+			
 		</h2>
 		<c:forEach items="${teams}" var="team">
 				<h3>
@@ -392,8 +395,7 @@
 				<div class="modal-body">
 					<div class="form-group">
 						<label for="name">Team name:</label>
-						<input type="hidden" name="project_id" id="project_id" value="${project.id}">
-						<input type="text" class="form-control" name="name" id="newTeamName" placeholder="Enter new team name" required>
+						<input type="text" maxlength="255" class="form-control" id="newTeamName" placeholder="Enter new team name" required>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -404,6 +406,47 @@
 		</div>
 	</div>
 </div>
+
+<script>
+
+	$(document).ready ( function(){
+		if ("${project.isCompleted}" === "true"){
+			document.getElementById('createTeamButton').disabled = true;
+			$("#createTeamButton").attr("title", "Cannot create a team in completed project.");
+			
+		}
+	});
+
+	function createTeam() {
+	
+		$('#createTeamModal').modal('hide');
+		$('#loadingModal').modal('show');
+	
+		var name = $('#newTeamName').val();
+		var project_id = "${project.id}";
+
+		$.ajax({
+			url: "/spms/team/create/"	,
+	    	data: {
+	    		project_id: project_id,
+	        	name: name
+	    	},
+	    	type: "POST",
+	    	dataType : "text",
+			timeout: 15000
+		})
+		.done(function(team_id) {
+	    	$('#loadingModal').modal('hide');
+	    	window.location = "/spms/team/view/" + team_id + "/";
+		})
+		.fail(function( xhr, status, errorThrown ) {
+			$('#loadingModal').modal('hide');
+			$('#networkErrorModal').modal('show');
+		})
+		.always(function( xhr, status ) {
+		});
+}
+</script>
 
 <%@include file="commonModalPopUps.jsp"%>
 <%@include file="footer.jsp"%>
