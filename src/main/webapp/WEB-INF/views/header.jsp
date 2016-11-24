@@ -16,12 +16,13 @@
 	<!-- jQuery DataTable -->
 	<script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
 
-	<!-- Bootstrap Core JavaScript -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/moment.min.js"></script>
+	
+	<!-- Bootstrap Core JavaScript -->
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	
+	<!-- Datetimepicker JavaScript -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/js/bootstrap-datetimepicker.min.js"></script>
-
-
 
 	<!-- Bootstrap DataTable JavaScript -->
 	<script src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
@@ -31,11 +32,19 @@
 
 	<!-- Bootstrap DataTable CSS -->
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css">
+	
+	<!-- Datetimepicker CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker.min.css">
+	
 	<!-- Icons -->
 	<script src="https://use.fontawesome.com/7b15c48d6d.js"></script>
+	
+	<!-- Bootstrap Slider CSS -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.4.1/css/bootstrap-slider.min.css" type="text/css" rel="stylesheet">
+	
+	<!-- Bootstrap Slider Javascript -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.4.1/bootstrap-slider.min.js"></script>
+	
 	<!-- CSS -->
 	<link href="/spms/resources/css/styles.css" type="text/css" rel="stylesheet">
 	

@@ -1,6 +1,5 @@
 package nc.ukma.thor.spms.controller;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,6 @@ import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.mail.EmailSender;
-import nc.ukma.thor.spms.service.FileService;
-import nc.ukma.thor.spms.service.MeetingService;
 import nc.ukma.thor.spms.service.TeamService;
 import nc.ukma.thor.spms.service.UserService;
 
@@ -27,10 +24,6 @@ public class TeamController {
 	
 	@Autowired
     private TeamService teamService;
-	@Autowired
-    private MeetingService meetingService;
-	@Autowired
-    private FileService fileService;
     @Autowired
     private UserService userService;
     
@@ -62,11 +55,8 @@ public class TeamController {
 	
 	@RequestMapping(path="/view/{team_id}/", method = RequestMethod.GET)
     public String viewTeam(@PathVariable long team_id, Model model ){
-    	Team team = teamService.getById(team_id);
+    	Team team = teamService.getFullTeamById(team_id);
     	model.addAttribute("team", team);
-    	model.addAttribute("meetings", meetingService.getMeetingsByTeam(team));
-    	model.addAttribute("files", fileService.getFilesByTeam(team_id));
-    	model.addAttribute("users", userService.getUsersByTeam(team));
         return "team";
     }
 	

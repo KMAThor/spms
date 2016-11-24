@@ -65,7 +65,7 @@
 		</p>
 	</div>
 	<div class="col-sm-5">
-			<h3>Cheid Mentor</h3>
+			<h3>Chief Mentor</h3>
 			<p>
 				<c:choose>
 					<c:when test="${project.chiefMentor ne null}">

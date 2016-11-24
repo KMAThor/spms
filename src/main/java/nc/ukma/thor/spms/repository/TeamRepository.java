@@ -15,6 +15,8 @@ public interface TeamRepository extends MyRepository<Team>{
 	public void deleteUserFromTeam(Long userId, Long teamId);
 	public void changeUserStatusInTeam(Long userId, Long teamId, UserStatus userStatus);
 	public UserStatus getUserStatusInTeam(Long userId, Long teamId);
+	
+	public Team getFullTeamById(Long teamId);
 
 	public default List<Team> getTeamsByUser(User user){
 		return getTeamsByUser(user.getId());

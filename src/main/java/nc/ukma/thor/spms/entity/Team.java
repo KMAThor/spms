@@ -10,6 +10,7 @@ public class Team {
 	private Project project;
 	private Map<User, UserStatus> members;
 	private List<Meeting> meetings;
+	private List<File> files;
 	
 	public Team() {}
 
@@ -58,6 +59,14 @@ public class Team {
 		return meetings;
 	}
 
+	public void setFiles(List<File> files) {
+		this.files = files;
+	}
+	
+	public List<File> getFiles() {
+		return files;
+	}
+
 	public void setMeetings(List<Meeting> meetings) {
 		this.meetings = meetings;
 	}
@@ -67,4 +76,5 @@ public class Team {
 		return "Team [id=" + id + ", name=" + name + ", project=" + project + ", members=" + members + ", meetings="
 				+ meetings + "]";
 	}
+
 }

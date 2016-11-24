@@ -61,7 +61,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${meetings}" var="meeting">
+								<c:forEach items="${team.meetings}" var="meeting">
 									<tr class="meet-tr-${meeting.id}">
    										<td><a href="<c:url value="/meeting/view/${meeting.id}/" />">${meeting.topic}</a></td>
    										<td>${meeting.startDate}</td>
@@ -90,7 +90,7 @@
 						</div>
 					</security:authorize>
 					<div class="div-table">
-						<c:forEach items="${files}" var="file">
+						<c:forEach items="${team.files}" var="file">
    							<p>
    								${file.id}
    								<button type="button" class="btn btn-warning"
@@ -118,23 +118,23 @@
 					<hr>
 					<div class="div-table">
 						<div id="block-mentors" class="row">
-							<c:forEach items="${users}" var="user">
-								<c:if test="${user.role.id == 1}">
-									<div class="col-lg-3 padtop" id="user-${user.id}">
+							<c:forEach items="${team.members}" var="member">
+								<c:if test="${member.key.role.name == 'mentor'}">
+									<div class="col-lg-3 padtop" id="user-${member.key.id}">
 										<c:choose>
-											<c:when test="${empty user.linkToPhoto}">
+											<c:when test="${empty member.key.linkToPhoto}">
 												<img src="/spms/resources/img/anonymous.jpg" class="img-rounded" style="width:150px; height:150px">
  						 					</c:when>
    											<c:otherwise>
-                                                <img src="${user.linkToPhoto}" class="img-rounded" style="width:150px; height:150px">
+                                                <img src="${member.key.linkToPhoto}" class="img-rounded" style="width:150px; height:150px">
  						 					</c:otherwise>
    										</c:choose>
-   										<p style="padding-top: 10px">${user.firstName} ${user.secondName}</p>
-   										<h6>${user.email}</h6>
+   										<p style="padding-top: 10px">${member.key.firstName} ${member.key.secondName}</p>
+   										<h6>${member.key.email}</h6>
    										<p>
    											<button type='button' class='btn btn-xs btn-danger' 
    													data-toggle="modal" data-target="#deleteModal"
-				  		  							onclick="deleteInit('user', ${user.id});">Delete</button>
+				  		  							onclick="deleteInit('user', ${member.key.id});">Delete</button>
 										</p>
    									</div>
 								</c:if>
@@ -156,23 +156,23 @@
 					<hr>
 					<div class="div-table">
 						<div id="block-students" class="row">
-							<c:forEach items="${users}" var="user">
-								<c:if test="${user.role.id == 3}">
-									<div class="col-lg-3 padtop" id="user-${user.id}">
+							<c:forEach items="${team.members}" var="member">
+								<c:if test="${member.key.role.name == 'student'}">
+									<div class="col-lg-3 padtop" id="user-${member.key.id}">
 										<c:choose>
-											<c:when test="${empty user.linkToPhoto}">
+											<c:when test="${empty member.key.linkToPhoto}">
 												<img src="/spms/resources/img/anonymous.jpg" class="img-rounded" style="width:150px; height:150px">
  						 					</c:when>
    											<c:otherwise>
-                                                <img src="${user.linkToPhoto}" class="img-rounded" style="width:150px; height:150px">
+                                                <img src="${member.key.linkToPhoto}" class="img-rounded" style="width:150px; height:150px">
  						 					</c:otherwise>
    										</c:choose>
-   										<p style="padding-top: 10px">${user.firstName} ${user.secondName}</p>
-   										<h6>${user.email}</h6>
+   										<p style="padding-top: 10px">${member.key.firstName} ${member.key.secondName}</p>
+   										<h6>${member.key.email}</h6>
    										<p>
    											<button type='button' class='btn btn-xs btn-danger' 
    													data-toggle="modal" data-target="#deleteModal"
-				  		  							onclick="deleteInit('user', ${user.id});">Delete</button>
+				  		  							onclick="deleteInit('user', ${member.key.id});">Delete</button>
 										</p>
    									</div>
 								</c:if>
@@ -197,7 +197,7 @@
 	        			
 						<div class="form-group">
 							<label for="name">New Team Name</label>
-				    		<input type="text" class="form-control" name="name" id="newTeamName" placeholder="Enter new team name" value="${team.name}" required>
+				    		<input type="text" class="form-control" maxlength="255" id="newTeamName" placeholder="Enter new team name" value="${team.name}" required>
 						</div>
 				
 	      			</div>
@@ -224,7 +224,7 @@
 	        
 				<div class="form-group">
 					<label for="name">Topic:</label>
-				    <input type="text" class="form-control" name="topic" id="topic" placeholder="Enter topic" required>
+				    <input type="text" class="form-control" maxlength="255" id="topic" placeholder="Enter topic" required>
 				</div>
 
 		        <div class="form-group">
@@ -362,7 +362,9 @@ function deleteInit(entity, id) {
 }
 
 function deleteFunc(){
+	
 	$('#deleteModal').modal('hide');
+	
 	if (entityToDelete == 'user'){
 		deleteUser();
 	}
@@ -378,6 +380,7 @@ function deleteFunc(){
 }
 
 function getFreeMentors() {
+	
 	$("#allMentorsTable").dataTable().fnDestroy();
 	$('#allMentorsTable').DataTable( {
 
@@ -409,6 +412,7 @@ function getFreeMentors() {
 }
 
 function getFreeStudents() {
+	
 	$("#allStudentsTable").dataTable().fnDestroy();
 	$('#allStudentsTable').DataTable( {
 
@@ -440,6 +444,7 @@ function getFreeStudents() {
 }
 
 function updateTeamName() {
+	
 	$('#editTeamNameModal').modal('hide');
 	$('#loadingModal').modal('show');
 	
@@ -470,7 +475,6 @@ function updateTeamName() {
 
 function deleteTeam() {
 	
-	$('#deleteTeamModal').modal('hide');
 	$('#loadingModal').modal('show');
 
 	var team_id = "${team.id}";
@@ -531,7 +535,6 @@ function createMeeting() {
 
 function deleteMeeting() {
 	
-	$('#deleteMeetingModal').modal('hide');
 	$('#loadingModal').modal('show');
 	
 	var id = idToDelete;
