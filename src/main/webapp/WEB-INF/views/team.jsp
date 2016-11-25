@@ -12,7 +12,7 @@
 					<button type="button" class="btn btn-danger" data-toggle="modal"
 						data-target="#deleteModal" id="deleteTeamButton"
 						onclick="deleteInit('team', ${team.id});">
-						<i class="fa fa-pencil" aria-hidden="true"></i> Delete Team
+						<i class="fa fa-trash" aria-hidden="true"></i> Delete Team
 					</button>
 				</div>
 			</security:authorize>
@@ -77,14 +77,14 @@
 													onclick="deleteInit('meeting', ${meeting.id});" 
 													title="Cannot delete a meeting in completed project."
 													disabled>
-													<i class="fa fa-pencil" aria-hidden="true"></i> Delete
+													<i class="fa fa-trash" aria-hidden="true"></i> Delete
 												</button>
 											</c:when>
 											<c:otherwise>
 												<button type="button" class="btn btn-xs btn-danger"
 													data-toggle="modal" data-target="#deleteModal"
 													onclick="deleteInit('meeting', ${meeting.id});">
-													<i class="fa fa-pencil" aria-hidden="true"></i> Delete
+													<i class="fa fa-trash" aria-hidden="true"></i> Delete
 												</button>
 											</c:otherwise>
 										</c:choose>
@@ -115,14 +115,14 @@
 										onclick="deleteInit('file', ${file.id});" 
 										title="Cannot delete a file in completed project."
 										disabled>
-										<i class="fa fa-pencil" aria-hidden="true"></i> Delete
+										<i class="fa fa-trash" aria-hidden="true"></i> Delete
 									</button>
 								</c:when>
 								<c:otherwise>
 									<button type="button" class="btn btn-danger"
 										data-toggle="modal" data-target="#deleteModal"
 										onclick="deleteInit('file', ${file.id});">
-										<i class="fa fa-pencil" aria-hidden="true"></i> Delete
+										<i class="fa fa-trash" aria-hidden="true"></i> Delete
 									</button>
 								</c:otherwise>
 							</c:choose>
@@ -167,14 +167,14 @@
 													onclick="deleteInit('user', ${member.key.id});" 
 													title="Cannot delete a mentor in completed project."
 													disabled>
-													<i class="fa fa-pencil" aria-hidden="true"></i> Delete
+													<i class="fa fa-trash" aria-hidden="true"></i> Delete
 												</button>
 											</c:when>
 											<c:otherwise>
 												<button type="button" class="btn btn-xs btn-danger"
 													data-toggle="modal" data-target="#deleteModal"
 													onclick="deleteInit('user', ${member.key.id});">
-													<i class="fa fa-pencil" aria-hidden="true"></i> Delete
+													<i class="fa fa-trash" aria-hidden="true"></i> Delete
 												</button>
 											</c:otherwise>
 										</c:choose>
@@ -200,7 +200,23 @@
 					<div id="block-students" class="row">
 						<c:forEach items="${team.members}" var="member">
 							<c:if test="${member.key.role.name == 'student'}">
-								<div class="col-lg-3 padtop" id="user-${member.key.id}">
+								<div class="col-lg-3" id="user-${member.key.id}">
+							
+								<c:choose>
+									<c:when test="${member.value.status.name == 'left_project'}">
+										<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; background-color: #D3D3D3; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
+									</c:when>
+									<c:when test="${member.value.status.name == 'interview_was_scheduled'}">
+										<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; background-color: #98FB98; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
+									</c:when>
+									<c:when test="${member.value.status.name == 'got_job_offer'}">
+										<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; background-color: #B0E0E6; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
+									</c:when>
+									<c:otherwise>
+										<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
+									</c:otherwise>
+								</c:choose>
+								
 									<c:choose>
 										<c:when test="${empty member.key.linkToPhoto}">
 											<img src="/spms/resources/img/anonymous.jpg"
@@ -214,7 +230,13 @@
 									<p style="padding-top: 10px">${member.key.firstName}
 										${member.key.secondName}</p>
 									<h6>${member.key.email}</h6>
-									<p>
+									<abbr id="tStatusName-${member.key.id}" title="${member.value.comment}" class="initialism"><p id="pStatusName-${member.key.id}">${member.value.status.name}</p></abbr>
+									<p style="padding-top: 10px">
+										<button type="button" class="btn btn-xs btn-warning" id="butStatus-${member.key.id}"
+													data-toggle="modal" data-target="#changeStatusModal"
+													onclick="initStatusChanging(${member.key.id}, '${member.value.status.id}', '${member.value.comment}');">
+													<i class="fa fa-pencil" aria-hidden="true"></i>Change status
+										</button>
 										<c:choose>
 											<c:when test="${team.project.isCompleted eq true}">
 												<button type="button" class="btn btn-xs btn-danger"
@@ -222,19 +244,19 @@
 													onclick="deleteInit('user', ${member.key.id});" 
 													title="Cannot delete a student in completed project."
 													disabled>
-													<i class="fa fa-pencil" aria-hidden="true"></i> Delete
+													<i class="fa fa-trash" aria-hidden="true"></i> Delete
 												</button>
 											</c:when>
 											<c:otherwise>
 												<button type="button" class="btn btn-xs btn-danger"
 													data-toggle="modal" data-target="#deleteModal"
 													onclick="deleteInit('user', ${member.key.id});">
-													<i class="fa fa-pencil" aria-hidden="true"></i> Delete
+													<i class="fa fa-trash" aria-hidden="true"></i> Delete
 												</button>
 											</c:otherwise>
 										</c:choose>
 									</p>
-								</div>
+								</div></div>
 							</c:if>
 						</c:forEach>
 					</div>
@@ -453,6 +475,53 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- changeStatusModal -->
+<div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">Change Status</h4>
+			</div>
+			<form>
+				<div class="modal-body">
+
+					<div class="form-group">
+						<div class="radio">
+  							<label><input type="radio" name="optradio" id="optradio1">Active</label>
+						</div>
+						<div class="radio">
+  							<label><input type="radio" name="optradio" id="optradio2">Left Project</label>
+						</div>
+						<div class="radio">
+  							<label><input type="radio" name="optradio" id="optradio3">Interview was scheduled</label>
+						</div>
+						<div class="radio">
+  							<label><input type="radio" name="optradio" id="optradio4">Got job offer</label>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="name">Comment</label> 
+						<input type="text" class="form-control" maxlength="255" id="newComment"
+							placeholder="Enter comment">
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-warning"
+						onclick="changeStatus();">Change</button>
 				</div>
 			</form>
 		</div>
@@ -803,29 +872,47 @@ function addStudent(user_id) {
 	.done(function( user ) {
 		var isPhoto = (user.linkToPhoto != null);
 		if (isPhoto) {
-			$('#block-students').append('<div class="col-lg-3 padtop" id="user-' + user.id + '">\
-									<img src="' + user.linkToPhoto + '" class="img-rounded" style="width:150px; height:150px">\
-									<p style="padding-top: 10px">' + user.firstName + ' ' + user.secondName +'</p>\
-									<h6>' + user.email + '</h6>\
-									<p>\
-										<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>\
-	  								</p>\
-								  </div>');
+			$('#block-students').append('<div class="col-lg-3" id="user-' + user.id + '">\
+											<div id="div-color-' + user.id + '" style="border-radius: 5px; margin-right: 15px; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">\
+												<img src="' + user.linkToPhoto + '" class="img-rounded" style="width:150px; height:150px">\
+												<p style="padding-top: 10px">' + user.firstName + ' ' + user.secondName +'</p>\
+													<h6>' + user.email + '</h6>\
+													<abbr id="tStatusName-' + user.id + '" title="" class="initialism"><p id="pStatusName-' + user.id + '">ACTIVE</p></abbr>\
+													<p style="padding-top: 10px">\
+														<button type="button" class="btn btn-xs btn-warning" id="butStatus-' + user.id + '"\
+															data-toggle="modal" data-target="#changeStatusModal">\
+															<i class="fa fa-pencil" aria-hidden="true"></i>Change status\
+														</button>\
+														<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>\
+	  												</p>\
+								  				</div>\
+								  			</div>');
 		}
 		else {
-			$('#block-students').append('<div class="col-lg-3 padtop" id="user-' + user.id + '">\
-									<img src="/spms/resources/img/anonymous.jpg" class="img-rounded" style="width:150px; height:150px">\
-									<p style="padding-top: 10px">' + user.firstName + ' ' + user.secondName +'</p>\
-									<h6>' + user.email + '</h6>\
-									<p>\
-										<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>\
-	  								</p>\
-								</div>');
+			$('#block-students').append('<div class="col-lg-3" id="user-' + user.id + '">\
+											<div id="div-color-' + user.id + '" style="border-radius: 5px; margin-right: 15px; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">\
+												<img src="/spms/resources/img/anonymous.jpg" class="img-rounded" style="width:150px; height:150px">\
+												<p style="padding-top: 10px">' + user.firstName + ' ' + user.secondName +'</p>\
+													<h6>' + user.email + '</h6>\
+													<abbr id="tStatusName-' + user.id + '" title="" class="initialism"><p id="pStatusName-' + user.id + '">ACTIVE</p></abbr>\
+													<p style="padding-top: 10px">\
+														<button type="button" class="btn btn-xs btn-warning" id="butStatus-' + user.id + '"\
+															data-toggle="modal" data-target="#changeStatusModal">\
+															<i class="fa fa-pencil" aria-hidden="true"></i>Change status\
+														</button>\
+														<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>\
+	  												</p>\
+												</div>\
+											</div>');
 		}
 		var element = document.getElementById('but' + user.id);
 		element.onclick = function () {
 			entityToDelete = 'user';
 			idToDelete = user_id;
+		};
+		var element = document.getElementById('butStatus-' + user_id);
+		element.onclick = function () {
+			initStatusChanging(user_id, 0, "");
 		};
 		$('#loadingModal').modal('hide');
 	})
@@ -857,6 +944,92 @@ function deleteUser() {
 	.done(function(message) {
 		$('#user-'+ user_id).remove();
 	    $('#loadingModal').modal('hide');
+	})
+	.fail(function( xhr, status, errorThrown ) {
+		$('#loadingModal').modal('hide');
+		$('#networkErrorModal').modal('show');
+	})
+	.always(function( xhr, status ) {
+	});
+}
+
+var idStatChange = 0;
+
+function initStatusChanging(id, status, comment){
+	idStatChange = id;
+	if (status == 0){
+		document.getElementById("optradio1").checked = true;
+	}
+	else if (status == 1){
+		document.getElementById("optradio2").checked = true;
+	}
+	else if (status == 2){
+		document.getElementById("optradio3").checked = true;
+	}
+	else {
+		document.getElementById("optradio4").checked = true;
+	}
+	document.getElementById('newComment').value = comment;
+}
+
+function changeStatus(){
+	
+	$('#changeStatusModal').modal('hide');
+	$('#loadingModal').modal('show');
+	
+	var team_id = "${team.id}";
+	var user_id = idStatChange;
+	var new_status = -1;
+	if (document.getElementById("optradio1").checked == true){
+		new_status = 0;
+	}
+	else if (document.getElementById("optradio2").checked == true){
+		new_status = 1;
+	}
+	else if (document.getElementById("optradio3").checked == true){
+		new_status = 2;
+	}
+	else {
+		new_status = 3;
+	}
+	var new_comment = $('#newComment').val();
+	
+	$.ajax({
+	    url: "/spms/user/changeStatus/",
+	    data: {
+	    	team_id: team_id,
+	    	user_id: user_id,
+	    	new_status: new_status,
+	    	new_comment: new_comment
+	    },
+	    type: "POST",
+	    dataType : "text",
+		timeout: 15000
+	})
+	.done(function(message) {
+		if (new_status == 0){
+			document.getElementById("div-color-" + user_id).style.backgroundColor = '#FFFFFF';
+			document.getElementById("pStatusName-" + user_id).innerHTML = "ACTIVE";
+			$("#tStatusName").attr("title", new_comment);
+		}
+		if (new_status == 1){
+			document.getElementById("div-color-" + user_id).style.backgroundColor = '#D3D3D3';
+			document.getElementById("pStatusName-" + user_id).innerHTML = "LEFT_PROJECT";
+		}
+		if (new_status == 2){
+			document.getElementById("div-color-" + user_id).style.backgroundColor = '#98FB98';
+			document.getElementById("pStatusName-" + user_id).innerHTML = "INTERVIEW_WAS_SCHEDULED";
+		}
+		if (new_status == 3){
+			document.getElementById("div-color-" + user_id).style.backgroundColor = '#B0E0E6';
+			document.getElementById("pStatusName-" + user_id).innerHTML = "GOT_JOB_OFFER";
+		}
+		document.getElementById('tStatusName-' + user_id).title = new_comment;
+		var element = document.getElementById('butStatus-' + user_id);
+		element.onclick = function () {
+			initStatusChanging(user_id, new_status, new_comment);
+		};
+		$('#loadingModal').modal('hide');
 	})
 	.fail(function( xhr, status, errorThrown ) {
 		$('#loadingModal').modal('hide');

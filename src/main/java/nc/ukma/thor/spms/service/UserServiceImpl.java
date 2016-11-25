@@ -55,5 +55,10 @@ public class UserServiceImpl implements UserService {
 		return userRepo.getUsersPresentAtMeeting(meeting);
 	}
 
+	@Override
+	public void changeUserStatus(long team_id, long user_id, long new_status, String new_comment) {
+		userRepo.changeUserStatus(team_id, user_id, new_status, new_comment);
+	}
+
 }
 

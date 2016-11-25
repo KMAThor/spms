@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import nc.ukma.thor.spms.dto.dataTable.DataTableRequestDTO;
 import nc.ukma.thor.spms.dto.dataTable.DataTableResponseDTO;
@@ -18,10 +19,14 @@ import nc.ukma.thor.spms.dto.dataTable.UserTableDTO;
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.UserRepository;
+import nc.ukma.thor.spms.service.UserService;
 
 @Controller
 @RequestMapping("/user/")
 public class UserController {
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -89,6 +94,11 @@ public class UserController {
 		return dataTableResponse;
 	}
 	
-	
+	@ResponseBody
+	@RequestMapping(path="/changeStatus/", method = RequestMethod.POST)
+    public String changeStatus(@RequestParam long team_id, @RequestParam long user_id, @RequestParam long new_status, @RequestParam String new_comment){
+		userService.changeUserStatus(team_id, user_id, new_status, new_comment);
+    	return "success";
+    }
 
 }

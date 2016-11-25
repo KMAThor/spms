@@ -16,6 +16,8 @@ public interface UserService {
     List<User> getActiveStudentsByTeam(Team team);
     List<User> getUsersByMeeting(Meeting meeting);
     List<User> getAllUsers();
+    
+    void changeUserStatus(long team_id, long user_id, long new_status, String new_comment);
 
     List<User> getUsersByRole(long offset, int length, int orderBy, SortingOrder order, String search, Role role);
 }

@@ -39,7 +39,9 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 			+ "project.end_date AS project_end_date, project.is_completed AS project_is_completed, "
 			+ "file.id AS file_id, file.path AS file_path, "
 			+ "meeting.id AS meeting_id, meeting.topic AS meeting_topic, "
-			+ "meeting.start_date AS meeting_start_date, \"user\".id AS user_id, "
+			+ "meeting.start_date AS meeting_start_date, "
+			+ "user_team.comment as user_team_comment, "
+			+ "\"user\".id AS user_id, "
 			+ "\"user\".email AS user_email, \"user\".first_name AS user_first_name, "
 			+ "\"user\".second_name AS user_second_name, \"user\".last_name AS user_last_name, "
 			+ "\"user\".is_active AS user_is_active, "
@@ -61,7 +63,7 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 			+ "INNER JOIN user_team ON team.id = user_team.team_id "
 			+ "WHERE user_team.user_id = ?;";
 	private static final String GET_TEAMS_BY_PROJECT_SQL = "SELECT * FROM team WHERE project_id = ?;";
-	private static final String ADD_USER_TO_TEAM_SQL = "INSERT INTO user_team (user_id, team_id) VALUES (?,?);";
+	private static final String ADD_USER_TO_TEAM_SQL = "INSERT INTO user_team (user_id, team_id, status_id) VALUES (?,?,?);";
 	private static final String DELETE_USER_FROM_TEAM_SQL = "DELETE FROM user_team WHERE user_id=? AND team_id=?;";
 	
 	private static final String GET_ACTIVE_TEAM_BY_USER_SQL = "SELECT * FROM team "
@@ -139,7 +141,7 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 	
 	@Override
 	public void addUserToTeam(Long userId, Long teamId) {
-		jdbcTemplate.update(ADD_USER_TO_TEAM_SQL, userId, teamId);
+		jdbcTemplate.update(ADD_USER_TO_TEAM_SQL, userId, teamId, 0);
 	}
 
 	@Override
@@ -258,11 +260,10 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 					user.setRole(role);
 					
 					UserStatus userStatus = null;
-					if (rs.getShort("status_id") != 0){
-						Status status = Status.valueOf(rs.getString("status_name").toUpperCase());
-						status.setId(rs.getShort("status_id"));
-						userStatus = new UserStatus(status);
-					}
+					Status status = Status.valueOf(rs.getString("status_name").toUpperCase());
+					status.setId(rs.getShort("status_id"));
+					userStatus = new UserStatus(status);
+					userStatus.setComment(rs.getString("user_team_comment"));
 					
 					users.put(user, userStatus);
 				}

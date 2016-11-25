@@ -126,6 +126,10 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 						+ "INNER JOIN project ON team.project_id=project.id "
 						+ "WHERE project.is_completed=FALSE AND user_team.user_id=X.id);";
 	
+	private static final String CHANGE_USER_STATUS_SQL = "UPDATE user_team "
+			+ "SET status_id = ?, comment = ? "
+			+ "WHERE team_id = ? AND user_id = ?";
+	
 	private static final RowMapper<User> USER_MAPPER = new UserMapper();
 
 	@Autowired
@@ -275,6 +279,17 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 				user.setLinkToPhoto(linkToPhoto);
 			return user;
 		}
+	}
+	
+	@Override
+	public void changeUserStatus(long team_id, long user_id, long new_status, String new_comment) {
+		Object [] values = {
+				new_status,
+				new_comment,
+				team_id,
+				user_id
+		};
+		jdbcTemplate.update(CHANGE_USER_STATUS_SQL, values);
 	}
 
 }
