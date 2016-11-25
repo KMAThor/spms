@@ -36,7 +36,8 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 	private static final String GET_TEAM_BY_ID_SQL = "SELECT * FROM team WHERE id = ?;";
 	private static final String GET_FULL_TEAM_BY_ID_SQL = "SELECT team.id AS team_id, "
 			+ "team.name AS team_name, team.project_id AS team_project_id, "
-			+ "project.is_completed AS project_is_completed, file.id AS file_id, file.path AS file_path, "
+			+ "project.end_date AS project_end_date, project.is_completed AS project_is_completed, "
+			+ "file.id AS file_id, file.path AS file_path, "
 			+ "meeting.id AS meeting_id, meeting.topic AS meeting_topic, "
 			+ "meeting.start_date AS meeting_start_date, \"user\".id AS user_id, "
 			+ "\"user\".email AS user_email, \"user\".first_name AS user_first_name, "
@@ -191,7 +192,6 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 		}
 	}
 	
-	//only for one team!
 	private static final class TeamExtractor implements ResultSetExtractor<List<Team>>{
 		@Override
 		public List<Team> extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -205,7 +205,21 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 			Map<User, UserStatus> users = new HashMap<User, UserStatus>();
 			
 			while(rs.next()){
-				if (team == null) {
+				//if it is first/new team
+				if (team == null || (team.getId() != rs.getLong("team_id"))) {
+					
+					//if it is new team, store collected data and clear it
+					if (team != null){
+						team.setFiles(files);
+						files.clear();
+						team.setMeetings(meetings);
+						meetings.clear();
+						team.setMembers(users);
+						users.clear();
+						teams.add(team);
+					}
+					
+					//create new object;
 					team = new Team();
 					
 					//Team information
@@ -215,6 +229,7 @@ public class TeamRepositoryJdbcImpl implements TeamRepository{
 					//Team project
 					Project project = new Project();
 					project.setId(rs.getLong("team_project_id"));
+					project.setEndDate(rs.getTimestamp("project_end_date"));
 					project.setIsCompleted(rs.getBoolean("project_is_completed"));
 					team.setProject(project);
 				}

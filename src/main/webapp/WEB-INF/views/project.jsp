@@ -413,7 +413,6 @@
 		if ("${project.isCompleted}" === "true"){
 			document.getElementById('createTeamButton').disabled = true;
 			$("#createTeamButton").attr("title", "Cannot create a team in completed project.");
-			
 		}
 	});
 
