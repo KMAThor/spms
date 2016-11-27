@@ -38,5 +38,10 @@ public interface ProjectRepository extends MyRepository<Project>{
     // need to implement
     void setChiefUser(User chief, Project project);
     void deleteChiefUser(Project project);
+	public Long countProjectsByMentor(Long id);
+	public Long countProjectsByMentor(String value, Long id);
+	public List<Project> getProjectsByMentor(int start, int length, int column, SortingOrder dir, String value,
+			Long id);
+
 
 }

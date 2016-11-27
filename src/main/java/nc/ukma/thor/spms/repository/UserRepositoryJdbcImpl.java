@@ -35,6 +35,13 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
 			+ "INNER JOIN role ON role.id = user_role.role_id " + "WHERE team_id = ?;";
 	
+	private static final String GET_CHIEF_MENTOR_BY_PROJECT_SQL = "SELECT * FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN project ON \"user\".id = project.chief_mentor_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id "
+			+ "WHERE project.id = ?;";
+	
 	private static final String GET_ACTIVE_STUDENTS_BY_TEAM_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
@@ -126,6 +133,24 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 						+ "INNER JOIN project ON team.project_id=project.id "
 						+ "WHERE project.is_completed=FALSE AND user_team.user_id=X.id);";
 	
+	private static final String IS_USER_MEMBER_OF_PROJECT_SQL = "SELECT EXISTS(SELECT FROM \"user\" "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON user_role.role_id = role.id "
+			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
+			+ "INNER JOIN team ON user_team.team_id = team.id "
+			+ "WHERE \"user\".email=? AND team.project_id=? AND role.role=?);";
+	
+	private static final String IS_USER_CHIEF_MENTOR_OF_PROJECT_SQL = "SELECT EXISTS(SELECT FROM \"user\" "
+			+ "INNER JOIN project ON \"user\".id = project.chief_mentor_id "
+			+ "WHERE \"user\".email=? AND project.id=?);";
+	
+	private static final String IS_USER_MEMBER_OF_TEAM_SQL = "SELECT EXISTS(SELECT FROM \"user\" "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON user_role.role_id = role.id "
+			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
+			+ "INNER JOIN team ON user_team.team_id = team.id "
+			+ "WHERE \"user\".email=? AND team.id=? AND role.role=?);";
+	
 	private static final RowMapper<User> USER_MAPPER = new UserMapper();
 
 	@Autowired
@@ -154,6 +179,16 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 	@Override
 	public List<User> getUsersByTeam(Team team) {
 		return jdbcTemplate.query(GET_USERS_BY_TEAM_SQL, new Object[] { team.getId() }, USER_MAPPER);
+	}
+	
+	@Override
+	public User getChiefMentorByProject(long projectId) {
+		try {
+			User user = jdbcTemplate.queryForObject(GET_CHIEF_MENTOR_BY_PROJECT_SQL, new Object[] { projectId }, USER_MAPPER);
+			return user;
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
 	}
 	
 	@Override
@@ -239,6 +274,21 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 		return this.jdbcTemplate.queryForObject(COUNT_FREE_USERS_BY_ROLE_FILTERED_SQL,
 				new Object[] { searchParam, searchParam, searchParam, searchParam, role.getName()}, Long.class);
 	}
+	
+	@Override
+	public boolean isUserChiefMentorOfProject(String email, long projectId) {
+		return jdbcTemplate.queryForObject(IS_USER_CHIEF_MENTOR_OF_PROJECT_SQL, new Object[] {email, projectId}, Boolean.class);
+	}
+	
+	@Override
+	public boolean isUserMemberOfProject(String email, long projectId, Role role) {
+		return jdbcTemplate.queryForObject(IS_USER_MEMBER_OF_PROJECT_SQL, new Object[] {email, projectId, role.getName()}, Boolean.class);
+	}
+	
+	@Override
+	public boolean isUserMemberOfTeam(String email, long teamId, Role role) {
+		return jdbcTemplate.queryForObject(IS_USER_MEMBER_OF_TEAM_SQL, new Object[] {email, teamId, role.getName()}, Boolean.class);
+	}
 
 	
 	public static enum OrderableColumn {
@@ -276,5 +326,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			return user;
 		}
 	}
+
+
 
 }

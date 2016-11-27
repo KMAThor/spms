@@ -2,7 +2,7 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h1>${project.name}
-	    	<security:authorize access="hasAuthority('admin')">
+	    	<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username, #project.id)">
 	    	<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
 	    		<button type="button" class="btn btn-primary"
 			  		  data-toggle="modal" data-target="#projectTraitsManagerModal"
@@ -65,7 +65,7 @@
 		</p>
 	</div>
 	<div class="col-sm-5">
-			<h3>Cheid Mentor</h3>
+			<h3>Chief Mentor</h3>
 			<p>
 				<c:choose>
 					<c:when test="${project.chiefMentor ne null}">
@@ -82,7 +82,7 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h2>Files
-		<security:authorize access="hasAnyAuthority('admin','mentor')">
+		<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username, #project.id)">
 			<button type="button" class="btn btn-success"
 				data-toggle="modal" data-target="#addFileToProjectModal" onclick="toggleFileDialog();">
 				<i class="fa fa-plus-circle" aria-hidden="true"></i>
@@ -134,7 +134,7 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h2>Teams
-		<security:authorize access="hasAuthority('admin')">
+			<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#project.id)">
 			<button type="button" class="btn btn-success"
 				data-toggle="modal" data-target="#createTeamModal">
 				<i class="fa fa-plus-circle" aria-hidden="true"></i>
@@ -142,15 +142,33 @@
 			</button>
 			</security:authorize>
 		</h2>
+		<security:authorize access="hasAuthority('admin') || hasAuthority('hr') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#project.id)">
 		<c:forEach items="${teams}" var="team">
 				<h3>
 					<a href="<c:url value="/team/view/${team.id}/" />" class="btn btn-warning">${team.name}</a>
 				</h3>
 		</c:forEach>
+		</security:authorize>
+		<security:authorize access="!(hasAuthority('admin') || hasAuthority('hr') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#project.id))">
+		<c:forEach items="${teams}" var="team">
+				<h3>
+					
+						<button class="btn btn-warning" onclick="window.location.href='<c:url value="/team/view/${team.id}/" />' "
+						<security:authorize access="!@spmsWebSecurityService.isUserMentorOfTeam(principal.username,#team.id)">
+							disabled
+						</security:authorize>
+
+						>
+							${team.name}
+						</button>
+					
+				</h3>
+		</c:forEach>
+		</security:authorize>
 	</div>
 </div>
 
-
+<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#project.id)">
 <!-- editProjectModal -->
 <div class="modal fade" id="editProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -404,6 +422,6 @@
 		</div>
 	</div>
 </div>
-
+</security:authorize>
 <%@include file="commonModalPopUps.jsp"%>
 <%@include file="footer.jsp"%>

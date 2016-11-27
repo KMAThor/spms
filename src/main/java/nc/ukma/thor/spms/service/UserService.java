@@ -10,12 +10,13 @@ import nc.ukma.thor.spms.util.SortingOrder;
 
 public interface UserService {
  
-    User getUser(String login);
-    User getUserById(long id);
-    List<User> getUsersByTeam(Team team);
-    List<User> getActiveStudentsByTeam(Team team);
-    List<User> getUsersByMeeting(Meeting meeting);
-    List<User> getAllUsers();
+	public User getUser(String login);
+    public User getUserById(long id);
+    public List<User> getUsersByTeam(Team team);
+    public User getChiefMentorByProject(long projectId);
+    public List<User> getActiveStudentsByTeam(Team team);
+    public List<User> getUsersByMeeting(Meeting meeting);
+    public List<User> getAllUsers();
 
-    List<User> getUsersByRole(long offset, int length, int orderBy, SortingOrder order, String search, Role role);
+    public List<User> getUsersByRole(long offset, int length, int orderBy, SortingOrder order, String search, Role role);
 }

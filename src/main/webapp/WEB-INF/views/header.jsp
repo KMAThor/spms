@@ -81,6 +81,11 @@
 			</div>
 			<div>
 				<ul class="nav navbar-nav navbar-right">
+					<li> 
+
+						<p style="padding-top: 18px;">Logged in as: <strong><security:authentication property="principal.username"/></strong>
+						</p>
+					</li>
 					<li>
 						<c:url value="" var="logoutUrl" />
 						<a href="/spms/j_spring_security_logout" style="padding-top: 18px;">Logout</a>

@@ -17,6 +17,7 @@ import nc.ukma.thor.spms.service.UserService;
 import nc.ukma.thor.spms.util.DateUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,21 +53,20 @@ public class ProjectController {
 	public DataTableResponseDTO<ProjectTableDTO> viewProjects(HttpServletRequest req,
 			@RequestBody DataTableRequestDTO dataTableRequest, Principal principal) {
     	
-    	
     	List<Project> projectsToShow;
     	Long numberOfProjectsToShow;
     	Long numberOfProjects;
     	User user = userService.getUser(principal.getName());
     	if(user.getRole() == Role.MENTOR){
-    		projectsToShow = projectRepository.getProjectsByChiefMentor(
+    		projectsToShow = projectRepository.getProjectsByMentor(
     				dataTableRequest.getStart(),
     				dataTableRequest.getLength(),
     				dataTableRequest.getOrder().get(0).getColumn(),
     				dataTableRequest.getOrder().get(0).getDir(),
     				dataTableRequest.getSearch().getValue(),
     				user.getId());
-    		numberOfProjects = projectRepository.countProjectsByChiefMentor(user.getId());
-    		numberOfProjectsToShow = projectRepository.countProjectsByChiefMentor(dataTableRequest.getSearch().getValue(), user.getId());
+    		numberOfProjects = projectRepository.countProjectsByMentor(user.getId());
+    		numberOfProjectsToShow = projectRepository.countProjectsByMentor(dataTableRequest.getSearch().getValue(), user.getId());
     	}else{
     		projectsToShow = projectRepository.getProjects(
     				dataTableRequest.getStart(),
@@ -100,6 +100,9 @@ public class ProjectController {
 	}*/
 
     @RequestMapping(path="/view/{id}/", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin') || hasAuthority('hr') "
+    		+ "|| @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#id) "
+    		+ "|| @spmsWebSecurityService.isUserMentorFromProject(principal.username,#id)")
     public String viewProject(@PathVariable long id, Model model ){
     	Project project = projectService.getById(id);
     	User chiefMentor = project.getChiefMentor();
@@ -110,7 +113,7 @@ public class ProjectController {
     	model.addAttribute("traitsAssociatedWithProject", traitService.getTraitsWithoutNamesByProject(project));
         return "project";
     }
-
+    
     @RequestMapping(path="/create/", method = RequestMethod.POST)
     public String createProject(HttpServletRequest request, Model model ){
     	Project project = new Project();
@@ -122,7 +125,10 @@ public class ProjectController {
     	return "redirect:/project/view/"+project.getId()+"/";
     }
 
+
     @RequestMapping(path="/update/{id}/", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('admin') "
+    		+ "|| @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#id)")
     public String updateProject(@PathVariable long id, HttpServletRequest request, Model model){
     	Project project = new Project(id);
     	project.setName(request.getParameter("name"));
@@ -157,16 +163,19 @@ public class ProjectController {
     }
     */
     
-
     @RequestMapping(path="/delete/{id}/", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin') "
+    		+ "|| @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#id)")
     public String deleteProject(@PathVariable long id){
     	Project project = new Project(id);
     	projectService.delete(project);
         return "redirect:/";
     }
-
+    
     @ResponseBody
     @RequestMapping(path="/update/{projectId}/addTrait/{traitId}/", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin') "
+    		+ "|| @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#id)")
     public String addTraitToProject(@PathVariable long projectId, @PathVariable long traitId){
     	projectRepository.addTraitToProject(new Trait(traitId), new Project(projectId));
         return "success";
@@ -174,6 +183,8 @@ public class ProjectController {
 
     @ResponseBody
     @RequestMapping(path="/update/{projectId}/deleteTrait/{traitId}/", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin') "
+    		+ "|| @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#id)")
     public String deleteTraitFromProject(@PathVariable long projectId, @PathVariable long traitId){
     	projectRepository.deleteTraitFromProject(new Trait(traitId), new Project(projectId));
         return "success";
@@ -181,6 +192,8 @@ public class ProjectController {
 
     @ResponseBody
     @RequestMapping(path="/update/{projectId}/addTraitCategory/{traitCategoryId}/", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin') "
+    		+ "|| @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#id)")
     public String addTraitCategoryToProject(@PathVariable long projectId, @PathVariable short traitCategoryId){
     	projectRepository.addTraitCategoryToProject(new TraitCategory(traitCategoryId), new Project(projectId));
         return "success";
@@ -188,6 +201,8 @@ public class ProjectController {
 
     @ResponseBody
     @RequestMapping(path="/update/{projectId}/deleteTraitCategory/{traitCategoryId}/", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin') "
+    		+ "|| @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#id)")
     public String deleteTraitCategoryFromProject(@PathVariable long projectId, @PathVariable short traitCategoryId){
     	projectRepository.deleteTraitCategoryFromProject(new TraitCategory(traitCategoryId), new Project(projectId));
         return "success";

@@ -15,11 +15,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import nc.ukma.thor.spms.entity.Project;
-import nc.ukma.thor.spms.entity.Team;
-import nc.ukma.thor.spms.entity.Trait;
-import nc.ukma.thor.spms.entity.TraitCategory;
-import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.util.SortingOrder;
 
 @Repository
@@ -70,6 +65,38 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			+ "WHERE (name ILIKE ? "
 			+ "OR to_char(start_date, 'HH12:MI:SS') ILIKE ? "
 			+ "OR to_char(end_date, 'HH12:MI:SS') ILIKE ?) AND chief_mentor_id=?;";
+	
+	/*For mentor*/
+	private static final String GET_PROJECTS_BY_MENTOR_BY_PAGE_SQL = "SELECT * FROM project "
+			+ "LEFT JOIN team ON project.id = team.project_id "
+			+ "INNER JOIN user_team ON team.id = user_team.team_id "
+			+ "INNER JOIN \"user\" ON user_team.user_id = \"user\".id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON user_role.role_id = role.id "
+			+ "WHERE (project.name ILIKE ? "
+			+ "OR to_char(start_date, 'HH12:MI:SS') ILIKE ? "
+			+ "OR to_char(end_date, 'HH12:MI:SS') ILIKE ?) AND (chief_mentor_id=? OR (user_team.user_id=? AND role.role=?)) "
+			+ "ORDER BY project.%s %s, project.id "//default ordering by id, it is important for pagination
+			+ "LIMIT ? OFFSET ?;";
+	
+	private static final String COUNT_PROJECTS_BY_MENTOR_SQL = "SELECT COUNT (*) FROM project "
+			+ "LEFT JOIN team ON project.id = team.project_id "
+			+ "INNER JOIN user_team ON team.id = user_team.team_id "
+			+ "INNER JOIN \"user\" ON user_team.user_id = \"user\".id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON user_role.role_id = role.id "
+			+ "WHERE chief_mentor_id=? OR (user_team.user_id=? AND role.role=?);";
+	
+	private static final String COUNT_PROJECTS_BY_MENTOR_FILTERED_SQL = "SELECT COUNT (*) FROM project "
+			+ "LEFT JOIN team ON project.id = team.project_id "
+			+ "INNER JOIN user_team ON team.id = user_team.team_id "
+			+ "INNER JOIN \"user\" ON user_team.user_id = \"user\".id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON user_role.role_id = role.id "
+			+ "WHERE (project.name ILIKE ? "
+			+ "OR to_char(start_date, 'HH12:MI:SS') ILIKE ? "
+			+ "OR to_char(end_date, 'HH12:MI:SS') ILIKE ?) AND (chief_mentor_id=? OR (user_team.user_id=? AND role.role=?));";
+	
 	private static final RowMapper<Project> PROJECT_MAPPER = new ProjectMapper();
 
 	@Autowired
@@ -148,6 +175,29 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 				new Object[] { searchParam,searchParam, searchParam,  id, length, offset }, PROJECT_MAPPER);
 	}
 	
+
+	@Override
+	public Long countProjectsByMentor(Long id) {
+		return this.jdbcTemplate.queryForObject(COUNT_PROJECTS_BY_MENTOR_SQL, new Object[] {id,  id, Role.MENTOR.getName(),}, Long.class);
+	}
+	
+	@Override
+	public Long countProjectsByMentor(String searchValue, Long id) {
+		String searchParam = "%" + searchValue + "%";
+		return this.jdbcTemplate.queryForObject(COUNT_PROJECTS_BY_MENTOR_FILTERED_SQL,
+				new Object[] { searchParam, searchParam, searchParam, id, id, Role.MENTOR.getName(),}, Long.class);
+	}
+	
+	@Override
+	public List<Project> getProjectsByMentor(int start, int length, int orderBy, SortingOrder order, String searchValue,
+			Long id) {
+		String query = String.format(GET_PROJECTS_BY_MENTOR_BY_PAGE_SQL,
+				OrdableColumn.values()[orderBy].getColumnName(), order);
+		String searchParam = "%" + searchValue + "%";
+		return jdbcTemplate.query(query,
+				new Object[] { searchParam, searchParam, searchParam,  id, id, Role.MENTOR.getName(), length, start }, PROJECT_MAPPER);
+	}
+
 	@Override
 	public long count() {
 		return this.jdbcTemplate.queryForObject(COUNT_PROJECTS_SQL, Long.class);
@@ -166,7 +216,7 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 				OrdableColumn.values()[orderBy].getColumnName(), order);
 		String searchParam = "%" + searchValue + "%";
 		return jdbcTemplate.query(query,
-				new Object[] { searchParam,searchParam, searchParam, length, offset }, PROJECT_MAPPER);
+				new Object[] { searchParam, searchParam, searchParam, length, offset }, PROJECT_MAPPER);
 	}
 
 	@Override
