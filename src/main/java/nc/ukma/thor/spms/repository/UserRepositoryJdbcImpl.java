@@ -132,7 +132,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 						+ "INNER JOIN team ON user_team.team_id=team.id "
 						+ "INNER JOIN project ON team.project_id=project.id "
 						+ "WHERE project.is_completed=FALSE AND user_team.user_id=X.id);";
-	
+
 	private static final String IS_USER_MEMBER_OF_PROJECT_SQL = "SELECT EXISTS(SELECT FROM \"user\" "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
 			+ "INNER JOIN role ON user_role.role_id = role.id "
@@ -150,6 +150,10 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
 			+ "INNER JOIN team ON user_team.team_id = team.id "
 			+ "WHERE \"user\".email=? AND team.id=? AND role.role=?);";
+
+	private static final String CHANGE_USER_STATUS_SQL = "UPDATE user_team "
+			+ "SET status_id = ?, comment = ? "
+			+ "WHERE team_id = ? AND user_id = ?";
 	
 	private static final RowMapper<User> USER_MAPPER = new UserMapper();
 
@@ -325,6 +329,17 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 				user.setLinkToPhoto(linkToPhoto);
 			return user;
 		}
+	}
+	
+	@Override
+	public void changeUserStatus(long team_id, long user_id, long new_status, String new_comment) {
+		Object [] values = {
+				new_status,
+				new_comment,
+				team_id,
+				user_id
+		};
+		jdbcTemplate.update(CHANGE_USER_STATUS_SQL, values);
 	}
 
 

@@ -6,6 +6,10 @@ a {
   	text-decoration: none;
 }
 
+td {
+	text-align: center;
+}
+
 .background{
 	background-image: url(../img/background.jpg);
 }

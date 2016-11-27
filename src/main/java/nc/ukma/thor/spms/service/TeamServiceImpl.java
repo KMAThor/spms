@@ -1,9 +1,6 @@
 package nc.ukma.thor.spms.service;
 
 import java.util.List;
-import java.util.Map;
-
-import javax.net.ssl.SSLEngineResult.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,33 +37,13 @@ public class TeamServiceImpl extends AbstractService<Team> implements TeamServic
 	}
 
 	@Override
-	public String getTeamName(long teamId) {
-		return null;
-	}
-
-	@Override
-	public Project getProject(long teamId) {
-		return null;
-	}
-
-	@Override
-	public User getMember(long teamId, long userId) {
-		return null;
-	}
-
-	@Override
-	public Map<User, Status> getMembers(long teamId) {
-		return null;
-	}
-
-	@Override
-	public String getInfo(long teamId) {
-		return null;
-	}
-
-	@Override
 	public Team getActiveTeamByUser(User user) {
 		return teamRepository.getActiveTeamByUser(user);
+	}
+
+	@Override
+	public Team getFullTeamById(long team_id) {
+		return teamRepository.getFullTeamById(team_id);
 	}
 	
 

@@ -1,10 +1,10 @@
 package nc.ukma.thor.spms.entity;
+
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
 
 public class Meeting {
-	
+
 	private Long id;
 	private String topic;
 	private Timestamp startDate;
@@ -76,5 +76,30 @@ public class Meeting {
 	public String toString() {
 		return "Meeting [id=" + id + ", topic=" + topic + ", startDate=" + startDate + ", team=" + team + ", feedbacks="
 				+ feedbacks + ", participants=" + participants + "]";
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Meeting other = (Meeting) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 }

@@ -15,76 +15,72 @@ import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.mail.EmailSender;
-import nc.ukma.thor.spms.service.FileService;
-import nc.ukma.thor.spms.service.MeetingService;
 import nc.ukma.thor.spms.service.TeamService;
 import nc.ukma.thor.spms.service.UserService;
 
 @Controller
+@RequestMapping("/team/")
 public class TeamController {
 	
 	@Autowired
     private TeamService teamService;
-	@Autowired
-    private MeetingService meetingService;
-	@Autowired
-    private FileService fileService;
     @Autowired
     private UserService userService;
     
     @ResponseBody
-    @RequestMapping(path="/team/create/", method = RequestMethod.POST)
-    public String createTeam(@RequestParam long project_id, @RequestParam String name){
+    @RequestMapping(path="/create/", method = RequestMethod.POST)
+    public Long createTeam(@RequestParam long project_id, @RequestParam String name){
     	Project project = new Project(project_id);
     	Team team = new Team(name, project);
     	teamService.create(team);
-        return "/spms/team/view/" + team.getId() + "/";
+        return team.getId();
     }
     
     @ResponseBody
-    @RequestMapping(path="/team/update/", method = RequestMethod.POST)
-    public String updateProject(@RequestParam long id, @RequestParam String name){
-    	Team team = new Team(id);
+    @RequestMapping(path="/update/", method = RequestMethod.POST)
+    public String updateProject(@RequestParam long team_id, @RequestParam String name){
+    	Team team = new Team(team_id);
     	team.setName(name);
     	teamService.update(team);
     	return "success";
     }
 	
     @ResponseBody
-	@RequestMapping(path="/team/delete/", method = RequestMethod.POST)
-    public String deleteProject(@RequestParam long id){
-    	Team team = new Team(id);
+	@RequestMapping(path="/delete/", method = RequestMethod.POST)
+    public String deleteProject(@RequestParam long team_id){
+    	Team team = new Team(team_id);
     	teamService.delete(team);
         return "success";
     }
 	
-	@RequestMapping(path="/team/view/{team_id}/", method = RequestMethod.GET)
+	@RequestMapping(path="/view/{team_id}/", method = RequestMethod.GET)
     public String viewTeam(@PathVariable long team_id, Model model ){
-    	Team team = teamService.getById(team_id);
+    	Team team = teamService.getFullTeamById(team_id);
     	model.addAttribute("team", team);
-    	model.addAttribute("meetings", meetingService.getMeetingsByTeam(team));
-    	model.addAttribute("files", fileService.getFilesByTeam(team_id));
-    	model.addAttribute("users", userService.getUsersByTeam(team));
         return "team";
     }
 	
-	@RequestMapping(path="/{team_id}/addUser/{user_id}/", method = RequestMethod.GET)
-    public String addUser(@PathVariable long team_id, @PathVariable long user_id){
+	@ResponseBody
+	@RequestMapping(path="/addUser/", method = RequestMethod.POST)
+    public User addUser(@RequestParam long user_id, @RequestParam long team_id){
 		Team team = teamService.getById(team_id);
     	User user = userService.getUserById(user_id);
+    	
     	List<User> usersToNotify = new ArrayList<>();
     	usersToNotify.add(user);
     	EmailSender.sendMessageUserAddedToProject(usersToNotify, team.getName());
+    	
     	teamService.addMember(user, team);
-    	return "redirect:/team/view/" + team_id + "/";
+    	return user;
     }
 	
-	@RequestMapping(path="/{team_id}/deleteUser/{user_id}/", method = RequestMethod.GET)
-    public String deleteUser(@PathVariable long team_id, @PathVariable long user_id){
-		Team team = teamService.getById(team_id);
-    	User user = userService.getUserById(user_id);
+	@ResponseBody
+	@RequestMapping(path="/deleteUser/", method = RequestMethod.POST)
+    public String deleteUser(@RequestParam long user_id, @RequestParam long team_id){
+		Team team = new Team(team_id);
+    	User user = new User(user_id);
     	teamService.deleteMember(user, team);
-    	return "redirect:/team/view/" + team_id + "/";
+    	return "success";
     }
 
 }

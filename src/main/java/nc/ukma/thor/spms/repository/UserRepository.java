@@ -20,6 +20,8 @@ public interface UserRepository {
 	public List<User> getAllUsers();
 	public List<User> getUsersPresentAtMeeting(Meeting meeting);
 	
+	public void changeUserStatus(long team_id, long user_id, long new_status, String new_comment);
+	
 	public List<User> getUsers(long start, int length, int column, SortingOrder dir, String searchString);
 	public long count();
 	public long countFiltered(String string);
