@@ -15,18 +15,30 @@ import nc.ukma.thor.spms.service.TraitCategoryService;
 import nc.ukma.thor.spms.service.TraitService;
 import nc.ukma.thor.spms.service.UserService;
 import nc.ukma.thor.spms.util.DateUtil;
+import nc.ukma.thor.spms.util.FileBucket;
+import nc.ukma.thor.spms.util.FileValidator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -46,6 +58,12 @@ public class ProjectController {
     private TraitCategoryService traitCategoryService;
     @Autowired
     private TraitService traitService;
+    @Autowired
+	private CommonsMultipartResolver multipartResolver;
+	@Autowired
+	private String fileUploadLocation;
+	@Autowired
+	private FileValidator fileValidator;
 
     @ResponseBody
 	@RequestMapping(path = "/view/", method = RequestMethod.POST)
@@ -185,12 +203,37 @@ public class ProjectController {
     	projectRepository.addTraitCategoryToProject(new TraitCategory(traitCategoryId), new Project(projectId));
         return "success";
     }
-
+    
     @ResponseBody
     @RequestMapping(path="/update/{projectId}/deleteTraitCategory/{traitCategoryId}/", method = RequestMethod.GET)
     public String deleteTraitCategoryFromProject(@PathVariable long projectId, @PathVariable short traitCategoryId){
     	projectRepository.deleteTraitCategoryFromProject(new TraitCategory(traitCategoryId), new Project(projectId));
         return "success";
     }
+    
+    @InitBinder("fileBucket")
+    protected void initBinderFileBucket(WebDataBinder binder) {
+       binder.setValidator(fileValidator);
+    }
+    
+    @ResponseBody
+	@RequestMapping(path="/view/{projectId}/upload/", method = RequestMethod.POST)
+	public String singleFileUpload(@Validated FileBucket fileBucket, BindingResult result, @PathVariable long projectId, ModelMap model) throws IOException {
+
+		if (result.hasErrors()) {
+			System.out.println("validation errors");
+			return "redirect:/project/view/" + projectId;
+		} else {
+			System.out.println("Fetching file");
+			MultipartFile multipartFile = fileBucket.getFile();
+
+			//Now do something with file...
+			FileCopyUtils.copy(fileBucket.getFile().getBytes(), new java.io.File(fileUploadLocation + fileBucket.getFile().getOriginalFilename()));
+
+			String fileName = multipartFile.getOriginalFilename();
+			model.addAttribute("fileName", fileName);
+			return "success";
+		}
+	}
 
 }

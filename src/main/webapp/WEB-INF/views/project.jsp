@@ -2,7 +2,7 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h1>${project.name}
-	    	<security:authorize access="hasAuthority('admin')">
+	     <security:authorize access="hasAuthority('admin')">
 	    	<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
 	    		<button type="button" class="btn btn-primary"
 			  		  data-toggle="modal" data-target="#projectTraitsManagerModal"
@@ -22,7 +22,7 @@
 			  		Delete Project
 			  	</a>
 			</div>
-			</security:authorize>
+		  </security:authorize>
 		</h1>
 		<h3>Description</h3>
 		<p> <c:choose>
@@ -81,54 +81,16 @@
 <hr>
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
-		<h2>Files
+		<h2>Files</h2>
 		<security:authorize access="hasAnyAuthority('admin','mentor')">
-			<button type="button" class="btn btn-success"
-				data-toggle="modal" data-target="#addFileToProjectModal" onclick="toggleFileDialog();">
+			<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addFileToProjectModal">
 				<i class="fa fa-plus-circle" aria-hidden="true"></i>
 					Add file
 					
 			</button>
 		</security:authorize>
-			<form name="upload" id="add-file" style="display:none">
-				<input type="file" name="myfile" id="exampleInputFile"> 
-				<button type="submit" class="btn btn-default">Submit</button>
-				<div id="log">Progress</div>
-			</form>
-		</h2>
-	</div>
-	<script>
-	    function log(html) {
-	      document.getElementById('log').innerHTML = html;
-	    }
-
-	    document.forms.upload.onsubmit = function() {
-	      var file = this.elements.myfile.files[0];
-	      if (file) {
-	        upload(file);
-	      }
-	      return false;
-	    }
-
-
-	    function upload(file) {
-	      var xhr = new XMLHttpRequest();
-	      xhr.onload = xhr.onerror = function() {
-	        if (this.status == 200) {
-	          log("success");
-	        } else {
-	          log("error " + this.status);
-	        }
-	      };
-	      xhr.upload.onprogress = function(event) {
-	        log(event.loaded + ' / ' + event.total);
-	      }
-
-	      xhr.open("POST", "upload", true);
-	      xhr.send(file);
-
-	    }
-	  </script>
+		
+	</div>	
 </div>
 <hr>
 <div class="row">
@@ -401,6 +363,27 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 					<button type="button" class="btn btn-warning" onclick="createTeam();">Create</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- uploadFileModal -->
+<div class="modal fade" id="addFileToProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<!-- <form target="<c:url value="/project/${project.id}/upload?${_csrf.parameterName}=${_csrf.token}/" />" method="post" enctype="multipart/form-data"> -->
+			<form action="/spms/project/view/${project.id}/upload/" method="post" enctype="multipart/form-data">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel2">Upload</h4>
+				</div>
+				<div class="modal-body">
+					<input type="file" id="file" name="file" />
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="submit" class="btn btn-warning">Upload</button>
 				</div>
 			</form>
 		</div>
