@@ -1,5 +1,7 @@
 package nc.ukma.thor.spms.config;
 
+import java.io.IOException;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -10,11 +12,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Configuration
 @ComponentScan("nc.ukma.thor.spms")
 @PropertySource("properties/jdbc.properties")
 public class AppConfig {
+	
+	static final long oneMB = 1024 * 1024;
+    static final String UPLOAD_LOCATION = System.getProperty("HOME") + "/spms/project/upload/";
 	
     @Autowired
     private Environment environment;
@@ -36,5 +42,19 @@ public class AppConfig {
     public JdbcTemplate getJdbcTemplate(DataSource dataSource){
     	JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		return jdbcTemplate;
+    }
+    
+    @Bean(name="filterMultipartResolver")//name="multipartResolver"    ???????
+    public CommonsMultipartResolver getResolver() throws IOException {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+
+        resolver.setMaxUploadSizePerFile(oneMB * 5);
+
+        return resolver;
+    }
+
+    @Bean(name="fileUploadLocation")
+    public String getFileUploadLocation() {
+        return UPLOAD_LOCATION;
     }
 }	

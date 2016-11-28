@@ -4,9 +4,11 @@ import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.entity.UserStatus;
 import nc.ukma.thor.spms.repository.UserRepositoryJdbcImpl;
 import nc.ukma.thor.spms.util.SortingOrder;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +42,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public List<User> getActiveStudentsByTeam(Team team) {
-		return userRepo.getActiveStudentsByTeam(team);
+	public HashMap<User, UserStatus> getStudentsByTeam(Team team) {
+		return userRepo.getStudentsByTeam(team);
 	}
 	
 	@Override

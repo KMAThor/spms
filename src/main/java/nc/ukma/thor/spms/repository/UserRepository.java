@@ -1,5 +1,6 @@
 package nc.ukma.thor.spms.repository;
 
+import java.util.HashMap;
 import java.util.List;
 
 import nc.ukma.thor.spms.entity.Meeting;
@@ -7,6 +8,7 @@ import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.entity.UserStatus;
 import nc.ukma.thor.spms.util.SortingOrder;
 
 public interface UserRepository {
@@ -16,7 +18,7 @@ public interface UserRepository {
 	public User getUserByEmail(String email);
 	public List<User> getUsersByTeam(Team team);
 	public User getChiefMentorByProject(long projectId);
-	public List<User> getActiveStudentsByTeam(Team team);
+	public HashMap<User, UserStatus> getStudentsByTeam(Team team);
 	public List<User> getAllUsers();
 	public List<User> getUsersPresentAtMeeting(Meeting meeting);
 	

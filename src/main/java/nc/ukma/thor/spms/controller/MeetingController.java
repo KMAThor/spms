@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import nc.ukma.thor.spms.entity.MeetingFeedback;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.entity.UserStatus;
 import nc.ukma.thor.spms.service.MeetingService;
 import nc.ukma.thor.spms.service.ProjectService;
 import nc.ukma.thor.spms.service.UserService;
@@ -103,20 +105,35 @@ public class MeetingController {
     	meetingService.delete(meeting);
     	return "success";
     }
+    
+    @ResponseBody
+    @RequestMapping(path="/addParticipant/", method = RequestMethod.POST)
+    public String addParticipant(@RequestParam long user_id, @RequestParam long meeting_id){
+    	meetingService.addUserToMeeting(user_id, meeting_id);
+    	return "success";
+    }
+    
+    @ResponseBody
+    @RequestMapping(path="/deleteParticipant/", method = RequestMethod.POST)
+    public String deleteParticipant(@RequestParam long user_id, @RequestParam long meeting_id){
+    	meetingService.deleteUserFromMeeting(user_id, meeting_id);
+    	return "success";
+    }
 	
 	@RequestMapping(path="/view/{id}/", method = RequestMethod.GET)
     public String viewMeeting(@PathVariable long id, Model model, Principal authUser){
     	Meeting meeting = meetingService.getById(id);
     	User author = userService.getUser(authUser.getName());
     	model.addAttribute("meeting", meeting);
-    	List<User> members = userService.getActiveStudentsByTeam(meeting.getTeam());
+    	HashMap<User, UserStatus> members = userService.getStudentsByTeam(meeting.getTeam());
     	model.addAttribute("members", members);
+    	List<User> participants = userService.getUsersByMeeting(meeting);
+    	model.addAttribute("participants", participants);
     	List<MeetingFeedback> feedbacks = new ArrayList<MeetingFeedback>();
-    	for(User member: members){
+    	for(User member: members.keySet()){
     		MeetingFeedback meetingFeedback = meetingFeedbackRepository.getMeetingFeedbacksByMeetingStudentMentor(meeting, member, author);
     		feedbacks.add(meetingFeedback);
     	}
-    	System.out.println(feedbacks);
     	
     	model.addAttribute("feedbacks", feedbacks);
         return "meeting";

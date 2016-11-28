@@ -89,6 +89,7 @@
 				</ul>
 			</div>
 			<div>
+			<form action="${logoutUrl}" method="post">
 				<ul class="nav navbar-nav navbar-right">
 					<li> 
 
@@ -96,10 +97,18 @@
 						</p>
 					</li>
 					<li>
+					<c:url value="" var="logoutUrl" />
+						<a href="/spms/j_spring_security_logout" style="padding-top: 18px;">Logout</a>
+					
+						
+									<!--
 						<c:url value="" var="logoutUrl" />
 						<a href="/spms/j_spring_security_logout" style="padding-top: 18px;">Logout</a>
+						<!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
 					</li>
 				</ul>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				</form>	
 			</div>
 		</div>
 	</nav>

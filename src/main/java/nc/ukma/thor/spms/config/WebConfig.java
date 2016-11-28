@@ -1,5 +1,6 @@
 package nc.ukma.thor.spms.config;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -50,5 +52,15 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	public UserDetailsService getUserDetailsService(){
 	    return new UserDetailsServiceImpl();
 	}
+	
+    @Bean(name="multipartResolver") 
+    public CommonsMultipartResolver getResolver() throws IOException{
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+         
+        resolver.setMaxUploadSizePerFile(5242880);//5MB
+
+        return resolver;
+    }
+ 
  
 }

@@ -35,7 +35,7 @@ public class EmailSender {
 	    
 	    public static void sendScheduleChangesMassage(List<User> users, String newTime) {
 	        List<String> emails = users.stream().map((u) -> u.getEmail()).collect(Collectors.toList());
-
+	        
 	        String body = "<p>Meeting schedule changes</p> New time: <b>";
 	        body += newTime;
 	        body += "</b></p>";   
@@ -45,17 +45,29 @@ public class EmailSender {
 	    
 
 	    public static void sendMessageUserAddedToProject(List<User> usersToNotify, String teamName) {
+	    	
 			List<String> userMails = new ArrayList<String>();
 			for(int user=0; user<= usersToNotify.size() - 1; user++){
 				userMails.add(usersToNotify.get(user).getEmail());
 			}
+						
 			String body = "<p>Your NC students team name is: <b>";
 			body += teamName;
 			body += "</b></p>"; 
 			
 			send(userMails, "You Added to the team", body);
 		}
-	    
+
+    	//if (usersToNotify.getUser() == null) {EmailSender.sendNoUsersMassage("admin@admin.com");}
+	    /*
+	    public static void sendNoUsersMassage(String adminEmail) {
+	    	List<String> userMail = new ArrayList<String>();
+	    	userMail.add(adminEmail);
+	    	String body = "<p>You have changed meeting schedule, </> ";
+			body += "but unfortunately there is no single person in team we can send it to </p>";
+	    	send(userMail, "No Users in team", body);
+	    }
+	    */
 	
 	    private static void send(List<String> emails, String subject, String body) {
 	        try {
