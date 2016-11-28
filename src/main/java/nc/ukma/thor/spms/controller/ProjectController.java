@@ -211,11 +211,6 @@ public class ProjectController {
         return "success";
     }
     
-    @InitBinder("fileBucket")
-    protected void initBinderFileBucket(WebDataBinder binder) {
-       binder.setValidator(fileValidator);
-    }
-    
     @ResponseBody
 	@RequestMapping(path="/view/{projectId}/upload/", method = RequestMethod.POST)
 	public String singleFileUpload(@Validated FileBucket fileBucket, BindingResult result, @PathVariable long projectId, ModelMap model) throws IOException {
