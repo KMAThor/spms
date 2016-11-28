@@ -30,7 +30,7 @@
                 	</div>
                 	<div class="panel-body">
                 	<c:url value="/j_spring_security_check" var="loginUrl" />
-                    	 <form action="${loginUrl}" method="post">
+                    	 <form action="${loginUrl}" method="post" >
                         	<fieldset>
                             	<div class="form-group">
                                		<input class="form-control" placeholder="Email addresse" name="j_username" type="text" required="required" autofocus="autofocus"/>
@@ -40,6 +40,7 @@
                             	</div>
                             	<button type="submit" class="btn btn-sm btn-default">Sign in</button>
                         	</fieldset>
+                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     	</form>
                 	</div>
             	</div>
