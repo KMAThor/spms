@@ -202,20 +202,20 @@
 							<c:if test="${member.key.role.name == 'student'}">
 								<div class="col-lg-3" id="user-${member.key.id}">
 							
-								<c:choose>
-									<c:when test="${member.value.status.name == 'left_project'}">
-										<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; background-color: #D3D3D3; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
-									</c:when>
-									<c:when test="${member.value.status.name == 'interview_was_scheduled'}">
-										<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; background-color: #98FB98; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
-									</c:when>
-									<c:when test="${member.value.status.name == 'got_job_offer'}">
-										<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; background-color: #B0E0E6; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
-									</c:when>
-									<c:otherwise>
-										<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
-									</c:otherwise>
-								</c:choose>
+									<c:choose>
+										<c:when test="${member.value.status.name == 'left_project'}">
+											<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; background-color: #DCDCDC; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
+										</c:when>
+										<c:when test="${member.value.status.name == 'interview_was_scheduled'}">
+											<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; background-color: #D3FFAA; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
+										</c:when>
+										<c:when test="${member.value.status.name == 'got_job_offer'}">
+											<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; background-color: #D8F2FF; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
+										</c:when>
+										<c:otherwise>
+											<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
+										</c:otherwise>
+									</c:choose>
 								
 									<c:choose>
 										<c:when test="${empty member.key.linkToPhoto}">
@@ -1013,15 +1013,15 @@ function changeStatus(){
 			$("#tStatusName").attr("title", new_comment);
 		}
 		if (new_status == 1){
-			document.getElementById("div-color-" + user_id).style.backgroundColor = '#D3D3D3';
+			document.getElementById("div-color-" + user_id).style.backgroundColor = '#DCDCDC';
 			document.getElementById("pStatusName-" + user_id).innerHTML = "LEFT_PROJECT";
 		}
 		if (new_status == 2){
-			document.getElementById("div-color-" + user_id).style.backgroundColor = '#98FB98';
+			document.getElementById("div-color-" + user_id).style.backgroundColor = '#D3FFAA';
 			document.getElementById("pStatusName-" + user_id).innerHTML = "INTERVIEW_WAS_SCHEDULED";
 		}
 		if (new_status == 3){
-			document.getElementById("div-color-" + user_id).style.backgroundColor = '#B0E0E6';
+			document.getElementById("div-color-" + user_id).style.backgroundColor = '#D8F2FF';
 			document.getElementById("pStatusName-" + user_id).innerHTML = "GOT_JOB_OFFER";
 		}
 		document.getElementById('tStatusName-' + user_id).title = new_comment;

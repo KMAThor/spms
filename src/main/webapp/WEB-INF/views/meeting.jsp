@@ -32,35 +32,56 @@
 				<table id="membersTable" class="table table-striped table-hover table-bordered" style="min-width: 100%;">
 					<thead>
 						<tr>
-							<td>Id</td>
-							<td>Email</td>
-							<td>First Name</td>
-							<td>Second Name</td>
-							<td>Last Name</td>
+							<td>Name</td>
+							<td data-orderable="false">Precence</td>
 							<td data-orderable="false"></td>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach items="${members}" var="member" varStatus="loop">
-							<c:if test="${member.role.id == 3}">
-								<tr>
-   									<td>${member.id}</td>
-   									<td>${member.email}</td>
-   									<td>${member.firstName}</td>
-   									<td>${member.secondName}</td>
-   									<td>${member.lastName}</td>
-   									<td>
-   										<c:choose>
-										    <c:when test="${empty feedbacks[loop.index]}">
-										        <a href="<c:url value="/meetingFeedback/create/${member.id}/${meeting.id}/" />" class="btn btn-success">Leave feedback</a>
-										    </c:when>
-										    <c:otherwise>
-										        <a href="<c:url value="/meetingFeedback/edit/${feedbacks[loop.index].id}/" />" class="btn btn-warning">Edit feedback</a>
-										    </c:otherwise>
-										</c:choose>
-									</td>
-   								</tr>
-							</c:if>
+							<c:choose>
+								<c:when test="${member.value.status.name == 'left_project'}">
+									<tr style="background-color: #DCDCDC;">
+								</c:when>
+								<c:otherwise>
+									<tr>
+								</c:otherwise>
+							</c:choose>
+						
+   								<td>
+   									${member.key.firstName} ${member.key.secondName} ${member.key.lastName}
+   								</td>
+   								<td>
+   									<c:set var="participates" value="false" />
+   									<c:forEach var="participant" items="${participants}">
+  										<c:if test="${participant.id eq member.key.id}">
+    										<c:set var="participates" value="true" />
+ 										</c:if>
+									</c:forEach>
+   									<c:choose>
+										<c:when test="${participates}">
+										    <div onclick="deleteParticipant(${member.key.id});" >
+  												<input type="checkbox" checked>
+											</div>
+										</c:when>
+										<c:otherwise>
+											<div onclick="addParticipant(${member.key.id});">
+  												<input type="checkbox">
+											</div>
+										</c:otherwise>
+									</c:choose>
+   								</td>
+   								<td>
+   									<c:choose>
+										<c:when test="${empty feedbacks[loop.index]}">
+										    <a href="<c:url value="/meetingFeedback/create/${member.key.id}/${meeting.id}/" />" class="btn btn-success">Leave feedback</a>
+										</c:when>
+										<c:otherwise>
+										    <a href="<c:url value="/meetingFeedback/edit/${feedbacks[loop.index].id}/" />" class="btn btn-warning">Edit feedback</a>
+										</c:otherwise>
+									</c:choose>
+								</td>
+   							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
@@ -68,7 +89,7 @@
 		</div>
 	</div>
 	
-	<!-- createMeetingModal -->
+	<!-- editMeetingModal -->
 	<div class="modal fade" id="editMeetingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -81,7 +102,7 @@
 	        
 				<div class="form-group">
 					<label for="name">Topic:</label>
-				    <input type="text" class="form-control" name="topic" id="topic" value="${meeting.topic}" placeholder="Enter topic" required>
+				    <input type="text" class="form-control" maxlength="255" name="topic" id="topic" value="${meeting.topic}" placeholder="Enter topic" required>
 				</div>
 
 		        <div class="form-group">
@@ -127,39 +148,138 @@
 						<div class="form-group">
 							<p>Are you sure?</p>
 				    	</div>
-						<input type="hidden" name="team_id" id="team_id" value="${meeting.team.id}">
 	      			</div>
 	      			<div class="modal-footer">
 	        			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	        			<button type="button" class="btn btn-danger" onclick="deleteMeetingM(${meeting.id});">Delete</button>
+	        			<button type="button" class="btn btn-danger" onclick="deleteMeeting(${meeting.id});">Delete</button>
 	     			</div>
 	      		</form>
 	    	</div>
 	  	</div>
 	</div>
 	
-		<!-- loadingModal -->
-	<div class="modal fade" data-backdrop="static" data-keyboard="false" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="text-center">
-			<img src="/spms/resources/img/loading.gif" width="50px">
-	    </div>
-	  </div>
-	</div>
-
-	<div class="modal fade" data-backdrop="static" data-keyboard="false" id="networkErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="text-center">
-			<p class="errorMessageInModal">Network error, please check your internet connection, reload page and try again.</p>
-			<p class="errorMessageInModal">If error still occur contact our support team via support.spms@gmail.com</p>
-	    </div>
-	  </div>
-	</div>
-	
 <script>
 
 	$('#membersTable').DataTable();
+	
+	function addParticipant(user_id){
+		
+		$('#loadingModal').modal('show');
+		var meeting_id = "${meeting.id}";
+		
+		$.ajax({
+		    url: "/spms/meeting/addParticipant/",
+		    data: {
+		    	user_id: user_id,
+		    	meeting_id: meeting_id
+		    },
+		    type: "POST",
+		    dataType : "text",
+			timeout: 15000
+		})
+		.done(function(message) {
+		    $('#loadingModal').modal('hide');
+		})
+		.fail(function( xhr, status, errorThrown ) {
+			$('#loadingModal').modal('hide');
+			$('#networkErrorModal').modal('show');
+		})
+		.always(function( xhr, status ) {
+		});;
+		
+	}
+	
+	function deleteParticipant(user_id){
+		
+		$('#loadingModal').modal('show');
+		var meeting_id = "${meeting.id}";
+		
+		$.ajax({
+		    url: "/spms/meeting/deleteParticipant/",
+		    data: {
+		    	user_id: user_id,
+		    	meeting_id: meeting_id
+		    },
+		    type: "POST",
+		    dataType : "text",
+			timeout: 15000
+		})
+		.done(function(message) {
+		    $('#loadingModal').modal('hide');
+		})
+		.fail(function( xhr, status, errorThrown ) {
+			$('#loadingModal').modal('hide');
+			$('#networkErrorModal').modal('show');
+		})
+		.always(function( xhr, status ) {
+		});;
+		
+	}
+
+	function editMeeting(id) {
+		
+		$('#editMeetingModal').modal('hide');
+		$('#loadingModal').modal('show');
+		
+		var topic = $('#topic').val();
+		alert(topic);
+		var start_date = $("#datetimepicker").find("input").val();
+		alert(start_date);
+		
+		$.ajax({
+		    url: "/spms/update/meeting/",
+		    data: {
+		    	id: id,
+		    	topic: topic,
+		        start_date: start_date
+		    },
+		    type: "POST",
+		    dataType : "text",
+			timeout: 15000
+		})
+		.done(function(message) {
+			$('#meetingTopic').text(topic);
+			$('#meetingStartDate').text(start_date);
+		    $('#loadingModal').modal('hide');
+		})
+		.fail(function( xhr, status, errorThrown ) {
+			$('#loadingModal').modal('hide');
+			$('#networkErrorModal').modal('show');
+		})
+		.always(function( xhr, status ) {
+		});;
+	}
+
+	function deleteMeeting(id) {
+		
+		$('#deleteMeetingModal').modal('hide');
+		$('#loadingModal').modal('show');
+
+		var team_id = "${meeting.team.id}";
+		
+		$.ajax({
+		    url: "/spms/meeting/delete/",
+		    data: {
+		        id: id
+		    },
+		    type: "POST",
+		    dataType : "text",
+			timeout: 15000
+		})
+		.done(function(message) {
+		    $('#loadingModal').modal('hide');
+		    window.location = '/spms/team/view/' + team_id + '/';
+		})
+		.fail(function( xhr, status, errorThrown ) {
+			$('#loadingModal').modal('hide');
+			$('#networkErrorModal').modal('show');
+		})
+		.always(function( xhr, status ) {
+		});
+	}
+
 
 </script>
 
+<%@include file="commonModalPopUps.jsp"%>
 <%@include file="footer.jsp"%>

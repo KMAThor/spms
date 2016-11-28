@@ -88,68 +88,6 @@ function deselectAllTraitAction(traitCategoryId, projectId) {
 	});
 }
 
-function editMeeting(id) {
-	
-	$('#editMeetingModal').modal('hide');
-	$('#loadingModal').modal('show');
-	
-	var topic = $('#topic').val();
-	alert(topic);
-	var start_date = $("#datetimepicker").find("input").val();
-	alert(start_date);
-	
-	$.ajax({
-	    url: "/spms/update/meeting/",
-	    data: {
-	    	id: id,
-	    	topic: topic,
-	        start_date: start_date
-	    },
-	    type: "POST",
-	    dataType : "text",
-		timeout: 15000
-	})
-	.done(function(message) {
-		$('#meetingTopic').text(topic);
-		$('#meetingStartDate').text(start_date);
-	    $('#loadingModal').modal('hide');
-	})
-	.fail(function( xhr, status, errorThrown ) {
-		$('#loadingModal').modal('hide');
-		$('#networkErrorModal').modal('show');
-	})
-	.always(function( xhr, status ) {
-	});;
-}
-
-function deleteMeetingM(id) {
-	
-	$('#deleteMeetingModal').modal('hide');
-	$('#loadingModal').modal('show');
-
-	var team_id = $('#team_id').val();
-	
-	$.ajax({
-	    url: "/spms/meeting/delete/",
-	    data: {
-	        id: id
-	    },
-	    type: "POST",
-	    dataType : "text",
-		timeout: 15000
-	})
-	.done(function(message) {
-	    $('#loadingModal').modal('hide');
-	    window.location = '/spms/team/view/' + team_id + '/';
-	})
-	.fail(function( xhr, status, errorThrown ) {
-		$('#loadingModal').modal('hide');
-		$('#networkErrorModal').modal('show');
-	})
-	.always(function( xhr, status ) {
-	});
-}
-
 function chooseChiefMentor(id, name) {
 	$('#cheifMentorName').text(name);
 	$('#cheifMentorId').val(id);
