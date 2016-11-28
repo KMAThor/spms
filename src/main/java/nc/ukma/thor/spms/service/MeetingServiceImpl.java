@@ -25,4 +25,14 @@ public class MeetingServiceImpl extends AbstractService<Meeting> implements Meet
 		return meetingRepository.getMeetingsByTeam(team);
 	}
 
+	@Override
+	public void addUserToMeeting(long user_id, long meeting_id) {
+		meetingRepository.addUserToMeeting(user_id, meeting_id);
+	}
+
+	@Override
+	public void deleteUserFromMeeting(long user_id, long meeting_id) {
+		meetingRepository.deleteUserFromMeeting(user_id, meeting_id);
+	}
+
 }

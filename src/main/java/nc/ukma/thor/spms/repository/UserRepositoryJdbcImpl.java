@@ -2,18 +2,27 @@ package nc.ukma.thor.spms.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import nc.ukma.thor.spms.entity.File;
 import nc.ukma.thor.spms.entity.Meeting;
+import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Role;
+import nc.ukma.thor.spms.entity.Status;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.entity.UserStatus;
 import nc.ukma.thor.spms.util.SortingOrder;
 
 @Repository
@@ -35,11 +44,28 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
 			+ "INNER JOIN role ON role.id = user_role.role_id " + "WHERE team_id = ?;";
 	
-	private static final String GET_ACTIVE_STUDENTS_BY_TEAM_SQL = "SELECT * FROM \"user\" "
+	private static final String GET_CHIEF_MENTOR_BY_PROJECT_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN project ON \"user\".id = project.chief_mentor_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id "
+			+ "WHERE project.id = ?;";
+	
+	private static final String GET_STUDENTS_BY_TEAM_SQL = "SELECT "
+			+ "\"user\".id AS user_id, "
+			+ "\"user\".email AS user_email, \"user\".first_name AS user_first_name, "
+			+ "\"user\".second_name AS user_second_name, \"user\".last_name AS user_last_name, "
+			+ "\"user\".is_active AS user_is_active, "
+			+ "user_team.comment as user_team_comment, "
+			+ "application_form.photo_scope AS application_form_photo_scope, "
+			+ "status.id AS status_id, status.name AS status_name "
+			+ "FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id "
 			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
-			+ "INNER JOIN role ON role.id = user_role.role_id " + "WHERE team_id = ? AND role_id=3;";
+			+ "INNER JOIN status ON user_team.status_id = status.id "
+			+ "WHERE team_id = ? AND role = 'student';";
 
 	private static final String GET_USERS_BY_MEETING_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
@@ -125,12 +151,31 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 						+ "INNER JOIN team ON user_team.team_id=team.id "
 						+ "INNER JOIN project ON team.project_id=project.id "
 						+ "WHERE project.is_completed=FALSE AND user_team.user_id=X.id);";
+
+	private static final String IS_USER_MEMBER_OF_PROJECT_SQL = "SELECT EXISTS(SELECT FROM \"user\" "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON user_role.role_id = role.id "
+			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
+			+ "INNER JOIN team ON user_team.team_id = team.id "
+			+ "WHERE \"user\".email=? AND team.project_id=? AND role.role=?);";
 	
+	private static final String IS_USER_CHIEF_MENTOR_OF_PROJECT_SQL = "SELECT EXISTS(SELECT FROM \"user\" "
+			+ "INNER JOIN project ON \"user\".id = project.chief_mentor_id "
+			+ "WHERE \"user\".email=? AND project.id=?);";
+	
+	private static final String IS_USER_MEMBER_OF_TEAM_SQL = "SELECT EXISTS(SELECT FROM \"user\" "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN role ON user_role.role_id = role.id "
+			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
+			+ "INNER JOIN team ON user_team.team_id = team.id "
+			+ "WHERE \"user\".email=? AND team.id=? AND role.role=?);";
+
 	private static final String CHANGE_USER_STATUS_SQL = "UPDATE user_team "
 			+ "SET status_id = ?, comment = ? "
 			+ "WHERE team_id = ? AND user_id = ?";
 	
 	private static final RowMapper<User> USER_MAPPER = new UserMapper();
+	private static final TeamStudentsExtractor TEAM_STUDENTS_EXTRACTOR = new TeamStudentsExtractor();
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -161,8 +206,20 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 	}
 	
 	@Override
-	public List<User> getActiveStudentsByTeam(Team team) {
-		return jdbcTemplate.query(GET_ACTIVE_STUDENTS_BY_TEAM_SQL, new Object[] { team.getId() }, USER_MAPPER);
+	public User getChiefMentorByProject(long projectId) {
+		try {
+			User user = jdbcTemplate.queryForObject(GET_CHIEF_MENTOR_BY_PROJECT_SQL, new Object[] { projectId }, USER_MAPPER);
+			return user;
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+	
+	@Override
+	public HashMap<User, UserStatus> getStudentsByTeam(Team team) {
+		List<HashMap<User, UserStatus>> students = jdbcTemplate.query(GET_STUDENTS_BY_TEAM_SQL, new Object[]{team.getId()}, TEAM_STUDENTS_EXTRACTOR);
+		if(students.isEmpty()) return null;
+		else return students.get(0);
 	}
 
 	@Override
@@ -243,6 +300,21 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 		return this.jdbcTemplate.queryForObject(COUNT_FREE_USERS_BY_ROLE_FILTERED_SQL,
 				new Object[] { searchParam, searchParam, searchParam, searchParam, role.getName()}, Long.class);
 	}
+	
+	@Override
+	public boolean isUserChiefMentorOfProject(String email, long projectId) {
+		return jdbcTemplate.queryForObject(IS_USER_CHIEF_MENTOR_OF_PROJECT_SQL, new Object[] {email, projectId}, Boolean.class);
+	}
+	
+	@Override
+	public boolean isUserMemberOfProject(String email, long projectId, Role role) {
+		return jdbcTemplate.queryForObject(IS_USER_MEMBER_OF_PROJECT_SQL, new Object[] {email, projectId, role.getName()}, Boolean.class);
+	}
+	
+	@Override
+	public boolean isUserMemberOfTeam(String email, long teamId, Role role) {
+		return jdbcTemplate.queryForObject(IS_USER_MEMBER_OF_TEAM_SQL, new Object[] {email, teamId, role.getName()}, Boolean.class);
+	}
 
 	
 	public static enum OrderableColumn {
@@ -291,5 +363,42 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 		};
 		jdbcTemplate.update(CHANGE_USER_STATUS_SQL, values);
 	}
+	
+	// only for one team!!!
+	private static final class TeamStudentsExtractor implements ResultSetExtractor<List<HashMap<User, UserStatus>>>{
+		@Override
+		public List<HashMap<User, UserStatus>> extractData(ResultSet rs) throws SQLException, DataAccessException {
+			
+			List<HashMap<User, UserStatus>> result = new ArrayList<HashMap<User, UserStatus>>();
+			HashMap<User, UserStatus> students = new HashMap<User, UserStatus>();
+			
+			while(rs.next()){
+
+				User user = new User();
+				user.setId(rs.getLong("user_id"));
+				user.setEmail(rs.getString("user_email"));
+				user.setFirstName(rs.getString("user_first_name"));
+				user.setSecondName(rs.getString("user_second_name"));
+				user.setLastName(rs.getString("user_last_name"));
+				user.setActive(rs.getBoolean("user_is_active"));
+				user.setLinkToPhoto(rs.getString("application_form_photo_scope"));
+
+				UserStatus userStatus = null;
+				Status status = Status.valueOf(rs.getString("status_name").toUpperCase());
+				status.setId(rs.getShort("status_id"));
+				userStatus = new UserStatus(status);
+				userStatus.setComment(rs.getString("user_team_comment"));
+					
+				students.put(user, userStatus);
+				
+			}
+			
+			result.add(students);
+			
+			return result;
+		}
+	}
+
+
 
 }

@@ -2,7 +2,7 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h1>${project.name}
-	     <security:authorize access="hasAuthority('admin')">
+	    	<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username, #project.id)">
 	    	<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
 	    		<button type="button" class="btn btn-primary"
 			  		  data-toggle="modal" data-target="#projectTraitsManagerModal"
@@ -81,9 +81,10 @@
 <hr>
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
-		<h2>Files</h2>
-		<security:authorize access="hasAnyAuthority('admin','mentor')">
-			<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addFileToProjectModal">
+		<h2>Files
+		<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username, #project.id)">
+			<button type="button" class="btn btn-success"
+				data-toggle="modal" data-target="#addFileToProjectModal" onclick="toggleFileDialog();">
 				<i class="fa fa-plus-circle" aria-hidden="true"></i>
 					Add file
 					
@@ -96,26 +97,42 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h2>Teams
-			
-			<security:authorize access="hasAuthority('admin')">
-				<button type="button" class="btn btn-success"
-					data-toggle="modal" data-target="#createTeamModal"
-					id="createTeamButton">
-					<i class="fa fa-plus-circle" aria-hidden="true"></i>
+			<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#project.id)">
+			<button type="button" class="btn btn-success"
+				data-toggle="modal" data-target="#createTeamModal"
+				id="createTeamButton">
+				<i class="fa fa-plus-circle" aria-hidden="true"></i>
 					Create team
 				</button>
 			</security:authorize>
-			
 		</h2>
+		<security:authorize access="hasAuthority('admin') || hasAuthority('hr') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#project.id)">
 		<c:forEach items="${teams}" var="team">
 				<h3>
 					<a href="<c:url value="/team/view/${team.id}/" />" class="btn btn-warning">${team.name}</a>
 				</h3>
 		</c:forEach>
+		</security:authorize>
+		<security:authorize access="!(hasAuthority('admin') || hasAuthority('hr') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#project.id))">
+		<c:forEach items="${teams}" var="team">
+				<h3>
+					
+						<button class="btn btn-warning" onclick="window.location.href='<c:url value="/team/view/${team.id}/" />' "
+						<security:authorize access="!@spmsWebSecurityService.isUserMentorOfTeam(principal.username,#team.id)">
+							disabled
+						</security:authorize>
+
+						>
+							${team.name}
+						</button>
+					
+				</h3>
+		</c:forEach>
+		</security:authorize>
 	</div>
 </div>
 
-
+<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#project.id)">
 <!-- editProjectModal -->
 <div class="modal fade" id="editProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -293,7 +310,7 @@
 								<div class="col-sm-7">
 							      	<h3 id="traitCategory-${traitCategory.id}-name" class="categoryTitle">
 							      	${traitCategory.name}	
-							      	</h3>
+						      </h3>
 							    </div>
 							    <div class="col-sm-5 text-right" >
 							    	<div class="btn-group btn-group-xs" role="group"  >
@@ -368,6 +385,7 @@
 		</div>
 	</div>
 </div>
+</security:authorize>
 
 <!-- uploadFileModal -->
 <div class="modal fade" id="addFileToProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
