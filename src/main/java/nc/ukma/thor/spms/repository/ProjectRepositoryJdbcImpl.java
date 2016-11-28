@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nc.ukma.thor.spms.entity.*;
+import nc.ukma.thor.spms.entity.report.ProjectReport;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -97,7 +99,35 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			+ "OR to_char(start_date, 'HH12:MI:SS') ILIKE ? "
 			+ "OR to_char(end_date, 'HH12:MI:SS') ILIKE ?) AND (chief_mentor_id=? OR (user_team.user_id=? AND role.role=?));";
 	
+	private static final String GET_PROJECT_REPORT_SQL = "SELECT (SELECT COUNT (*) FROM user_team "
+			+ "INNER JOIN team ON user_team.team_id=team.id "
+			+ "INNER JOIN project ON team.project_id=project.id "
+			+ "INNER JOIN user_role ON user_team.user_id=user_role.user_id "
+			+ "INNER JOIN role ON user_role.role_id=role.id "
+			+ "WHERE project.id = ? AND role.role='student') AS numberOfParticipants, "
+			+ "(SELECT COUNT (*) FROM user_team "
+			+ "INNER JOIN team ON user_team.team_id=team.id "
+			+ "INNER JOIN project ON team.project_id=project.id "
+			+ "INNER JOIN user_role ON user_team.user_id=user_role.user_id "
+			+ "INNER JOIN role ON user_role.role_id=role.id "
+			+ "INNER JOIN status ON user_team.status_id=status.id "
+			+ "WHERE project.id = ? AND role.role='student' AND status.name='left_project') AS numberOfParticipantsWhoLeft, "
+			+ "(SELECT COUNT (*) FROM user_team "
+			+ "INNER JOIN team ON user_team.team_id=team.id "
+			+ "INNER JOIN project ON team.project_id=project.id "
+			+ "INNER JOIN user_role ON user_team.user_id=user_role.user_id "
+			+ "INNER JOIN role ON user_role.role_id=role.id  "
+			+ "INNER JOIN status ON user_team.status_id=status.id "
+			+ "WHERE project.id = ? AND role.role='student' AND status.name='interview_was_scheduled') AS numberOfParticipantsWhomInterviewWasScheduled, "
+			+ "(SELECT COUNT (*) FROM user_team "
+			+ "INNER JOIN team ON user_team.team_id=team.id "
+			+ "INNER JOIN project ON team.project_id=project.id "
+			+ "INNER JOIN user_role ON user_team.user_id=user_role.user_id "
+			+ "INNER JOIN role ON user_role.role_id=role.id "
+			+ "INNER JOIN status ON user_team.status_id=status.id "
+			+ "WHERE project.id = ? AND role.role='student' AND status.name='got_job_offer') AS numberOfParticipantsWhoGotJobOffer;";
 	private static final RowMapper<Project> PROJECT_MAPPER = new ProjectMapper();
+	private static final RowMapper<ProjectReport> PROJECT_REPORT_MAPPER = new ProjectReportMapper();
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -148,6 +178,17 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			return jdbcTemplate.queryForObject(GET_PROJECT_BY_ID_SQL,
 						new Object[] { id },
 						PROJECT_MAPPER);
+		}catch(EmptyResultDataAccessException e){
+			return null;
+		}
+	}
+	
+	@Override
+	public ProjectReport getProjectReport(Long id){
+		try{
+			return jdbcTemplate.queryForObject(GET_PROJECT_REPORT_SQL,
+						new Object[] { id, id, id, id },
+						PROJECT_REPORT_MAPPER);
 		}catch(EmptyResultDataAccessException e){
 			return null;
 		}
@@ -288,6 +329,18 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			pr.setIsCompleted(rs.getBoolean("is_completed"));
 			Long chiefMentorId = rs.getLong("chief_mentor_id");
 			if(!rs.wasNull()) pr.setChiefMentor(new User(chiefMentorId));
+			return pr;
+		}
+	}
+	
+	private static final class ProjectReportMapper implements RowMapper<ProjectReport> {
+		@Override
+		public ProjectReport mapRow(ResultSet rs, int rowNum) throws SQLException {
+			ProjectReport pr = new ProjectReport();
+			pr.setNumberOfParticipants(rs.getInt("numberOfParticipants"));
+			pr.setNumberOfParticipantsWhoGotJobOffer(rs.getInt("numberOfParticipantsWhoGotJobOffer"));
+			pr.setNumberOfParticipantsWhoLeft(rs.getInt("numberOfParticipantsWhoLeft"));
+			pr.setNumberOfParticipantsWhomInterviewWasScheduled(rs.getInt("numberOfParticipantsWhomInterviewWasScheduled"));
 			return pr;
 		}
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import nc.ukma.thor.spms.dto.dataTable.DataTableRequestDTO;
 import nc.ukma.thor.spms.dto.dataTable.DataTableResponseDTO;
 import nc.ukma.thor.spms.dto.dataTable.UserTableDTO;
+import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.UserRepository;
@@ -34,6 +36,14 @@ public class UserController {
 	@RequestMapping(path="/", method = RequestMethod.GET)
 	public String usersPage(Model model){
         return "users";
+    }
+	
+	@RequestMapping(path="/view/{id}/", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin') || hasAuthority('hr') ")
+    public String viewProject(@PathVariable long id, Model model ){
+    	User user = userService.getUserById(id);
+    	model.addAttribute("user", user);
+        return "user";
     }
 	
 	@ResponseBody

@@ -8,6 +8,7 @@ import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.entity.report.ProjectReport;
 import nc.ukma.thor.spms.repository.ProjectRepository;
 import nc.ukma.thor.spms.service.ProjectService;
 import nc.ukma.thor.spms.service.TeamService;
@@ -113,6 +114,17 @@ public class ProjectController {
     	model.addAttribute("traitsAssociatedWithProject", traitService.getTraitsWithoutNamesByProject(project));
         return "project";
     }
+    @ResponseBody
+    @RequestMapping(path="/view/{id}/report/", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('admin') || hasAuthority('hr') "
+    		+ "|| @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#id) "
+    		+ "|| @spmsWebSecurityService.isUserMentorFromProject(principal.username,#id)")
+    public ProjectReport viewProjectReport(@PathVariable long id, Model model ){
+        return projectRepository.getProjectReport(id);
+    }
+    
+    
+    
     
     @RequestMapping(path="/create/", method = RequestMethod.POST)
     public String createProject(HttpServletRequest request, Model model ){
@@ -121,6 +133,8 @@ public class ProjectController {
     	project.setDescription(request.getParameter("description"));
     	project.setStartDate(DateUtil.getTimeStamp(request.getParameter("startDate")));
     	project.setEndDate(DateUtil.getTimeStamp(request.getParameter("endDate")));
+    	String cheifMentorId = request.getParameter("cheifMentorId");
+    	if(!cheifMentorId.isEmpty()) project.setChiefMentor(new User(Long.valueOf(cheifMentorId)));
     	projectService.create(project);
     	return "redirect:/project/view/"+project.getId()+"/";
     }

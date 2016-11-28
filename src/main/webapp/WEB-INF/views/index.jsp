@@ -104,7 +104,21 @@
 		                </span>
 		            </div>
 		        </div>
-			
+				<div class="form-group">
+					<label for="chief">Chief mentor:</label>
+					<button type="button" class="btn btn-xs btn-primary" data-toggle="modal"
+							data-target="#chooseChiefMentorModal">
+			  			<i class="fa fa-thumb-tack" aria-hidden="true"></i>
+			  			Choose chief mentor
+			  		</button>
+				  	<br>
+					<div class="btn-group">
+						<p id="cheifMentorName">
+							Not assigned yet
+						</p>
+						<input id="cheifMentorId" name="cheifMentorId" type="hidden" value="${project.chiefMentor.id}"/>
+					</div>
+				</div>
 				<script type="text/javascript">
 				    $(function () {
 				        $('#datetimepicker6').datetimepicker({ format: 'DD/MM/YYYY hh:mm a' });
@@ -129,7 +143,65 @@
 	    </div>
 	  </div>
 	</div>
-	
+	<!-- chooseChiefMentorModal -->
+	<div class="modal fade" id="chooseChiefMentorModal" tabindex="-1" role="dialog">
+	  	<div class="modal-dialog" role="document">
+	    	<div class="modal-content">
+	     		<div class="modal-header">
+	     			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+	        		<h4 class="modal-title" id="myModalLabel">Choose chief mentor</h4>
+	      		</div>
+	      		<div class="modal-body">
+	      			<div class="div-table">
+						<table id="usersTable" class="table table-striped table-hover table-bordered">
+							<thead>
+								<tr>
+									<td>Id</td>
+									<td>Email</td>
+									<td>First Name</td>
+									<td>Second Name</td>
+									<td>Last Name</td>
+									<td>Role</td>
+								</tr>
+							</thead>
+						</table>
+						<script type="text/javascript">
+							$('#usersTable').DataTable( {
+
+							    serverSide: true,
+						        ajax: {
+							        url: '<c:url value="/user/view/mentor/"/>',
+							        type: 'POST',
+							        data: function ( d ) {
+									      return JSON.stringify( d );
+									    },	        
+								    contentType: "application/json; charset=utf-8",
+								    dataType: "json",
+								    dataSrc: function ( json ) {
+								    	for(var i=0, ien=json.data.length; i<ien ; i++ ) {
+								        	json.data[i]["email"] = '<a class="clickable" onclick="chooseChiefMentor('+json.data[i]["id"]+',&quot;'+json.data[i]["firstName"]+" "+json.data[i]["lastName"]+'&quot;'+');">'+json.data[i]["email"]+'</a>';
+								      	}
+								      	return json.data;
+									}
+							    },
+							    columns: [
+								    { data: "id" },
+								    { data: "email" },
+								    { data: "firstName" },
+								    { data: "secondName" },
+								    { data: "lastName" },
+								    { data: "role" }
+								  ]
+							    
+							} );
+						</script>
+					</div>
+	      		</div>
+	      	</div>
+	    </div>
+	</div>
 	
     <!-- <img src="resources/thor.png">${greeting} . Our system has ${numberOfUsers} users. -->
     <script>

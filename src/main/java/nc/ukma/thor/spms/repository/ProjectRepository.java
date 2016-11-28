@@ -3,6 +3,7 @@ package nc.ukma.thor.spms.repository;
 import java.util.List;
 
 import nc.ukma.thor.spms.entity.*;
+import nc.ukma.thor.spms.entity.report.ProjectReport;
 import nc.ukma.thor.spms.util.SortingOrder;
 
 public interface ProjectRepository extends MyRepository<Project>{
@@ -42,6 +43,6 @@ public interface ProjectRepository extends MyRepository<Project>{
 	public Long countProjectsByMentor(String value, Long id);
 	public List<Project> getProjectsByMentor(int start, int length, int column, SortingOrder dir, String value,
 			Long id);
-
+	public ProjectReport getProjectReport(Long projectId);
 
 }
