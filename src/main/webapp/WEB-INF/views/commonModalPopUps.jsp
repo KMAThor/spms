@@ -2,7 +2,7 @@
 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="text-center">
-		<img src="/spms/resources/img/loading.gif" width="50px">
+		<img src="<%=request.getContextPath()%>/resources/img/loading.gif" width="50px">
     </div>
   </div>
 </div>

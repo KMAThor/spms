@@ -18,7 +18,7 @@
 			</security:authorize>
 		</h1>
 		<h6>
-			<a href="/spms/project/view/${team.project.id}/"><--- Back to
+			<a href="<%=request.getContextPath()%>/project/view/${team.project.id}/"><--- Back to
 				Project</a>
 		</h6>
 	</div>
@@ -148,7 +148,7 @@
 								<div class="col-lg-3 padtop" id="user-${member.key.id}">
 									<c:choose>
 										<c:when test="${empty member.key.linkToPhoto}">
-											<img src="/spms/resources/img/anonymous.jpg"
+											<img src="<%=request.getContextPath()%>/resources/img/anonymous.jpg"
 												class="img-rounded" style="width: 150px; height: 150px">
 										</c:when>
 										<c:otherwise>
@@ -219,7 +219,7 @@
 								
 									<c:choose>
 										<c:when test="${empty member.key.linkToPhoto}">
-											<img src="/spms/resources/img/anonymous.jpg"
+											<img src="<%=request.getContextPath()%>/resources/img/anonymous.jpg"
 												class="img-rounded" style="width: 150px; height: 150px">
 										</c:when>
 										<c:otherwise>
@@ -580,7 +580,7 @@ function getFreeMentors() {
 
 	    serverSide: true,
         ajax: {
-	        url: '/spms/user/view/free/mentor/',
+	        url: getContextPath()+'/user/view/free/mentor/',
 	        type: 'POST',
 	        data: function ( d ) {
 			      return JSON.stringify( d );
@@ -612,7 +612,7 @@ function getFreeStudents() {
 
 	    serverSide: true,
         ajax: {
-	        url: '/spms/user/view/free/student/',
+	        url: getContextPath()+'/user/view/free/student/',
 	        type: 'POST',
 	        data: function ( d ) {
 			      return JSON.stringify( d );
@@ -646,7 +646,7 @@ function updateTeamName() {
 	var name = $('#newTeamName').val();
 
 	$.ajax({
-	    url: "/spms/team/update/",
+	    url: getContextPath()+"/team/update/",
 	    data: {
 	    	team_id: team_id,
 	        name: name
@@ -675,7 +675,7 @@ function deleteTeam() {
 	var project_id = "${team.project.id}";
 	
 	$.ajax({
-	    url: "/spms/team/delete/",
+	    url: getContextPath()+"/team/delete/",
 	    data: {
 	        team_id: team_id
 	    },
@@ -685,7 +685,7 @@ function deleteTeam() {
 	})
 	.done(function(message) {
 	    $('#loadingModal').modal('hide');
-	    window.location = '/spms/project/view/' + project_id + '/';
+	    window.location = '<%=request.getContextPath()%>/project/view/' + project_id + '/';
 	})
 	.fail(function( xhr, status, errorThrown ) {
 		$('#loadingModal').modal('hide');
@@ -714,7 +714,7 @@ function createMeeting() {
 	var start_date = $('#meetingStartDate').val();
 
 	$.ajax({
-		url: "/spms/meeting/create/"	,
+		url: getContextPath()+"/meeting/create/"	,
 	    data: {
 	    	team_id: team_id,
 	    	topic: topic,
@@ -726,7 +726,7 @@ function createMeeting() {
 	})
 	.done(function(meeting_id) {
 	    $('#loadingModal').modal('hide');
-	    window.location = "/spms/meeting/view/" + meeting_id + "/";
+	    window.location = "<%=request.getContextPath()%>/meeting/view/" + meeting_id + "/";
 	})
 	.fail(function( xhr, status, errorThrown ) {
 		$('#loadingModal').modal('hide');
@@ -747,7 +747,7 @@ function createMeetings() {
 	var end_date = $("#projectEndDate").val();
 	
 	$.ajax({
-		url: "/spms/meeting/createSeveral/"	,
+		url: getContextPath()+"/meeting/createSeveral/"	,
 	    data: {
 	    	team_id: team_id,
 	    	topic: topic,
@@ -760,7 +760,7 @@ function createMeetings() {
 	})
 	.done(function(meeting_id) {
 	    $('#loadingModal').modal('hide');
-	    window.location = "/spms/meeting/view/" + meeting_id + "/";
+	    window.location = "<%=request.getContextPath()%>/meeting/view/" + meeting_id + "/";
 	})
 	.fail(function( xhr, status, errorThrown ) {
 		$('#loadingModal').modal('hide');
@@ -777,7 +777,7 @@ function deleteMeeting() {
 	var id = idToDelete;
 
 	$.ajax({
-	    url: "/spms/meeting/delete/",
+	    url: getContextPath()+"/meeting/delete/",
 	    data: {
 	        id: id
 	    },
@@ -805,7 +805,7 @@ function addMentor(user_id) {
 	var team_id = "${team.id}";
 	
 	$.ajax({
-		url: "/spms/team/addUser/"	,
+		url: getContextPath()+"/team/addUser/"	,
 	    data: {
 	    	user_id: user_id,
 	    	team_id: team_id
@@ -829,7 +829,7 @@ function addMentor(user_id) {
 		}
 		else {
 			$('#block-mentors').append('<div class="col-lg-3 padtop" id="user-' + user.id + '">\
-									<img src="/spms/resources/img/anonymous.jpg" class="img-rounded" style="width:150px; height:150px">\
+									<img src="<%=request.getContextPath()%>/resources/img/anonymous.jpg" class="img-rounded" style="width:150px; height:150px">\
 									<p style="padding-top: 10px">' + user.firstName + ' ' + user.secondName +'</p>\
 									<h6>' + user.email + '</h6>\
 									<p>\
@@ -860,7 +860,7 @@ function addStudent(user_id) {
 	var team_id = "${team.id}";
 	
 	$.ajax({
-		url: "/spms/team/addUser/"	,
+		url: getContextPath()+"/team/addUser/"	,
 	    data: {
 	    	user_id: user_id,
 	    	team_id: team_id
@@ -891,7 +891,7 @@ function addStudent(user_id) {
 		else {
 			$('#block-students').append('<div class="col-lg-3" id="user-' + user.id + '">\
 											<div id="div-color-' + user.id + '" style="border-radius: 5px; margin-right: 15px; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">\
-												<img src="/spms/resources/img/anonymous.jpg" class="img-rounded" style="width:150px; height:150px">\
+												<img src="<%=request.getContextPath()%>/resources/img/anonymous.jpg" class="img-rounded" style="width:150px; height:150px">\
 												<p style="padding-top: 10px">' + user.firstName + ' ' + user.secondName +'</p>\
 													<h6>' + user.email + '</h6>\
 													<abbr id="tStatusName-' + user.id + '" title="" class="initialism"><p id="pStatusName-' + user.id + '">ACTIVE</p></abbr>\
@@ -932,7 +932,7 @@ function deleteUser() {
 	var team_id = "${team.id}";
 	
 	$.ajax({
-	    url: "/spms/team/deleteUser/",
+	    url: getContextPath()+"/team/deleteUser/",
 	    data: {
 	    	user_id: user_id,
 	    	team_id: team_id
@@ -995,7 +995,7 @@ function changeStatus(){
 	var new_comment = $('#newComment').val();
 	
 	$.ajax({
-	    url: "/spms/user/changeStatus/",
+	    url: getContextPath()+"/user/changeStatus/",
 	    data: {
 	    	team_id: team_id,
 	    	user_id: user_id,

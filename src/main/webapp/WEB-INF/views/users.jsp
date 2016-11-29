@@ -26,7 +26,7 @@
 
 				    serverSide: true,
 			        ajax: {
-				        url: '<c:url value="/user/view/student/"/>',
+				        url: getContextPath()+'/user/view/student/',
 				        type: 'POST',
 				        data: function ( d ) {
 						      return JSON.stringify( d );
@@ -35,7 +35,7 @@
 					    dataType: "json",
 					    dataSrc: function ( json ) {
 					    	for(var i=0, ien=json.data.length; i<ien ; i++ ) {
-					        	json.data[i]["email"] = '<a class="clickable" href="/spms/user/view/'+json.data[i]["id"]+'/">'+json.data[i]["email"]+'</a>';
+					        	json.data[i]["email"] = '<a class="clickable" href="<%=request.getContextPath()%>/user/view/'+json.data[i]["id"]+'/">'+json.data[i]["email"]+'</a>';
 					      	}
 					      	return json.data;
 						}

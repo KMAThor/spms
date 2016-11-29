@@ -8,7 +8,7 @@
 	<title>SPMS</title>
 
 	<!-- Shortcut -->
-	<link href="/spms/resources/img/shortcut.ico" rel="shortcut icon">
+	<link href="<%=request.getContextPath()%>/resources/img/shortcut.ico" rel="shortcut icon">
 
 	<!-- jQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -46,9 +46,10 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.4.1/bootstrap-slider.min.js"></script>
 	
 	<!-- CSS -->
-	<link href="/spms/resources/css/styles.css" type="text/css" rel="stylesheet">
+	<link href="<%=request.getContextPath()%>/resources/css/styles.css" type="text/css" rel="stylesheet">
 	
-	<script src="/spms/resources/js/main.js"></script>
+	<script src="<%=request.getContextPath()%>/resources/js/main.js"></script>
+	<script type="text/javascript">function getContextPath() { return "<%=request.getContextPath()%>";}</script>
 </head>
 
 <body>
@@ -56,32 +57,32 @@
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header menuitem">
-				<a href="/spms/" class="navbar-brand" style="padding-top: 20px;">SPMS</a>
+				<a href="<%=request.getContextPath()%>/" class="navbar-brand" style="padding-top: 20px;">SPMS</a>
 			</div>
 			<div>
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="/spms/reports/">
-							<img src="/spms/resources/img/view_reports.png" style="width:30px; height:30px">
+						<a href="<%=request.getContextPath()%>/reports/">
+							<img src="<%=request.getContextPath()%>/resources/img/view_reports.png" style="width:30px; height:30px">
 							View Reports
 						</a>
 					</li>
 					<!--<li>
-                        <a href="/spms/archive/">
-                            <img src="/spms/resources/img/project_archive.png" style="width:30px; height:30px">
+                        <a href="<%=request.getContextPath()%>/archive/">
+                            <img src="<%=request.getContextPath()%>/resources/img/project_archive.png" style="width:30px; height:30px">
                             Project Archive
                         </a>
                     </li>-->
 					<li>
-						<a href="/spms/user/">
-							<img src="/spms/resources/img/students.png" style="width:30px; height:30px">
+						<a href="<%=request.getContextPath()%>/user/">
+							<img src="<%=request.getContextPath()%>/resources/img/students.png" style="width:30px; height:30px">
 							Students
 						</a>
 					</li>
 					<li style="border: 1px;">
 						<security:authorize access="hasAuthority('admin')">
-							<a href="/spms/traitManager/">
-								<img src="/spms/resources/img/trait_manager.png" style="width:30px; height:30px">
+							<a href="<%=request.getContextPath()%>/traitManager/">
+								<img src="<%=request.getContextPath()%>/resources/img/trait_manager.png" style="width:30px; height:30px">
 								Trait Manager
 							</a>
 						</security:authorize>
@@ -98,12 +99,12 @@
 					</li>
 					<li>
 					<c:url value="" var="logoutUrl" />
-						<a href="/spms/j_spring_security_logout" style="padding-top: 18px;">Logout</a>
+						<a href="<%=request.getContextPath()%>/j_spring_security_logout" style="padding-top: 18px;">Logout</a>
 					
 						
 									<!--
 						<c:url value="" var="logoutUrl" />
-						<a href="/spms/j_spring_security_logout" style="padding-top: 18px;">Logout</a>
+						<a href="<%=request.getContextPath()%>/j_spring_security_logout" style="padding-top: 18px;">Logout</a>
 						<!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
 					</li>
 				</ul>

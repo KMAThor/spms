@@ -20,7 +20,7 @@
 				</div>
 			</h1>
 			<h6>
-				<a href="/spms/team/view/${meeting.team.id}/"><--- Back to Team</a>
+				<a href="<%=request.getContextPath()%>/team/view/${meeting.team.id}/"><--- Back to Team</a>
 			</h6>
 		</div>
 	</div>
@@ -168,7 +168,7 @@
 		var meeting_id = "${meeting.id}";
 		
 		$.ajax({
-		    url: "/spms/meeting/addParticipant/",
+		    url: getContextPath()+'/meeting/addParticipant/',
 		    data: {
 		    	user_id: user_id,
 		    	meeting_id: meeting_id
@@ -195,7 +195,7 @@
 		var meeting_id = "${meeting.id}";
 		
 		$.ajax({
-		    url: "/spms/meeting/deleteParticipant/",
+		    url: getContextPath()+'/meeting/deleteParticipant/',
 		    data: {
 		    	user_id: user_id,
 		    	meeting_id: meeting_id
@@ -227,7 +227,7 @@
 		alert(start_date);
 		
 		$.ajax({
-		    url: "/spms/update/meeting/",
+		    url: getContextPath()+"/update/meeting/",
 		    data: {
 		    	id: id,
 		    	topic: topic,
@@ -258,7 +258,7 @@
 		var team_id = "${meeting.team.id}";
 		
 		$.ajax({
-		    url: "/spms/meeting/delete/",
+		    url: getContextPath()+"/meeting/delete/",
 		    data: {
 		        id: id
 		    },
@@ -268,7 +268,7 @@
 		})
 		.done(function(message) {
 		    $('#loadingModal').modal('hide');
-		    window.location = '/spms/team/view/' + team_id + '/';
+		    window.location = '<%=request.getContextPath()%>/team/view/' + team_id + '/';
 		})
 		.fail(function( xhr, status, errorThrown ) {
 			$('#loadingModal').modal('hide');
