@@ -230,7 +230,37 @@
 									<p style="padding-top: 10px">${member.key.firstName}
 										${member.key.secondName}</p>
 									<h6>${member.key.email}</h6>
-									<abbr id="tStatusName-${member.key.id}" title="${member.value.comment}" class="initialism"><p id="pStatusName-${member.key.id}">${member.value.status.name}</p></abbr>
+									
+									<c:choose>
+										<c:when test="${member.value.status.name == 'left_project'}">
+											<abbr id="tStatusName-${member.key.id}" title="${member.value.comment}" class="initialism">
+												<p id="pStatusName-${member.key.id}">
+													LEFT PROJECT <i class="fa fa-info-circle" aria-hidden="true"></i>
+												</p>
+											</abbr>
+										</c:when>
+										<c:when test="${member.value.status.name == 'interview_was_scheduled'}">
+											<abbr id="tStatusName-${member.key.id}" title="${member.value.comment}" class="initialism">
+												<p id="pStatusName-${member.key.id}">
+													INTERVIEW WAS SCHEDULED <i class="fa fa-info-circle" aria-hidden="true"></i>
+												</p>
+											</abbr>
+										</c:when>
+										<c:when test="${member.value.status.name == 'got_job_offer'}">
+											<abbr id="tStatusName-${member.key.id}" title="${member.value.comment}" class="initialism">
+												<p id="pStatusName-${member.key.id}">
+													GOT JOB OFFER <i class="fa fa-info-circle" aria-hidden="true"></i>
+												</p>
+											</abbr>
+										</c:when>
+										<c:otherwise>
+											<abbr id="tStatusName-${member.key.id}" title="${member.value.comment}" class="initialism">
+												<p id="pStatusName-${member.key.id}">
+													ACTIVE <i class="fa fa-info-circle" aria-hidden="true"></i>
+												</p>
+											</abbr>
+										</c:otherwise>
+									</c:choose>
 									<p style="padding-top: 10px">
 										<button type="button" class="btn btn-xs btn-warning" id="butStatus-${member.key.id}"
 													data-toggle="modal" data-target="#changeStatusModal"
@@ -823,7 +853,8 @@ function addMentor(user_id) {
 									<p style="padding-top: 10px">' + user.firstName + ' ' + user.secondName +'</p>\
 									<h6>' + user.email + '</h6>\
 									<p>\
-										<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>\
+										<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">\
+										<i class="fa fa-trash" aria-hidden="true"></i>Delete</button>\
 	  								</p>\
 								  </div>');
 		}
@@ -833,7 +864,8 @@ function addMentor(user_id) {
 									<p style="padding-top: 10px">' + user.firstName + ' ' + user.secondName +'</p>\
 									<h6>' + user.email + '</h6>\
 									<p>\
-										<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>\
+										<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">\
+										<i class="fa fa-trash" aria-hidden="true"></i>Delete</button>\
 		  							</p>\
 								</div>');
 		}
@@ -883,7 +915,8 @@ function addStudent(user_id) {
 															data-toggle="modal" data-target="#changeStatusModal">\
 															<i class="fa fa-pencil" aria-hidden="true"></i>Change status\
 														</button>\
-														<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>\
+														<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">\
+														<i class="fa fa-trash" aria-hidden="true"></i>Delete</button>\
 	  												</p>\
 								  				</div>\
 								  			</div>');
@@ -900,7 +933,8 @@ function addStudent(user_id) {
 															data-toggle="modal" data-target="#changeStatusModal">\
 															<i class="fa fa-pencil" aria-hidden="true"></i>Change status\
 														</button>\
-														<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>\
+														<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">\
+														<i class="fa fa-trash" aria-hidden="true"></i>Delete</button>\
 	  												</p>\
 												</div>\
 											</div>');
@@ -1014,15 +1048,15 @@ function changeStatus(){
 		}
 		if (new_status == 1){
 			document.getElementById("div-color-" + user_id).style.backgroundColor = '#DCDCDC';
-			document.getElementById("pStatusName-" + user_id).innerHTML = "LEFT_PROJECT";
+			document.getElementById("pStatusName-" + user_id).innerHTML = "LEFT PROJECT";
 		}
 		if (new_status == 2){
 			document.getElementById("div-color-" + user_id).style.backgroundColor = '#D3FFAA';
-			document.getElementById("pStatusName-" + user_id).innerHTML = "INTERVIEW_WAS_SCHEDULED";
+			document.getElementById("pStatusName-" + user_id).innerHTML = "INTERVIEW WAS SCHEDULED";
 		}
 		if (new_status == 3){
 			document.getElementById("div-color-" + user_id).style.backgroundColor = '#D8F2FF';
-			document.getElementById("pStatusName-" + user_id).innerHTML = "GOT_JOB_OFFER";
+			document.getElementById("pStatusName-" + user_id).innerHTML = "GOT JOB OFFER";
 		}
 		document.getElementById('tStatusName-' + user_id).title = new_comment;
 		var element = document.getElementById('butStatus-' + user_id);

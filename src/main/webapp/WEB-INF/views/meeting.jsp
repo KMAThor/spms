@@ -58,16 +58,35 @@
     										<c:set var="participates" value="true" />
  										</c:if>
 									</c:forEach>
-   									<c:choose>
-										<c:when test="${participates}">
-										    <div onclick="deleteParticipant(${member.key.id});" >
-  												<input type="checkbox" checked>
-											</div>
+									
+									<c:choose>
+										<c:when test="${member.value.status.name == 'left_project'}">
+											<c:choose>
+												<c:when test="${participates}">
+										    		<div>
+  														<input type="checkbox" checked disabled>
+													</div>
+												</c:when>
+												<c:otherwise>
+													<div>
+  														<input type="checkbox" disabled>
+													</div>
+												</c:otherwise>
+											</c:choose>
 										</c:when>
 										<c:otherwise>
-											<div onclick="addParticipant(${member.key.id});">
-  												<input type="checkbox">
-											</div>
+   											<c:choose>
+												<c:when test="${participates}">
+										    		<div onclick="deleteParticipant(${member.key.id});">
+  														<input type="checkbox" checked>
+													</div>
+												</c:when>
+												<c:otherwise>
+													<div onclick="addParticipant(${member.key.id});">
+  														<input type="checkbox">
+													</div>
+												</c:otherwise>
+											</c:choose>
 										</c:otherwise>
 									</c:choose>
    								</td>

@@ -69,4 +69,10 @@ public class HrFeedback {
 	public void setTraitFeedbacks(List<TraitFeedback> traitFeedbacks) {
 		this.traitFeedbacks = traitFeedbacks;
 	}
+
+	@Override
+	public String toString() {
+		return "HrFeedback [id=" + id + ", topic=" + topic + ", summary=" + summary + ", student=" + student
+				+ ", added_by=" + added_by + ", author=" + author + ", traitFeedbacks=" + traitFeedbacks + "]";
+	}
 }
