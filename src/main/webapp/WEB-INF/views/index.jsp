@@ -35,7 +35,7 @@
 
 					    serverSide: true,
 				        ajax: {
-							url: '<c:url value="/project/view/"/>',
+							url: getContextPath()+'/project/view/',
 					        type: 'POST',
 					        data: function ( d ) {
 							      return JSON.stringify( d );
@@ -44,7 +44,7 @@
 						    dataType: "json",
 						    dataSrc: function ( json ) {
 						    	for(var i=0, ien=json.data.length; i<ien ; i++ ) {
-						        	json.data[i]["name"] = '<a href="/spms/project/view/'+json.data[i]["id"]+'/">'+json.data[i]["name"]+'</a>';
+						        	json.data[i]["name"] = '<a href="<%=request.getContextPath()%>/project/view/'+json.data[i]["id"]+'/">'+json.data[i]["name"]+'</a>';
 						        	if(json.data[i]["completed"] === true) json.data[i]["completed"] = "completed";
 						        	if(json.data[i]["completed"] === false) json.data[i]["completed"] = "active";
 
@@ -73,7 +73,7 @@
 	        <h4 class="modal-title" id="myModalLabel">Create Project</h4>
 	      </div>
 	      <form name="createProjectForm" id="createProjectForm" onsubmit="onSubmitCreateProjectForm();"
-	        	action="/spms/project/create/" method="post">
+	        	action="<%=request.getContextPath()%>/project/create/" method="post">
 	      	<div class="modal-body">
 	        
 				<div class="form-group">
@@ -172,7 +172,7 @@
 
 							    serverSide: true,
 						        ajax: {
-							        url: '<c:url value="/user/view/mentor/"/>',
+							        url: getContextPath()+'/user/view/mentor/',
 							        type: 'POST',
 							        data: function ( d ) {
 									      return JSON.stringify( d );

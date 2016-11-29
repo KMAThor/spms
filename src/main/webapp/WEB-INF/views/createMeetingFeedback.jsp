@@ -5,7 +5,7 @@
 	</div>
 </div>
 <form name="createMeetingFeedback" 
-	  action="/spms/meetingFeedback/create/${studentId}/${meetingId}/" method="post">
+	  action="<%=request.getContextPath()%>/meetingFeedback/create/${studentId}/${meetingId}/" method="post">
 <div class="row">
 	<div class="col-sm-offset-1 col-sm-10">
 

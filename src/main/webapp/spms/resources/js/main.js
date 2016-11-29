@@ -10,7 +10,7 @@ function traitCheckboxAction(checkboxElem, traitId, projectId) {
   if (checkboxElem.checked) {
     $('#loadingModal').modal('show');
     $.ajax({
-	    url: "/spms/project/update/"+projectId+"/addTrait/"+traitId+"/",
+	    url: getContextPath()+"project/update/"+projectId+"/addTrait/"+traitId+"/",
 	    type: "GET",
 	    dataType : "text",
 		timeout: 15000
@@ -28,7 +28,7 @@ function traitCheckboxAction(checkboxElem, traitId, projectId) {
   } else {
     $('#loadingModal').modal('show');
     $.ajax({
-	    url: "/spms/project/update/"+projectId+"/deleteTrait/"+traitId+"/",
+	    url: getContextPath()+"project/update/"+projectId+"/deleteTrait/"+traitId+"/",
 	    type: "GET",
 	    dataType : "text",
 		timeout: 15000
@@ -49,7 +49,7 @@ function traitCheckboxAction(checkboxElem, traitId, projectId) {
 function selectAllTraitAction(traitCategoryId, projectId) {
 	$('#loadingModal').modal('show');
     $.ajax({
-	    url: "/spms/project/update/"+projectId+"/addTraitCategory/"+traitCategoryId+"/",
+	    url: getContextPath()+"project/update/"+projectId+"/addTraitCategory/"+traitCategoryId+"/",
 	    type: "GET",
 	    dataType : "text",
 		timeout: 15000
@@ -70,7 +70,7 @@ function selectAllTraitAction(traitCategoryId, projectId) {
 function deselectAllTraitAction(traitCategoryId, projectId) {
 	$('#loadingModal').modal('show');
     $.ajax({
-	    url: "/spms/project/update/"+projectId+"/deleteTraitCategory/"+traitCategoryId+"/",
+	    url: getContextPath()+"project/update/"+projectId+"/deleteTraitCategory/"+traitCategoryId+"/",
 	    type: "GET",
 	    dataType : "text",
 		timeout: 15000

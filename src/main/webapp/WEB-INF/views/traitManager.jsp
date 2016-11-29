@@ -187,6 +187,6 @@
   </div>
 </div>
 
-<script src="/spms/resources/js/traitManager.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/traitManager.js"></script>
 <%@include file="commonModalPopUps.jsp"%>
 <%@include file="footer.jsp"%>

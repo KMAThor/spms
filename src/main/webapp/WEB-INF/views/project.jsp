@@ -142,7 +142,7 @@
         <h4 class="modal-title" id="myModalLabel">Edit Project</h4>
       </div>
       	<form name="createProjectForm" id="createProjectForm" onsubmit="onSubmitEditProjectForm();"
-        	action="/spms/project/update/${project.id}/" method="post">
+        	action="<%=request.getContextPath()%>/project/update/${project.id}/" method="post">
       	<div class="modal-body">
 			<div class="form-group">
 				<label for="name">Project name:</label>
@@ -260,7 +260,7 @@
 
 						    serverSide: true,
 					        ajax: {
-						        url: '<c:url value="/user/view/mentor/"/>',
+						        url: getContextPath()+'/user/view/mentor/',
 						        type: 'POST',
 						        data: function ( d ) {
 								      return JSON.stringify( d );
@@ -392,7 +392,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<!-- <form target="<c:url value="/project/${project.id}/upload?${_csrf.parameterName}=${_csrf.token}/" />" method="post" enctype="multipart/form-data"> -->
-			<form action="/spms/project/view/${project.id}/upload/" method="post" enctype="multipart/form-data">
+			<form action="<%=request.getContextPath()%>/project/view/${project.id}/upload/" method="post" enctype="multipart/form-data">
 				<div class="modal-header">
 					<h4 class="modal-title" id="myModalLabel2">Upload</h4>
 				</div>
@@ -426,7 +426,7 @@
 		var project_id = "${project.id}";
 
 		$.ajax({
-			url: "/spms/team/create/"	,
+			url: getContextPath()+"/team/create/",
 	    	data: {
 	    		project_id: project_id,
 	        	name: name
@@ -437,7 +437,7 @@
 		})
 		.done(function(team_id) {
 	    	$('#loadingModal').modal('hide');
-	    	window.location = "/spms/team/view/" + team_id + "/";
+	    	window.location = "<%=request.getContextPath()%>/team/view/" + team_id + "/";
 		})
 		.fail(function( xhr, status, errorThrown ) {
 			$('#loadingModal').modal('hide');

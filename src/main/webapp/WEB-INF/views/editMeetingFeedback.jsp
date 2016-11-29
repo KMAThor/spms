@@ -5,7 +5,7 @@
 	</div>
 </div>
 <form name="createMeetingFeedback" 
-	  action="/spms/meetingFeedback/update/${meetingFeedback.id}/" method="post">
+	  action="<%=request.getContextPath()%>/meetingFeedback/update/${meetingFeedback.id}/" method="post">
 	  <input type="hidden" name="studentId" value="${meetingFeedback.student.id}">
 	  <input type="hidden" name="meetingId" value="${meetingFeedback.meeting.id}">
 <div class="row">
