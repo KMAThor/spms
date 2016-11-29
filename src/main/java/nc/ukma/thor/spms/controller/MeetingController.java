@@ -2,6 +2,7 @@ package nc.ukma.thor.spms.controller;
 
 import java.security.Principal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -18,12 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.MeetingFeedback;
-import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.entity.UserStatus;
 import nc.ukma.thor.spms.service.MeetingService;
-import nc.ukma.thor.spms.service.ProjectService;
 import nc.ukma.thor.spms.service.UserService;
 import nc.ukma.thor.spms.util.DateUtil;
 import nc.ukma.thor.spms.mail.EmailSender;
@@ -50,8 +49,8 @@ public class MeetingController {
     	meeting.setTeam(team);
     	meetingService.create(meeting);
     	
-    	//List<User> usersToNotify = new ArrayList<>(team.getMembers().keySet());
-		//EmailSender.sendScheduleChangesMassage(usersToNotify, meeting.getStartDate().toString());	
+    	List<User> usersToNotify = new ArrayList<>(userService.getUsersByTeam(team));
+		EmailSender.sendScheduleChangesMassage(usersToNotify, meeting.getStartDate().toString());	
 
         return meeting.getId();
     }
@@ -63,7 +62,7 @@ public class MeetingController {
     	Timestamp ts = DateUtil.getTimeStamp(date);
     	Timestamp tsend = DateUtil.getTimeStamp(end_date);
     	
-    	Long firstMeeting = null;
+    	Long idFirstMeeting = null;
     	
     	do {
     		
@@ -72,20 +71,22 @@ public class MeetingController {
         	meeting.setStartDate(ts);
         	meeting.setTeam(team);
         	meetingService.create(meeting);
-        	
-        	if (firstMeeting == null) {
-        		firstMeeting = meeting.getId();
-        		topic = "";
-        	}
-        
+
         	Calendar cal = Calendar.getInstance();
         	cal.setTime(ts);
         	cal.add(Calendar.DATE, 7);
         	ts.setTime(cal.getTime().getTime());
         	
+        	
+        	if (idFirstMeeting == null) {
+        		idFirstMeeting = meeting.getId();
+        	}
+        	
+        	topic = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss").format(ts);
+        	
     	} while (ts.before(tsend));
     	
-        return firstMeeting;
+        return idFirstMeeting;
     }
     
     @ResponseBody
