@@ -35,4 +35,9 @@ public class MeetingServiceImpl extends AbstractService<Meeting> implements Meet
 		meetingRepository.deleteUserFromMeeting(user_id, meeting_id);
 	}
 
+	@Override
+	public Meeting getWithParticipantsById(long meetingId) {
+		return meetingRepository.getWithParticipantsById(meetingId);
+	}
+
 }

@@ -3,19 +3,29 @@ package nc.ukma.thor.spms.repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import nc.ukma.thor.spms.entity.File;
 import nc.ukma.thor.spms.entity.Meeting;
+import nc.ukma.thor.spms.entity.Project;
+import nc.ukma.thor.spms.entity.Role;
+import nc.ukma.thor.spms.entity.Status;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.entity.UserStatus;
 
 @Repository
 public class MeetingRepositoryJdbcImpl implements MeetingRepository{
@@ -26,10 +36,14 @@ public class MeetingRepositoryJdbcImpl implements MeetingRepository{
 	private static final String ADD_USER_TO_MEETING_SQL = "INSERT INTO presence (user_id, meeting_id) VALUES(?,?);";
 	private static final String DELETE_USER_FROM_MEETING_SQL = "DELETE FROM presence WHERE user_id=? AND meeting_id=?;";
 	private static final String GET_MEETING_BY_ID_SQL = "SELECT * FROM meeting WHERE id = ?;";
+	private static final String GET_WITH_PARTICIPANTS_BY_ID_SQL = "SELECT * FROM meeting "
+			+ "LEFT JOIN presence ON meeting.id = presence.meeting_id "
+			+ "WHERE id = ?;";
 	private static final String GET_MEETINGS_BY_TEAM_SQL = "SELECT * FROM meeting WHERE team_id = ?;";
 	private static final String GET_PRESENCE_FOR_MEETING_SQL = "SELECT * FROM presence WHERE meeting_id = ?;";
 	
 	private static final RowMapper<Meeting> MEETING_MAPPER = new MeetingMapper();
+	private static final MeetingExtractor MEETING_EXTRACTOR = new MeetingExtractor();
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -103,6 +117,61 @@ public class MeetingRepositoryJdbcImpl implements MeetingRepository{
 			meeting.setStartDate(rs.getTimestamp("start_date"));
 			meeting.setTeam(new Team(rs.getLong("team_id")));
 			return meeting;
+		}
+	}
+
+	@Override
+	public Meeting getWithParticipantsById(long meetingId) {
+		List<Meeting> meetings = jdbcTemplate.query(GET_WITH_PARTICIPANTS_BY_ID_SQL, new Object[]{meetingId}, MEETING_EXTRACTOR);
+		if(meetings.isEmpty()) return null;
+		else return meetings.get(0);
+	}
+	
+	private static final class MeetingExtractor implements ResultSetExtractor<List<Meeting>>{
+		@Override
+		public List<Meeting> extractData(ResultSet rs) throws SQLException, DataAccessException {
+			
+			List<Meeting> meetings = new ArrayList<Meeting>();
+			
+			Meeting meeting = null;
+
+			List<User> participants = new ArrayList<User>();
+			
+			while(rs.next()){
+				//if it is first/new meeting
+				if (meeting == null || (meeting.getId() != rs.getLong("id"))) {
+					
+					//if it is new meeting, store participants and clear them
+					if (meeting != null){
+						meeting.setParticipants(participants);
+						participants.clear();
+						meetings.add(meeting);
+					}
+					
+					//create new object;
+					meeting = new Meeting();
+					
+					//Meeting information
+					meeting.setId(rs.getLong("id"));
+					meeting.setTopic(rs.getString("topic"));
+					meeting.setStartDate(rs.getTimestamp("start_date"));
+					meeting.setTeam(new Team(rs.getLong("team_id")));
+					
+				}
+				
+				//user
+				User user = new User();
+				user.setId(rs.getLong("user_id"));
+				if (!participants.contains(user) && (rs.getLong("user_id") != 0)){
+					participants.add(user);
+				}
+
+				
+			}
+			
+			meeting.setParticipants(participants);
+			meetings.add(meeting);
+			return meetings;
 		}
 	}
 }

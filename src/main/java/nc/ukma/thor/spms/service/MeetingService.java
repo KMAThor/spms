@@ -12,4 +12,5 @@ public interface MeetingService extends Service<Meeting>{
 	void addUserToMeeting(long user_id, long meeting_id);
     void deleteUserFromMeeting(long user_id, long meeting_id);
 	
+    Meeting getWithParticipantsById(long meetingId);
 }

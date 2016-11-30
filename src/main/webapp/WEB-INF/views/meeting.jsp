@@ -53,7 +53,7 @@
    								</td>
    								<td>
    									<c:set var="participates" value="false" />
-   									<c:forEach var="participant" items="${participants}">
+   									<c:forEach var="participant" items="${meeting.participants}">
   										<c:if test="${participant.id eq member.key.id}">
     										<c:set var="participates" value="true" />
  										</c:if>

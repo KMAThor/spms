@@ -123,13 +123,11 @@ public class MeetingController {
 	
 	@RequestMapping(path="/view/{id}/", method = RequestMethod.GET)
     public String viewMeeting(@PathVariable long id, Model model, Principal authUser){
-    	Meeting meeting = meetingService.getById(id);
+    	Meeting meeting = meetingService.getWithParticipantsById(id);
     	User author = userService.getUser(authUser.getName());
     	model.addAttribute("meeting", meeting);
     	HashMap<User, UserStatus> members = userService.getStudentsByTeam(meeting.getTeam());
     	model.addAttribute("members", members);
-    	List<User> participants = userService.getUsersByMeeting(meeting);
-    	model.addAttribute("participants", participants);
     	List<MeetingFeedback> feedbacks = new ArrayList<MeetingFeedback>();
     	for(User member: members.keySet()){
     		MeetingFeedback meetingFeedback = meetingFeedbackRepository.getMeetingFeedbacksByMeetingStudentMentor(meeting, member, author);
