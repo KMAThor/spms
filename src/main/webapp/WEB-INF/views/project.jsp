@@ -423,21 +423,21 @@
 		$('#loadingModal').modal('show');
 	
 		var name = $('#newTeamName').val();
-		var project_id = "${project.id}";
+		var projectId = "${project.id}";
 
 		$.ajax({
 			url: getContextPath()+"/team/create/",
 	    	data: {
-	    		project_id: project_id,
+	    		projectId: projectId,
 	        	name: name
 	    	},
 	    	type: "POST",
 	    	dataType : "text",
 			timeout: 15000
 		})
-		.done(function(team_id) {
+		.done(function(teamId) {
 	    	$('#loadingModal').modal('hide');
-	    	window.location = "<%=request.getContextPath()%>/team/view/" + team_id + "/";
+	    	window.location = "<%=request.getContextPath()%>/team/view/" + teamId + "/";
 		})
 		.fail(function( xhr, status, errorThrown ) {
 			$('#loadingModal').modal('hide');

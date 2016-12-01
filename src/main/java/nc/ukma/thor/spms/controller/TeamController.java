@@ -29,8 +29,8 @@ public class TeamController {
     
     @ResponseBody
     @RequestMapping(path="/create/", method = RequestMethod.POST)
-    public Long createTeam(@RequestParam long project_id, @RequestParam String name){
-    	Project project = new Project(project_id);
+    public Long createTeam(@RequestParam long projectId, @RequestParam String name){
+    	Project project = new Project(projectId);
     	Team team = new Team(name, project);
     	teamService.create(team);
         return team.getId();
@@ -38,8 +38,8 @@ public class TeamController {
     
     @ResponseBody
     @RequestMapping(path="/update/", method = RequestMethod.POST)
-    public String updateProject(@RequestParam long team_id, @RequestParam String name){
-    	Team team = new Team(team_id);
+    public String updateProject(@RequestParam long teamId, @RequestParam String name){
+    	Team team = new Team(teamId);
     	team.setName(name);
     	teamService.update(team);
     	return "success";
@@ -47,24 +47,24 @@ public class TeamController {
 	
     @ResponseBody
 	@RequestMapping(path="/delete/", method = RequestMethod.POST)
-    public String deleteProject(@RequestParam long team_id){
-    	Team team = new Team(team_id);
+    public String deleteProject(@RequestParam long teamId){
+    	Team team = new Team(teamId);
     	teamService.delete(team);
         return "success";
     }
 	
-	@RequestMapping(path="/view/{team_id}/", method = RequestMethod.GET)
-    public String viewTeam(@PathVariable long team_id, Model model ){
-    	Team team = teamService.getFullTeamById(team_id);
+	@RequestMapping(path="/view/{teamId}/", method = RequestMethod.GET)
+    public String viewTeam(@PathVariable long teamId, Model model ){
+    	Team team = teamService.getFullTeamById(teamId);
     	model.addAttribute("team", team);
         return "team";
     }
 	
 	@ResponseBody
 	@RequestMapping(path="/addUser/", method = RequestMethod.POST)
-    public User addUser(@RequestParam long user_id, @RequestParam long team_id){
-		Team team = teamService.getById(team_id);
-    	User user = userService.getUserById(user_id);
+    public User addUser(@RequestParam long userId, @RequestParam long teamId){
+		Team team = teamService.getById(teamId);
+    	User user = userService.getUserById(userId);
     	
     	List<User> usersToNotify = new ArrayList<>();
     	usersToNotify.add(user);
@@ -76,9 +76,9 @@ public class TeamController {
 	
 	@ResponseBody
 	@RequestMapping(path="/deleteUser/", method = RequestMethod.POST)
-    public String deleteUser(@RequestParam long user_id, @RequestParam long team_id){
-		Team team = new Team(team_id);
-    	User user = new User(user_id);
+    public String deleteUser(@RequestParam long userId, @RequestParam long teamId){
+		Team team = new Team(teamId);
+    	User user = new User(userId);
     	teamService.deleteMember(user, team);
     	return "success";
     }

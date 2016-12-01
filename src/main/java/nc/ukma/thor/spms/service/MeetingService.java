@@ -9,8 +9,8 @@ public interface MeetingService extends Service<Meeting>{
 	
 	List<Meeting> getMeetingsByTeam(Team team);
 	
-	void addUserToMeeting(long user_id, long meeting_id);
-    void deleteUserFromMeeting(long user_id, long meeting_id);
+	void addUserToMeeting(long userId, long meetingId);
+    void deleteUserFromMeeting(long userId, long meetingId);
 	
     Meeting getWithParticipantsById(long meetingId);
 }

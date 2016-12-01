@@ -42,8 +42,8 @@ public class TeamServiceImpl extends AbstractService<Team> implements TeamServic
 	}
 
 	@Override
-	public Team getFullTeamById(long team_id) {
-		return teamRepository.getFullTeamById(team_id);
+	public Team getFullTeamById(long teamId) {
+		return teamRepository.getFullTeamById(teamId);
 	}
 	
 

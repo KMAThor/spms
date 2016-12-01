@@ -181,16 +181,16 @@
 
 	$('#membersTable').DataTable();
 	
-	function addParticipant(user_id){
+	function addParticipant(userId){
 		
 		$('#loadingModal').modal('show');
-		var meeting_id = "${meeting.id}";
+		var meetingId = "${meeting.id}";
 		
 		$.ajax({
 		    url: getContextPath()+'/meeting/addParticipant/',
 		    data: {
-		    	user_id: user_id,
-		    	meeting_id: meeting_id
+		    	userId: userId,
+		    	meetingId: meetingId
 		    },
 		    type: "POST",
 		    dataType : "text",
@@ -208,16 +208,16 @@
 		
 	}
 	
-	function deleteParticipant(user_id){
+	function deleteParticipant(userId){
 		
 		$('#loadingModal').modal('show');
-		var meeting_id = "${meeting.id}";
+		var meetingId = "${meeting.id}";
 		
 		$.ajax({
 		    url: getContextPath()+'/meeting/deleteParticipant/',
 		    data: {
-		    	user_id: user_id,
-		    	meeting_id: meeting_id
+		    	userId: userId,
+		    	meetingId: meetingId
 		    },
 		    type: "POST",
 		    dataType : "text",
@@ -242,15 +242,15 @@
 		
 		var topic = $('#topic').val();
 		alert(topic);
-		var start_date = $("#datetimepicker").find("input").val();
-		alert(start_date);
+		var startDate = $("#datetimepicker").find("input").val();
+		alert(startDate);
 		
 		$.ajax({
 		    url: getContextPath()+"/update/meeting/",
 		    data: {
 		    	id: id,
 		    	topic: topic,
-		        start_date: start_date
+		        startDate: startDate
 		    },
 		    type: "POST",
 		    dataType : "text",
@@ -258,7 +258,7 @@
 		})
 		.done(function(message) {
 			$('#meetingTopic').text(topic);
-			$('#meetingStartDate').text(start_date);
+			$('#meetingStartDate').text(startDate);
 		    $('#loadingModal').modal('hide');
 		})
 		.fail(function( xhr, status, errorThrown ) {
@@ -274,7 +274,7 @@
 		$('#deleteMeetingModal').modal('hide');
 		$('#loadingModal').modal('show');
 
-		var team_id = "${meeting.team.id}";
+		var teamId = "${meeting.team.id}";
 		
 		$.ajax({
 		    url: getContextPath()+"/meeting/delete/",
@@ -287,7 +287,7 @@
 		})
 		.done(function(message) {
 		    $('#loadingModal').modal('hide');
-		    window.location = '<%=request.getContextPath()%>/team/view/' + team_id + '/';
+		    window.location = '<%=request.getContextPath()%>/team/view/' + teamId + '/';
 		})
 		.fail(function( xhr, status, errorThrown ) {
 			$('#loadingModal').modal('hide');

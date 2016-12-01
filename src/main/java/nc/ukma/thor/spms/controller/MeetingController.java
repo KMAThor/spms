@@ -41,11 +41,11 @@ public class MeetingController {
 
     @ResponseBody
     @RequestMapping(path="/create/", method = RequestMethod.POST)
-    public Long createMeeting(@RequestParam long team_id, @RequestParam String topic, @RequestParam String start_date){
+    public Long createMeeting(@RequestParam long teamId, @RequestParam String topic, @RequestParam String startDate){
     	Meeting meeting = new Meeting();
     	meeting.setTopic(topic);
-    	meeting.setStartDate(DateUtil.getTimeStamp(start_date));
-    	Team team = new Team(team_id);
+    	meeting.setStartDate(DateUtil.getTimeStamp(startDate));
+    	Team team = new Team(teamId);
     	meeting.setTeam(team);
     	meetingService.create(meeting);
     	
@@ -57,10 +57,10 @@ public class MeetingController {
     
     @ResponseBody
     @RequestMapping(path="/createSeveral/", method = RequestMethod.POST)
-    public Long createMeetings(@RequestParam long team_id, @RequestParam String topic, @RequestParam String date, @RequestParam String end_date){
-    	Team team = new Team(team_id);
+    public Long createMeetings(@RequestParam long teamId, @RequestParam String topic, @RequestParam String date, @RequestParam String endDate){
+    	Team team = new Team(teamId);
     	Timestamp ts = DateUtil.getTimeStamp(date);
-    	Timestamp tsend = DateUtil.getTimeStamp(end_date);
+    	Timestamp tsEnd = DateUtil.getTimeStamp(endDate);
     	
     	Long idFirstMeeting = null;
     	
@@ -84,17 +84,17 @@ public class MeetingController {
         	
         	topic = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss").format(ts);
         	
-    	} while (ts.before(tsend));
+    	} while (ts.before(tsEnd));
     	
         return idFirstMeeting;
     }
     
     @ResponseBody
     @RequestMapping(path="/update/", method = RequestMethod.POST)
-    public String updateProject(@RequestParam long id, @RequestParam String topic, @RequestParam String start_date){
+    public String updateProject(@RequestParam long id, @RequestParam String topic, @RequestParam String startDate){
     	Meeting meeting = new Meeting(id);
     	meeting.setTopic(topic);
-    	meeting.setStartDate(DateUtil.getTimeStamp(start_date));
+    	meeting.setStartDate(DateUtil.getTimeStamp(startDate));
     	meetingService.update(meeting);
     	return "success";
     }
@@ -109,15 +109,15 @@ public class MeetingController {
     
     @ResponseBody
     @RequestMapping(path="/addParticipant/", method = RequestMethod.POST)
-    public String addParticipant(@RequestParam long user_id, @RequestParam long meeting_id){
-    	meetingService.addUserToMeeting(user_id, meeting_id);
+    public String addParticipant(@RequestParam long userId, @RequestParam long meetingId){
+    	meetingService.addUserToMeeting(userId, meetingId);
     	return "success";
     }
     
     @ResponseBody
     @RequestMapping(path="/deleteParticipant/", method = RequestMethod.POST)
-    public String deleteParticipant(@RequestParam long user_id, @RequestParam long meeting_id){
-    	meetingService.deleteUserFromMeeting(user_id, meeting_id);
+    public String deleteParticipant(@RequestParam long userId, @RequestParam long meetingId){
+    	meetingService.deleteUserFromMeeting(userId, meetingId);
     	return "success";
     }
 	

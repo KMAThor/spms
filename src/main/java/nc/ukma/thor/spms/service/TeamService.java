@@ -13,7 +13,7 @@ public interface TeamService extends Service<Team>{
     void addMember(User user, Team team);
     void deleteMember(User user, Team team);
     
-    Team getFullTeamById(long team_id);
+    Team getFullTeamById(long teamId);
     
     List<Team> getTeamsByProject(Project project);
 

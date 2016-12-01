@@ -672,13 +672,13 @@ function updateTeamName() {
 	$('#editTeamNameModal').modal('hide');
 	$('#loadingModal').modal('show');
 	
-	var team_id = "${team.id}";
+	var teamId = "${team.id}";
 	var name = $('#newTeamName').val();
 
 	$.ajax({
 	    url: getContextPath()+"/team/update/",
 	    data: {
-	    	team_id: team_id,
+	    	teamId: teamId,
 	        name: name
 	    },
 	    type: "POST",
@@ -701,13 +701,13 @@ function deleteTeam() {
 	
 	$('#loadingModal').modal('show');
 
-	var team_id = "${team.id}";
-	var project_id = "${team.project.id}";
+	var teamId = "${team.id}";
+	var projectId = "${team.project.id}";
 	
 	$.ajax({
 	    url: getContextPath()+"/team/delete/",
 	    data: {
-	        team_id: team_id
+	        teamId: teamId
 	    },
 	    type: "POST",
 	    dataType : "text",
@@ -715,7 +715,7 @@ function deleteTeam() {
 	})
 	.done(function(message) {
 	    $('#loadingModal').modal('hide');
-	    window.location = '<%=request.getContextPath()%>/project/view/' + project_id + '/';
+	    window.location = '<%=request.getContextPath()%>/project/view/' + projectId + '/';
 	})
 	.fail(function( xhr, status, errorThrown ) {
 		$('#loadingModal').modal('hide');
@@ -739,24 +739,24 @@ function createMeeting() {
 	$('#createMeetingModal').modal('hide');
 	$('#loadingModal').modal('show');
 	
-	var team_id = "${team.id}";
+	var teamId = "${team.id}";
 	var topic = $('#topic').val();
-	var start_date = $('#meetingStartDate').val();
+	var startDate = $('#meetingStartDate').val();
 
 	$.ajax({
 		url: getContextPath()+"/meeting/create/"	,
 	    data: {
-	    	team_id: team_id,
+	    	teamId: teamId,
 	    	topic: topic,
-	    	start_date: start_date
+	    	startDate: startDate
 	    },
 	    type: "POST",
 	    dataType : "text",
 		timeout: 15000
 	})
-	.done(function(meeting_id) {
+	.done(function(meetingId) {
 	    $('#loadingModal').modal('hide');
-	    window.location = "<%=request.getContextPath()%>/meeting/view/" + meeting_id + "/";
+	    window.location = "<%=request.getContextPath()%>/meeting/view/" + meetingId + "/";
 	})
 	.fail(function( xhr, status, errorThrown ) {
 		$('#loadingModal').modal('hide');
@@ -771,26 +771,26 @@ function createMeetings() {
 	$('#createMeetingModal').modal('hide');
 	$('#loadingModal').modal('show');
 	
-	var team_id = "${team.id}";
+	var teamId = "${team.id}";
 	var topic = $('#topic').val();
 	var date = $("#meetingStartDate").val();
-	var end_date = $("#projectEndDate").val();
+	var endDate = $("#projectEndDate").val();
 	
 	$.ajax({
 		url: getContextPath()+"/meeting/createSeveral/"	,
 	    data: {
-	    	team_id: team_id,
+	    	teamId: teamId,
 	    	topic: topic,
 	    	date: date,
-	    	end_date: end_date
+	    	endDate: endDate
 	    },
 	    type: "POST",
 	    dataType : "text",
 		timeout: 15000
 	})
-	.done(function(meeting_id) {
+	.done(function(meetingId) {
 	    $('#loadingModal').modal('hide');
-	    window.location = "<%=request.getContextPath()%>/meeting/view/" + meeting_id + "/";
+	    window.location = "<%=request.getContextPath()%>/meeting/view/" + meetingId + "/";
 	})
 	.fail(function( xhr, status, errorThrown ) {
 		$('#loadingModal').modal('hide');
@@ -827,18 +827,18 @@ function deleteMeeting() {
 	});
 }
 
-function addMentor(user_id) {
+function addMentor(userId) {
 	
 	$('#addMentorModal').modal('hide');
 	$('#loadingModal').modal('show');
 
-	var team_id = "${team.id}";
+	var teamId = "${team.id}";
 	
 	$.ajax({
 		url: getContextPath()+"/team/addUser/"	,
 	    data: {
-	    	user_id: user_id,
-	    	team_id: team_id
+	    	userId: userId,
+	    	teamId: teamId
 	    },
 	    type: "POST",
 	    dataType : "json",
@@ -872,7 +872,7 @@ function addMentor(user_id) {
 		var element = document.getElementById('but' + user.id);
 		element.onclick = function () {
 			entityToDelete = 'user';
-			idToDelete = user_id;
+			idToDelete = userId;
 		};
 		$('#loadingModal').modal('hide');
 	})
@@ -884,18 +884,18 @@ function addMentor(user_id) {
 	});
 }
 
-function addStudent(user_id) {
+function addStudent(userId) {
 	
 	$('#addStudentModal').modal('hide');
 	$('#loadingModal').modal('show');
 
-	var team_id = "${team.id}";
+	var teamId = "${team.id}";
 	
 	$.ajax({
 		url: getContextPath()+"/team/addUser/"	,
 	    data: {
-	    	user_id: user_id,
-	    	team_id: team_id
+	    	userId: userId,
+	    	teamId: teamId
 	    },
 	    type: "POST",
 	    dataType : "json",
@@ -942,11 +942,11 @@ function addStudent(user_id) {
 		var element = document.getElementById('but' + user.id);
 		element.onclick = function () {
 			entityToDelete = 'user';
-			idToDelete = user_id;
+			idToDelete = userId;
 		};
-		var element = document.getElementById('butStatus-' + user_id);
+		var element = document.getElementById('butStatus-' + userId);
 		element.onclick = function () {
-			initStatusChanging(user_id, 0, "");
+			initStatusChanging(userId, 0, "");
 		};
 		$('#loadingModal').modal('hide');
 	})
@@ -962,21 +962,21 @@ function deleteUser() {
 	
 	$('#loadingModal').modal('show');
 	
-	var user_id = idToDelete;
-	var team_id = "${team.id}";
+	var userId = idToDelete;
+	var teamId = "${team.id}";
 	
 	$.ajax({
 	    url: getContextPath()+"/team/deleteUser/",
 	    data: {
-	    	user_id: user_id,
-	    	team_id: team_id
+	    	userId: userId,
+	    	teamId: teamId
 	    },
 	    type: "POST",
 	    dataType : "text",
 		timeout: 15000
 	})
 	.done(function(message) {
-		$('#user-'+ user_id).remove();
+		$('#user-'+ userId).remove();
 	    $('#loadingModal').modal('hide');
 	})
 	.fail(function( xhr, status, errorThrown ) {
@@ -1011,57 +1011,56 @@ function changeStatus(){
 	$('#changeStatusModal').modal('hide');
 	$('#loadingModal').modal('show');
 	
-	var team_id = "${team.id}";
-	var user_id = idStatChange;
-	var new_status = -1;
+	var teamId = "${team.id}";
+	var userId = idStatChange;
+	var newStatus = -1;
 	if (document.getElementById("optradio1").checked == true){
-		new_status = 0;
+		newStatus = 0;
 	}
 	else if (document.getElementById("optradio2").checked == true){
-		new_status = 1;
+		newStatus = 1;
 	}
 	else if (document.getElementById("optradio3").checked == true){
-		new_status = 2;
+		newStatus = 2;
 	}
 	else {
-		new_status = 3;
+		newStatus = 3;
 	}
-	var new_comment = $('#newComment').val();
+	var newComment = $('#newComment').val();
 	
 	$.ajax({
 	    url: getContextPath()+"/user/changeStatus/",
 	    data: {
-	    	team_id: team_id,
-	    	user_id: user_id,
-	    	new_status: new_status,
-	    	new_comment: new_comment
+	    	teamId: teamId,
+	    	userId: userId,
+	    	newStatus: newStatus,
+	    	newComment: newComment
 	    },
 	    type: "POST",
 	    dataType : "text",
 		timeout: 15000
 	})
 	.done(function(message) {
-		if (new_status == 0){
-			document.getElementById("div-color-" + user_id).style.backgroundColor = '#FFFFFF';
-			document.getElementById("pStatusName-" + user_id).innerHTML = "ACTIVE";
-			$("#tStatusName").attr("title", new_comment);
+		if (newStatus == 0){
+			document.getElementById("div-color-" + userId).style.backgroundColor = '#FFFFFF';
+			document.getElementById("pStatusName-" + userId).innerHTML = "ACTIVE";
 		}
-		if (new_status == 1){
-			document.getElementById("div-color-" + user_id).style.backgroundColor = '#DCDCDC';
-			document.getElementById("pStatusName-" + user_id).innerHTML = "LEFT PROJECT";
+		if (newStatus == 1){
+			document.getElementById("div-color-" + userId).style.backgroundColor = '#DCDCDC';
+			document.getElementById("pStatusName-" + userId).innerHTML = "LEFT PROJECT";
 		}
-		if (new_status == 2){
-			document.getElementById("div-color-" + user_id).style.backgroundColor = '#D3FFAA';
-			document.getElementById("pStatusName-" + user_id).innerHTML = "INTERVIEW WAS SCHEDULED";
+		if (newStatus == 2){
+			document.getElementById("div-color-" + userId).style.backgroundColor = '#D3FFAA';
+			document.getElementById("pStatusName-" + userId).innerHTML = "INTERVIEW WAS SCHEDULED";
 		}
-		if (new_status == 3){
-			document.getElementById("div-color-" + user_id).style.backgroundColor = '#D8F2FF';
-			document.getElementById("pStatusName-" + user_id).innerHTML = "GOT JOB OFFER";
+		if (newStatus == 3){
+			document.getElementById("div-color-" + userId).style.backgroundColor = '#D8F2FF';
+			document.getElementById("pStatusName-" + userId).innerHTML = "GOT JOB OFFER";
 		}
-		document.getElementById('tStatusName-' + user_id).title = new_comment;
-		var element = document.getElementById('butStatus-' + user_id);
+		document.getElementById('tStatusName-' + userId).title = newComment;
+		var element = document.getElementById('butStatus-' + userId);
 		element.onclick = function () {
-			initStatusChanging(user_id, new_status, new_comment);
+			initStatusChanging(userId, newStatus, newComment);
 		};
 		$('#loadingModal').modal('hide');
 	})
