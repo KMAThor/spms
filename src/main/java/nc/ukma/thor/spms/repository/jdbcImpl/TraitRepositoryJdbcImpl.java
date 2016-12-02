@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.repository;
+package nc.ukma.thor.spms.repository.jdbcImpl;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
+import nc.ukma.thor.spms.repository.TraitRepository;
 
 @Repository
 public class TraitRepositoryJdbcImpl implements TraitRepository{

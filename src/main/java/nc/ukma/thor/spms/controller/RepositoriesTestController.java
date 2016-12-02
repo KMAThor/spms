@@ -26,7 +26,7 @@ import nc.ukma.thor.spms.repository.TeamRepository;
 import nc.ukma.thor.spms.repository.TraitCategoryRepository;
 import nc.ukma.thor.spms.repository.TraitRepository;
 import nc.ukma.thor.spms.repository.UserRepository;
-import nc.ukma.thor.spms.service.ProjectServiceImpl;
+import nc.ukma.thor.spms.service.impl.ProjectServiceImpl;
 
 @Controller
 @RequestMapping("test/repository/")

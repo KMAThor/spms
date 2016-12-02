@@ -1,9 +1,10 @@
-package nc.ukma.thor.spms.service;
+package nc.ukma.thor.spms.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import nc.ukma.thor.spms.entity.SpmsUserDetails;
 import nc.ukma.thor.spms.repository.UserRepository;
+import nc.ukma.thor.spms.service.SpmsWebSecurityService;
 
 @Service("spmsWebSecurityService")
 public class SpmsWebSecurityServiceImpl implements SpmsWebSecurityService{

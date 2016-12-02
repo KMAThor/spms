@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.service;
+package nc.ukma.thor.spms.service.impl;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import nc.ukma.thor.spms.entity.File;
 import nc.ukma.thor.spms.repository.FileRepository;
+import nc.ukma.thor.spms.service.FileService;
 
 @Service
 public class FileServiceImpl extends AbstractService<File> implements FileService{

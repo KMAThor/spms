@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.repository;
+package nc.ukma.thor.spms.repository.jdbcImpl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +20,7 @@ import nc.ukma.thor.spms.entity.Status;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.entity.UserStatus;
+import nc.ukma.thor.spms.repository.UserRepository;
 import nc.ukma.thor.spms.util.SortingOrder;
 
 @Repository

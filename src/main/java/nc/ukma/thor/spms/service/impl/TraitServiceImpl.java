@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.service;
+package nc.ukma.thor.spms.service.impl;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.repository.TraitRepository;
+import nc.ukma.thor.spms.service.TraitService;
 
 @Service
 public class TraitServiceImpl extends AbstractService<Trait> implements TraitService{

@@ -1,7 +1,8 @@
-package nc.ukma.thor.spms.service;
+package nc.ukma.thor.spms.service.impl;
 
 import nc.ukma.thor.spms.entity.*;
 import nc.ukma.thor.spms.repository.*;
+import nc.ukma.thor.spms.service.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

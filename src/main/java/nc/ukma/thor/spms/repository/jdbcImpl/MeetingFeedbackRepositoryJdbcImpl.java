@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.repository;
+package nc.ukma.thor.spms.repository.jdbcImpl;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,6 +18,8 @@ import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.MeetingFeedback;
 import nc.ukma.thor.spms.entity.TraitFeedback;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.repository.MeetingFeedbackRepository;
+import nc.ukma.thor.spms.repository.TraitFeedbackRepository;
 
 @Repository
 public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackRepository{

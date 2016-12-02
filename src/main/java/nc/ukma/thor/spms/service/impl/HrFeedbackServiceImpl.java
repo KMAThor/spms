@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.service;
+package nc.ukma.thor.spms.service.impl;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import nc.ukma.thor.spms.entity.HrFeedback;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.HrFeedbackRepository;
+import nc.ukma.thor.spms.service.HrFeedbackService;
 
 @Service
 public class HrFeedbackServiceImpl implements HrFeedbackService {

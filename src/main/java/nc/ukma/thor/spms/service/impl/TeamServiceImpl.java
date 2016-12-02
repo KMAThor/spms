@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.service;
+package nc.ukma.thor.spms.service.impl;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.TeamRepository;
+import nc.ukma.thor.spms.service.TeamService;
 
 @Service
 public class TeamServiceImpl extends AbstractService<Team> implements TeamService{

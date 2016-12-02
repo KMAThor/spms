@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.repository;
+package nc.ukma.thor.spms.repository.jdbcImpl;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +8,8 @@ import java.util.List;
 
 import nc.ukma.thor.spms.entity.*;
 import nc.ukma.thor.spms.entity.report.ProjectReport;
+import nc.ukma.thor.spms.repository.ProjectRepository;
+import nc.ukma.thor.spms.repository.TraitRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;

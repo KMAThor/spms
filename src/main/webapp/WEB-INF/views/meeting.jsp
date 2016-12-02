@@ -93,30 +93,33 @@
 									</c:choose>
    								</td>
    								<td>
-   									
+   								<security:authorize access="hasAnyAuthority('admin','mentor')">	
    									<c:choose>
 										<c:when test="${empty feedbacks[loop.index]}">
-											<security:authorize access="hasAnyAuthority('admin','mentor')">
 										    <a href="<c:url value="/meetingFeedback/create/${member.key.id}/${meeting.id}/" />" class="btn btn-success">
 										    	<i class="fa fa-plus-circle" aria-hidden="true"></i>
 										    	Leave feedback
 										    </a>
-										    </security:authorize>
 										</c:when>
 										<c:otherwise>
-											<security:authorize access="hasAnyAuthority('admin','mentor')">
 										    <a href="<c:url value="/meetingFeedback/edit/${feedbacks[loop.index].id}/" />" class="btn btn-warning">
 										    	<i class="fa fa-pencil" aria-hidden="true"></i>
 										   		Edit feedback
 										   	</a>
-										   	</security:authorize>
-										   	<security:authorize access="hasAuthority('hr')">
+										</c:otherwise>
+									</c:choose>
+								</security:authorize>
+								<security:authorize access="hasAuthority('hr')">
+									<c:choose>
+										<c:when test="${empty feedbacks[loop.index]}">
+										</c:when>
+										<c:otherwise>   	
 											    <a href="<c:url value="/meetingFeedback/view/${feedbacks[loop.index].id}/" />" class="btn btn-warning">
 											    	View feedback
 											    </a>
-										   	</security:authorize>
 										</c:otherwise>
 									</c:choose>
+								</security:authorize>
 								</td>
    							</tr>
 						</c:forEach>

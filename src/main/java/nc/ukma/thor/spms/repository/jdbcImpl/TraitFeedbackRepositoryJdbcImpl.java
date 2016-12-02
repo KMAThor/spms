@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.repository;
+package nc.ukma.thor.spms.repository.jdbcImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import nc.ukma.thor.spms.entity.MeetingFeedback;
 import nc.ukma.thor.spms.entity.TraitFeedback;
+import nc.ukma.thor.spms.repository.TraitFeedbackRepository;
 
 @Repository
 public class TraitFeedbackRepositoryJdbcImpl implements TraitFeedbackRepository{

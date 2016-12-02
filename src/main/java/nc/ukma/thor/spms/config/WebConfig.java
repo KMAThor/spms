@@ -19,7 +19,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import nc.ukma.thor.spms.service.UserDetailsServiceImpl;
+import nc.ukma.thor.spms.service.impl.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebMvc

@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.service;
+package nc.ukma.thor.spms.service.impl;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.repository.MeetingRepository;
+import nc.ukma.thor.spms.service.MeetingService;
 
 @Service
 public class MeetingServiceImpl extends AbstractService<Meeting> implements MeetingService{

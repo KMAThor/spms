@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.repository;
+package nc.ukma.thor.spms.repository.jdbcImpl;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,6 +26,7 @@ import nc.ukma.thor.spms.entity.Status;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.entity.UserStatus;
+import nc.ukma.thor.spms.repository.MeetingRepository;
 
 @Repository
 public class MeetingRepositoryJdbcImpl implements MeetingRepository{

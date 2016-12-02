@@ -1,6 +1,7 @@
-package nc.ukma.thor.spms.service;
+package nc.ukma.thor.spms.service.impl;
 
 import nc.ukma.thor.spms.repository.MyRepository;
+import nc.ukma.thor.spms.service.Service;
 
 public abstract class AbstractService<T> implements Service<T>{
 

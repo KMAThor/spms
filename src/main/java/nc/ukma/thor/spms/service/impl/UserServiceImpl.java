@@ -1,11 +1,12 @@
-package nc.ukma.thor.spms.service;
+package nc.ukma.thor.spms.service.impl;
 
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.entity.UserStatus;
-import nc.ukma.thor.spms.repository.UserRepositoryJdbcImpl;
+import nc.ukma.thor.spms.repository.jdbcImpl.UserRepositoryJdbcImpl;
+import nc.ukma.thor.spms.service.UserService;
 import nc.ukma.thor.spms.util.SortingOrder;
 
 import java.util.HashMap;

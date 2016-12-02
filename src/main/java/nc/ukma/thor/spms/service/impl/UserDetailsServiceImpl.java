@@ -1,7 +1,8 @@
-package nc.ukma.thor.spms.service;
+package nc.ukma.thor.spms.service.impl;
 
 import nc.ukma.thor.spms.entity.SpmsUserDetails;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
