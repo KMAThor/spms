@@ -8,6 +8,11 @@ public class File {
 	private Team team;
 	
 	public File() {}
+	
+	public File(String path, Project project) {
+		this.path = path;
+		this.project = project;
+	}
 
 	public Long getId() {
 		return id;

@@ -3,6 +3,7 @@ package nc.ukma.thor.spms.controller;
 import nc.ukma.thor.spms.dto.dataTable.DataTableRequestDTO;
 import nc.ukma.thor.spms.dto.dataTable.DataTableResponseDTO;
 import nc.ukma.thor.spms.dto.dataTable.ProjectTableDTO;
+import nc.ukma.thor.spms.entity.File;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.Trait;
@@ -10,6 +11,7 @@ import nc.ukma.thor.spms.entity.TraitCategory;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.entity.report.ProjectReport;
 import nc.ukma.thor.spms.repository.ProjectRepository;
+import nc.ukma.thor.spms.service.FileService;
 import nc.ukma.thor.spms.service.ProjectService;
 import nc.ukma.thor.spms.service.TeamService;
 import nc.ukma.thor.spms.service.TraitCategoryService;
@@ -67,6 +69,8 @@ public class ProjectController {
 	private String fileUploadLocation;
 	@Autowired
 	private FileValidator fileValidator;
+	@Autowired
+	private FileService fileService;
 
     @ResponseBody
 	@RequestMapping(path = "/view/", method = RequestMethod.POST)
@@ -219,13 +223,12 @@ public class ProjectController {
         return "success";
     }
     
-    @ResponseBody
-	@RequestMapping(path="/view/{projectId}/upload/", method = RequestMethod.POST)
-	public String singleFileUpload(@Validated FileBucket fileBucket, BindingResult result, @PathVariable long projectId, ModelMap model) throws IOException {
+	@RequestMapping(path="/uploadFile/", method = RequestMethod.POST)
+	public String singleFileUpload(@Validated FileBucket fileBucket, BindingResult result, @RequestParam long id) throws IOException {
 
 		if (result.hasErrors()) {
 			System.out.println("validation errors");
-			return "redirect:/project/view/" + projectId;
+			return "redirect:/project/view/" + id +"/";
 		} else {
 			System.out.println("Fetching file");
 			MultipartFile multipartFile = fileBucket.getFile();
@@ -234,8 +237,9 @@ public class ProjectController {
 			FileCopyUtils.copy(fileBucket.getFile().getBytes(), new java.io.File(fileUploadLocation + fileBucket.getFile().getOriginalFilename()));
 
 			String fileName = multipartFile.getOriginalFilename();
-			model.addAttribute("fileName", fileName);
-			return "success";
+			File file = new File(fileName, new Project(id));
+			fileService.create(file);
+			return "redirect:/project/view/"+id+"/";
 		}
 	}
 

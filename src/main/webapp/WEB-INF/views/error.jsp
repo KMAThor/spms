@@ -6,6 +6,9 @@
 			<p>
 				${descrioption}
 			</p>
+			<p>
+				<a href="<%=request.getContextPath()%>/"><--- back to main page</a>
+			</p>
 		</div>
 	</div>
 </div>

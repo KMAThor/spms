@@ -24,8 +24,8 @@ public class SpmsWebSecurityServiceImpl implements SpmsWebSecurityService{
 		return userRepository.isUserMemberOfTeamWithMeeting(principal.getId(), meetingId);
 	}
 	@Override
-	public boolean isUserMemberOfTeamWithfMeetingFeedback(SpmsUserDetails principal, long meetingFeedbackId) {
-		return userRepository.isUserMemberOfTeamWithfMeetingFeedback(principal.getId(), meetingFeedbackId);
+	public boolean isUserMemberOfTeamWithMeetingFeedback(SpmsUserDetails principal, long meetingFeedbackId) {
+		return userRepository.isUserMemberOfTeamWithMeetingFeedback(principal.getId(), meetingFeedbackId);
 	}
 	@Override
 	public boolean isUserMemberOfTeamWithMember(SpmsUserDetails principal, long userId) {

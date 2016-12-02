@@ -64,6 +64,7 @@
 			</div>
 		</div>
 	</div>
+<security:authorize access="hasAuthority('admin')">
 	<!-- createProjectModal -->
 	<div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
@@ -202,7 +203,7 @@
 	      	</div>
 	    </div>
 	</div>
-	
+</security:authorize>	
     <!-- <img src="resources/thor.png">${greeting} . Our system has ${numberOfUsers} users. -->
     <script>
     $('#projectsTable').DataTable();

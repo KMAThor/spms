@@ -1,9 +1,14 @@
 <%@include file="header.jsp"%>
+
+<c:set var="isUserChiefMentorOfThisProject" value="${false}"/>
+<security:authorize access="@spmsWebSecurityService.isUserChiefMentorOfProject(principal, #project.id)">
+	<c:set var="isUserChiefMentorOfThisProject" value="${true}"/>
+</security:authorize>
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h1>${project.name}
-	    	<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal, #project.id)">
 	    	<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
+	    		<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfThisProject}">
 	    		<button type="button" class="btn btn-primary"
 			  		  data-toggle="modal" data-target="#projectTraitsManagerModal"
 			  		  >
@@ -16,14 +21,17 @@
 			  		<i class="fa fa-pencil" aria-hidden="true"></i>
 			  		Edit Project
 			  	</button>
+			  	</security:authorize>
+			  	<security:authorize access="hasAuthority('admin')">
 			  	<button type="button" class="btn btn-danger"
 			  		data-toggle="modal" data-target="#deleteProjectModal"
 			  		>
 			  		<i class="fa fa-trash" aria-hidden="true"></i>
 			  		Delete Project
 			  	</button>
+			  	</security:authorize>
 			</div>
-		  </security:authorize>
+		  
 		</h1>
 		<h3>Description</h3>
 		<p> <c:choose>
@@ -83,7 +91,7 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h2>Files
-		<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal, #project.id)">
+		<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfThisProject}">
 			<button type="button" class="btn btn-success"
 				data-toggle="modal" data-target="#addFileToProjectModal" onclick="toggleFileDialog();">
 				<i class="fa fa-plus-circle" aria-hidden="true"></i>
@@ -97,7 +105,7 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h2>Teams
-			<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal, #project.id)">
+			<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfThisProject}">
 			<button type="button" class="btn btn-success"
 				data-toggle="modal" data-target="#createTeamModal"
 				id="createTeamButton">
@@ -106,14 +114,14 @@
 				</button>
 			</security:authorize>
 		</h2>
-		<security:authorize access="hasAuthority('admin') || hasAuthority('hr') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal,#project.id)">
+		<security:authorize access="hasAuthority('admin') || hasAuthority('hr') || ${isUserChiefMentorOfThisProject}">
 		<c:forEach items="${teams}" var="team">
 				<h3>
 					<a href="<c:url value="/team/view/${team.id}/" />" class="btn btn-warning">${team.name}</a>
 				</h3>
 		</c:forEach>
 		</security:authorize>
-		<security:authorize access="!(hasAuthority('admin') || hasAuthority('hr') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal, #project.id))">
+		<security:authorize access="!(hasAuthority('admin') || hasAuthority('hr') || ${isUserChiefMentorOfThisProject})">
 		<c:forEach items="${teams}" var="team">
 				<h3>
 					
@@ -420,7 +428,8 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<!-- <form target="<c:url value="/project/${project.id}/upload?${_csrf.parameterName}=${_csrf.token}/" />" method="post" enctype="multipart/form-data"> -->
-			<form action="<%=request.getContextPath()%>/project/view/${project.id}/upload/" method="post" enctype="multipart/form-data">
+			<form action="<%=request.getContextPath()%>/project/uploadFile/" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="id" value="${project.id}">
 				<div class="modal-header">
 					<h4 class="modal-title" id="myModalLabel2">Upload</h4>
 				</div>

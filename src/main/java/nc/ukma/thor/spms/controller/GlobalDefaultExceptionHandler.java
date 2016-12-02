@@ -27,7 +27,16 @@ public class GlobalDefaultExceptionHandler {
 		model.addAttribute("message", "Database error, please try again later.");
 		return DEFAULT_ERROR_VIEW;
 	}
+	
+	@ExceptionHandler(IllegalArgumentException.class)
+	public String illegalArgumentException(Model model, Exception e) {
+		e.printStackTrace();
 
+		model.addAttribute("httpStatus", HttpStatus.FORBIDDEN.value());
+		model.addAttribute("message", "illegalArgumentException");
+		return DEFAULT_ERROR_VIEW;
+	}
+	
 	@ExceptionHandler(AccessDeniedException.class)
 	public String accessDeniedError(Model model, Exception e) {
 		e.printStackTrace();
@@ -38,7 +47,9 @@ public class GlobalDefaultExceptionHandler {
 	}
 	
 	@ExceptionHandler(NoHandlerFoundException.class)
-	public String handleNoHandlerFoundException(Model model, NoHandlerFoundException ex) {
+	public String handleNoHandlerFoundException(Model model, NoHandlerFoundException e) {
+		e.printStackTrace();
+		
 		model.addAttribute("httpStatus", HttpStatus.NOT_FOUND.value());
 		model.addAttribute("message", "Such page does not exist");
 		return DEFAULT_ERROR_VIEW;

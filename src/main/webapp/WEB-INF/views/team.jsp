@@ -1,9 +1,14 @@
 <%@include file="header.jsp"%>
+
+<c:set var="isUserChiefMentorOfProjectWithThisTeam" value="${false}"/>
+<security:authorize access="@spmsWebSecurityService.isUserChiefMentorOfProjectWithTeam(principal, #team.id)">
+	<c:set var="isUserChiefMentorOfProjectWithThisTeam" value="${true}"/>
+</security:authorize>
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h1>
 			<p id="teamName">${team.name}</p>
-			<security:authorize access="hasAuthority('admin')">
+			<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfProjectWithThisTeam}">
 				<div class="btn-group btn-group-sm" role="group" aria-label="...">
 					<button type="button" class="btn btn-warning" data-toggle="modal"
 						data-target="#editTeamNameModal">
@@ -70,6 +75,7 @@
 										<a class="btn btn-xs btn-warning" href="<c:url value="/meeting/view/${meeting.id}/" />">View</a>
 									</td>
 									<td>
+									<security:authorize access="hasAnyAuthority('admin','mentor')">
 										<c:choose>
 											<c:when test="${team.project.isCompleted eq true}">
 												<button type="button" class="btn btn-xs btn-danger"
@@ -88,6 +94,7 @@
 												</button>
 											</c:otherwise>
 										</c:choose>
+									</security:authorize>
 									</td>
 								</tr>
 							</c:forEach>
@@ -96,7 +103,7 @@
 				</div>
 			</div>
 			<div class="tab-pane fade" id="files">
-				<security:authorize access="hasAuthority('admin')">
+				<security:authorize access="hasAnyAuthority('admin', 'mentor')">
 					<div class="panel-center">
 						<button type="button" id="addFileButton" class="btn btn-success"
 							data-toggle="modal" data-target="#addFileModal">
@@ -131,7 +138,7 @@
 				</div>
 			</div>
 			<div class="tab-pane fade" id="mentors">
-				<security:authorize access="hasAuthority('admin')">
+				<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfProjectWithThisTeam}">
 					<div class="panel-center">
 						<button type="button" id="addMentorButton" class="btn btn-success" 
 							data-toggle="modal" data-target="#addMentorModal" 
@@ -160,6 +167,7 @@
 										${member.key.secondName}</p>
 									<h6>${member.key.email}</h6>
 									<p>
+										<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfProjectWithThisTeam}">
 										<c:choose>
 											<c:when test="${team.project.isCompleted eq true}">
 												<button type="button" class="btn btn-xs btn-danger"
@@ -178,6 +186,7 @@
 												</button>
 											</c:otherwise>
 										</c:choose>
+										</security:authorize>
 									</p>
 								</div>
 							</c:if>
@@ -186,7 +195,7 @@
 				</div>
 			</div>
 			<div class="tab-pane fade" id="students">
-				<security:authorize access="hasAuthority('admin')">
+				<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfProjectWithThisTeam}">
 					<div class="panel-center">
 						<button type="button" id="addStudentButton" class="btn btn-success" 
 							data-toggle="modal" data-target="#addStudentModal" 
@@ -201,7 +210,7 @@
 						<c:forEach items="${team.members}" var="member">
 							<c:if test="${member.key.role.name == 'student'}">
 								<div class="col-lg-3" id="user-${member.key.id}">
-							
+									
 									<c:choose>
 										<c:when test="${member.value.status.name == 'left_project'}">
 											<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; background-color: #DCDCDC; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
@@ -267,6 +276,7 @@
 													onclick="initStatusChanging(${member.key.id}, '${member.value.status.id}', '${member.value.comment}');">
 													<i class="fa fa-pencil" aria-hidden="true"></i>Change status
 										</button>
+										<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfProjectWithThisTeam}">
 										<c:choose>
 											<c:when test="${team.project.isCompleted eq true}">
 												<button type="button" class="btn btn-xs btn-danger"
@@ -285,6 +295,7 @@
 												</button>
 											</c:otherwise>
 										</c:choose>
+										</security:authorize>
 									</p>
 								</div></div>
 							</c:if>
@@ -328,7 +339,7 @@
 		</div>
 	</div>
 </div>
-
+<security:authorize access="hasAnyAuthority('admin','mentor')">
 <!-- createMeetingModal -->
 <div class="modal fade" id="createMeetingModal" tabindex="-1"
 	role="dialog" aria-labelledby="myModalLabel">
@@ -401,7 +412,7 @@
 		</div>
 	</div>
 </div>
-
+</security:authorize>
 <!-- deleteModal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel">
@@ -431,7 +442,7 @@
 		</div>
 	</div>
 </div>
-
+<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfProjectWithThisTeam}">
 <!-- addMentorModal -->
 <div class="modal fade" id="addMentorModal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel">
@@ -510,6 +521,7 @@
 		</div>
 	</div>
 </div>
+</security:authorize>
 
 <!-- changeStatusModal -->
 <div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog"
@@ -527,18 +539,22 @@
 				<div class="modal-body">
 
 					<div class="form-group">
+						<security:authorize access="hasAnyAuthority('admin','mentor')">
 						<div class="radio">
   							<label><input type="radio" name="optradio" id="optradio1">Active</label>
 						</div>
 						<div class="radio">
   							<label><input type="radio" name="optradio" id="optradio2">Left Project</label>
 						</div>
+						</security:authorize>
+						<security:authorize access="hasAnyAuthority('admin','hr') || ${isUserChiefMentorOfProjectWithThisTeam}">
 						<div class="radio">
   							<label><input type="radio" name="optradio" id="optradio3">Interview was scheduled</label>
 						</div>
 						<div class="radio">
   							<label><input type="radio" name="optradio" id="optradio4">Got job offer</label>
 						</div>
+						</security:authorize>
 					</div>
 					
 					<div class="form-group">
@@ -991,10 +1007,10 @@ var idStatChange = 0;
 
 function initStatusChanging(id, status, comment){
 	idStatChange = id;
-	if (status == 0){
+	if (status == 0 && document.getElementById("optradio1") !== null){
 		document.getElementById("optradio1").checked = true;
 	}
-	else if (status == 1){
+	else if (status == 1 && document.getElementById("optradio1") !== null){
 		document.getElementById("optradio2").checked = true;
 	}
 	else if (status == 2){
@@ -1014,10 +1030,10 @@ function changeStatus(){
 	var teamId = "${team.id}";
 	var userId = idStatChange;
 	var newStatus = -1;
-	if (document.getElementById("optradio1").checked == true){
+	if (document.getElementById("optradio1") !== null && document.getElementById("optradio1").checked == true){
 		newStatus = 0;
 	}
-	else if (document.getElementById("optradio2").checked == true){
+	else if (document.getElementById("optradio1") !== null && document.getElementById("optradio2").checked == true){
 		newStatus = 1;
 	}
 	else if (document.getElementById("optradio3").checked == true){

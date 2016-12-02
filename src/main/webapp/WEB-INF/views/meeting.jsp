@@ -4,6 +4,7 @@
 			<h1>
 				<p id="meetingTopic">${meeting.topic}</p>
 				<p id="meetingStartDate">${meeting.startDate}</p>
+				<security:authorize access="hasAnyAuthority('admin','mentor')">
 		    	<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
 				  	<button type="button" class="btn btn-warning"
 				  		  data-toggle="modal" data-target="#editMeetingModal"
@@ -14,10 +15,11 @@
 				  	<button type="button" class="btn btn-danger"
 				  		  data-toggle="modal" data-target="#deleteMeetingModal"
 				  		  >
-				  		<i class="fa fa-pencil" aria-hidden="true"></i>
+				  		<i class="fa fa-trash" aria-hidden="true"></i>
 				  		Delete Meeting
 				  	</button>
 				</div>
+				</security:authorize>
 			</h1>
 			<h6>
 				<a href="<%=request.getContextPath()%>/team/view/${meeting.team.id}/"><--- Back to Team</a>
@@ -91,12 +93,28 @@
 									</c:choose>
    								</td>
    								<td>
+   									
    									<c:choose>
 										<c:when test="${empty feedbacks[loop.index]}">
-										    <a href="<c:url value="/meetingFeedback/create/${member.key.id}/${meeting.id}/" />" class="btn btn-success">Leave feedback</a>
+											<security:authorize access="hasAnyAuthority('admin','mentor')">
+										    <a href="<c:url value="/meetingFeedback/create/${member.key.id}/${meeting.id}/" />" class="btn btn-success">
+										    	<i class="fa fa-plus-circle" aria-hidden="true"></i>
+										    	Leave feedback
+										    </a>
+										    </security:authorize>
 										</c:when>
 										<c:otherwise>
-										    <a href="<c:url value="/meetingFeedback/edit/${feedbacks[loop.index].id}/" />" class="btn btn-warning">Edit feedback</a>
+											<security:authorize access="hasAnyAuthority('admin','mentor')">
+										    <a href="<c:url value="/meetingFeedback/edit/${feedbacks[loop.index].id}/" />" class="btn btn-warning">
+										    	<i class="fa fa-pencil" aria-hidden="true"></i>
+										   		Edit feedback
+										   	</a>
+										   	</security:authorize>
+										   	<security:authorize access="hasAuthority('hr')">
+											    <a href="<c:url value="/meetingFeedback/view/${feedbacks[loop.index].id}/" />" class="btn btn-warning">
+											    	View feedback
+											    </a>
+										   	</security:authorize>
 										</c:otherwise>
 									</c:choose>
 								</td>
@@ -107,7 +125,7 @@
 			</div>
 		</div>
 	</div>
-	
+<security:authorize access="hasAnyAuthority('admin','mentor')">
 	<!-- editMeetingModal -->
 	<div class="modal fade" id="editMeetingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
@@ -176,7 +194,7 @@
 	    	</div>
 	  	</div>
 	</div>
-	
+</security:authorize>	
 <script>
 
 	$('#membersTable').DataTable();

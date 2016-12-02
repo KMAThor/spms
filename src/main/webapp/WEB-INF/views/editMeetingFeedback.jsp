@@ -7,11 +7,11 @@
 <div class="row">
 	<div class="col-sm-offset-1 col-sm-5">
 		<h3>Student</h3>
-		<p>{user.firstName} ${user.secondName} ${user.lastName}</p>
+		<p>${meetingFeedback.student.firstName} ${meetingFeedback.student.secondName} ${meetingFeedback.student.lastName}</p>
 	</div>
 	<div class="col-sm-5">
 		<h3>Meeting</h3>
-		<p>${meeting.topic} ${meeting.startDate}</p>
+		<p>${meetingFeedback.meeting.topic} ${meetingFeedback.meeting.startDate}</p>
 	</div>
 </div>
 <form name="createMeetingFeedback" 

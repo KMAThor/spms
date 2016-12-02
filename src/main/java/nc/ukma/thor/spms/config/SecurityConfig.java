@@ -1,10 +1,11 @@
 package nc.ukma.thor.spms.config;
 
-import nc.ukma.thor.spms.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import nc.ukma.thor.spms.service.UserDetailsServiceImpl;
+
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -55,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						+ "|| (hasAuthority('mentor')"
 							+ "&& @spmsWebSecurityService.isUserChiefMentorOfProject(principal, request.getParameter('projectId')))")
 			//Team
+				
 				.antMatchers("/team/view/{id}/").access("hasAnyAuthority({'admin','hr'}) "
 														+ "|| (hasAuthority('mentor') && (@spmsWebSecurityService.isUserMemberOfTeam(principal, #id) "
 															+ "|| @spmsWebSecurityService.isUserChiefMentorOfProjectWithTeam(principal, #id)))")
@@ -74,8 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 							+ "|| @spmsWebSecurityService.isUserChiefMentorOfProjectWithMeeting(principal, #id)))")
 				
 				.antMatchers("/meeting/create/",
-							"/meeting/createSeveral/",
-							"/user/changeStatus/").access("hasAuthority('admin') "
+							"/meeting/createSeveral/").access("hasAuthority('admin') "
 									+ "|| (hasAuthority('mentor') && (@spmsWebSecurityService.isUserMemberOfTeam(principal, request.getParameter('teamId')) "
 										+ "|| @spmsWebSecurityService.isUserChiefMentorOfProjectWithTeam(principal, request.getParameter('teamId'))))")
 			
@@ -112,6 +113,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			//HrFeedback
 				.antMatchers("/hrFeedback/**").hasAnyAuthority("admin","hr")
 			//User
+				.antMatchers("/user/changeStatus/").access("hasAnyAuthority({'admin','hr'}) "
+						+ "|| (hasAuthority('mentor') && (@spmsWebSecurityService.isUserMemberOfTeam(principal, request.getParameter('teamId')) "
+						+ "|| @spmsWebSecurityService.isUserChiefMentorOfProjectWithTeam(principal, request.getParameter('teamId'))))")
 				//.antMatchers("/user/view/{id}/").access("hasAnyAuthority({'admin','hr'}) "
 				//		+ "|| (hasAuthority('mentor') && (@spmsWebSecurityService.isUserMemberOfTeamWithMember(principal, #id) "
 				//			+ "|| @spmsWebSecurityService.isUserChiefMentorOfProjectWithMember(principal, #id)))")

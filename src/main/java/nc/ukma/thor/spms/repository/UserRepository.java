@@ -40,7 +40,7 @@ public interface UserRepository {
 	public boolean isUserMemberOfProject(long id, long projectId);
 	public boolean isUserMemberOfTeam(long id, long teamId);
 	public boolean isUserMemberOfTeamWithMeeting(long id, long meetingId);
-	public boolean isUserMemberOfTeamWithfMeetingFeedback(long id, long meetingFeedbackId);
+	public boolean isUserMemberOfTeamWithMeetingFeedback(long id, long meetingFeedbackId);
 	public boolean isUserMemberOfTeamWithMember(long id, long userId);
 	public boolean isUserChiefMentorOfProjectWithTeam(long id, long projectId);
 	public boolean isUserChiefMentorOfProject(long id, long projectId);

@@ -20,18 +20,17 @@
 	  <input type="hidden" name="meetingId" value="${meeting.id}">
 <div class="row">
 	<div class="col-sm-offset-1 col-sm-10">
-
 		<c:forEach var="traitCategory" items="${traitCategories}">
 			<div class="row">
-				<h2> ${traitCategory.name} </h2>
+				<h3> ${traitCategory.name} </h3>
 					<hr/>
 				<div class="col-sm-offset-1 col-sm-11">
 					
 					<c:forEach var="trait" items="${traitCategory.traits}">
 						<div class="row traitFeedbackContainer">
-							<h3> ${trait.name} </h3>
+							<h4> ${trait.name} </h4>
 							<hr/>
-							<div class="col-sm-3">
+							<div class="col-sm-4">
 								<h4 ><strong> Grade </strong></h4>
 								<div class="col-sm-2 sliderContainer">
 									<input type="hidden" name="traitIds" value="${trait.id}">
@@ -55,7 +54,7 @@
 								</div>
 								
 							</div>
-							<div class="col-sm-9">
+							<div class="col-sm-8">
 								<h4 ><strong> Comment</strong></h4>
 								<textarea name="comments" class="gradeComment form-control" placeholder="This field is optional"></textarea>
 							</div>

@@ -20,7 +20,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 public class AppConfig {
 	
 	static final long oneMB = 1024 * 1024;
-    static final String UPLOAD_LOCATION = System.getProperty("HOME") + "/spms/project/upload/";
+    static final String UPLOAD_LOCATION = System.getProperty("CATALINA_HOME");
 	
     @Autowired
     private Environment environment;

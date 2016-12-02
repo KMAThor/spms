@@ -55,5 +55,12 @@ public class HelloWorldController {
 		model.addAttribute("message", "Access denied");
 		return "error";
     }
+    
+    @RequestMapping(value="/500/", method = RequestMethod.GET)
+    public String internalServerError(ModelMap model, Principal principal) {
+		model.addAttribute("httpStatus", HttpStatus.INTERNAL_SERVER_ERROR.value());
+		model.addAttribute("message", "INTERNAL SERVER ERROR");
+		return "unknownError";
+    }
         
 }

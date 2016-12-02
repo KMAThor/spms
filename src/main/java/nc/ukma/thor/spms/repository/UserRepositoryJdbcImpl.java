@@ -335,7 +335,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 	}
 
 	@Override
-	public boolean isUserMemberOfTeamWithfMeetingFeedback(long id, long meetingFeedbackId) {
+	public boolean isUserMemberOfTeamWithMeetingFeedback(long id, long meetingFeedbackId) {
 		return jdbcTemplate.queryForObject(IS_USER_MEMBER_OF_TEAM_WITH_MEETING_FEEDBACK_SQL, new Object[] {id, meetingFeedbackId}, Boolean.class);
 	}
 

@@ -40,7 +40,9 @@ public class FileRepositoryJdbcImpl implements FileRepository {
 			PreparedStatement ps = connection.prepareStatement(INSERT_FILE_SQL, new String[] {"id"});
 			ps.setString(1, f.getPath());
 			if(f.getProject() != null) ps.setLong(2, f.getProject().getId());
+			else ps.setNull(2, java.sql.Types.BIGINT);
 			if(f.getTeam() != null) ps.setLong(3, f.getTeam().getId());
+			else ps.setNull(3, java.sql.Types.BIGINT);
 			return ps;
 		}, keyHolder);
 		f.setId(keyHolder.getKey().longValue());
