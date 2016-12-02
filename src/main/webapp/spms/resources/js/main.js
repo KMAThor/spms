@@ -5,14 +5,17 @@ $(document).on('click', '[data-toggle=collapse] [type=checkbox]', function(e) {
 	e.stopPropagation();
 });
 
-
 function traitCheckboxAction(checkboxElem, traitId, projectId) {
   if (checkboxElem.checked) {
     $('#loadingModal').modal('show');
     $.ajax({
-	    url: getContextPath()+"project/update/"+projectId+"/addTrait/"+traitId+"/",
-	    type: "GET",
-	    dataType : "text",
+	    url: getContextPath()+"/project/addTrait/",
+	    type: "POST",
+	    dataType : "json",
+	    data: {
+	    	projectId: projectId,
+	    	traitId: traitId
+	    },
 		timeout: 15000
 	})
 	.done(function( json ) {
@@ -28,9 +31,13 @@ function traitCheckboxAction(checkboxElem, traitId, projectId) {
   } else {
     $('#loadingModal').modal('show');
     $.ajax({
-	    url: getContextPath()+"project/update/"+projectId+"/deleteTrait/"+traitId+"/",
-	    type: "GET",
-	    dataType : "text",
+	    url: getContextPath()+"/project/deleteTrait/",
+	    type: "POST",
+	    dataType : "json",
+	    data: {
+	    	projectId: projectId,
+	    	traitId: traitId
+	    },
 		timeout: 15000
 	})
 	.done(function( json ) {
@@ -49,9 +56,13 @@ function traitCheckboxAction(checkboxElem, traitId, projectId) {
 function selectAllTraitAction(traitCategoryId, projectId) {
 	$('#loadingModal').modal('show');
     $.ajax({
-	    url: getContextPath()+"project/update/"+projectId+"/addTraitCategory/"+traitCategoryId+"/",
-	    type: "GET",
-	    dataType : "text",
+	    url: getContextPath()+"/project/addTraitCategory/",
+	    type: "POST",
+	    dataType : "json",
+	    data: {
+	    	projectId: projectId,
+	    	traitCategoryId: traitCategoryId
+	    },
 		timeout: 15000
 	})
 	.done(function( json ) {
@@ -70,9 +81,13 @@ function selectAllTraitAction(traitCategoryId, projectId) {
 function deselectAllTraitAction(traitCategoryId, projectId) {
 	$('#loadingModal').modal('show');
     $.ajax({
-	    url: getContextPath()+"project/update/"+projectId+"/deleteTraitCategory/"+traitCategoryId+"/",
-	    type: "GET",
-	    dataType : "text",
+	    url: getContextPath()+"/project/deleteTraitCategory/",
+	    type: "POST",
+	    dataType : "json",
+	    data: {
+	    	projectId: projectId,
+	    	traitCategoryId: traitCategoryId
+	    },
 		timeout: 15000
 	})
 	.done(function( json ) {

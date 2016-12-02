@@ -69,7 +69,7 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			+ "OR to_char(end_date, 'HH12:MI:SS') ILIKE ?) AND chief_mentor_id=?;";
 	
 	/*For mentor*/
-	private static final String GET_PROJECTS_BY_MENTOR_BY_PAGE_SQL = "SELECT * FROM project "
+	private static final String GET_PROJECTS_BY_MENTOR_BY_PAGE_SQL = "SELECT DISTINCT ON (project.id) * FROM project "
 			+ "LEFT JOIN team ON project.id = team.project_id "
 			+ "INNER JOIN user_team ON team.id = user_team.team_id "
 			+ "INNER JOIN \"user\" ON user_team.user_id = \"user\".id "
@@ -81,7 +81,7 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			+ "ORDER BY project.%s %s, project.id "//default ordering by id, it is important for pagination
 			+ "LIMIT ? OFFSET ?;";
 	
-	private static final String COUNT_PROJECTS_BY_MENTOR_SQL = "SELECT COUNT (*) FROM project "
+	private static final String COUNT_PROJECTS_BY_MENTOR_SQL = "SELECT COUNT (DISTINCT project.id) FROM project "
 			+ "LEFT JOIN team ON project.id = team.project_id "
 			+ "INNER JOIN user_team ON team.id = user_team.team_id "
 			+ "INNER JOIN \"user\" ON user_team.user_id = \"user\".id "
@@ -89,7 +89,7 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			+ "INNER JOIN role ON user_role.role_id = role.id "
 			+ "WHERE chief_mentor_id=? OR (user_team.user_id=? AND role.role=?);";
 	
-	private static final String COUNT_PROJECTS_BY_MENTOR_FILTERED_SQL = "SELECT COUNT (*) FROM project "
+	private static final String COUNT_PROJECTS_BY_MENTOR_FILTERED_SQL = "SELECT COUNT (DISTINCT project.id) FROM project "
 			+ "LEFT JOIN team ON project.id = team.project_id "
 			+ "INNER JOIN user_team ON team.id = user_team.team_id "
 			+ "INNER JOIN \"user\" ON user_team.user_id = \"user\".id "

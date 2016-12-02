@@ -15,7 +15,7 @@ function createTraitCategory() {
 	$('#loadingModal').modal('show');
 
 	$.ajax({
-		url : getContextPath()+"traitCategory/create/",
+		url : getContextPath()+"/traitCategory/create/",
 		data : {
 			name : name
 		},
@@ -80,7 +80,7 @@ function createTrait() {
 	$('#loadingModal').modal('show');
 	
 	$.ajax({
-		url : getContextPath()+"trait/create/",
+		url : getContextPath()+"/trait/create/",
 		data : {
 			name : name,
 			categoryId: categoryId
@@ -145,7 +145,7 @@ function updateTraitCategory() {
 	$('#loadingModal').modal('show');
 
 	$.ajax({
-	    url: getContextPath()+"traitCategory/update/",
+	    url: getContextPath()+"/traitCategory/update/",
 	    data: {
 	        id: id,
 	        name: name
@@ -187,7 +187,7 @@ function updateTrait() {
 	$('#loadingModal').modal('show');
 
 	$.ajax({
-	    url: getContextPath()+"trait//update/",
+	    url: getContextPath()+"/trait//update/",
 	    data: {
 	        id: id,
 	        name: name,
@@ -212,7 +212,7 @@ function updateTrait() {
 function deleteTraitCategory(id) {
 	
 	$.ajax({
-	    url: getContextPath()+"traitCategory/delete/",
+	    url: getContextPath()+"/traitCategory/delete/",
 	    data: {
 	        id: id
 	    },
@@ -236,7 +236,7 @@ function deleteTrait(id) {
 	$('#loadingModal').modal('show');
 
 	$.ajax({
-	    url: getContextPath()+"trait/delete/",
+	    url: getContextPath()+"/trait/delete/",
 	    data: {
 	        id: id
 	    },

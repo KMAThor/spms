@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import nc.ukma.thor.spms.entity.MeetingFeedback;
 import nc.ukma.thor.spms.entity.TraitFeedback;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.repository.MeetingRepository;
 import nc.ukma.thor.spms.service.MeetingFeedbackService;
 import nc.ukma.thor.spms.service.TraitCategoryService;
 import nc.ukma.thor.spms.service.UserService;
@@ -32,6 +33,8 @@ public class MeetingFeedbackController {
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private MeetingRepository meetingRepository;
 	
 	
 	@RequestMapping(path= "/view/{id}/", method = RequestMethod.GET)
@@ -45,14 +48,15 @@ public class MeetingFeedbackController {
 	@RequestMapping(path= "/create/{studentId}/{meetingId}/", method = RequestMethod.GET)
 	public String getCreateMeetingFeedbackForm(Model model, @PathVariable long studentId, @PathVariable long meetingId){
 		model.addAttribute("traitCategories", traitCategoryService.getAllCategoriesWithTraitsByMeeting(meetingId));
-		model.addAttribute("studentId", studentId);
-		model.addAttribute("meetingId", meetingId);
+		model.addAttribute("student", userService.getUserById(studentId));
+		model.addAttribute("meeting", meetingRepository.getById(meetingId));
 		return "createMeetingFeedback";
 	}
 	
-	@RequestMapping(path= "/create/{studentId}/{meetingId}/", method = RequestMethod.POST)
+	@RequestMapping(path= "/create/", method = RequestMethod.POST)
 	public String createMeetingFeedbackForm(Model model, HttpServletRequest request,
-			@PathVariable long studentId, @PathVariable long meetingId,
+			@RequestParam long studentId,
+			@RequestParam long meetingId,
 			@RequestParam List<Long> traitIds,
 			@RequestParam List<Short> scores,
 			@RequestParam List<String> comments,
@@ -77,9 +81,9 @@ public class MeetingFeedbackController {
 		return "editMeetingFeedback";
 	}
 	
-	@RequestMapping(path= "/update/{id}/", method = RequestMethod.POST)
+	@RequestMapping(path= "/update/", method = RequestMethod.POST)
 	public String updateMeetingFeedback(Model model, HttpServletRequest request,
-			@PathVariable long id,
+			@RequestParam long id,
 			@RequestParam List<Long> traitFeedbackIds,
 			@RequestParam List<Long> traitIds,
 			@RequestParam List<Short> scores,
@@ -99,8 +103,8 @@ public class MeetingFeedbackController {
 		return "redirect:/meeting/view/"+meetingId+"/";
 	}
 	
-	@RequestMapping(path="/delete/{id}/", method = RequestMethod.GET)
-    public String deleteMeetingFeedback(@PathVariable long id){
+	@RequestMapping(path="/delete/", method = RequestMethod.POST)
+    public String deleteMeetingFeedback(@RequestParam long id){
     	meetingFeedbackService.delete(new MeetingFeedback(id));
         return "redirect:/";
     }

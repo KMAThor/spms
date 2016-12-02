@@ -4,8 +4,20 @@
 		<h1>Leave Feedback</h1>
 	</div>
 </div>
+<div class="row">
+	<div class="col-sm-offset-1 col-sm-5">
+		<h3>Student</h3>
+		<p>${student.firstName} ${student.secondName} ${student.lastName}</p>
+	</div>
+	<div class="col-sm-5">
+		<h3>Meeting</h3>
+		<p>${meeting.topic} ${meeting.startDate}</p>
+	</div>
+</div>
 <form name="createMeetingFeedback" 
-	  action="<%=request.getContextPath()%>/meetingFeedback/create/${studentId}/${meetingId}/" method="post">
+	  action="<%=request.getContextPath()%>/meetingFeedback/create/" method="POST">
+	  <input type="hidden" name="studentId" value="${student.id}">
+	  <input type="hidden" name="meetingId" value="${meeting.id}">
 <div class="row">
 	<div class="col-sm-offset-1 col-sm-10">
 

@@ -1,5 +1,6 @@
 package nc.ukma.thor.spms.service;
 
+import nc.ukma.thor.spms.entity.SpmsUserDetails;
 import nc.ukma.thor.spms.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,9 +23,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     	User user = userService.getUser(email);
         Set<GrantedAuthority> roles = new HashSet<>();
         roles.add(new SimpleGrantedAuthority(user.getRole().getName()));
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+        UserDetails userDetails = new SpmsUserDetails((long) user.getId(),
         		user.getEmail(), user.getPassword(), roles);
- 
         return userDetails;
     }
  

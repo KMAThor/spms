@@ -8,7 +8,6 @@ import javax.mail.internet.MimeMessage;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 public class EmailSender {
 	
 		private final static String USER_NAME = "nc.ukma.spms@gmail.com";

@@ -2,8 +2,7 @@ package nc.ukma.thor.spms.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import nc.ukma.thor.spms.entity.Role;
+import nc.ukma.thor.spms.entity.SpmsUserDetails;
 import nc.ukma.thor.spms.repository.UserRepository;
 
 @Service("spmsWebSecurityService")
@@ -13,43 +12,45 @@ public class SpmsWebSecurityServiceImpl implements SpmsWebSecurityService{
 	private UserRepository userRepository;
 	
 	@Override
-	public boolean isUserChiefMentorOfProject(String email, long projectId) {
-		return userRepository.isUserChiefMentorOfProject(email, projectId);
+	public boolean isUserMemberOfProject(SpmsUserDetails principal, long projectId) {
+		return userRepository.isUserMemberOfProject(principal.getId(), projectId);
 	}
 	@Override
-	public boolean isUserMentorFromProject(String email, long projectId) {
-		return userRepository.isUserMemberOfProject(email, projectId, Role.MENTOR);
+	public boolean isUserMemberOfTeam(SpmsUserDetails principal, long teamId) {
+		return userRepository.isUserMemberOfTeam(principal.getId(), teamId);
 	}
 	@Override
-	public boolean isUserChiefMentorOfProjectWithTeam(String email, long teamId) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isUserMemberOfTeamWithMeeting(SpmsUserDetails principal, long meetingId) {
+		return userRepository.isUserMemberOfTeamWithMeeting(principal.getId(), meetingId);
 	}
 	@Override
-	public boolean isUserChiefMentorOfProjectWithMeeting(String email, long meetingId) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isUserMemberOfTeamWithfMeetingFeedback(SpmsUserDetails principal, long meetingFeedbackId) {
+		return userRepository.isUserMemberOfTeamWithfMeetingFeedback(principal.getId(), meetingFeedbackId);
 	}
 	@Override
-	public boolean isUserChiefMentorOfProjectWithMeetingFeedback(String email, long meetingFeedbackId) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isUserMemberOfTeamWithMember(SpmsUserDetails principal, long userId) {
+		return userRepository.isUserMemberOfTeamWithMember(principal.getId(), userId);
+	}
+	
+	@Override      
+	public boolean isUserChiefMentorOfProject(SpmsUserDetails principal, long projectId) {
+		return userRepository.isUserChiefMentorOfProject(principal.getId(), projectId);
 	}
 	@Override
-	public boolean isUserMentorOfTeam(String email, long teamId) {
-		return userRepository.isUserMemberOfTeam(email, teamId, Role.MENTOR);
+	public boolean isUserChiefMentorOfProjectWithTeam(SpmsUserDetails principal, long teamId) {
+		return userRepository.isUserChiefMentorOfProjectWithTeam(principal.getId(), teamId);
 	}
 	@Override
-	public boolean isUserMentorOfTeamWithMeeting(String email, long meetingId) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isUserChiefMentorOfProjectWithMeeting(SpmsUserDetails principal, long meetingId) {
+		return userRepository.isUserChiefMentorOfProjectWithMeeting(principal.getId(), meetingId);
 	}
 	@Override
-	public boolean isUserMentorOfTeamWithfMeetingFeedback(String email, long meetingFeedbackId) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isUserChiefMentorOfProjectWithMeetingFeedback(SpmsUserDetails principal, long meetingFeedbackId) {
+		return userRepository.isUserChiefMentorOfProjectWithMeetingFeedback(principal.getId(), meetingFeedbackId);
 	}
-
-
+	@Override
+	public boolean isUserChiefMentorOfProjectWithMember(SpmsUserDetails principal, long userId) {
+		return userRepository.isUserChiefMentorOfProjectWithMember(principal.getId(), userId);
+	}
 
 }

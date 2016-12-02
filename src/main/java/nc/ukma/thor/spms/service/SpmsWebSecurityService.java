@@ -1,16 +1,22 @@
 package nc.ukma.thor.spms.service;
 
+import nc.ukma.thor.spms.entity.SpmsUserDetails;
+
 public interface SpmsWebSecurityService {
 	
-	public boolean isUserChiefMentorOfProject(String email, long projectId);
-	public boolean isUserMentorFromProject(String email, long projectId);
+	public boolean isUserMemberOfProject(SpmsUserDetails principal, long projectId);
+	public boolean isUserMemberOfTeam(SpmsUserDetails principal, long teamId);
+	public boolean isUserMemberOfTeamWithMeeting(SpmsUserDetails principal, long meetingId);
+	public boolean isUserMemberOfTeamWithfMeetingFeedback(SpmsUserDetails principal, long meetingFeedbackId);
+	public boolean isUserMemberOfTeamWithMember(SpmsUserDetails principal, long userId);
 	
-	public boolean isUserChiefMentorOfProjectWithTeam(String email, long teamId);
-	public boolean isUserChiefMentorOfProjectWithMeeting(String email, long meetingId);
-	public boolean isUserChiefMentorOfProjectWithMeetingFeedback(String email, long meetingFeedbackId);
+	public boolean isUserChiefMentorOfProject(SpmsUserDetails principal, long projectId);
+	public boolean isUserChiefMentorOfProjectWithTeam(SpmsUserDetails principal, long teamId);
+	public boolean isUserChiefMentorOfProjectWithMeeting(SpmsUserDetails principal, long meetingId);
+	public boolean isUserChiefMentorOfProjectWithMeetingFeedback(SpmsUserDetails principal, long meetingFeedbackId);
+	public boolean isUserChiefMentorOfProjectWithMember(SpmsUserDetails principal, long userId);
 	
-	public boolean isUserMentorOfTeam(String email, long teamId);
-	public boolean isUserMentorOfTeamWithMeeting(String email, long meetingId);
-	public boolean isUserMentorOfTeamWithfMeetingFeedback(String email, long meetingFeedbackId);
+
+	
 	
 }

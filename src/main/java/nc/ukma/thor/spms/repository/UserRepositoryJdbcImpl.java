@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -15,9 +14,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import nc.ukma.thor.spms.entity.File;
 import nc.ukma.thor.spms.entity.Meeting;
-import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.Status;
 import nc.ukma.thor.spms.entity.Team;
@@ -152,23 +149,45 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 						+ "INNER JOIN project ON team.project_id=project.id "
 						+ "WHERE project.is_completed=FALSE AND user_team.user_id=X.id);";
 
-	private static final String IS_USER_MEMBER_OF_PROJECT_SQL = "SELECT EXISTS(SELECT FROM \"user\" "
-			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
-			+ "INNER JOIN role ON user_role.role_id = role.id "
-			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
+	private static final String IS_USER_MEMBER_OF_PROJECT_SQL = "SELECT EXISTS(SELECT * FROM user_team "
 			+ "INNER JOIN team ON user_team.team_id = team.id "
-			+ "WHERE \"user\".email=? AND team.project_id=? AND role.role=?);";
+			+ "WHERE user_team.user_id=? AND team.project_id=?);";
+		
+	private static final String IS_USER_MEMBER_OF_TEAM_SQL = "SELECT EXISTS(SELECT * FROM user_team "
+			+ "WHERE user_team.user_id=? AND user_team.team_id=?);";
 	
-	private static final String IS_USER_CHIEF_MENTOR_OF_PROJECT_SQL = "SELECT EXISTS(SELECT FROM \"user\" "
-			+ "INNER JOIN project ON \"user\".id = project.chief_mentor_id "
-			+ "WHERE \"user\".email=? AND project.id=?);";
+	private static final String IS_USER_MEMBER_OF_TEAM_WITH_MEETING_SQL = "SELECT EXISTS(SELECT * FROM user_team "
+			+ "INNER JOIN team ON user_team.team_id=team.id "
+			+ "INNER JOIN meeting ON team.id=meeting.team_id "
+			+ "WHERE user_team.user_id=? AND meeting.id=?);";
+	private static final String IS_USER_MEMBER_OF_TEAM_WITH_MEETING_FEEDBACK_SQL  = "SELECT EXISTS(SELECT * FROM user_team "
+			+ "INNER JOIN team ON user_team.team_id=team.id "
+			+ "INNER JOIN meeting ON team.id=meeting.team_id "
+			+ "INNER JOIN meeting_feedback ON meeting.id=meeting_feedback.meeting_id "
+			+ "WHERE user_team.user_id=? AND meeting_feedback.id=?);";
+	private static final String IS_USER_MEMBER_OF_TEAM_WITH_MEMBER_SQL = "SELECT EXISTS(SELECT * FROM user_team AS X "
+			+ "WHERE user_id=? AND EXISTS(SELECT * FROM user_team "
+									   + "WHERE team_id=X.team_id AND user_id=?));";
 	
-	private static final String IS_USER_MEMBER_OF_TEAM_SQL = "SELECT EXISTS(SELECT FROM \"user\" "
-			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
-			+ "INNER JOIN role ON user_role.role_id = role.id "
-			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
-			+ "INNER JOIN team ON user_team.team_id = team.id "
-			+ "WHERE \"user\".email=? AND team.id=? AND role.role=?);";
+	private static final String IS_USER_CHIEF_MENTOR_OF_PROJECT_SQL = "SELECT EXISTS(SELECT * FROM project "
+			+ "WHERE chief_mentor_id=? AND id=?);";
+	private static final String IS_USER_CHIEF_MENTOR_OF_PROJECT_WITH_TEAM_SQL = "SELECT EXISTS(SELECT * FROM project "
+			+ "INNER JOIN team ON project.id=team.project_id "
+			+ "WHERE chief_mentor_id=? AND team.id=?);";
+	private static final String IS_USER_CHIEF_MENTOR_OF_PROJECT_WITH_MEETING_SQL = "SELECT EXISTS(SELECT * FROM project "
+			+ "INNER JOIN team ON project.id=team.project_id "
+			+ "INNER JOIN meeting ON team.id=meeting.team_id "
+			+ "WHERE chief_mentor_id=? AND meeting.id=?);";
+	private static final String IS_USER_CHIEF_MENTOR_OF_PROJECT_WITH_MEETING_FEEDBACK_SQL = "SELECT EXISTS(SELECT * FROM project "
+			+ "INNER JOIN team ON project.id=team.project_id "
+			+ "INNER JOIN meeting ON team.id=meeting.team_id "
+			+ "INNER JOIN meeting_feedback ON meeting.id=meeting_feedback.meeting_id "
+			+ "WHERE chief_mentor_id=? AND meeting_feedback.id=?);";
+	private static final String IS_USER_CHIEF_MENTOR_OF_PROJECT_WITH_MEMBER_SQL = "SELECT EXISTS(SELECT * FROM project "
+			+ "INNER JOIN team ON project.id=team.project_id "
+			+ "INNER JOIN user_team ON team.id=user_team.team_id "
+			+ "WHERE chief_mentor_id=? AND user_team.user_id=?);";
+
 
 	private static final String CHANGE_USER_STATUS_SQL = "UPDATE user_team "
 			+ "SET status_id = ?, comment = ? "
@@ -302,20 +321,54 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 	}
 	
 	@Override
-	public boolean isUserChiefMentorOfProject(String email, long projectId) {
-		return jdbcTemplate.queryForObject(IS_USER_CHIEF_MENTOR_OF_PROJECT_SQL, new Object[] {email, projectId}, Boolean.class);
+	public boolean isUserMemberOfProject(long id, long projectId) {
+		return jdbcTemplate.queryForObject(IS_USER_MEMBER_OF_PROJECT_SQL, new Object[] {id, projectId}, Boolean.class);
 	}
 	
 	@Override
-	public boolean isUserMemberOfProject(String email, long projectId, Role role) {
-		return jdbcTemplate.queryForObject(IS_USER_MEMBER_OF_PROJECT_SQL, new Object[] {email, projectId, role.getName()}, Boolean.class);
+	public boolean isUserMemberOfTeam(long id, long teamId) {
+		return jdbcTemplate.queryForObject(IS_USER_MEMBER_OF_TEAM_SQL, new Object[] {id, teamId}, Boolean.class);
 	}
-	
 	@Override
-	public boolean isUserMemberOfTeam(String email, long teamId, Role role) {
-		return jdbcTemplate.queryForObject(IS_USER_MEMBER_OF_TEAM_SQL, new Object[] {email, teamId, role.getName()}, Boolean.class);
+	public boolean isUserMemberOfTeamWithMeeting(long id, long meetingId) {
+		return jdbcTemplate.queryForObject(IS_USER_MEMBER_OF_TEAM_WITH_MEETING_SQL, new Object[] {id, meetingId}, Boolean.class);
 	}
 
+	@Override
+	public boolean isUserMemberOfTeamWithfMeetingFeedback(long id, long meetingFeedbackId) {
+		return jdbcTemplate.queryForObject(IS_USER_MEMBER_OF_TEAM_WITH_MEETING_FEEDBACK_SQL, new Object[] {id, meetingFeedbackId}, Boolean.class);
+	}
+
+	@Override
+	public boolean isUserMemberOfTeamWithMember(long id, long userId) {
+		return jdbcTemplate.queryForObject(IS_USER_MEMBER_OF_TEAM_WITH_MEMBER_SQL, new Object[] {id, userId}, Boolean.class);
+	}
+	
+	@Override
+	public boolean isUserChiefMentorOfProject(long id, long projectId) {
+		return jdbcTemplate.queryForObject(IS_USER_CHIEF_MENTOR_OF_PROJECT_SQL, new Object[] {id, projectId}, Boolean.class);
+	}
+
+	@Override
+	public boolean isUserChiefMentorOfProjectWithTeam(long id, long teamId) {
+		return jdbcTemplate.queryForObject(IS_USER_CHIEF_MENTOR_OF_PROJECT_WITH_TEAM_SQL, new Object[] {id, teamId}, Boolean.class);
+	}
+
+	@Override
+	public boolean isUserChiefMentorOfProjectWithMeeting(long id, long meetingId) {
+		return jdbcTemplate.queryForObject(IS_USER_CHIEF_MENTOR_OF_PROJECT_WITH_MEETING_SQL, new Object[] {id, meetingId}, Boolean.class);
+	}
+
+	@Override
+	public boolean isUserChiefMentorOfProjectWithMeetingFeedback(long id, long meetingFeedbackId) {
+		return jdbcTemplate.queryForObject(IS_USER_CHIEF_MENTOR_OF_PROJECT_WITH_MEETING_FEEDBACK_SQL, new Object[] {id, meetingFeedbackId}, Boolean.class);
+	}
+
+	@Override
+	public boolean isUserChiefMentorOfProjectWithMember(long id, long userId) {
+		return jdbcTemplate.queryForObject(IS_USER_CHIEF_MENTOR_OF_PROJECT_WITH_MEMBER_SQL, new Object[] {id, userId}, Boolean.class);
+	}
+	
 	
 	public static enum OrderableColumn {
 		ID("id"), EMAIL("email"), FIRST_NAME("first_name"), SECOND_NAME("second_name"), LAST_NAME("last_name"), ROLE("role");
@@ -398,7 +451,4 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			return result;
 		}
 	}
-
-
-
 }

@@ -36,9 +36,17 @@ public interface UserRepository {
 	public List<User> getFreeUsersByRole(long offset, int length, int orderBy, SortingOrder order, String searchString, Role role);
 	public long countFreeUsersByRole(Role role);
 	public long countFreeUsersByRoleFiltered(Role role, String searchString);
-	public boolean isUserMemberOfProject(String email, long projectId, Role role);
-	public boolean isUserMemberOfTeam(String email, long teamId, Role role);
-	public boolean isUserChiefMentorOfProject(String email, long projectId);
+	
+	public boolean isUserMemberOfProject(long id, long projectId);
+	public boolean isUserMemberOfTeam(long id, long teamId);
+	public boolean isUserMemberOfTeamWithMeeting(long id, long meetingId);
+	public boolean isUserMemberOfTeamWithfMeetingFeedback(long id, long meetingFeedbackId);
+	public boolean isUserMemberOfTeamWithMember(long id, long userId);
+	public boolean isUserChiefMentorOfProjectWithTeam(long id, long projectId);
+	public boolean isUserChiefMentorOfProject(long id, long projectId);
+	public boolean isUserChiefMentorOfProjectWithMeeting(long id, long meetingId);
+	public boolean isUserChiefMentorOfProjectWithMeetingFeedback(long id, long meetingFeedbackId);
+	public boolean isUserChiefMentorOfProjectWithMember(long id, long userId);
 
 	
 }

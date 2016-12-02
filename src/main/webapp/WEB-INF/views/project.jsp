@@ -2,7 +2,7 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h1>${project.name}
-	    	<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username, #project.id)">
+	    	<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal, #project.id)">
 	    	<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
 	    		<button type="button" class="btn btn-primary"
 			  		  data-toggle="modal" data-target="#projectTraitsManagerModal"
@@ -10,17 +10,18 @@
 			  		<i class="fa fa-bars" aria-hidden="true"></i>
 			  		Project Traits Manager
 			  	</button>
-			  	
 			  	<button type="button" class="btn btn-warning"
 			  		  data-toggle="modal" data-target="#editProjectModal"
 			  		  >
 			  		<i class="fa fa-pencil" aria-hidden="true"></i>
 			  		Edit Project
 			  	</button>
-			  	<a class="btn btn-danger" href="<c:url value="/project/delete/${project.id}/" />">
+			  	<button type="button" class="btn btn-danger"
+			  		data-toggle="modal" data-target="#deleteProjectModal"
+			  		>
 			  		<i class="fa fa-trash" aria-hidden="true"></i>
 			  		Delete Project
-			  	</a>
+			  	</button>
 			</div>
 		  </security:authorize>
 		</h1>
@@ -82,12 +83,11 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h2>Files
-		<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username, #project.id)">
+		<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal, #project.id)">
 			<button type="button" class="btn btn-success"
 				data-toggle="modal" data-target="#addFileToProjectModal" onclick="toggleFileDialog();">
 				<i class="fa fa-plus-circle" aria-hidden="true"></i>
 					Add file
-					
 			</button>
 		</security:authorize>
 		
@@ -97,7 +97,7 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h2>Teams
-			<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#project.id)">
+			<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal, #project.id)">
 			<button type="button" class="btn btn-success"
 				data-toggle="modal" data-target="#createTeamModal"
 				id="createTeamButton">
@@ -106,19 +106,19 @@
 				</button>
 			</security:authorize>
 		</h2>
-		<security:authorize access="hasAuthority('admin') || hasAuthority('hr') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#project.id)">
+		<security:authorize access="hasAuthority('admin') || hasAuthority('hr') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal,#project.id)">
 		<c:forEach items="${teams}" var="team">
 				<h3>
 					<a href="<c:url value="/team/view/${team.id}/" />" class="btn btn-warning">${team.name}</a>
 				</h3>
 		</c:forEach>
 		</security:authorize>
-		<security:authorize access="!(hasAuthority('admin') || hasAuthority('hr') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#project.id))">
+		<security:authorize access="!(hasAuthority('admin') || hasAuthority('hr') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal, #project.id))">
 		<c:forEach items="${teams}" var="team">
 				<h3>
 					
 						<button class="btn btn-warning" onclick="window.location.href='<c:url value="/team/view/${team.id}/" />' "
-						<security:authorize access="!@spmsWebSecurityService.isUserMentorOfTeam(principal.username,#team.id)">
+						<security:authorize access="!@spmsWebSecurityService.isUserMemberOfTeam(principal, #team.id)">
 							disabled
 						</security:authorize>
 
@@ -132,7 +132,7 @@
 	</div>
 </div>
 
-<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal.username,#project.id)">
+<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProject(principal, #project.id)">
 <!-- editProjectModal -->
 <div class="modal fade" id="editProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -142,7 +142,8 @@
         <h4 class="modal-title" id="myModalLabel">Edit Project</h4>
       </div>
       	<form name="createProjectForm" id="createProjectForm" onsubmit="onSubmitEditProjectForm();"
-        	action="<%=request.getContextPath()%>/project/update/${project.id}/" method="post">
+        	action="<%=request.getContextPath()%>/project/update/" method="post">
+        <input type="hidden" name="id" value="${project.id}">
       	<div class="modal-body">
 			<div class="form-group">
 				<label for="name">Project name:</label>
@@ -228,6 +229,33 @@
 			</div>
 		</div>
 		</form>
+		</div>
+	</div>
+</div>
+
+<!-- deleteProjectModal -->
+<div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Delete Project</h4>
+			</div>
+			<form action="<c:url value="/project/delete/" />" method="POST">
+				<div class="modal-body">
+					<div class="form-group">
+						<input type="hidden" name="id" value="${project.id}"/>
+						<p>Are you sure?</p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="submit" value="Submit" class="btn btn-danger">Delete Project</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>

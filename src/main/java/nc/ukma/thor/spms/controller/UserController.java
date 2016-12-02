@@ -106,8 +106,8 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping(path="/changeStatus/", method = RequestMethod.POST)
-    public String changeStatus(@RequestParam long team_id, @RequestParam long user_id, @RequestParam long new_status, @RequestParam String new_comment){
-		userService.changeUserStatus(team_id, user_id, new_status, new_comment);
+    public String changeStatus(@RequestParam long teamId, @RequestParam long userId, @RequestParam long newStatus, @RequestParam String newComment){
+		userService.changeUserStatus(teamId, userId, newStatus, newComment);
     	return "success";
     }
 

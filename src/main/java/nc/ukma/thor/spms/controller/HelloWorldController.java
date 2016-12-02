@@ -3,6 +3,7 @@ package nc.ukma.thor.spms.controller;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,5 +42,18 @@ public class HelloWorldController {
     	return "index";
 
     }
+    @RequestMapping(value="/something/", method = RequestMethod.GET)
+    public String justForTest(ModelMap model, Principal principal) {
     
+    return "index";
+
+    }
+    
+    @RequestMapping(value="/403/", method = RequestMethod.GET)
+    public String accessDiniedErrorPage(ModelMap model, Principal principal) {
+    	model.addAttribute("httpStatus", HttpStatus.FORBIDDEN.value());
+		model.addAttribute("message", "Access denied");
+		return "error";
+    }
+        
 }
