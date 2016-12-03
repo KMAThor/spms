@@ -55,6 +55,23 @@ public class Trait {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Trait other = (Trait) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "Trait [id=" + id + ", name=" + name + ", traitCategory=" + traitCategory + "]";
 	}

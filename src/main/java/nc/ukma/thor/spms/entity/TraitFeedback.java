@@ -9,7 +9,6 @@ public class TraitFeedback {
 	
 	public TraitFeedback() {}
 	
-	
 	public TraitFeedback(short score, String comment, Long traitId) {
 		this.score = score;
 		this.comment = comment;
@@ -53,6 +52,27 @@ public class TraitFeedback {
 
 	public void setTrait(Trait trait) {
 		this.trait = trait;
+	}
+	
+	public boolean isEmpty() {
+		return (score == 0 && comment.isEmpty());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TraitFeedback other = (TraitFeedback) obj;
+		if (trait == null) {
+			if (other.trait != null)
+				return false;
+		} else if (!trait.equals(other.trait))
+			return false;
+		return true;
 	}
 
 	@Override

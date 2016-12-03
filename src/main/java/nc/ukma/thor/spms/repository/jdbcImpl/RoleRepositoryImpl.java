@@ -1,4 +1,4 @@
-package nc.ukma.thor.spms.repository;
+package nc.ukma.thor.spms.repository.jdbcImpl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.repository.RoleRepository;
 
 @Repository
 public class RoleRepositoryImpl implements RoleRepository{

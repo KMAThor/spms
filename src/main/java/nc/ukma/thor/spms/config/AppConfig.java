@@ -12,9 +12,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Configuration
+@EnableTransactionManagement
 @ComponentScan("nc.ukma.thor.spms")
 @PropertySource("properties/jdbc.properties")
 public class AppConfig {
@@ -38,6 +42,11 @@ public class AppConfig {
 
         return dataSource;
     }
+    @Bean
+    public PlatformTransactionManager txManager() {
+        return new DataSourceTransactionManager(dataSource());
+    }
+    
     @Bean
     public JdbcTemplate getJdbcTemplate(DataSource dataSource){
     	JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);

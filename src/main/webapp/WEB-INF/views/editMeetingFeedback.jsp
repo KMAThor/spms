@@ -31,7 +31,7 @@
 					<c:forEach var="trait" items="${traitCategory.traits}">
 					 	<c:set var="traitFeedbackId" value="0" />
 					    <c:set var="score" value="0" />
-					    <c:set var="comment" value="0" />
+					    <c:set var="comment" value="" />
 						<c:forEach var="traitFeedback" items="${meetingFeedback.traitFeedbacks}">
 						  	<c:if test="${traitFeedback.trait.id eq trait.id}">
 						  		<c:set var="traitFeedbackId" value="${traitFeedback.id}" />
@@ -68,7 +68,7 @@
 								
 							</div>
 							<div class="col-sm-9">
-								<h4 ><strong> Comment</strong></h4>
+								<h4><strong>Comment</strong></h4>
 								<textarea name="comments" class="gradeComment form-control" placeholder="This field is optional" 
 									>${comment}</textarea>
 							</div>

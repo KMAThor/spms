@@ -31,9 +31,12 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 	private static final String DELETE_MEETING_FEEDBACK_SQL = "DELETE FROM meeting_feedback WHERE id=?;";
 	private static final String GET_MEETING_FEEDBACK_BY_ID_SQL = "SELECT "
 			+ "meeting_feedback.id AS meeting_feedback_id, summary, student_id, meeting_id, author_id,"
-			+ "trait_feedback.id AS trait_feedback_id, score, comment, trait_id "
+			+ "trait_feedback.id AS trait_feedback_id, score, comment, trait_id, first_name, second_name, "
+			+ "last_name, topic, start_date "
 			+ "FROM meeting_feedback "
-			+ "INNER JOIN trait_feedback ON meeting_feedback.id=trait_feedback.meeting_feedback_id "
+			+ "INNER JOIN \"user\" ON meeting_feedback.student_id=\"user\".id "
+			+ "INNER JOIN meeting ON meeting_feedback.meeting_id=meeting.id "
+			+ "LEFT JOIN trait_feedback ON meeting_feedback.id=trait_feedback.meeting_feedback_id "
 			+ "WHERE meeting_feedback.id=? "
 			+ "ORDER BY meeting_feedback_id, trait_feedback_id;";
 	
@@ -44,9 +47,12 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 	
 	private static final String GET_MEETING_FEEDBACK_BY_MEETING_STUDENT_MENTOR_SQL = "SELECT "
 			+ "meeting_feedback.id AS meeting_feedback_id, summary, student_id, meeting_id, author_id,"
-			+ "trait_feedback.id AS trait_feedback_id, score, comment, trait_id "
+			+ "trait_feedback.id AS trait_feedback_id, score, comment, trait_id, first_name, second_name, "
+			+ "last_name, topic, start_date "
 			+ "FROM meeting_feedback "
-			+ "INNER JOIN trait_feedback ON meeting_feedback.id=trait_feedback.meeting_feedback_id "
+			+ "INNER JOIN \"user\" ON meeting_feedback.student_id=\"user\".id "
+			+ "INNER JOIN meeting ON meeting_feedback.meeting_id=meeting.id "
+			+ "LEFT JOIN trait_feedback ON meeting_feedback.id=trait_feedback.meeting_feedback_id "
 			+ "WHERE meeting_id=? AND student_id=? AND author_id=? "
 			+ "ORDER BY meeting_feedback_id, trait_feedback_id;";
 	
@@ -54,9 +60,6 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
-	@Autowired
-	private TraitFeedbackRepository traitFeedbackRepository;
 	
 	@Override
 	public void add(MeetingFeedback meeetingFeedback) {
@@ -71,7 +74,6 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 			return ps;
 			},keyHolder);
 		meeetingFeedback.setId((Long) keyHolder.getKey());
-		traitFeedbackRepository.addTraitFeedbacks(meeetingFeedback.getTraitFeedbacks(), meeetingFeedback);
 	}
 
 	@Override
@@ -83,7 +85,6 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 						meeetingFeedback.getAuthor().getId(),
 						meeetingFeedback.getId()
 				});
-		traitFeedbackRepository.updateTraitFeedbacks(meeetingFeedback.getTraitFeedbacks());
 	}
 
 	@Override
@@ -134,9 +135,15 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 					meetingFeedback = null;
 				}
 				if(meetingFeedback == null) {
+					User student = new User();
+					student.setId(rs.getLong("student_id"));
+					student.setFirstName(rs.getString("first_name"));
+					student.setSecondName(rs.getString("second_name"));
+					student.setLastName(rs.getString("last_name"));
+					Meeting meeting = new Meeting(rs.getLong("meeting_id"), rs.getString("topic"), rs.getTimestamp("start_date"));
 					meetingFeedback = new MeetingFeedback(rs.getLong("meeting_feedback_id"),
-							rs.getString("summary"), rs.getLong("student_id"),
-							rs.getLong("meeting_id"),rs.getLong("author_id"));
+							rs.getString("summary"), student,
+							meeting, new User(rs.getLong("author_id")));
 				}
 				meetingFeedback.addTraitFeedback(new TraitFeedback(rs.getLong("trait_feedback_id"),
 						rs.getShort("score"), rs.getString("comment"),rs.getLong("trait_id")));

@@ -53,6 +53,14 @@ public class MeetingFeedback {
 		this.author = user;
 	}
 
+	public MeetingFeedback(Long id, String summary, User student, Meeting meeting, User author) {
+		this.id = id;
+		this.summary = summary;
+		this.meeting = meeting;
+		this.student = student;
+		this.author = author;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -106,7 +114,6 @@ public class MeetingFeedback {
 	public void addTraitFeedback(TraitFeedback traitFeedback) {
 		traitFeedbacks.add(traitFeedback);
 	}
-
 
 	@Override
 	public String toString() {

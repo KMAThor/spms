@@ -17,6 +17,12 @@ public class Meeting {
 	public Meeting(Long id) {
 		this.id = id;
 	}
+	
+	public Meeting(Long id, String topic, Timestamp startDate) {
+		this.id = id;
+		this.topic = topic;
+		this.startDate = startDate;
+	}
 
 	public Meeting(String topic, Timestamp startDate, Team team) {
 		this.topic = topic;
