@@ -155,16 +155,15 @@
 								<div class="col-lg-3 padtop" id="user-${member.key.id}">
 									<c:choose>
 										<c:when test="${empty member.key.linkToPhoto}">
-											<img src="<%=request.getContextPath()%>/resources/img/anonymous.jpg"
-												class="img-rounded" style="width: 150px; height: 150px">
+											<img src="<%=request.getContextPath()%>/resources/img/photos/anonymous.png"
+												class="img-rounded" style="width: 80%">
 										</c:when>
 										<c:otherwise>
-											<img src="${member.key.linkToPhoto}" class="img-rounded"
-												style="width: 150px; height: 150px">
+											<img src="<%=request.getContextPath()%>/resources/img/photos/${member.key.linkToPhoto}" class="img-rounded"
+												style="width: 80%">
 										</c:otherwise>
 									</c:choose>
-									<p style="padding-top: 10px">${member.key.firstName}
-										${member.key.secondName}</p>
+									<p style="padding-top: 10px">${member.key.firstName} ${member.key.lastName}</p>
 									<h6>${member.key.email}</h6>
 									<p>
 										<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfProjectWithThisTeam}">
@@ -213,7 +212,7 @@
 									
 									<c:choose>
 										<c:when test="${member.value.status.name == 'left_project'}">
-											<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; background-color: #DCDCDC; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
+											<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; background-color: #E0E0E0; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
 										</c:when>
 										<c:when test="${member.value.status.name == 'interview_was_scheduled'}">
 											<div id="div-color-${member.key.id}" style="border-radius: 5px; margin-right: 15px; background-color: #D3FFAA; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">
@@ -228,16 +227,17 @@
 								
 									<c:choose>
 										<c:when test="${empty member.key.linkToPhoto}">
-											<img src="<%=request.getContextPath()%>/resources/img/anonymous.jpg"
-												class="img-rounded" style="width: 150px; height: 150px">
+											<img src="<%=request.getContextPath()%>/resources/img/photos/anonymous.png"
+												class="img-rounded" style="width: 80%">
 										</c:when>
 										<c:otherwise>
-											<img src="${member.key.linkToPhoto}" class="img-rounded"
-												style="width: 150px; height: 150px">
+											<img src="<%=request.getContextPath()%>/resources/img/photos/${member.key.linkToPhoto}" class="img-rounded"
+												style="width: 80%">
 										</c:otherwise>
 									</c:choose>
-									<p style="padding-top: 10px">${member.key.firstName}
-										${member.key.secondName}</p>
+									<p style="padding-top: 10px">
+										<a href="<%=request.getContextPath()%>/user/view/${member.key.id}/">${member.key.firstName} ${member.key.lastName}</a>
+									</p>
 									<h6>${member.key.email}</h6>
 									
 									<c:choose>
@@ -865,8 +865,8 @@ function addMentor(userId) {
 		var aaa = 'user';
 		if (isPhoto) {
 			$('#block-mentors').append('<div class="col-lg-3 padtop" id="user-' + user.id + '">\
-									<img src="' + user.linkToPhoto + '" class="img-rounded" style="width:150px; height:150px">\
-									<p style="padding-top: 10px">' + user.firstName + ' ' + user.secondName +'</p>\
+									<img src="<%=request.getContextPath()%>/resources/img/photos/' + user.linkToPhoto + '" class="img-rounded" style="width: 80%">\
+									<p style="padding-top: 10px">' + user.firstName + ' ' + user.lastName +'</p>\
 									<h6>' + user.email + '</h6>\
 									<p>\
 										<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">\
@@ -876,8 +876,8 @@ function addMentor(userId) {
 		}
 		else {
 			$('#block-mentors').append('<div class="col-lg-3 padtop" id="user-' + user.id + '">\
-									<img src="<%=request.getContextPath()%>/resources/img/anonymous.jpg" class="img-rounded" style="width:150px; height:150px">\
-									<p style="padding-top: 10px">' + user.firstName + ' ' + user.secondName +'</p>\
+									<img src="<%=request.getContextPath()%>/resources/img/photos/anonymous.png" class="img-rounded" style="width: 80%">\
+									<p style="padding-top: 10px">' + user.firstName + ' ' + user.lastName +'</p>\
 									<h6>' + user.email + '</h6>\
 									<p>\
 										<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">\
@@ -922,38 +922,38 @@ function addStudent(userId) {
 		if (isPhoto) {
 			$('#block-students').append('<div class="col-lg-3" id="user-' + user.id + '">\
 											<div id="div-color-' + user.id + '" style="border-radius: 5px; margin-right: 15px; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">\
-												<img src="' + user.linkToPhoto + '" class="img-rounded" style="width:150px; height:150px">\
-												<p style="padding-top: 10px">' + user.firstName + ' ' + user.secondName +'</p>\
-													<h6>' + user.email + '</h6>\
-													<abbr id="tStatusName-' + user.id + '" title="" class="initialism"><p id="pStatusName-' + user.id + '">ACTIVE</p></abbr>\
-													<p style="padding-top: 10px">\
-														<button type="button" class="btn btn-xs btn-warning" id="butStatus-' + user.id + '"\
-															data-toggle="modal" data-target="#changeStatusModal">\
-															<i class="fa fa-pencil" aria-hidden="true"></i>Change status\
-														</button>\
-														<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">\
-														<i class="fa fa-trash" aria-hidden="true"></i>Delete</button>\
-	  												</p>\
-								  				</div>\
-								  			</div>');
+												<img src="<%=request.getContextPath()%>/resources/img/photos/' + user.linkToPhoto + '" class="img-rounded" style="width: 80%">\
+												<p style="padding-top: 10px"><a href="<%=request.getContextPath()%>/user/view/${user.id}/">' + user.firstName + ' ' + user.lastName +'</p>\
+												<h6>' + user.email + '</h6>\
+												<abbr id="tStatusName-' + user.id + '" title="" class="initialism"><p id="pStatusName-' + user.id + '">ACTIVE</p></abbr>\
+												<p style="padding-top: 10px">\
+													<button type="button" class="btn btn-xs btn-warning" id="butStatus-' + user.id + '"\
+														data-toggle="modal" data-target="#changeStatusModal">\
+														<i class="fa fa-pencil" aria-hidden="true"></i>Change status\
+													</button>\
+													<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">\
+													<i class="fa fa-trash" aria-hidden="true"></i>Delete</button>\
+	  											</p>\
+								  			</div>\
+								  		</div>');
 		}
 		else {
 			$('#block-students').append('<div class="col-lg-3" id="user-' + user.id + '">\
 											<div id="div-color-' + user.id + '" style="border-radius: 5px; margin-right: 15px; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">\
-												<img src="<%=request.getContextPath()%>/resources/img/anonymous.jpg" class="img-rounded" style="width:150px; height:150px">\
-												<p style="padding-top: 10px">' + user.firstName + ' ' + user.secondName +'</p>\
-													<h6>' + user.email + '</h6>\
-													<abbr id="tStatusName-' + user.id + '" title="" class="initialism"><p id="pStatusName-' + user.id + '">ACTIVE</p></abbr>\
-													<p style="padding-top: 10px">\
-														<button type="button" class="btn btn-xs btn-warning" id="butStatus-' + user.id + '"\
-															data-toggle="modal" data-target="#changeStatusModal">\
-															<i class="fa fa-pencil" aria-hidden="true"></i>Change status\
-														</button>\
-														<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">\
-														<i class="fa fa-trash" aria-hidden="true"></i>Delete</button>\
-	  												</p>\
-												</div>\
-											</div>');
+												<img src="<%=request.getContextPath()%>/resources/img/photos/anonymous.png" class="img-rounded" style="width: 80%">\
+												<p style="padding-top: 10px"><a href="<%=request.getContextPath()%>/user/view/${user.id}/">' + user.firstName + ' ' + user.lastName +'</a></p>\
+												<h6>' + user.email + '</h6>\
+												<abbr id="tStatusName-' + user.id + '" title="" class="initialism"><p id="pStatusName-' + user.id + '">ACTIVE</p></abbr>\
+												<p style="padding-top: 10px">\
+													<button type="button" class="btn btn-xs btn-warning" id="butStatus-' + user.id + '"\
+														data-toggle="modal" data-target="#changeStatusModal">\
+														<i class="fa fa-pencil" aria-hidden="true"></i>Change status\
+													</button>\
+													<button id="but' + user.id + '" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">\
+													<i class="fa fa-trash" aria-hidden="true"></i>Delete</button>\
+	  											</p>\
+											</div>\
+										</div>');
 		}
 		var element = document.getElementById('but' + user.id);
 		element.onclick = function () {
@@ -1062,7 +1062,7 @@ function changeStatus(){
 			document.getElementById("pStatusName-" + userId).innerHTML = "ACTIVE";
 		}
 		if (newStatus == 1){
-			document.getElementById("div-color-" + userId).style.backgroundColor = '#DCDCDC';
+			document.getElementById("div-color-" + userId).style.backgroundColor = '#E0E0E0';
 			document.getElementById("pStatusName-" + userId).innerHTML = "LEFT PROJECT";
 		}
 		if (newStatus == 2){
