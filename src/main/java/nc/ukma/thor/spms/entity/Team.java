@@ -7,6 +7,7 @@ public class Team {
 
 	private Long id;
 	private String name;
+	private String linkToRepo;
 	private Project project;
 	private Map<User, UserStatus> members;
 	private List<Meeting> meetings;
@@ -33,6 +34,14 @@ public class Team {
 
 	public String getName() {
 		return name;
+	}
+
+	public void setLinkToRepo(String linkToRepo) {
+		this.linkToRepo = linkToRepo;
+	}
+	
+	public String getLinkToRepo(String linkToRepo) {
+		return linkToRepo;
 	}
 
 	public void setName(String name) {

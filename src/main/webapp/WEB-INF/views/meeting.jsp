@@ -79,13 +79,13 @@
 										<c:otherwise>
    											<c:choose>
 												<c:when test="${participates}">
-										    		<div onclick="deleteParticipant(${member.key.id});">
-  														<input type="checkbox" checked>
+										    		<div>
+  														<input id="input-true" type="checkbox" onclick="deleteParticipant(${member.key.id});" checked>
 													</div>
 												</c:when>
 												<c:otherwise>
-													<div onclick="addParticipant(${member.key.id});">
-  														<input type="checkbox">
+													<div>
+  														<input id="input-false" type="checkbox" onclick="addParticipant(${member.key.id});">
 													</div>
 												</c:otherwise>
 											</c:choose>
@@ -206,6 +206,7 @@
 		
 		$('#loadingModal').modal('show');
 		var meetingId = "${meeting.id}";
+		alert("try to add " + userId);
 		
 		$.ajax({
 		    url: getContextPath()+'/meeting/addParticipant/',
@@ -218,6 +219,10 @@
 			timeout: 15000
 		})
 		.done(function(message) {
+			document.getElementById('input-false').onclick=function(){
+				deleteParticipant(userId);
+			}
+		    alert("added " + userId);
 		    $('#loadingModal').modal('hide');
 		})
 		.fail(function( xhr, status, errorThrown ) {
@@ -233,6 +238,7 @@
 		
 		$('#loadingModal').modal('show');
 		var meetingId = "${meeting.id}";
+		alert("try to delete " + userId);
 		
 		$.ajax({
 		    url: getContextPath()+'/meeting/deleteParticipant/',
@@ -245,6 +251,10 @@
 			timeout: 15000
 		})
 		.done(function(message) {
+			document.getElementById('input-true').onclick=function(){
+				addParticipant(userId);
+			}
+		    alert("deleted " + userId);
 		    $('#loadingModal').modal('hide');
 		})
 		.fail(function( xhr, status, errorThrown ) {
