@@ -42,11 +42,13 @@ public interface UserRepository {
 	public boolean isUserMemberOfTeamWithMeeting(long id, long meetingId);
 	public boolean isUserMemberOfTeamWithMeetingFeedback(long id, long meetingFeedbackId);
 	public boolean isUserMemberOfTeamWithMember(long id, long userId);
+	public boolean isUserChiefMentor(long id);
 	public boolean isUserChiefMentorOfProjectWithTeam(long id, long projectId);
 	public boolean isUserChiefMentorOfProject(long id, long projectId);
 	public boolean isUserChiefMentorOfProjectWithMeeting(long id, long meetingId);
 	public boolean isUserChiefMentorOfProjectWithMeetingFeedback(long id, long meetingFeedbackId);
 	public boolean isUserChiefMentorOfProjectWithMember(long id, long userId);
+
 
 	
 }

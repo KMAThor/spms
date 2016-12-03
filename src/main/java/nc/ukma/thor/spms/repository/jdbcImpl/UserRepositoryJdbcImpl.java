@@ -170,6 +170,8 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "WHERE user_id=? AND EXISTS(SELECT * FROM user_team "
 									   + "WHERE team_id=X.team_id AND user_id=?));";
 	
+	private static final String IS_USER_CHIEF_MENTOR_SQL = "SELECT EXISTS(SELECT * FROM project "
+			+ "WHERE chief_mentor_id=?);";
 	private static final String IS_USER_CHIEF_MENTOR_OF_PROJECT_SQL = "SELECT EXISTS(SELECT * FROM project "
 			+ "WHERE chief_mentor_id=? AND id=?);";
 	private static final String IS_USER_CHIEF_MENTOR_OF_PROJECT_WITH_TEAM_SQL = "SELECT EXISTS(SELECT * FROM project "
@@ -343,6 +345,11 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 	@Override
 	public boolean isUserMemberOfTeamWithMember(long id, long userId) {
 		return jdbcTemplate.queryForObject(IS_USER_MEMBER_OF_TEAM_WITH_MEMBER_SQL, new Object[] {id, userId}, Boolean.class);
+	}
+	
+	@Override
+	public boolean isUserChiefMentor(long id) {
+		return jdbcTemplate.queryForObject(IS_USER_CHIEF_MENTOR_SQL, new Object[] {id}, Boolean.class);
 	}
 	
 	@Override

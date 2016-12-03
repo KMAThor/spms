@@ -11,7 +11,7 @@ public class SpmsWebSecurityServiceImpl implements SpmsWebSecurityService{
 	
 	@Autowired
 	private UserRepository userRepository;
-	
+		
 	@Override
 	public boolean isUserMemberOfProject(SpmsUserDetails principal, long projectId) {
 		return userRepository.isUserMemberOfProject(principal.getId(), projectId);
@@ -33,6 +33,10 @@ public class SpmsWebSecurityServiceImpl implements SpmsWebSecurityService{
 		return userRepository.isUserMemberOfTeamWithMember(principal.getId(), userId);
 	}
 	
+	@Override      
+	public boolean isUserChiefMentor(SpmsUserDetails principal) {
+		return userRepository.isUserChiefMentor(principal.getId());
+	}
 	@Override      
 	public boolean isUserChiefMentorOfProject(SpmsUserDetails principal, long projectId) {
 		return userRepository.isUserChiefMentorOfProject(principal.getId(), projectId);

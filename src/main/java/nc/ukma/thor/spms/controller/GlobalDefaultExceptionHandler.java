@@ -13,46 +13,33 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
 public class GlobalDefaultExceptionHandler {
-	public static final String DEFAULT_ERROR_VIEW = "error";
-	public static final String DEFAULT_ERROR_DESCRIPTION = "It looks like somebody has just lost his job =) "
-			+ "Be sure that our team has already received notification about this error."
-			+ "As soon as we solve this problem, you will get email notification. "
-			+ "Sorry for the inconvenience.";
 
 	@ExceptionHandler(value = { SQLException.class, DataAccessException.class })
 	public String databaseError(Model model, Exception e) {
+		//Logger should be used instead
 		e.printStackTrace();
-		
-		model.addAttribute("httpStatus", HttpStatus.INTERNAL_SERVER_ERROR.value());
-		model.addAttribute("message", "Database error, please try again later.");
-		return DEFAULT_ERROR_VIEW;
+		return "redirect:/databaseError/";
 	}
 	
 	@ExceptionHandler(IllegalArgumentException.class)
 	public String illegalArgumentException(Model model, Exception e) {
+		//Logger should be used instead
 		e.printStackTrace();
-
-		model.addAttribute("httpStatus", HttpStatus.FORBIDDEN.value());
-		model.addAttribute("message", "illegalArgumentException");
-		return DEFAULT_ERROR_VIEW;
+		return "redirect:/403/";
 	}
 	
 	@ExceptionHandler(AccessDeniedException.class)
 	public String accessDeniedError(Model model, Exception e) {
+		//Logger should be used instead
 		e.printStackTrace();
-
-		model.addAttribute("httpStatus", HttpStatus.FORBIDDEN.value());
-		model.addAttribute("message", "Access denied");
-		return DEFAULT_ERROR_VIEW;
+		return "redirect:/403/";
 	}
 	
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public String handleNoHandlerFoundException(Model model, NoHandlerFoundException e) {
+		//Logger should be used instead
 		e.printStackTrace();
-		
-		model.addAttribute("httpStatus", HttpStatus.NOT_FOUND.value());
-		model.addAttribute("message", "Such page does not exist");
-		return DEFAULT_ERROR_VIEW;
+		return "redirect:/404/";
 	}
 	
 	@ExceptionHandler(Exception.class)
@@ -62,12 +49,9 @@ public class GlobalDefaultExceptionHandler {
 		if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null)
 			throw e;
 		
+		//Logger should be used instead
 		e.printStackTrace();
-		
-		model.addAttribute("httpStatus", HttpStatus.INTERNAL_SERVER_ERROR.value());
-		model.addAttribute("message", "INTERNAL SERVER ERROR");
-		model.addAttribute("descrioption", DEFAULT_ERROR_DESCRIPTION);
-		return DEFAULT_ERROR_VIEW;
+		return "redirect:/500/";
 	}
 	
 }

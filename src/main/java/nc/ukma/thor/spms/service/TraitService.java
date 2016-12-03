@@ -7,5 +7,7 @@ import nc.ukma.thor.spms.entity.Trait;
 
 public interface TraitService extends Service<Trait>{
 	
+	public boolean isTraitUsed(Trait trait);
+	public void forceDelete(Trait trait);
 	public List<Trait> getTraitsWithoutNamesByProject(Project project);
 }

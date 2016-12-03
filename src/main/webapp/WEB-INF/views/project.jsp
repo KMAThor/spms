@@ -277,7 +277,7 @@
 				</button>
         		<h4 class="modal-title" id="myModalLabel">Choose chief mentor</h4>
       		</div>
-      		<div class="modal-body">
+      		<div class="modal-body row">
       			<div class="div-table">
 					<table id="usersTable" class="table table-striped table-hover table-bordered">
 						<thead>
@@ -287,16 +287,15 @@
 								<td>First Name</td>
 								<td>Second Name</td>
 								<td>Last Name</td>
-								<td>Role</td>
+								<td></td>
 							</tr>
 						</thead>
 					</table>
 					<script type="text/javascript">
 						$('#usersTable').DataTable( {
-
 						    serverSide: true,
 					        ajax: {
-						        url: getContextPath()+'/user/view/mentor/',
+						        url: getContextPath()+'/user/allWithRole/mentor/view/',
 						        type: 'POST',
 						        data: function ( d ) {
 								      return JSON.stringify( d );
@@ -305,7 +304,7 @@
 							    dataType: "json",
 							    dataSrc: function ( json ) {
 							    	for(var i=0, ien=json.data.length; i<ien ; i++ ) {
-							        	json.data[i]["email"] = '<a class="clickable" onclick="chooseChiefMentor('+json.data[i]["id"]+',&quot;'+json.data[i]["firstName"]+" "+json.data[i]["lastName"]+'&quot;'+');">'+json.data[i]["email"]+'</a>';
+							        	json.data[i]["role"] = '<a class="btn btn-sm  btn-success" onclick="chooseChiefMentor('+json.data[i]["id"]+',&quot;'+json.data[i]["firstName"]+" "+json.data[i]["lastName"]+'&quot;'+');">Choose</a>';
 							      	}
 							      	return json.data;
 								}
@@ -316,7 +315,7 @@
 							    { data: "firstName" },
 							    { data: "secondName" },
 							    { data: "lastName" },
-							    { data: "role" }
+							    { data: "role", orderable: false }
 							  ]
 						    
 						} );

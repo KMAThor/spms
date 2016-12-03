@@ -56,6 +56,20 @@ public class HelloWorldController {
 		return "error";
     }
     
+    @RequestMapping(value="/404/", method = RequestMethod.GET)
+    public String notFound(ModelMap model, Principal principal) {
+    	model.addAttribute("httpStatus", HttpStatus.NOT_FOUND.value());
+		model.addAttribute("message", "Such page does not exist");
+		return "error";
+    }
+    
+    @RequestMapping(value="/databaseError/", method = RequestMethod.GET)
+    public String databaseErrorPage(ModelMap model, Principal principal) {
+    	model.addAttribute("httpStatus", HttpStatus.INTERNAL_SERVER_ERROR.value());
+    	model.addAttribute("message", "Database error, please try again later.");
+		return "error";
+    }
+    
     @RequestMapping(value="/500/", method = RequestMethod.GET)
     public String internalServerError(ModelMap model, Principal principal) {
 		model.addAttribute("httpStatus", HttpStatus.INTERNAL_SERVER_ERROR.value());

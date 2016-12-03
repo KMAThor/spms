@@ -17,6 +17,11 @@
 				Unknown error, please contact your support team. 
 			</p>
 			<p>
+				Be sure that our team has already received notification about this error. <br>
+				As soon as we solve this problem, you will get email notification. <br>
+				Sorry for the inconvenience.
+			</p>
+			<p>
 				<a href="<%=request.getContextPath()%>/"><--- back to main page</a>
 			</p>
 		</div>

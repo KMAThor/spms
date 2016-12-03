@@ -12,27 +12,34 @@ import nc.ukma.thor.spms.service.TraitCategoryService;
 @Service
 public class TraitCategoryServiceImpl extends AbstractService<TraitCategory> implements TraitCategoryService{
 	
-	private TraitCategoryRepository traitRepository;
+	private TraitCategoryRepository traitCategoryRepository;
 	
 	@Autowired
 	public TraitCategoryServiceImpl(TraitCategoryRepository traitRepository){
 		super(traitRepository);
-		this.traitRepository = traitRepository;
+		this.traitCategoryRepository = traitRepository;
+	}
+	@Override
+	public boolean isTraitCategoryUsed(TraitCategory traitCategory){
+		return traitCategoryRepository.isTraitCategoryUsed(traitCategory);
+	}
+	@Override
+	public void forceDelete(TraitCategory traitCategory) {
+		traitCategoryRepository.forceDelete(traitCategory);
 	}
 
 	@Override
 	public List<TraitCategory> getAllCategoriesWithTraits() {
-		return traitRepository.getAllCategoriesWithTraits();
+		return traitCategoryRepository.getAllCategoriesWithTraits();
 	}
 
 	@Override
 	public List<TraitCategory> getAllCategoriesWithTraitsByProject(long projectId) {
-		return traitRepository.getAllCategoriesWithTraitsByProject(projectId);
+		return traitCategoryRepository.getAllCategoriesWithTraitsByProject(projectId);
 	}
 
 	@Override
 	public List<TraitCategory> getAllCategoriesWithTraitsByMeeting(long meetingId) {
-		return traitRepository.getAllCategoriesWithTraitsByMeeting(meetingId);
+		return traitCategoryRepository.getAllCategoriesWithTraitsByMeeting(meetingId);
 	}
-
 }

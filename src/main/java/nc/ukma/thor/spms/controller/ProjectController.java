@@ -73,7 +73,7 @@ public class ProjectController {
 	private FileService fileService;
 
     @ResponseBody
-	@RequestMapping(path = "/view/", method = RequestMethod.POST)
+	@RequestMapping(path = "/all/view/", method = RequestMethod.POST)
 	public DataTableResponseDTO<ProjectTableDTO> viewProjects(HttpServletRequest req,
 			@RequestBody DataTableRequestDTO dataTableRequest, Principal principal) {
     	

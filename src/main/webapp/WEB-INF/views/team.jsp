@@ -626,7 +626,7 @@ function getFreeMentors() {
 
 	    serverSide: true,
         ajax: {
-	        url: getContextPath()+'/user/view/free/mentor/',
+	        url: getContextPath()+'/user/allFreeWithRole/mentor/view/',
 	        type: 'POST',
 	        data: function ( d ) {
 			      return JSON.stringify( d );
@@ -658,7 +658,7 @@ function getFreeStudents() {
 
 	    serverSide: true,
         ajax: {
-	        url: getContextPath()+'/user/view/free/student/',
+	        url: getContextPath()+'/user/allFreeWithRole/student/view/',
 	        type: 'POST',
 	        data: function ( d ) {
 			      return JSON.stringify( d );

@@ -10,6 +10,7 @@ public interface SpmsWebSecurityService {
 	public boolean isUserMemberOfTeamWithMeetingFeedback(SpmsUserDetails principal, long meetingFeedbackId);
 	public boolean isUserMemberOfTeamWithMember(SpmsUserDetails principal, long userId);
 	
+	public boolean isUserChiefMentor(SpmsUserDetails principal);
 	public boolean isUserChiefMentorOfProject(SpmsUserDetails principal, long projectId);
 	public boolean isUserChiefMentorOfProjectWithTeam(SpmsUserDetails principal, long teamId);
 	public boolean isUserChiefMentorOfProjectWithMeeting(SpmsUserDetails principal, long meetingId);

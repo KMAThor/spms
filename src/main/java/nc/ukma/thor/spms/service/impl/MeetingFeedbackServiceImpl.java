@@ -63,11 +63,10 @@ public class MeetingFeedbackServiceImpl extends AbstractService<MeetingFeedback>
 				else traitFeedbacksToCreate.add(traitFeedback);
 			}
 		}
-		
 		meetingFeedbackRepository.update(meetingFeedback);
 		traitFeedbackService.addTraitFeedbacks(traitFeedbacksToCreate, meetingFeedback);
 		traitFeedbackService.updateTraitFeedbacks(traitFeedbacksToUpdate);
-		traitFeedbackService.updateTraitFeedbacks(traitFeedbacksToDelete);
+		traitFeedbackService.deleteTraitFeedbacks(traitFeedbacksToDelete);
 	}
 	
 }

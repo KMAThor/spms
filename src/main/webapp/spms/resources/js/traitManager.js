@@ -220,7 +220,39 @@ function deleteTraitCategory(id) {
 	    dataType : "text",
 		timeout: 15000
 	})
-	.done(function( json ) {
+	.done(function(response) {
+		if(response === '"success"'){
+			$('#category-'+ id).remove();
+		} else {
+			if (window.confirm('This trait category is used in some project. \n \
+				Do you really want to delete it? \n \
+				All mentor feedbacks related to it will be lost forever')){
+			    forceDeleteTraitCategory(id);
+			} else{
+			    // no, do nothing
+			}
+	    }
+	    $('#loadingModal').modal('hide');
+	})
+	.fail(function( xhr, status, errorThrown ) {
+		$('#loadingModal').modal('hide');
+		$('#networkErrorModal').modal('show');
+	})
+	.always(function( xhr, status ) {
+	});
+}
+
+function forceDeleteTraitCategory(id) {
+	$.ajax({
+	    url: getContextPath()+"/traitCategory/forceDelete/",
+	    data: {
+	        id: id
+	    },
+	    type: "POST",
+	    dataType : "text",
+		timeout: 15000
+	})
+	.done(function(response) {
 		$('#category-'+ id).remove();
 	    $('#loadingModal').modal('hide');
 	})
@@ -244,8 +276,41 @@ function deleteTrait(id) {
 	    dataType : "text",
 		timeout: 15000
 	})
-	.done(function( json ) {
-		$('#trait-'+ id).remove();
+	.done(function(response) {
+	    if(response === '"success"'){
+			$('#trait-'+ id).remove();	
+		} else {
+			if (window.confirm('This trait is used in some project. \n \
+				Do you really want to delete it? \n \
+				All mentor feedbacks related to it will be lost forever')){
+			    forceDeleteTrait(id);
+			} else{
+			    // no, do nothing
+			}
+	    }
+	    $('#loadingModal').modal('hide');
+	})
+	.fail(function( xhr, status, errorThrown ) {
+		$('#loadingModal').modal('hide');
+		$('#networkErrorModal').modal('show');
+	})
+	.always(function( xhr, status ) {
+	});
+}
+
+function forceDeleteTrait(id) {
+	$('#loadingModal').modal('show');
+	$.ajax({
+	    url: getContextPath()+"/trait/forceDelete/",
+	    data: {
+	        id: id
+	    },
+	    type: "POST",
+	    dataType : "text",
+		timeout: 15000
+	})
+	.done(function(response) {
+		$('#trait-'+ id).remove();	
 	    $('#loadingModal').modal('hide');
 	})
 	.fail(function( xhr, status, errorThrown ) {

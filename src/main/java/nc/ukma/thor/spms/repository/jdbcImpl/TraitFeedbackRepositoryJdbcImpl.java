@@ -23,6 +23,8 @@ public class TraitFeedbackRepositoryJdbcImpl implements TraitFeedbackRepository{
 	private static final String UPDATE_TRAIT_FEEDBACK_SQL = "UPDATE trait_feedback "
 			+ "SET score=?, comment=? "
 			+ "WHERE id=?;";
+	private static final String DELETE_TRAIT_FEEDBACK_SQL = "DELETE FROM trait_feedback "
+			+ "WHERE id=?;";
 	private static final String GET_TRAIT_FEEDBACK_BY_MEETING_FEEDBACK_SQL = "SELECT * FROM trait_feedback "
 			+ "WHERE meeting_feedback_id=?;";
 
@@ -55,6 +57,14 @@ public class TraitFeedbackRepositoryJdbcImpl implements TraitFeedbackRepository{
 		jdbcTemplate.batchUpdate(UPDATE_TRAIT_FEEDBACK_SQL, batch);
 	}
 	@Override
+	public void deleteTraitFeedbacks(List<TraitFeedback> traitFeedbacks) {
+		List<Object[]> batch = new ArrayList<Object[]>();
+		for(TraitFeedback traitFeedback: traitFeedbacks){
+			batch.add(new Object[] { traitFeedback.getId() });
+		}
+		jdbcTemplate.batchUpdate(DELETE_TRAIT_FEEDBACK_SQL, batch);
+	}
+	@Override
 	public List<TraitFeedback> getTraitFeedbacksByMeetingFeedback(MeetingFeedback meetingFeedback) {
 		return jdbcTemplate.query(GET_TRAIT_FEEDBACK_BY_MEETING_FEEDBACK_SQL,
 				new Object[] {meetingFeedback.getId()}, TRAIT_FEEDBACK_MAPPER);
@@ -69,6 +79,5 @@ public class TraitFeedbackRepositoryJdbcImpl implements TraitFeedbackRepository{
 					rs.getLong("trait_id"));
 			return traitFeedback;
 		}
-	}
-	
+	}	
 }
