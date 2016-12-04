@@ -48,6 +48,7 @@ public interface UserRepository {
 	public boolean isUserChiefMentorOfProjectWithMeeting(long id, long meetingId);
 	public boolean isUserChiefMentorOfProjectWithMeetingFeedback(long id, long meetingFeedbackId);
 	public boolean isUserChiefMentorOfProjectWithMember(long id, long userId);
+	public List<User> getMentorsByTeam(Team team);
 
 
 	

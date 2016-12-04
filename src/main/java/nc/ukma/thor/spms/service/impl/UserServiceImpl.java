@@ -41,6 +41,10 @@ public class UserServiceImpl implements UserService {
 	public List<User> getUsersByTeam(Team team) {
 		return userRepo.getUsersByTeam(team);
 	}
+	@Override
+	public List<User> getMentorsByTeam(Team team) {
+		return userRepo.getMentorsByTeam(team);
+	}
 	
 	@Override
 	public HashMap<User, UserStatus> getStudentsByTeam(Team team) {
@@ -66,6 +70,8 @@ public class UserServiceImpl implements UserService {
 	public void changeUserStatus(long team_id, long user_id, long new_status, String new_comment) {
 		userRepo.changeUserStatus(team_id, user_id, new_status, new_comment);
 	}
+
+	
 
 }
 

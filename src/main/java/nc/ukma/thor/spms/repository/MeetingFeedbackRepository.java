@@ -11,7 +11,8 @@ public interface MeetingFeedbackRepository extends MyRepository<MeetingFeedback>
 	public List<MeetingFeedback> getMeetingFeedbacksByMeeting(Meeting meeting);
 	public List<MeetingFeedback> getMeetingFeedbacksByStudent(User student);
 	public List<MeetingFeedback> getMeetingFeedbacksByMentor(User mentor);
-	public List<MeetingFeedback> getMeetingFeedbacksByMeetingAndStudent(Meeting meeting, User user);
-	public MeetingFeedback getMeetingFeedbacksByMeetingStudentMentor(Meeting meeting, User student, User mentor);
+	public List<MeetingFeedback> getMeetingFeedbacksWithoutTraitsByMeetingAndStudent(Meeting meeting, User user);
+	public MeetingFeedback getMeetingFeedbacksByMeetingStudentAuthor(Meeting meeting, User student, User mentor);
+	public MeetingFeedback getMeetingFeedbacksWithoutTraitsByMeetingStudentAuthor(Meeting meeting, User student, User author);
 	
 }

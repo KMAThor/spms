@@ -42,6 +42,13 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
 			+ "INNER JOIN role ON role.id = user_role.role_id " + "WHERE team_id = ?;";
 	
+	private static final String GET_MENTORS_BY_TEAM_SQL = "SELECT * FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
+			+ "INNER JOIN user_team ON \"user\".id = user_team.user_id "
+			+ "INNER JOIN role ON role.id = user_role.role_id "
+			+ "WHERE team_id = ? AND role='mentor';";
+	
 	private static final String GET_CHIEF_MENTOR_BY_PROJECT_SQL = "SELECT * FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
 			+ "INNER JOIN user_role ON \"user\".id = user_role.user_id "
@@ -228,6 +235,11 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 	}
 	
 	@Override
+	public List<User> getMentorsByTeam(Team team) {
+		return jdbcTemplate.query(GET_MENTORS_BY_TEAM_SQL, new Object[] { team.getId() }, USER_MAPPER);
+	}
+	
+	@Override
 	public User getChiefMentorByProject(long projectId) {
 		try {
 			User user = jdbcTemplate.queryForObject(GET_CHIEF_MENTOR_BY_PROJECT_SQL, new Object[] { projectId }, USER_MAPPER);
@@ -379,7 +391,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 	
 	
 	public static enum OrderableColumn {
-		ID("id"), EMAIL("email"), FIRST_NAME("first_name"), SECOND_NAME("second_name"), LAST_NAME("last_name"), ROLE("role");
+		ID("id"), EMAIL("email"), FIRST_NAME("first_name"), SECOND_NAME("second_name"), LAST_NAME("last_name");
 
 		private String columnName;
 
@@ -450,8 +462,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 				userStatus = new UserStatus(status);
 				userStatus.setComment(rs.getString("user_team_comment"));
 					
-				students.put(user, userStatus);
-				
+				students.put(user, userStatus);				
 			}
 			
 			result.add(students);

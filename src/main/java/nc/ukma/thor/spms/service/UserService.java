@@ -15,6 +15,7 @@ public interface UserService {
 	public User getUser(String login);
     public User getUserById(long id);
     public List<User> getUsersByTeam(Team team);
+	public List<User> getMentorsByTeam(Team team);
     public User getChiefMentorByProject(long projectId);
     public HashMap<User, UserStatus> getStudentsByTeam(Team team);
     public List<User> getUsersByMeeting(Meeting meeting);
@@ -23,4 +24,5 @@ public interface UserService {
 
 
     public List<User> getUsersByRole(long offset, int length, int orderBy, SortingOrder order, String search, Role role);
+
 }
