@@ -42,12 +42,13 @@ public class UserController {
     @PreAuthorize("hasAuthority('admin') || hasAuthority('hr') ")
     public String viewProject(@PathVariable long id, Model model ){
     	User user = userService.getUserById(id);
+    	if(user == null) return "redirect:/404/";
     	model.addAttribute("user", user);
         return "user";
     }
 	
 	@ResponseBody
-	@RequestMapping(path = "/view/", method = RequestMethod.POST)
+	@RequestMapping(path = "/all/view/", method = RequestMethod.POST)
 	public DataTableResponseDTO<UserTableDTO> viewUsers(HttpServletRequest req,
 			@RequestBody DataTableRequestDTO dataTableRequest) {
 		List<User> usersToShow = userRepository.getUsers(
@@ -67,7 +68,7 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(path = "/view/{userRole}/", method = RequestMethod.POST)
+	@RequestMapping(path = "/allWithRole/{userRole}/view/", method = RequestMethod.POST)
 	public DataTableResponseDTO<UserTableDTO> viewUsersByRole(HttpServletRequest req, @PathVariable String userRole,
 			@RequestBody DataTableRequestDTO dataTableRequest) {
 		Role role = Role.valueOf(userRole.toUpperCase());
@@ -86,7 +87,7 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(path = "/view/free/{userRole}/", method = RequestMethod.POST)
+	@RequestMapping(path = "/allFreeWithRole/{userRole}/view/", method = RequestMethod.POST)
 	public DataTableResponseDTO<UserTableDTO> viewFreeUsersByRole(HttpServletRequest req, @PathVariable String userRole,
 			@RequestBody DataTableRequestDTO dataTableRequest) {
 		Role role = Role.valueOf(userRole.toUpperCase());

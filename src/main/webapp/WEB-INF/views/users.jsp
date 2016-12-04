@@ -12,12 +12,12 @@
 			<table id="usersTable" class="table table-striped table-hover table-bordered">
 				<thead>
 					<tr>
-						<td>Id</td>
+						<!--<td>Id</td>-->
 						<td>Email</td>
 						<td>First Name</td>
 						<td>Second Name</td>
 						<td>Last Name</td>
-						<td>Role</td>
+						<!--<td>Role</td>-->
 					</tr>
 				</thead>
 			</table>
@@ -30,7 +30,7 @@
 
 				    serverSide: true,
 			        ajax: {
-				        url: getContextPath()+'/user/view/student/',
+				        url: getContextPath()+'/user/allWithRole/student/view/',
 				        type: 'POST',
 				        data: function ( d ) {
 						      return JSON.stringify( d );
@@ -48,12 +48,12 @@
 						}
 				    },
 				    columns: [
-					    { data: "id" },
+					   /* { data: "id" },*/
 					    { data: "email" },
 					    { data: "firstName" },
 					    { data: "secondName" },
-					    { data: "lastName" },
-					    { data: "role" }
+					    { data: "lastName" }/*,
+					    { data: "role" }*/
 					  ]
 				    
 				} );

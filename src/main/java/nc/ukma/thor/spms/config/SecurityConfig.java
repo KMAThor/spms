@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/project/update/").access("hasAuthority('admin') "
 						+ "|| (hasAuthority('mentor')"
 							+ "&& @spmsWebSecurityService.isUserChiefMentorOfProject(principal, request.getParameter('id')))")
-				.antMatchers().hasAuthority("admin")
+
 				.antMatchers("/project/addTrait/",
 							"/project/deleteTrait/",
 							"/project/addTraitCategory/",
@@ -116,14 +116,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/user/changeStatus/").access("hasAnyAuthority({'admin','hr'}) "
 						+ "|| (hasAuthority('mentor') && (@spmsWebSecurityService.isUserMemberOfTeam(principal, request.getParameter('teamId')) "
 						+ "|| @spmsWebSecurityService.isUserChiefMentorOfProjectWithTeam(principal, request.getParameter('teamId'))))")
-				//.antMatchers("/user/view/{id}/").access("hasAnyAuthority({'admin','hr'}) "
-				//		+ "|| (hasAuthority('mentor') && (@spmsWebSecurityService.isUserMemberOfTeamWithMember(principal, #id) "
-				//			+ "|| @spmsWebSecurityService.isUserChiefMentorOfProjectWithMember(principal, #id)))")
-				/*.antMatchers("/user/view/").hasAnyAuthority("admin","hr")
-				.antMatchers("/user/view/{userRole}/").hasAnyAuthority("admin","hr")
-				.antMatchers("/user/view/not/{userRole}/").hasAnyAuthority("admin","hr")
-				.antMatchers("/view/free/{userRole}/").hasAnyAuthority("admin","hr")*/
+			
+				.antMatchers("/user/view/{id}/").access("hasAnyAuthority({'admin','hr'}) "
+						+ "|| (hasAuthority('mentor') && (@spmsWebSecurityService.isUserMemberOfTeamWithMember(principal, #id) "
+							+ "|| @spmsWebSecurityService.isUserChiefMentorOfProjectWithMember(principal, #id)))")
+			
+				.antMatchers("/user/all/view/",
+							"/user/allWithRole/student/view/").hasAnyAuthority("admin","hr")
 				
+				.antMatchers("/user/allWithRole/mentor/view/",
+							"/allFreeWithRole/{role}/view/").access("hasAnyAuthority({'admin','hr'}) "
+									+ "|| (hasAuthority('mentor') && @spmsWebSecurityService.isUserChiefMentor(principal)) ")
+
+				//.anyRequest().denyAll()
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()

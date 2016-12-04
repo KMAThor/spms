@@ -15,6 +15,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
 import nc.ukma.thor.spms.repository.TraitCategoryRepository;
@@ -25,6 +26,12 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 	private static final String INSERT_TRAITCATEGORY_SQL = "INSERT INTO trait_category (name) VALUES(?);";
 	private static final String UPDATE_TRAITCATEGORY_SQL = "UPDATE trait_category SET name = ? WHERE id = ?;";
 	private static final String DELETE_TRAITCATEGORY_SQL = "DELETE FROM trait_category WHERE id = ?;";
+	private static final String FORCE_DELETE_TRAITCATEGORY_SQL = "DELETE FROM trait_project "
+			+ "WHERE trait_id IN (SELECT id FROM trait WHERE category_id=?); " 
+			+ "DELETE FROM trait_feedback "
+			+ "WHERE trait_id IN (SELECT id FROM trait WHERE category_id=?); "
+			+ "DELETE FROM trait_category WHERE id = ?;";
+	
 	private static final String GET_TRAITCATEGORY_BY_ID_SQL = "SELECT * FROM trait_category WHERE id = ?;";
 	
 	private static final String GET_TRAITCATEGORY_BY_TRAIT_SQL = "SELECT * FROM trait_category "
@@ -56,6 +63,20 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 			+ "WHERE meeting.id = ? "
 			+ "ORDER BY trait_category_id, trait_id;";
 	
+	private static final String IS_TRAIT_CATEGORY_USED = "SELECT (EXISTS(SELECT * "
+			+ "FROM trait_feedback "
+			+ "INNER JOIN trait ON trait_feedback.trait_id=trait.id "
+			+ "WHERE trait.category_id = ?) "
+			+ "OR EXISTS(SELECT * "
+			+ "FROM trait_project "
+			+ "INNER JOIN trait ON trait_project.trait_id = trait.id "
+			+ "WHERE trait.category_id = ?));";
+	
+	private static final String IS_TRAIT_CATEGORY_USED_IN_PROJECT = "SELECT EXISTS(SELECT * "
+			+ "FROM trait_project "
+			+ "INNER JOIN trait ON trait_project.trait_id = trait.id "
+			+ "WHERE trait.category_id = ? AND project_id=?);";
+	
 	private static final RowMapper<TraitCategory> TRAITCATEGORY_MAPPER = new TraitCategoryMapper();
 	private static final TraitCategoriesWithTraitsMapper TRAITCATEGORIS_WITH_TRAITS_MAPPER = new TraitCategoriesWithTraitsMapper();
 	
@@ -81,6 +102,11 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 	@Override
 	public void delete(TraitCategory tc) {
 		jdbcTemplate.update(DELETE_TRAITCATEGORY_SQL, tc.getId());
+	}
+	@Override
+	public void forceDelete(TraitCategory traitCategory) {
+		jdbcTemplate.update(FORCE_DELETE_TRAITCATEGORY_SQL,
+				new Object[] { traitCategory.getId(), traitCategory.getId(), traitCategory.getId()});	
 	}
 
 	@Override
@@ -121,6 +147,18 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_ALL_TRAITCATEGORIS_WITH_TRAITS_BY_MEETING_SQL, 
 				new Object[] { meetingId });
 		return TRAITCATEGORIS_WITH_TRAITS_MAPPER.mapRows(rows);
+	}
+	
+	@Override
+	public boolean isTraitCategoryUsed(TraitCategory traitCategory) {
+		return jdbcTemplate.queryForObject(IS_TRAIT_CATEGORY_USED,
+				new Object [] {traitCategory.getId(), traitCategory.getId()}, Boolean.class);
+	}
+
+	@Override
+	public boolean isTraitCategoryUsedInProject(TraitCategory traitCategory, Project project) {
+		return jdbcTemplate.queryForObject(IS_TRAIT_CATEGORY_USED_IN_PROJECT,
+				new Object [] {traitCategory.getId(), project.getId()}, Boolean.class);
 	}
 
 	private static final class TraitCategoryMapper implements RowMapper<TraitCategory>{

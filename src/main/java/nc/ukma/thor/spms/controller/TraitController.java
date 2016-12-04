@@ -48,8 +48,20 @@ public class TraitController {
 	
 	@ResponseBody
 	@RequestMapping(path="/traitCategory/delete/", method = RequestMethod.POST)
-	public String deleteTraitCategory(@RequestParam long id){
-		traitCategoryService.delete(new TraitCategory((short) id));
+	public String deleteTraitCategory(@RequestParam short id){
+		TraitCategory traitCategory = new TraitCategory(id);
+		if(traitCategoryService.isTraitCategoryUsed(traitCategory)) {
+			return "trait_category_is_used";
+		} else{
+			traitCategoryService.delete(traitCategory);
+			return "success";
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(path="/traitCategory/forceDelete/", method = RequestMethod.POST)
+	public String forceDeleteTraitCategory(@RequestParam long id){
+		traitCategoryService.forceDelete(new TraitCategory((short) id));
 		return "success";
 	}
 	
@@ -73,7 +85,19 @@ public class TraitController {
 	@ResponseBody
 	@RequestMapping(path="/trait/delete/", method = RequestMethod.POST)
 	public String deleteTrait(@RequestParam long id){
-		traitService.delete(new Trait(id));
+		Trait trait = new Trait(id);
+		if(traitService.isTraitUsed(trait)){
+			return "trait_is_used";
+		} else {
+			traitService.delete(trait);
+			return "success";
+		}
+	}
+	@ResponseBody
+	@RequestMapping(path="/trait/forceDelete/", method = RequestMethod.POST)
+	public String forceDeleteTrait(@RequestParam long id){
+		traitService.forceDelete(new Trait(id));
 		return "success";
 	}
+	
 }

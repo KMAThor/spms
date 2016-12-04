@@ -40,7 +40,7 @@
 
 					    serverSide: true,
 				        ajax: {
-							url: getContextPath()+'/project/view/',
+							url: getContextPath()+'/project/all/view/',
 					        type: 'POST',
 					        data: function ( d ) {
 							      return JSON.stringify( d );
@@ -186,7 +186,7 @@
 
 							    serverSide: true,
 						        ajax: {
-							        url: getContextPath()+'/user/view/mentor/',
+							        url: getContextPath()+'/user/allWithRole/mentor/view/',
 							        type: 'POST',
 							        data: function ( d ) {
 									      return JSON.stringify( d );

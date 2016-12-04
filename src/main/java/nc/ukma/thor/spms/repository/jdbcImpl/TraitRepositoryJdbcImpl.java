@@ -24,6 +24,11 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 	private static final String INSERT_TRAIT_SQL = "INSERT INTO trait (name, category_id) VALUES(?,?);";
 	private static final String UPDATE_TRAIT_SQL = "UPDATE trait SET name=?, category_id=? WHERE id=?;";
 	private static final String DELETE_TRAIT_SQL = "DELETE FROM trait WHERE id=?;";
+	private static final String FORCE_DELETE_TRAIT_SQL = "DELETE FROM trait_project "
+			+ "WHERE trait_id=?; "
+			+ "DELETE FROM trait_feedback "
+			+ "WHERE trait_id=?; "
+			+ "DELETE FROM trait WHERE id=?;";
 	private static final String GET_TRAIT_BY_ID_SQL = "SELECT * FROM trait WHERE id=?;";
 	private static final String GET_TRAITS_BY_TRAITCATEGORY_TRAIT_SQL = "SELECT * FROM trait WHERE category_id=?;";
 	private static final String GET_TRAITS_BY_PROJECT_SQL = "SELECT * FROM trait_project WHERE project_id=?;";
@@ -35,6 +40,16 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 	private static final String GET_TRAITS_BY_TRAITCATEGORY_AND_NOT_FROM_PROJECT_SQL = "SELECT * FROM trait "
 			+ "WHERE category_id=? AND NOT EXISTS (SELECT * FROM trait_project "
 												+ "WHERE trait_id = trait.id AND project_id=?);";
+	
+	private static final String IS_TRAIT_USED = "SELECT (EXISTS(SELECT * "
+			+ "FROM trait_project "
+			+ "WHERE trait_id=?) "
+			+ "OR EXISTS (SELECT * "
+			+ "FROM trait_feedback "
+			+ "WHERE trait_id = ?));";
+	private static final String IS_TRAIT_USED_IN_PROJECT = "SELECT EXISTS(SELECT * "
+			+ "FROM trait_project "
+			+ "WHERE trait_id=? AND project_id=?);";
 	
 	private static final RowMapper<Trait> TRAIT_MAPPER = new TraitMapper();
 	
@@ -62,6 +77,11 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 	@Override
 	public void delete(Trait trait) {
 		jdbcTemplate.update(DELETE_TRAIT_SQL, trait.getId());
+	}
+	@Override
+	public void forceDelete(Trait trait) {
+		jdbcTemplate.update(FORCE_DELETE_TRAIT_SQL,
+				new Object[]{trait.getId(), trait.getId(), trait.getId()});
 	}
 
 	@Override
@@ -103,6 +123,18 @@ public class TraitRepositoryJdbcImpl implements TraitRepository{
 		return jdbcTemplate.query(GET_TRAITS_BY_TRAITCATEGORY_AND_NOT_FROM_PROJECT_SQL,
 				new Object[] { traitCategoryId, projectId },
 				TRAIT_MAPPER);
+	}
+	
+	@Override
+	public boolean isTraitUsed(Trait trait) {
+		return jdbcTemplate.queryForObject(IS_TRAIT_USED,
+				new Object [] {trait.getId(), trait.getId()}, Boolean.class);
+	}
+
+	@Override
+	public boolean isTraitUsedInProject(Trait trait, Project project) {
+		return jdbcTemplate.queryForObject(IS_TRAIT_USED_IN_PROJECT,
+				new Object [] {trait.getId(), project.getId()}, Boolean.class);
 	}
 	
 	private static final class TraitMapper implements RowMapper<Trait>{

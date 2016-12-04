@@ -9,6 +9,7 @@ public interface TraitFeedbackService {
 	
 	public void addTraitFeedbacks(List<TraitFeedback> traitFeedbacks, MeetingFeedback meetingFeedback);
 	public void updateTraitFeedbacks(List<TraitFeedback> traitFeedbacks);
+	public void deleteTraitFeedbacks(List<TraitFeedback> traitFeedbacksToDelete);
 	public List<TraitFeedback> getTraitFeedbacksByMeetingFeedback(MeetingFeedback meetingFeedback);
 
 }

@@ -25,6 +25,11 @@ public class TraitFeedbackServiceImpl implements TraitFeedbackService{
 	public void updateTraitFeedbacks(List<TraitFeedback> traitFeedbacks) {
 		traitFeedbackRepository.updateTraitFeedbacks(traitFeedbacks);
 	}
+	
+	@Override
+	public void deleteTraitFeedbacks(List<TraitFeedback> traitFeedbacks) {
+		traitFeedbackRepository.deleteTraitFeedbacks(traitFeedbacks);
+	}
 
 	@Override
 	public List<TraitFeedback> getTraitFeedbacksByMeetingFeedback(MeetingFeedback meetingFeedback) {
