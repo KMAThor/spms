@@ -8,6 +8,13 @@
 	<div class="col-sm-10 col-sm-offset-1">
 		<h1>${project.name}
 	    	<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
+	    		<security:authorize access="hasAnyAuthority('admin','hr') || ${isUserChiefMentorOfThisProject}">
+	    		<a type="button" class="btn btn-success"
+			  		  href="<c:url value="/project/report/${project.id}/" />" >
+			  		<i class="fa fa-bars" aria-hidden="true"></i>
+			  		Generate Report
+			  	</a>
+			  	</security:authorize>
 	    		<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfThisProject}">
 	    		<button type="button" class="btn btn-primary"
 			  		  data-toggle="modal" data-target="#projectTraitsManagerModal"

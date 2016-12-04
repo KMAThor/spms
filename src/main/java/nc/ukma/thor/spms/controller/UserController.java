@@ -1,9 +1,12 @@
 package nc.ukma.thor.spms.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -39,7 +42,6 @@ public class UserController {
     }
 	
 	@RequestMapping(path="/view/{id}/", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('admin') || hasAuthority('hr') ")
     public String viewProject(@PathVariable long id, Model model ){
     	User user = userService.getUserById(id);
     	if(user == null) return "redirect:/404/";
@@ -111,5 +113,20 @@ public class UserController {
 		userService.changeUserStatus(teamId, userId, newStatus, newComment);
     	return "success";
     }
-
+	
+	@RequestMapping(path="/report/{studentId}/{projectId}/", method = RequestMethod.GET)
+    public void viewUserReport(@PathVariable long studentId, @PathVariable long projectId, HttpServletResponse response){
+		User student = userService.getUserById(studentId);
+		System.out.println(student);
+    	Workbook wb = userService.getReportStudentActivityInProjectInXlsFormat(student, new Project(projectId));
+    	response.setContentType("application/xls");
+    	response.setHeader("Content-disposition", "attachment; filename=Report about "+student.getEmail()+".xls");
+        try {
+			wb.write(response.getOutputStream());
+	        response.flushBuffer();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 }

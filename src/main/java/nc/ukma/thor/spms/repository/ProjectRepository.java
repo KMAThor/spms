@@ -43,6 +43,6 @@ public interface ProjectRepository extends MyRepository<Project>{
 	public Long countProjectsByMentor(String value, Long id);
 	public List<Project> getProjectsByMentor(int start, int length, int column, SortingOrder dir, String value,
 			Long id);
-	public ProjectReport getProjectReport(Long projectId);
+	public ProjectReport getProjectReport(long projectId);
 
 }

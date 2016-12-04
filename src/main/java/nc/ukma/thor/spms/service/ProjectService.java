@@ -1,11 +1,18 @@
 package nc.ukma.thor.spms.service;
 
 import nc.ukma.thor.spms.entity.*;
+import nc.ukma.thor.spms.entity.report.ProjectReport;
+import nc.ukma.thor.spms.entity.report.StudentReport;
 
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Workbook;
+
 public interface ProjectService extends Service<Project>{
 
+	public ProjectReport getProjectReport(Project project);
+	public Workbook getProjectReportInXlsFormat(Project project);
+	
     // chief mentor
     boolean setChiefUser(long projectId, User chief);
     boolean deleteChiefUser(long projectId);

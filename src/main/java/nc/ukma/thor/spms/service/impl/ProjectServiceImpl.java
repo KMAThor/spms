@@ -1,9 +1,13 @@
 package nc.ukma.thor.spms.service.impl;
 
 import nc.ukma.thor.spms.entity.*;
+import nc.ukma.thor.spms.entity.report.ProjectReport;
 import nc.ukma.thor.spms.repository.*;
 import nc.ukma.thor.spms.service.ProjectService;
+import nc.ukma.thor.spms.service.ReportService;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,8 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 
     @Autowired
 	private ProjectRepository projectRepository;
+    @Autowired
+	private ReportService reportService;
 
     @Autowired
     private TeamRepository teamRepository;
@@ -137,4 +143,14 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
     public String getInfo(long projectId) {
         return null;
     }
+    
+	@Override
+	public ProjectReport getProjectReport(Project project) {
+		return projectRepository.getProjectReport(project.getId());
+	}
+
+	@Override
+	public Workbook getProjectReportInXlsFormat(Project project) {
+		return reportService.projectReportToWorkbook(getProjectReport(project));
+	}
 }

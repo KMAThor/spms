@@ -186,7 +186,7 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	}
 	
 	@Override
-	public ProjectReport getProjectReport(Long id){
+	public ProjectReport getProjectReport(long id){
 		try{
 			return jdbcTemplate.queryForObject(GET_PROJECT_REPORT_SQL,
 						new Object[] { id, id, id, id },
