@@ -14,20 +14,14 @@ import nc.ukma.thor.spms.repository.FileRepository;
 import nc.ukma.thor.spms.repository.ProjectRepository;
 import nc.ukma.thor.spms.service.FileService;
 import nc.ukma.thor.spms.service.ProjectService;
-import nc.ukma.thor.spms.service.ReportService;
 import nc.ukma.thor.spms.service.TeamService;
 import nc.ukma.thor.spms.service.TraitCategoryService;
 import nc.ukma.thor.spms.service.TraitService;
 import nc.ukma.thor.spms.service.UserService;
 import nc.ukma.thor.spms.util.DateUtil;
 import nc.ukma.thor.spms.util.FileBucket;
-import nc.ukma.thor.spms.util.FileValidator;
-<<<<<<< HEAD
-
 import org.apache.commons.io.IOUtils;
-=======
 import org.apache.poi.ss.usermodel.Workbook;
->>>>>>> f599abe5cf8f74c986e019367466e8c131ca3b1d
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,22 +35,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-<<<<<<< HEAD
-
-import java.io.BufferedReader;
 import java.io.FileInputStream;
-=======
->>>>>>> f599abe5cf8f74c986e019367466e8c131ca3b1d
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
