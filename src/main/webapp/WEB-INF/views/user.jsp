@@ -19,16 +19,14 @@
 	<security:authorize access="hasAuthority('hr')">
 		<div class="btn-group">
 			<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					View Feedback Of
+					Report
 					<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu">
-				<c:forEach items="${hrFeedbacksOnStudents[loop.index]}"
-					var="hrFeedback">
+				<c:forEach items="${projects}" var="project">
 					<li>
-						<a href="<c:url value="/hrFeedback/view/${hrFeedback.id}/" />">
-							${hrFeedback.author.firstName}
-							${hrFeedback.author.lastName}
+						<a href="<c:url value="/user/report/${user.id}/${project.id}/" />">
+							${project.name}
 						</a>
 					</li>
 				</c:forEach>

@@ -24,11 +24,15 @@ import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.UserRepository;
+import nc.ukma.thor.spms.service.ProjectService;
 import nc.ukma.thor.spms.service.UserService;
 
 @Controller
 @RequestMapping("/user/")
 public class UserController {
+	
+	@Autowired
+	private ProjectService projectService;
 	
 	@Autowired
 	private UserService userService;
@@ -46,6 +50,8 @@ public class UserController {
     	User user = userService.getUserById(id);
     	if(user == null) return "redirect:/404/";
     	model.addAttribute("user", user);
+    	List<Project> projects = projectService.getProjectsByUser(id);
+    	model.addAttribute("projects", projects);
         return "user";
     }
 	

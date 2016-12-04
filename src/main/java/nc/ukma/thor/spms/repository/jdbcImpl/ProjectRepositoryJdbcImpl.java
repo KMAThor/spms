@@ -38,6 +38,11 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	private static final String GET_PROJECT_BY_ID_SQL = "SELECT * FROM project WHERE id=?;";
 	private static final String GET_ALL_ACTIVE_PROJECTS_SQL = "SELECT * FROM project WHERE is_completed = FALSE;";
 	private static final String GET_ALL_PROJECTS_SQL = "SELECT * FROM project;";
+	private static final String GET_PROJECTS_BY_USER_SQL = "SELECT * FROM project "
+			+ "INNER JOIN team ON project.id = team.project_id "
+			+ "INNER JOIN user_team ON team.id = user_team.team_id "
+			+ "INNER JOIN \"user\" ON user_team.user_id = \"user\".id "
+			+ "WHERE \"user\".id = ?;";
 	
 	private static final String ADD_TRAIT_TO_PROJECT_SQL = "INSERT INTO trait_project (trait_id, project_id) VALUES(?,?);";
 	private static final String DELETE_TRAIT_FROM_PROJECT_SQL = "DELETE FROM trait_project WHERE trait_id=? AND project_id=?;";
@@ -305,6 +310,11 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 		List<Trait> traits = traitRepository.getTraitsByTraitCategoryAndProject(traitCategoryId, projectId);
 		return jdbcTemplate.batchUpdate(DELETE_TRAIT_FROM_PROJECT_SQL,
         		prepareTraitsToBanchUpdate(traits, projectId));
+	}
+	
+	@Override
+	public List<Project> getProjectsByUser(long userId) {
+		return jdbcTemplate.query(GET_PROJECTS_BY_USER_SQL, new Object[] { userId }, PROJECT_MAPPER);
 	}
 	
 	private List<Object[]> prepareTraitsToBanchUpdate(List<Trait> traits, Long projectId){

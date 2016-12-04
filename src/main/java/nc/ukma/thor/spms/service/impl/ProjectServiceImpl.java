@@ -153,4 +153,10 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 	public Workbook getProjectReportInXlsFormat(Project project) {
 		return reportService.projectReportToWorkbook(getProjectReport(project));
 	}
+
+
+	@Override
+	public List<Project> getProjectsByUser(long userId) {
+		return projectRepository.getProjectsByUser(userId);
+	}
 }
