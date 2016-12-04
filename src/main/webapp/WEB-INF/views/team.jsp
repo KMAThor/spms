@@ -103,10 +103,21 @@
 				</div>
 			</div>
 			<div class="tab-pane fade" id="files">
+			
+			<ul>
+			<c:forEach items="${files}" var="file">
+				<li>
+					<a href="<%=request.getContextPath()%>/project/${project.id}/downloadFile/${file.name}/" >
+						${file.name} <br />
+					</a>
+				</li>
+			</c:forEach>
+		</ul>
+			
 				<security:authorize access="hasAnyAuthority('admin', 'mentor')">
 					<div class="panel-center">
-						<button type="button" id="addFileButton" class="btn btn-success"
-							data-toggle="modal" data-target="#addFileModal">
+						<button type="button" onclick="toggleFileDialog();" class="btn btn-success"
+							data-toggle="modal" data-target="#addFileToProjectModal">
 							<i class="fa fa-plus-circle" aria-hidden="true"></i> Add file
 						</button>
 					</div>
@@ -570,6 +581,28 @@
 					<button type="button" class="btn btn-warning"
 						onclick="changeStatus();">Change</button>
 				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- uploadFileModal -->
+<div class="modal fade" id="addFileToProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form action="<%=request.getContextPath()%>/project/uploadFile/" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="id" value="${project.id}">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel2">Upload</h4>
+				</div>
+				<div class="modal-body">
+					<input type="file" id="file" name="file" />
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="submit" class="btn btn-warning">Upload</button>
+				</div>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 		</div>
 	</div>
