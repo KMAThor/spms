@@ -61,6 +61,7 @@
  										</c:if>
 									</c:forEach>
 									
+									<security:authorize access="hasAnyAuthority('admin','mentor')">	
 									<c:choose>
 										<c:when test="${member.value.status.name == 'left_project'}">
 											<c:choose>
@@ -91,6 +92,21 @@
 											</c:choose>
 										</c:otherwise>
 									</c:choose>
+									</security:authorize>
+									<security:authorize access="hasAuthority('hr')">
+										<c:choose>
+											<c:when test="${participates}">
+										    	<div>
+  													<input type="checkbox" checked disabled>
+												</div>
+											</c:when>
+											<c:otherwise>
+												<div>
+  													<input type="checkbox" disabled>
+												</div>
+											</c:otherwise>
+										</c:choose>
+									</security:authorize>
    								</td>
    								<td>
    								<security:authorize access="hasAnyAuthority('admin','mentor')">	
@@ -271,7 +287,6 @@ if ("${isProjectCompleted}" === "true"){
 		
 		$('#loadingModal').modal('show');
 		var meetingId = "${meeting.id}";
-		alert("try to add " + userId);
 		
 		$.ajax({
 		    url: getContextPath()+'/meeting/addParticipant/',
@@ -290,7 +305,6 @@ if ("${isProjectCompleted}" === "true"){
 			document.getElementById('input-false').onclick=function(){
 				deleteParticipant(userId);
 			}
-		    alert("added " + userId);
 		    $('#loadingModal').modal('hide');
 		})
 		.fail(function( xhr, status, errorThrown ) {
@@ -306,7 +320,6 @@ if ("${isProjectCompleted}" === "true"){
 		
 		$('#loadingModal').modal('show');
 		var meetingId = "${meeting.id}";
-		alert("try to delete " + userId);
 		
 		$.ajax({
 		    url: getContextPath()+'/meeting/deleteParticipant/',
@@ -325,7 +338,6 @@ if ("${isProjectCompleted}" === "true"){
 			document.getElementById('input-true').onclick=function(){
 				addParticipant(userId);
 			}
-		    alert("deleted " + userId);
 		    $('#loadingModal').modal('hide');
 		})
 		.fail(function( xhr, status, errorThrown ) {

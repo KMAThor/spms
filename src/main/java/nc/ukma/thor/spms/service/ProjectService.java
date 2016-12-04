@@ -35,6 +35,8 @@ public interface ProjectService extends Service<Project>{
 
     List <Project> getAllActiveProjects();
     Project getProject(long projectId);
+    
+    List<Project> getProjectsByUser(long userId);
 
     String getInfo(long projectId);
 }

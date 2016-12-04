@@ -10,6 +10,7 @@ public interface ProjectRepository extends MyRepository<Project>{
 
 	public List<Project> getAllActiveProjects();
 	public List<Project> getAllProjects();
+	public List<Project> getProjectsByUser(long userId);
 	public void addTraitToProject(Long traitId, Long projectId);
 	public void deleteTraitFromProject(Long traitId, Long projectId);
 	public int[] addTraitCategoryToProject(Short traitCategoryId, Long projectId);
