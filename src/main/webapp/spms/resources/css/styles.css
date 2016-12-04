@@ -10,6 +10,11 @@ td {
 	text-align: center;
 }
 
+a.disabled {
+   pointer-events: none;
+   cursor: default;
+}
+
 .background{
 	background-image: url(../img/background.jpg);
 }

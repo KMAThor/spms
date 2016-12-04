@@ -509,6 +509,7 @@
 									<td>Second Name</td>
 									<td>Last Name</td>
 									<td data-orderable="false"></td>
+									<td data-orderable="false"></td>
 								</tr>
 							</thead>
 						</table>
@@ -676,8 +677,9 @@ function getFreeStudents() {
 	        },
 		    dataSrc: function ( json ) {
 			    for(var i=0, ien=json.data.length; i<ien ; i++ ) {
+			    	json.data[i]["email"] = '<a class="clickable" href="<%=request.getContextPath()%>/user/view/'+json.data[i]["id"]+'/">'+json.data[i]["email"]+'</a>';
 			    	json.data[i]["role"] = '<button type="button" class="btn btn-xs btn-success" onclick="addStudent(' + json.data[i]["id"] + ');">Add</button>';
-				    }
+			    }
 			    return json.data;
 			}
 	    },

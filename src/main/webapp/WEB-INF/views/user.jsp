@@ -3,10 +3,10 @@
 	<div class="col-sm-2 col-sm-offset-1">
 		<c:choose>
 			<c:when test="${empty user.linkToPhoto}">
-				<img src="<%=request.getContextPath()%>/resources/img/anonymous.jpg" class="img-rounded" style="width: 100%;">
+				<img src="<%=request.getContextPath()%>/resources/img/photos/anonymous.png" class="img-rounded" style="width: 100%;">
 			</c:when>
 			<c:otherwise>
-				<img src="<%=request.getContextPath()%>/resources/img/${user.linkToPhoto}" class="img-rounded" style="width: 100%;">
+				<img src="<%=request.getContextPath()%>/resources/img/photos/${user.linkToPhoto}" class="img-rounded" style="width: 100%;">
 			</c:otherwise>
 		</c:choose>
 		

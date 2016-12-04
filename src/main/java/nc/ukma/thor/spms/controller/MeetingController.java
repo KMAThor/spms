@@ -136,6 +136,11 @@ public class MeetingController {
     	model.addAttribute("meeting", meeting);
     	HashMap<User, UserStatus> members = userService.getStudentsByTeam(meeting.getTeam());
     	model.addAttribute("members", members);
+    	
+    	boolean isProjectCompleted = meetingService.isProjectCompleted(id);
+    	model.addAttribute("isProjectCompleted", isProjectCompleted);
+    	System.out.println(isProjectCompleted);
+    	
     	List<MeetingFeedback> feedbacks = new ArrayList<MeetingFeedback>();
     	for(User member: members.keySet()){
     		MeetingFeedback meetingFeedback = meetingFeedbackRepository.getMeetingFeedbacksWithoutTraitsByMeetingStudentAuthor(meeting, member, author);

@@ -13,4 +13,6 @@ public interface MeetingService extends Service<Meeting>{
     void deleteUserFromMeeting(long userId, long meetingId);
 	
     Meeting getWithParticipantsById(long meetingId);
+    
+    boolean isProjectCompleted(long meetingId);
 }
