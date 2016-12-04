@@ -182,3 +182,15 @@ input[type=checkbox]{
 .slider.slider-vertical .slider-track-high {
     background-color: #42A2D3;
 }
+.submitButtomToLink {
+     background:none!important;
+     margin: 15px;
+     border:none; 
+     font: inherit;
+     /*border is optional*/
+     font-weight: bold;
+     cursor: pointer;
+}
+.submitButtomToLink:hover {
+    color: gray;
+}
