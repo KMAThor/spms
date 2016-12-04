@@ -1,5 +1,6 @@
 package nc.ukma.spms;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,56 +48,56 @@ public class SecurityTest {
 	@WithUserDetails(value="mentor@mentor.com", userDetailsServiceBeanName="userDetailsServiceImpl")
 	public void testSecurityWithMentor() throws Exception {
 		//Project
-		mvc.perform(get("/traitManager/")).andExpect(status().isForbidden());
-		mvc.perform(get("/trait/")).andExpect(status().isForbidden());
-		mvc.perform(get("/traitCategory/")).andExpect(status().isForbidden());
-		mvc.perform(get("/reports/")).andExpect(status().isForbidden());
+		mvc.perform(get("/traitManager/").with(csrf())).andExpect(status().isForbidden());
+		mvc.perform(get("/trait/").with(csrf())).andExpect(status().isForbidden());
+		mvc.perform(get("/traitCategory/").with(csrf())).andExpect(status().isForbidden());
+		mvc.perform(get("/reports/").with(csrf())).andExpect(status().isForbidden());
 		
-		mvc.perform(get("/project/view/{id}/", 777)).andExpect(status().isForbidden());
-		mvc.perform(get("/project/view/{id}/report/", 777)).andExpect(status().isForbidden());
+		mvc.perform(get("/project/view/{id}/", 777).with(csrf())).andExpect(status().isForbidden());
+		mvc.perform(get("/project/view/{id}/report/", 777).with(csrf())).andExpect(status().isForbidden());
 		mvc.perform(post("/project/create/",
 						"/project/delete/",
-						"/project/update/").param("id", "777")).andExpect(status().isForbidden());
+						"/project/update/").with(csrf()).param("id", "777")).andExpect(status().isForbidden());
 		mvc.perform(post("/project/addTrait/",
 				"/project/deleteTrait/",
 				"/project/addTraitCategory/",
-				"/project/deleteTraitCategory/").param("projectId", "777")).andExpect(status().isForbidden());
+				"/project/deleteTraitCategory/").with(csrf()).param("projectId", "777")).andExpect(status().isForbidden());
 		
 		//Team
-		mvc.perform(get("/team/view/{id}/", 777)).andExpect(status().isForbidden());
-		mvc.perform(post("/team/create/").param("projectId", "777")).andExpect(status().isForbidden());
+		mvc.perform(get("/team/view/{id}/", 777).with(csrf())).andExpect(status().isForbidden());
+		mvc.perform(post("/team/create/").with(csrf()).param("projectId", "777")).andExpect(status().isForbidden());
 		mvc.perform(post("/team/update/",
 				"/team/delete/",
 				"/team/addUser/,",
-				"/team/deleteUser/").param("teamId", "777")).andExpect(status().isForbidden());
+				"/team/deleteUser/").with(csrf()).param("teamId", "777")).andExpect(status().isForbidden());
 		
 		//Meeting
-		mvc.perform(get("/meeting/view/{id}/", 777)).andExpect(status().isForbidden());
+		mvc.perform(get("/meeting/view/{id}/", 777).with(csrf())).andExpect(status().isForbidden());
 		mvc.perform(post("/meeting/create/",
-				"/meeting/createSeveral/").param("teamId", "777")).andExpect(status().isForbidden());
+				"/meeting/createSeveral/").with(csrf()).param("teamId", "777")).andExpect(status().isForbidden());
 		mvc.perform(post("/meeting/update/",
-				"/meeting/delete/").param("id", "777")).andExpect(status().isForbidden());
+				"/meeting/delete/").with(csrf()).param("id", "777")).andExpect(status().isForbidden());
 		mvc.perform(post("/meeting/addParticipant/",
-				"/meeting/deleteParticipant/").param("meetingId", "777")).andExpect(status().isForbidden());
+				"/meeting/deleteParticipant/").with(csrf()).param("meetingId", "777")).andExpect(status().isForbidden());
 		
 		//Meeting Feedback
-		mvc.perform(get("/meetingFeedback/view/{id}/", 777)).andExpect(status().isForbidden());
-		mvc.perform(get("/meetingFeedback/edit/{meetingFeedbackId}/", 777)).andExpect(status().isForbidden());
-		mvc.perform(get("/meetingFeedback/create/{studentId}/{meetingId}/", 777, 777)).andExpect(status().isForbidden());
+		mvc.perform(get("/meetingFeedback/view/{id}/", 777).with(csrf())).andExpect(status().isForbidden());
+		mvc.perform(get("/meetingFeedback/edit/{meetingFeedbackId}/", 777).with(csrf())).andExpect(status().isForbidden());
+		mvc.perform(get("/meetingFeedback/create/{studentId}/{meetingId}/", 777, 777).with(csrf())).andExpect(status().isForbidden());
 		
-		mvc.perform(post("/meetingFeedback/create/").param("meetingId", "777")).andExpect(status().isForbidden());
+		mvc.perform(post("/meetingFeedback/create/").with(csrf()).param("meetingId", "777")).andExpect(status().isForbidden());
 		mvc.perform(post("/meetingFeedback/update/",
-				"/meetingFeedback/delete/").param("id", "777")).andExpect(status().isForbidden());
+				"/meetingFeedback/delete/").param("id", "777").with(csrf())).andExpect(status().isForbidden());
 		
 		//HrFeedback
-		mvc.perform(get("/hrFeedback/")).andExpect(status().isForbidden());
+		mvc.perform(get("/hrFeedback/").with(csrf())).andExpect(status().isForbidden());
 		
 		//User
-		mvc.perform(get("/user/view/{id}/",777)).andExpect(status().isForbidden());
-		mvc.perform(post("/user/changeStatus/").param("teamId", "777")).andExpect(status().isForbidden());
+		mvc.perform(get("/user/view/{id}/",777).with(csrf())).andExpect(status().isForbidden());
+		mvc.perform(post("/user/changeStatus/").with(csrf()).param("teamId", "777")).andExpect(status().isForbidden());
 		
 		mvc.perform(post("/user/allWithRole/mentor/view/",
-				"/allFreeWithRole/{role}/view/","student")).andExpect(status().is3xxRedirection());
+				"/allFreeWithRole/{role}/view/","student").with(csrf())).andExpect(status().is3xxRedirection());
 		
 	}
 	
