@@ -955,9 +955,9 @@ function addStudent(userId) {
 			$('#block-students').append('<div class="col-lg-3" id="user-' + user.id + '">\
 											<div id="div-color-' + user.id + '" style="border-radius: 5px; margin-right: 15px; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">\
 												<img src="<%=request.getContextPath()%>/resources/img/photos/' + user.linkToPhoto + '" class="img-rounded" style="width: 80%">\
-												<p style="padding-top: 10px"><a href="<%=request.getContextPath()%>/user/view/${user.id}/">' + user.firstName + ' ' + user.lastName +'</p>\
+												<p style="padding-top: 10px"><a href="<%=request.getContextPath()%>/user/view/${user.id}/">' + user.firstName + ' ' + user.lastName +'</a></p>\
 												<h6>' + user.email + '</h6>\
-												<abbr id="tStatusName-' + user.id + '" title="" class="initialism"><p id="pStatusName-' + user.id + '">ACTIVE</p></abbr>\
+												<abbr id="tStatusName-' + user.id + '" title="" class="initialism"><p id="pStatusName-' + user.id + '">ACTIVE<i class="fa fa-info-circle" aria-hidden="true"></i></p></abbr>\
 												<p style="padding-top: 10px">\
 													<button type="button" class="btn btn-xs btn-warning" id="butStatus-' + user.id + '"\
 														data-toggle="modal" data-target="#changeStatusModal">\
@@ -975,7 +975,7 @@ function addStudent(userId) {
 												<img src="<%=request.getContextPath()%>/resources/img/photos/anonymous.png" class="img-rounded" style="width: 80%">\
 												<p style="padding-top: 10px"><a href="<%=request.getContextPath()%>/user/view/${user.id}/">' + user.firstName + ' ' + user.lastName +'</a></p>\
 												<h6>' + user.email + '</h6>\
-												<abbr id="tStatusName-' + user.id + '" title="" class="initialism"><p id="pStatusName-' + user.id + '">ACTIVE</p></abbr>\
+												<abbr id="tStatusName-' + user.id + '" title="" class="initialism"><p id="pStatusName-' + user.id + '">ACTIVE<i class="fa fa-info-circle" aria-hidden="true"></i></p></abbr>\
 												<p style="padding-top: 10px">\
 													<button type="button" class="btn btn-xs btn-warning" id="butStatus-' + user.id + '"\
 														data-toggle="modal" data-target="#changeStatusModal">\
