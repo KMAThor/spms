@@ -90,7 +90,16 @@
 <hr>
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
-		<h2>Files
+		<h2>Files</h2>
+		<ul>
+			<c:forEach items="${files}" var="file">
+				<li>
+					<a href="<%=request.getContextPath()%>/project/${project.id}/downloadFile/${file.name}/" >
+						${file.name} <br />
+					</a>
+				</li>
+			</c:forEach>
+		</ul>
 		<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfThisProject}">
 			<button type="button" class="btn btn-success"
 				data-toggle="modal" data-target="#addFileToProjectModal" onclick="toggleFileDialog();">

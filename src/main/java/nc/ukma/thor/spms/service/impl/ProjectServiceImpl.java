@@ -3,14 +3,16 @@ package nc.ukma.thor.spms.service.impl;
 import nc.ukma.thor.spms.entity.*;
 import nc.ukma.thor.spms.repository.*;
 import nc.ukma.thor.spms.service.ProjectService;
+import nc.ukma.thor.spms.service.WorksWithFilesService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class ProjectServiceImpl extends AbstractService<Project> implements ProjectService{
+public class ProjectServiceImpl extends AbstractService<Project> implements ProjectService, WorksWithFilesService {
 
     @Autowired
 	private ProjectRepository projectRepository;
@@ -21,6 +23,9 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
     @Autowired
     private TraitRepository traitRepository;
 	
+    @Autowired
+    private FileRepository fileRepository;
+    
     @Autowired
 	public ProjectServiceImpl(ProjectRepository repository) {
 		super(repository);
@@ -137,4 +142,13 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
     public String getInfo(long projectId) {
         return null;
     }
+    
+    @Override
+    public List<String> getFileNames(long projectId) {
+    	return fileRepository.getFilesByProject(projectId)
+    			.stream()
+    			.map(f -> f.getPath())
+    			.collect(Collectors.toList());
+    }
+    
 }

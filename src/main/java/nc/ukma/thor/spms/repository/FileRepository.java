@@ -8,5 +8,6 @@ public interface FileRepository extends MyRepository<File>{
 	
 	public List<File> getFilesByProject(long projectId);
 	public List<File> getFilesByTeam(long teamId);
+	public File getByName(String fileName);
 	
 }

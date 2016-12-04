@@ -99,14 +99,14 @@
 				</ul>
 			</div>
 			<div>
-				<form action="<%=request.getContextPath()%>/j_spring_security_logout" method="post">
+				<form action="<%=request.getContextPath()%>/logout" method="post">
 					<ul class="nav navbar-nav navbar-right">
 						<li> 
 							<p style="padding-top: 18px;">Logged in as: <strong><security:authentication property="principal.username"/></strong>
 							</p>
 						</li>
 						<li>
-							<button type="submit" style="padding-top: 18px;">Logout</button>
+							<button type="submit" class="submitButtomToLink">Logout</button>
 						</li>
 					</ul>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

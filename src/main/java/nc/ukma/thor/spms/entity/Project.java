@@ -1,7 +1,12 @@
 package nc.ukma.thor.spms.entity;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class Project{
 	
@@ -113,6 +118,22 @@ public class Project{
 
 	public void setTraits(List<Trait> traits) {
 		this.traits = traits;
+	}
+
+	public boolean userHasAccessToFile(User user, String fileName) {
+		return user.getRole() == Role.ADMIN || (hasUser(user) && files.stream().anyMatch(f -> f.getName() == fileName));
+	}
+
+	public boolean hasUser(User user) {
+		return chiefUser.getId() == user.getId() || getTeams()
+			.stream()
+			.map(team -> team
+				.getMembers()
+				.keySet()
+				.stream()
+				.map(member -> member.getId())
+				.anyMatch(id -> id == user.getId()))
+			.anyMatch(bool -> bool);
 	}
 
 	@Override

@@ -32,12 +32,13 @@ public class EmailSender {
 
 	    }
 	    
-	    public static void sendScheduleChangesMassage(List<User> users, String newTime) {
+	    public static void sendScheduleChangesMassage(List<User> users, String newTime, String textWithEndDateOrTopicIfWithoutReapeting) {
 	        List<String> emails = users.stream().map((u) -> u.getEmail()).collect(Collectors.toList());
 	        
 	        String body = "<p>Meeting schedule changes</p> New time: <b>";
 	        body += newTime;
-	        body += "</b></p>";   
+	        body += "</b></p><p>";  
+	        body += textWithEndDateOrTopicIfWithoutReapeting;
 
 	        send(emails, "Meeting time has changed", body);
 	    }
@@ -75,10 +76,10 @@ public class EmailSender {
 	            for (String email : emails) {
 	                message.setRecipients(Message.RecipientType.TO,
 	                        InternetAddress.parse(email));
-	            }
 	            message.setSubject(subject);	            
 	            message.setContent(body, "text/html");
 	            Transport.send(message);
+	            }
 	        } catch (MessagingException e) {
 	            e.printStackTrace();
 	        }

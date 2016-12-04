@@ -55,8 +55,9 @@ public class MeetingController {
     	meeting.setTeam(team);
     	meetingService.create(meeting);
     	
+    	String topicName = "Meeting topic name: " + topic;
     	List<User> usersToNotify = new ArrayList<>(userService.getUsersByTeam(team));
-		EmailSender.sendScheduleChangesMassage(usersToNotify, meeting.getStartDate().toString());	
+		EmailSender.sendScheduleChangesMassage(usersToNotify, meeting.getStartDate().toString(), topicName);	
 
         return meeting.getId();
     }
@@ -67,7 +68,7 @@ public class MeetingController {
     	Team team = new Team(teamId);
     	Timestamp ts = DateUtil.getTimeStamp(date);
     	Timestamp tsEnd = DateUtil.getTimeStamp(endDate);
-    	
+    	Timestamp templateTs = ts;
     	Long idFirstMeeting = null;
     	
     	do {
@@ -91,6 +92,10 @@ public class MeetingController {
         	topic = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss").format(ts);
         	
     	} while (ts.before(tsEnd));
+    	
+    	String textWithEndDate = "Meeteing occur every week at the same day untill the end of the project on " + tsEnd.toString();
+    	List<User> usersToNotify = new ArrayList<>(userService.getUsersByTeam(team));
+		EmailSender.sendScheduleChangesMassage(usersToNotify, templateTs.toString(), textWithEndDate);	
     	
         return idFirstMeeting;
     }
