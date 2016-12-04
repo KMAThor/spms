@@ -41,15 +41,15 @@
 		  
 		</h1>
 		<h3>Description</h3>
-		<p> <c:choose>
+		 <c:choose>
 				<c:when test="${empty project.description}">
-					Empty
+					<p>Empty</p>
 				</c:when>
 				<c:otherwise>
-					${project.description}
+					<p>${project.description}</p>
 				</c:otherwise>
 			</c:choose>
-		</p>
+		
 	</div>
 </div>
 <div class="row">
@@ -167,7 +167,7 @@
 			</div>
 			<div class="form-group">
 				<label for="description">Project description:</label>
-			    <textarea class="form-control" rows="3" name="description" id="newProjectDescription" placeholder="Enter project description" ></textarea>
+			    <textarea class="form-control" rows="3" name="description" id="newProjectDescription" placeholder="Enter project description" >${project.description}</textarea>
 			</div>
 			<div class="form-group">
 	        	<label for="startDate">Start date:</label>

@@ -9,6 +9,7 @@ import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.entity.report.ProjectReport;
 import nc.ukma.thor.spms.repository.ProjectRepository;
 import nc.ukma.thor.spms.service.FileService;
 import nc.ukma.thor.spms.service.ProjectService;
@@ -136,7 +137,7 @@ public class ProjectController {
     	Project project = projectService.getById(id);
     	Workbook wb = projectService.getProjectReportInXlsFormat(project);
     	response.setContentType("application/xls");
-    	response.setHeader("Content-disposition", "attachment; filename="+project.getName()+" Project Report.xls");
+    	response.setHeader("Content-disposition", "attachment; filename="+project.getName()+"_Project_Report.xls");
         try {
 			wb.write(response.getOutputStream());
 	        response.flushBuffer();
@@ -144,6 +145,12 @@ public class ProjectController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+    
+    @ResponseBody
+    @RequestMapping(path="/report/test/{id}/", method = RequestMethod.GET)
+    public ProjectReport testviewProjectReport(@PathVariable long id, HttpServletResponse response ){
+    	return projectService.getProjectReport(new Project(id));
     }
     
     @RequestMapping(path="/create/", method = RequestMethod.POST)

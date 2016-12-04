@@ -120,7 +120,7 @@ public class UserController {
 		System.out.println(student);
     	Workbook wb = userService.getReportStudentActivityInProjectInXlsFormat(student, new Project(projectId));
     	response.setContentType("application/xls");
-    	response.setHeader("Content-disposition", "attachment; filename=Report about "+student.getEmail()+".xls");
+    	response.setHeader("Content-disposition", "attachment; filename=Report_about_"+student.getEmail()+".xls");
         try {
 			wb.write(response.getOutputStream());
 	        response.flushBuffer();

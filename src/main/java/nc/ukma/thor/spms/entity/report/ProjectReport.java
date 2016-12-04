@@ -1,5 +1,6 @@
 package nc.ukma.thor.spms.entity.report;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectReport {
@@ -10,8 +11,8 @@ public class ProjectReport {
 	private int numberOfParticipantsWhoLeft;
 	private int numberOfParticipantsWhomInterviewWasScheduled;
 	private int numberOfParticipantsWhoGotJobOffer;
-	private List<PersonInfo> participantsWhoLeft;
-	private List<String> reasonsWhy;
+	private List<PersonInfo> participantsWhoLeft = new ArrayList<>();
+	private List<String> reasonsWhy = new ArrayList<>();
 	
 	public ProjectReport(){}
 	
@@ -62,6 +63,11 @@ public class ProjectReport {
 	}
 	public void setReasonsWhy(List<String> reasonsWhy) {
 		this.reasonsWhy = reasonsWhy;
+	}
+	
+	public void addParticipantsWhoLeftAndReasonWhy(PersonInfo personInfo, String reason){
+		participantsWhoLeft.add(personInfo);
+		reasonsWhy.add(reason);
 	}
 		
 }
