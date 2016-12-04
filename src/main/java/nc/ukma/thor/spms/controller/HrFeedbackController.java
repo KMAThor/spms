@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import nc.ukma.thor.spms.entity.HrFeedback;
 import nc.ukma.thor.spms.entity.MeetingFeedback;
 import nc.ukma.thor.spms.entity.Project;
+import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.SpmsUserDetails;
 import nc.ukma.thor.spms.entity.TraitFeedback;
 import nc.ukma.thor.spms.entity.User;
@@ -38,7 +39,7 @@ public class HrFeedbackController {
 	
 	@ResponseBody
     @RequestMapping(path="/get/by_student/{studentId}", method = RequestMethod.GET)
-    public String createMeeting(@PathVariable Long studentId){
+    public String createHrFeedback(@PathVariable Long studentId){
 		User student = new User();
 		student.setId(studentId);
 		List<HrFeedback> hrFeedbacks = hrFeedbackService.getHrFeedbacksByStudent(student);
@@ -48,12 +49,41 @@ public class HrFeedbackController {
 	
 
 	@RequestMapping(path= "/create/{studentId}/", method = RequestMethod.GET)
-	public String getCreateMeetingFeedbackForm(Model model, @PathVariable long studentId){
+	public String getCreateHrFeedbackForm(Model model, @PathVariable long studentId){
 		User student = userService.getUserById(studentId);
 		model.addAttribute("student", student);
 		
 		return "createHrFeedback";
 	}
+	
+	
+	@RequestMapping(path= "/edit/{studentId}/", method = RequestMethod.GET)
+	public String editHrFeedbackForm(Model model, @PathVariable long studentId){
+		User student = userService.getUserById(studentId);
+		List<HrFeedback> hrFeedbacks = hrFeedbackService.getHrFeedbacksByStudent(student);
+		System.out.println(Arrays.toString(hrFeedbacks.toArray()));
+		model.addAttribute("hrFeedbacks", hrFeedbacks);
+		return "editHrFeedback";
+	}
+	
+	@RequestMapping(path= "/edit/{studentId}/", method = RequestMethod.POST)
+	public String editHrFeedback(Model model,
+			@PathVariable Long studentId,
+			@RequestParam Long id,
+			@RequestParam String topic,
+			@RequestParam String summary,
+			@RequestParam(required=false) Long authorId,
+			Authentication authentication){
+		User user = new User(((SpmsUserDetails) authentication.getPrincipal()).getId());
+		User author = authorId == null ? user : new  User(authorId);
+		User student = new User(studentId);
+		HrFeedback hrFeedback = new HrFeedback(id, topic, summary, student, user, author);
+		
+		hrFeedbackService.update(hrFeedback);
+		
+		return "redirect:/hrFeedback/edit/"+studentId+"/";
+	}
+
 	
 	@RequestMapping(path= "/create/{studentId}/", method = RequestMethod.POST)
 	public String createHrFeedbackForm(Model model,

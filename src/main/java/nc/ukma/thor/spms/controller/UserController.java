@@ -1,6 +1,7 @@
 package nc.ukma.thor.spms.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +21,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import nc.ukma.thor.spms.dto.dataTable.DataTableRequestDTO;
 import nc.ukma.thor.spms.dto.dataTable.DataTableResponseDTO;
 import nc.ukma.thor.spms.dto.dataTable.UserTableDTO;
+import nc.ukma.thor.spms.entity.HrFeedback;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.UserRepository;
+import nc.ukma.thor.spms.service.HrFeedbackService;
 import nc.ukma.thor.spms.service.ProjectService;
 import nc.ukma.thor.spms.service.UserService;
+import nc.ukma.thor.spms.service.impl.HrFeedbackServiceImpl;
 
 @Controller
 @RequestMapping("/user/")
@@ -40,13 +44,16 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private HrFeedbackService hrFeedbackService;
+	
 	@RequestMapping(path="/", method = RequestMethod.GET)
 	public String usersPage(Model model){
         return "users";
     }
 	
 	@RequestMapping(path="/view/{id}/", method = RequestMethod.GET)
-    public String viewProject(@PathVariable long id, Model model ){
+    public String viewProject(@PathVariable long id, Model model, Principal principal){
     	User user = userService.getUserById(id);
     	if(user == null) return "redirect:/404/";
     	model.addAttribute("user", user);

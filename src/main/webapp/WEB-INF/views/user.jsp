@@ -32,8 +32,7 @@
 				</c:forEach>
 			</ul>
 		</div>
-	</security:authorize>
-
+    </security:authorize>
 	
 </div>
 <%@include file="footer.jsp"%>
