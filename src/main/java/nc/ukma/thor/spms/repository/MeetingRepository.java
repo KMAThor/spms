@@ -16,6 +16,7 @@ public interface MeetingRepository extends MyRepository<Meeting>{
 	public List<User> getUsersPresentAtMeeting(Long meetingId);
 	
 	public Meeting getWithParticipantsById(long meetingId);
+	public boolean isProjectCompleted(long meetingId);
 	
 	public default void addUserToMeeting(User user, Meeting meeting){
 		addUserToMeeting(user.getId(), meeting.getId());

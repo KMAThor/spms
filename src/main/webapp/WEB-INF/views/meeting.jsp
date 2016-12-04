@@ -14,7 +14,7 @@
 				  	</button>
 				  	<button type="button" class="btn btn-danger"
 				  		  data-toggle="modal" data-target="#deleteMeetingModal"
-				  		  >
+				  		  id="deleteMeetingButton">
 				  		<i class="fa fa-trash" aria-hidden="true"></i>
 				  		Delete Meeting
 				  	</button>
@@ -51,7 +51,7 @@
 							</c:choose>
 						
    								<td>
-   									${member.key.firstName} ${member.key.secondName} ${member.key.lastName}
+   									<a href="<%=request.getContextPath()%>/user/view/${member.key.id}/">${member.key.firstName} ${member.key.secondName} ${member.key.lastName}</a>
    								</td>
    								<td>
    									<c:set var="participates" value="false" />
@@ -66,12 +66,12 @@
 											<c:choose>
 												<c:when test="${participates}">
 										    		<div>
-  														<input type="checkbox" checked disabled>
+  														<input id="left-input-true" title="Cannot mark a presence for student, who left project" type="checkbox" checked disabled>
 													</div>
 												</c:when>
 												<c:otherwise>
 													<div>
-  														<input type="checkbox" disabled>
+  														<input id="left-input-false" title="Cannot mark a presence for student, who left project" type="checkbox" disabled>
 													</div>
 												</c:otherwise>
 											</c:choose>
@@ -96,16 +96,36 @@
    								<security:authorize access="hasAnyAuthority('admin','mentor')">	
    									<c:choose>
 										<c:when test="${empty feedbacks[loop.index]}">
-										    <a href="<c:url value="/meetingFeedback/create/${member.key.id}/${meeting.id}/" />" class="btn btn-success">
-										    	<i class="fa fa-plus-circle" aria-hidden="true"></i>
-										    	Leave feedback
-										    </a>
+											<c:choose>
+												<c:when test="${isProjectCompleted}">
+										    		<a href="<c:url value="/meetingFeedback/create/${member.key.id}/${meeting.id}/" />" class="btn btn-success disabled">
+										    			<i class="fa fa-plus-circle" aria-hidden="true"></i>
+										    			Leave feedback
+										    		</a>
+										    	</c:when>
+										    	<c:otherwise>
+										    		<a href="<c:url value="/meetingFeedback/create/${member.key.id}/${meeting.id}/" />" class="btn btn-success">
+										    			<i class="fa fa-plus-circle" aria-hidden="true"></i>
+										    			Leave feedback
+										    		</a>
+										    	</c:otherwise>
+										    </c:choose>
 										</c:when>
 										<c:otherwise>
-										    <a href="<c:url value="/meetingFeedback/edit/${feedbacks[loop.index].id}/" />" class="btn btn-warning">
-										    	<i class="fa fa-pencil" aria-hidden="true"></i>
-										   		Edit my feedback
-										   	</a>
+											<c:choose>
+												<c:when test="${isProjectCompleted}">
+													<a href="<c:url value="/meetingFeedback/edit/${feedbacks[loop.index].id}/" />" class="btn btn-warning disabled">
+										    			<i class="fa fa-pencil" aria-hidden="true"></i>
+										   				Edit my feedback
+										   			</a>
+										    	</c:when>
+										    	<c:otherwise>
+													<a href="<c:url value="/meetingFeedback/edit/${feedbacks[loop.index].id}/" />" class="btn btn-warning">
+										    			<i class="fa fa-pencil" aria-hidden="true"></i>
+										   				Edit my feedback
+										   			</a>
+										    	</c:otherwise>
+										    </c:choose>
 										</c:otherwise>
 									</c:choose>
 								</security:authorize>
@@ -233,6 +253,17 @@
 
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
+
+if ("${isProjectCompleted}" === "true"){
+	document.getElementById('deleteMeetingButton').disabled = true;
+	$("#deleteMeetingButton").attr("title", "Cannot delete a meeting in completed project.");
+	document.getElementById('input-true').disabled = true;
+	$("#input-true").attr("title", "Cannot mark a presence in completed project.");
+	document.getElementById('input-false').disabled = true;
+	$("#input-false").attr("title", "Cannot mark a presence in completed project.");
+	$("#left-input-true").attr("title", "Cannot mark a presence in completed project.");
+	$("#left-input-false").attr("title", "Cannot mark a presence in completed project.");
+}
 
 	$('#membersTable').DataTable();
 	
