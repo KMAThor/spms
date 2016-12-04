@@ -15,6 +15,26 @@
 		<h1>${user.firstName} ${user.secondName} ${user.lastName}
 		</h1>
 	</div>
+	
+	<security:authorize access="hasAuthority('hr')">
+		<div class="btn-group">
+			<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					View Feedback Of
+					<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<c:forEach items="${hrFeedbacksOnStudents[loop.index]}"
+					var="hrFeedback">
+					<li>
+						<a href="<c:url value="/hrFeedback/view/${hrFeedback.id}/" />">
+							${hrFeedback.author.firstName}
+							${hrFeedback.author.lastName}
+						</a>
+					</li>
+				</c:forEach>
+			</ul>
+		</div>
+	</security:authorize>
 
 	
 </div>

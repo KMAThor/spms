@@ -139,7 +139,6 @@ public class MeetingController {
     	
     	boolean isProjectCompleted = meetingService.isProjectCompleted(id);
     	model.addAttribute("isProjectCompleted", isProjectCompleted);
-    	System.out.println(isProjectCompleted);
     	
     	List<MeetingFeedback> feedbacks = new ArrayList<MeetingFeedback>();
     	for(User member: members.keySet()){
