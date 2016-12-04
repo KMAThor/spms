@@ -14,6 +14,19 @@ public class HrFeedback {
 	
 	public HrFeedback() {};
 	
+	
+	
+	public HrFeedback(String topic, String summary, User student, User added_by, User author) {
+		super();
+		this.topic = topic;
+		this.summary = summary;
+		this.student = student;
+		this.added_by = added_by;
+		this.author = author;
+	}
+
+
+
 	public Long getId() {
 		return id;
 	}

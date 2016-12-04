@@ -18,7 +18,7 @@ import nc.ukma.thor.spms.repository.HrFeedbackRepository;
 
 @Repository
 public class HrFeedbackRepositoryJdbcImpl implements HrFeedbackRepository {
-	
+
 	private static final String GET_HR_FEEDBACK_BY_ID_SQL = "select * from hr_feedback where id = ?";
 	private static final String GET_HR_FEEDBACK_BY_STUDENT_ID_SQL = "select * from hr_feedback where student_id = ?";
 	private static final String GET_HR_FEEDBACK_BY_ADDED_BY_ID_SQL = "select * from hr_feedback where added_by_id = ?";
@@ -27,12 +27,9 @@ public class HrFeedbackRepositoryJdbcImpl implements HrFeedbackRepository {
 	private static final HrFeedbackMapper HR_FEEDBACK_MAPPER = new HrFeedbackMapper();
 	private static final String UPDATE_HR_FEEDBACK_SQL = "select * from hr_feedback";
 	private static final String DELETE_HR_FEEDBACK_SQL = "DELETE FROM hr_feedback WHERE id=?;";
-	private static final String INSER_HR_FEEDBACK_SQL = "SELECT "
-			+ "hr_feedback.id AS hr_feedback_id, summary, student_id, added_by_id, author_id,"
-			+ "FROM hr_feedback "
-			+ "WHERE hr_feedback.id=? "
-			+ "ORDER BY hr_feedback_id;";;
-	
+	private static final String INSER_HR_FEEDBACK_SQL = "insert into hr_feedback"
+			+ "(topic, summary, author_id, student_id, added_by_id) values (?, ?, ?, ?, ?)";
+
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
@@ -41,26 +38,22 @@ public class HrFeedbackRepositoryJdbcImpl implements HrFeedbackRepository {
 		// TODO Auto-generated method stub
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(connection -> {
-			PreparedStatement ps = connection.prepareStatement(INSER_HR_FEEDBACK_SQL,
-					new String[] {"id"}); 
+			PreparedStatement ps = connection.prepareStatement(INSER_HR_FEEDBACK_SQL, new String[] { "id" });
 			ps.setString(1, hrFeedback.getTopic());
 			ps.setString(2, hrFeedback.getSummary());
-			ps.setLong(3, hrFeedback.getStudent().getId());
-			ps.setLong(4, hrFeedback.getAuthor().getId());
+			ps.setLong(3, hrFeedback.getAuthor().getId());
+			ps.setLong(4, hrFeedback.getStudent().getId());
+			ps.setLong(5, hrFeedback.getAdded_by().getId());
 			return ps;
-			},keyHolder);
+		}, keyHolder);
 		hrFeedback.setId((Long) keyHolder.getKey());
 	}
 
 	@Override
 	public void update(HrFeedback hrFeedback) {
 		// TODO Auto-generated method stub
-		jdbcTemplate.update(UPDATE_HR_FEEDBACK_SQL,
-				new Object[]{ hrFeedback.getSummary(),
-						hrFeedback.getStudent().getId(),
-						hrFeedback.getAuthor().getId(),
-						hrFeedback.getId()
-				});
+		jdbcTemplate.update(UPDATE_HR_FEEDBACK_SQL, new Object[] { hrFeedback.getSummary(),
+				hrFeedback.getStudent().getId(), hrFeedback.getAuthor().getId(), hrFeedback.getId() });
 	}
 
 	@Override
@@ -71,43 +64,33 @@ public class HrFeedbackRepositoryJdbcImpl implements HrFeedbackRepository {
 
 	@Override
 	public HrFeedback getById(Long hrFeedbackId) {
-		List<HrFeedback> hrFeedbacks = jdbcTemplate.query(
-				GET_HR_FEEDBACK_BY_ID_SQL, 
-				new Object[] {hrFeedbackId }, 
-				HR_FEEDBACK_MAPPER
-		);
-		if(hrFeedbacks.isEmpty()) return null;
-		else return hrFeedbacks.get(0);
+		List<HrFeedback> hrFeedbacks = jdbcTemplate.query(GET_HR_FEEDBACK_BY_ID_SQL, new Object[] { hrFeedbackId },
+				HR_FEEDBACK_MAPPER);
+		if (hrFeedbacks.isEmpty())
+			return null;
+		else
+			return hrFeedbacks.get(0);
 	}
 
 	@Override
 	public List<HrFeedback> getHrFeedbacksByStudent(User student) {
-		return jdbcTemplate.query(
-				GET_HR_FEEDBACK_BY_STUDENT_ID_SQL, 
-				new Object[] {student.getId() }, 
-				HR_FEEDBACK_MAPPER
-		);
+		return jdbcTemplate.query(GET_HR_FEEDBACK_BY_STUDENT_ID_SQL, new Object[] { student.getId() },
+				HR_FEEDBACK_MAPPER);
 	}
 
 	@Override
 	public List<HrFeedback> getHrFeedbacksByHr(User addedBy) {
-		return jdbcTemplate.query(
-				GET_HR_FEEDBACK_BY_ADDED_BY_ID_SQL, 
-				new Object[] {addedBy.getId() }, 
-				HR_FEEDBACK_MAPPER
-		);
+		return jdbcTemplate.query(GET_HR_FEEDBACK_BY_ADDED_BY_ID_SQL, new Object[] { addedBy.getId() },
+				HR_FEEDBACK_MAPPER);
 	}
 
 	@Override
 	public List<HrFeedback> getHrFeedbacksByAuthor(User author) {
-		return jdbcTemplate.query(
-				GET_HR_FEEDBACK_BY_AUTHOR_ID_SQL, 
-				new Object[] {author.getId()}, 
-				HR_FEEDBACK_MAPPER
-		);
+		return jdbcTemplate.query(GET_HR_FEEDBACK_BY_AUTHOR_ID_SQL, new Object[] { author.getId() },
+				HR_FEEDBACK_MAPPER);
 	}
-	
-	private static final class  HrFeedbackMapper implements RowMapper<HrFeedback>{
+
+	private static final class HrFeedbackMapper implements RowMapper<HrFeedback> {
 		@Override
 		public HrFeedback mapRow(ResultSet rs, int rowNum) throws SQLException {
 			HrFeedback hrFeedback = new HrFeedback();

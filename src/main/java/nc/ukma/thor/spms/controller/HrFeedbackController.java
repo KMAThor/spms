@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import nc.ukma.thor.spms.entity.HrFeedback;
 import nc.ukma.thor.spms.entity.MeetingFeedback;
 import nc.ukma.thor.spms.entity.Project;
+import nc.ukma.thor.spms.entity.SpmsUserDetails;
 import nc.ukma.thor.spms.entity.TraitFeedback;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.service.HrFeedbackService;
@@ -52,21 +54,24 @@ public class HrFeedbackController {
 		
 		return "createHrFeedback";
 	}
-/*	
-	@RequestMapping(path= "/create/{studentId}/", method = RequestMethod.POST)
-	public String createHrFeedbackForm(Model model, HttpServletRequest request,
 	
-			Principal principal){
-		
-
-		User user = userService.getUser(principal.getName());
-		HrFeedback hrFeedback = new HrFeedback(description, summary, studentId, user);
+	@RequestMapping(path= "/create/{studentId}/", method = RequestMethod.POST)
+	public String createHrFeedbackForm(Model model,
+			@PathVariable Long studentId,
+			@RequestParam String topic,
+			@RequestParam String summary,
+			@RequestParam(required=false) Long authorId,
+			Authentication authentication) {
+		User user = new User(((SpmsUserDetails) authentication.getPrincipal()).getId());
+		User author = authorId == null ? user : new  User(authorId);
+		User student = new User(studentId);
+		HrFeedback hrFeedback = new HrFeedback(topic, summary, student, user, author);
 		
 		hrFeedbackService.create(hrFeedback);
 		
-	//	return "redirect:/hr/view/"+meetingId+"/";
+		return "redirect:/user/view/"+studentId+"/";
 	}
-*/
+
 	
 }
 
