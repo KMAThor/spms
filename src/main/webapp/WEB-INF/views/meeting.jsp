@@ -104,20 +104,51 @@
 										<c:otherwise>
 										    <a href="<c:url value="/meetingFeedback/edit/${feedbacks[loop.index].id}/" />" class="btn btn-warning">
 										    	<i class="fa fa-pencil" aria-hidden="true"></i>
-										   		Edit feedback
+										   		Edit my feedback
 										   	</a>
 										</c:otherwise>
 									</c:choose>
 								</security:authorize>
 								<security:authorize access="hasAuthority('hr')">
-									<c:choose>
-										<c:when test="${empty feedbacks[loop.index]}">
-										</c:when>
-										<c:otherwise>   	
-											    <a href="<c:url value="/meetingFeedback/view/${feedbacks[loop.index].id}/" />" class="btn btn-warning">
-											    	View feedback
+									<div class="btn-group">
+									  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									    View Feedback Of<span class="caret"></span>
+									  </button>
+									  <ul class="dropdown-menu">
+									  	<c:forEach items="${mentorFeedbacksOnStudents[loop.index]}"
+									  		var="mentorFeedback">
+									    	<li>
+									    		<a href="<c:url value="/meetingFeedback/view/${mentorFeedback.id}/" />">
+											    	${mentorFeedback.author.firstName}
+											    	${mentorFeedback.author.lastName}
 											    </a>
-										</c:otherwise>
+									    	</li>
+									    </c:forEach>
+									  </ul>
+									</div>
+								</security:authorize>
+								<security:authorize access="hasAuthority('admin') || @spmsWebSecurityService.isUserChiefMentorOfProjectWithMeeting(principal, #meeting.id)">
+									<c:choose>
+									<c:when test="${empty mentorFeedbacksOnStudents[loop.index]}">
+									</c:when>
+									<c:otherwise>
+									<div class="btn-group">
+									  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									    Edit Feedback Of<span class="caret"></span>
+									  </button>
+									  <ul class="dropdown-menu">
+									  	<c:forEach items="${mentorFeedbacksOnStudents[loop.index]}"
+									  		var="mentorFeedback">
+									    	<li>
+									    		<a href="<c:url value="/meetingFeedback/edit/${mentorFeedback.id}/" />">
+											    	${mentorFeedback.author.firstName}
+											    	${mentorFeedback.author.lastName}
+											    </a>
+									    	</li>
+									    </c:forEach>
+									  </ul>
+									</div>
+									</c:otherwise>
 									</c:choose>
 								</security:authorize>
 								</td>

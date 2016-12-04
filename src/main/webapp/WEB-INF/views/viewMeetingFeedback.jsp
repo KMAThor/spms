@@ -20,7 +20,7 @@
 					<c:forEach var="trait" items="${traitCategory.traits}">
 					 	<c:set var="traitFeedbackId" value="0" />
 					    <c:set var="score" value="0" />
-					    <c:set var="comment" value="0" />
+					    <c:set var="comment" value="" />
 						<c:forEach var="traitFeedback" items="${meetingFeedback.traitFeedbacks}">
 						  	<c:if test="${traitFeedback.trait.id eq trait.id}">
 						  		<c:set var="traitFeedbackId" value="${traitFeedback.id}" />
@@ -59,7 +59,7 @@
 							</div>
 							<div class="col-sm-9">
 								<h4 ><strong> Comment</strong></h4>
-								<textarea readonly="readonly" name="comments" class="gradeComment form-control" placeholder="This field is optional" 
+								<textarea readonly="readonly" name="comments" class="gradeComment form-control"
 									>${comment}</textarea>
 							</div>
 
@@ -73,13 +73,7 @@
 <div class="row">
 	<div class="col-sm-offset-1 col-sm-10">
 		<h2>Summary</h2>
-		<textarea name="summary" class="form-control" placeholder="This field is optional">${meetingFeedback.summary}</textarea>
-	</div>
-</div>
-<div class="row">
-	<div class="col-sm-offset-9 col-sm-2">
-		<br>
-		<button type="submit" value="Submit" class="form-control btn btn-success" >Submit Changes</button>
+		<textarea readonly="readonly" name="summary" class="form-control" placeholder="This field is optional">${meetingFeedback.summary}</textarea>
 	</div>
 </div>
 </form>

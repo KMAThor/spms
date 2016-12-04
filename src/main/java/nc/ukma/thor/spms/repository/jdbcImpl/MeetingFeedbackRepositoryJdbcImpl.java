@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -27,7 +28,7 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 	private static final String INSER_MEETING_FEEDBACK_SQL = "INSERT INTO meeting_feedback "
 			+ "(summary, student_id, meeting_id, author_id) VALUES (?,?,?,?)";
 	private static final String UPDATE_MEETING_FEEDBACK_SQL = "UPDATE meeting_feedback "
-			+ "SET summary=?, student_id=?, meeting_id=?, author_id=? WHERE id=?;";
+			+ "SET summary=?, student_id=?, meeting_id=? WHERE id=?;";
 	private static final String DELETE_MEETING_FEEDBACK_SQL = "DELETE FROM meeting_feedback WHERE id=?;";
 	private static final String GET_MEETING_FEEDBACK_BY_ID_SQL = "SELECT "
 			+ "meeting_feedback.id AS meeting_feedback_id, summary, student_id, meeting_id, author_id,"
@@ -43,9 +44,11 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 	private static final String GET_MEETING_FEEDBACKS_BY_MEETING_SQL = "";
 	private static final String GET_MEETING_FEEDBACK_BY_STUDENT_SQL = "";
 	private static final String GET_MEETING_FEEDBACK_BY_MENTOR_SQL = "";
-	private static final String GET_MEETING_FEEDBACK_BY_MEETING_AND_STUDENT_SQL = "";
+	private static final String GET_MEETING_FEEDBACK_WITHOUT_TRAITS_BY_MEETING_AND_STUDENT_SQL = "SELECT * "
+			+ "FROM meeting_feedback "
+			+ "WHERE meeting_id=? AND student_id=?;";
 	
-	private static final String GET_MEETING_FEEDBACK_BY_MEETING_STUDENT_MENTOR_SQL = "SELECT "
+	private static final String GET_MEETING_FEEDBACK_BY_MEETING_STUDENT_AUTHOR_SQL = "SELECT "
 			+ "meeting_feedback.id AS meeting_feedback_id, summary, student_id, meeting_id, author_id,"
 			+ "trait_feedback.id AS trait_feedback_id, score, comment, trait_id, first_name, second_name, "
 			+ "last_name, topic, start_date "
@@ -56,8 +59,12 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 			+ "WHERE meeting_id=? AND student_id=? AND author_id=? "
 			+ "ORDER BY meeting_feedback_id, trait_feedback_id;";
 	
-	private static final MeetingFeedbackExtractor MEETING_FEEDBACKS_EXTRACTOR = new MeetingFeedbackExtractor();
+	private static final String GET_MEETING_FEEDBACK_WITHOUT_TRAITS_BY_MEETING_STUDENT_AUTHOR_SQL = "SELECT * "
+			+ "FROM meeting_feedback "
+			+ "WHERE meeting_id=? AND student_id=? AND author_id=?;";
 	
+	private static final MeetingFeedbackExtractor MEETING_FEEDBACKS_EXTRACTOR = new MeetingFeedbackExtractor();
+	private static final RowMapper<MeetingFeedback> MEETING_FEEDBACK_WITHOUT_TRAITS_MAPPER = new MeetingFeedbackWithoutTraitsMapper();
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
@@ -82,7 +89,7 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 				new Object[]{ meeetingFeedback.getSummary(),
 						meeetingFeedback.getStudent().getId(),
 						meeetingFeedback.getMeeting().getId(),
-						meeetingFeedback.getAuthor().getId(),
+						//meeetingFeedback.getAuthor().getId(),
 						meeetingFeedback.getId()
 				});
 	}
@@ -117,11 +124,22 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	@Override
-	public List<MeetingFeedback> getMeetingFeedbacksByMeetingAndStudent(Meeting meeting, User user) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<MeetingFeedback> getMeetingFeedbacksWithoutTraitsByMeetingAndStudent(Meeting meeting, User student) {
+		return jdbcTemplate.query(GET_MEETING_FEEDBACK_WITHOUT_TRAITS_BY_MEETING_AND_STUDENT_SQL, 
+				new Object[] {meeting.getId(), student.getId()}, MEETING_FEEDBACK_WITHOUT_TRAITS_MAPPER);
+	}
+
+	private static final class MeetingFeedbackWithoutTraitsMapper implements RowMapper<MeetingFeedback> {
+		@Override
+		public MeetingFeedback mapRow(ResultSet rs, int rowNum) throws SQLException {
+			MeetingFeedback meetingFeedback = new MeetingFeedback(rs.getLong("id"),
+					rs.getString("summary"),
+					new User(rs.getLong("student_id")),
+					new Meeting(rs.getLong("meeting_id")),
+					new User(rs.getLong("author_id")));
+			return meetingFeedback;
+		}
 	}
 	
 	private static final class MeetingFeedbackExtractor implements ResultSetExtractor<List<MeetingFeedback>>{
@@ -154,9 +172,16 @@ public class MeetingFeedbackRepositoryJdbcImpl implements MeetingFeedbackReposit
 	}
 
 	@Override
-	public MeetingFeedback getMeetingFeedbacksByMeetingStudentMentor(Meeting meeting, User student, User mentor) {
-		List<MeetingFeedback> meetingFeedbacks =jdbcTemplate.query(GET_MEETING_FEEDBACK_BY_MEETING_STUDENT_MENTOR_SQL,
-				new Object[] {meeting.getId(), student.getId(), mentor.getId() }, MEETING_FEEDBACKS_EXTRACTOR);
+	public MeetingFeedback getMeetingFeedbacksByMeetingStudentAuthor(Meeting meeting, User student, User author) {
+		List<MeetingFeedback> meetingFeedbacks =jdbcTemplate.query(GET_MEETING_FEEDBACK_BY_MEETING_STUDENT_AUTHOR_SQL,
+				new Object[] {meeting.getId(), student.getId(), author.getId() }, MEETING_FEEDBACKS_EXTRACTOR);
+		if(meetingFeedbacks.isEmpty()) return null;
+		else return meetingFeedbacks.get(0);
+	}
+	@Override
+	public MeetingFeedback getMeetingFeedbacksWithoutTraitsByMeetingStudentAuthor(Meeting meeting, User student, User author) {
+		List<MeetingFeedback> meetingFeedbacks =jdbcTemplate.query(GET_MEETING_FEEDBACK_WITHOUT_TRAITS_BY_MEETING_STUDENT_AUTHOR_SQL,
+				new Object[] {meeting.getId(), student.getId(), author.getId() }, MEETING_FEEDBACK_WITHOUT_TRAITS_MAPPER);
 		if(meetingFeedbacks.isEmpty()) return null;
 		else return meetingFeedbacks.get(0);
 	}
