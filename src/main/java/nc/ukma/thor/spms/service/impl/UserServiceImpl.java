@@ -2,25 +2,33 @@ package nc.ukma.thor.spms.service.impl;
 
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.Meeting;
+import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.entity.UserStatus;
+import nc.ukma.thor.spms.entity.report.ProjectReport;
+import nc.ukma.thor.spms.entity.report.StudentReport;
 import nc.ukma.thor.spms.repository.jdbcImpl.UserRepositoryJdbcImpl;
+import nc.ukma.thor.spms.service.ReportService;
 import nc.ukma.thor.spms.service.UserService;
 import nc.ukma.thor.spms.util.SortingOrder;
 
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
  
 @Service
 public class UserServiceImpl implements UserService {
  
-	@Autowired
+	@Autowired//HERE SHOUD BE INTERFACE!!!
 	private UserRepositoryJdbcImpl userRepo;
-	
+    @Autowired
+	private ReportService reportService;
+    
     @Override
     public User getUser(String email) {
     	User usr = userRepo.getUserByEmail(email);
@@ -70,8 +78,15 @@ public class UserServiceImpl implements UserService {
 	public void changeUserStatus(long team_id, long user_id, long new_status, String new_comment) {
 		userRepo.changeUserStatus(team_id, user_id, new_status, new_comment);
 	}
-
 	
-
+	@Override
+	public StudentReport getReportStudentActivityInProject(User student, Project project) {
+		return userRepo.getStudentReport(student.getId(),project.getId());
+	}
+	@Override
+	public Workbook getReportStudentActivityInProjectInXlsFormat(User student,  Project project) {
+		return reportService.studentReportToWorkbook(getReportStudentActivityInProject(student, project));
+	}
+	
 }
 

@@ -155,70 +155,69 @@
 	</div>
 	<!-- chooseChiefMentorModal -->
 	<div class="modal fade" id="chooseChiefMentorModal" tabindex="-1" role="dialog">
-	  	<div class="modal-dialog" role="document">
-	    	<div class="modal-content">
-	     		<div class="modal-header">
-	     			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-	        		<h4 class="modal-title" id="myModalLabel">Choose chief mentor</h4>
-	      		</div>
-	      		<div class="modal-body">
-	      			<div class="div-table">
-						<table id="usersTable" class="table table-striped table-hover table-bordered">
-							<thead>
-								<tr>
-									<td>Id</td>
-									<td>Email</td>
-									<td>First Name</td>
-									<td>Second Name</td>
-									<td>Last Name</td>
-									<td>Role</td>
-								</tr>
-							</thead>
-						</table>
-						<script type="text/javascript">
-						
-						var token = $("meta[name='_csrf']").attr("content");
-				        var header = $("meta[name='_csrf_header']").attr("content");
-				        
-							$('#usersTable').DataTable( {
-
-							    serverSide: true,
-						        ajax: {
-							        url: getContextPath()+'/user/allWithRole/mentor/view/',
-							        type: 'POST',
-							        data: function ( d ) {
-									      return JSON.stringify( d );
-									    },
-									    beforeSend: function(xhr) {
-								            xhr.setRequestHeader(header, token);
-								        },
-								    contentType: "application/json; charset=utf-8",
-								    dataType: "json",
-								    dataSrc: function ( json ) {
-								    	for(var i=0, ien=json.data.length; i<ien ; i++ ) {
-								        	json.data[i]["email"] = '<a class="clickable" onclick="chooseChiefMentor('+json.data[i]["id"]+',&quot;'+json.data[i]["firstName"]+" "+json.data[i]["lastName"]+'&quot;'+');">'+json.data[i]["email"]+'</a>';
-								      	}
-								      	return json.data;
-									}
-							    },
-							    columns: [
-								    { data: "id" },
-								    { data: "email" },
-								    { data: "firstName" },
-								    { data: "secondName" },
-								    { data: "lastName" },
-								    { data: "role" }
-								  ]
-							    
-							} );
-						</script>
-					</div>
-	      		</div>
-	      	</div>
-	    </div>
-	</div>
+  	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+     		<div class="modal-header">
+     			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+        		<h4 class="modal-title" id="myModalLabel">Choose chief mentor</h4>
+      		</div>
+      		<div class="modal-body row">
+      			<div class="div-table">
+					<table id="usersTable" class="table table-striped table-hover table-bordered">
+						<thead>
+							<tr>
+								<td>Id</td>
+								<td>Email</td>
+								<td>First Name</td>
+								<td>Second Name</td>
+								<td>Last Name</td>
+								<td></td>
+							</tr>
+						</thead>
+					</table>
+					<script type="text/javascript">
+					
+					var token = $("meta[name='_csrf']").attr("content");
+			        var header = $("meta[name='_csrf_header']").attr("content");
+			        
+						$('#usersTable').DataTable( {
+						    serverSide: true,
+					        ajax: {
+						        url: getContextPath()+'/user/allWithRole/mentor/view/',
+						        type: 'POST',
+						        data: function ( d ) {
+								      return JSON.stringify( d );
+								    },	        
+							    contentType: "application/json; charset=utf-8",
+							    dataType: "json",
+							    beforeSend: function(xhr) {
+						            xhr.setRequestHeader(header, token);
+						        },
+							    dataSrc: function ( json ) {
+							    	for(var i=0, ien=json.data.length; i<ien ; i++ ) {
+							        	json.data[i]["role"] = '<a class="btn btn-sm  btn-success" onclick="chooseChiefMentor('+json.data[i]["id"]+',&quot;'+json.data[i]["firstName"]+" "+json.data[i]["lastName"]+'&quot;'+');">Choose</a>';
+							      	}
+							      	return json.data;
+								}
+						    },
+						    columns: [
+							    { data: "id" },
+							    { data: "email" },
+							    { data: "firstName" },
+							    { data: "secondName" },
+							    { data: "lastName" },
+							    { data: "role", orderable: false }
+							  ]
+						    
+						} );
+					</script>
+				</div>
+      		</div>
+      	</div>
+    </div>
+</div>
 </security:authorize>	
     <!-- <img src="resources/thor.png">${greeting} . Our system has ${numberOfUsers} users. -->
     <script>
