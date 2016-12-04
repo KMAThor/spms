@@ -49,6 +49,10 @@
 	<!-- CSS -->
 	<link href="<%=request.getContextPath()%>/resources/css/styles.css" type="text/css" rel="stylesheet">
 	
+	<meta name="_csrf" content="${_csrf.token}"/>
+	<!-- default header name is X-CSRF-TOKEN -->
+	<meta name="_csrf_header" content="${_csrf.headerName}"/>
+	
 	<script src="<%=request.getContextPath()%>/resources/js/main.js"></script>
 	<script type="text/javascript">function getContextPath() { return "<%=request.getContextPath()%>";}</script>
 </head>
@@ -95,25 +99,17 @@
 				</ul>
 			</div>
 			<div>
-			<form action="${logoutUrl}" method="post">
-				<ul class="nav navbar-nav navbar-right">
-					<li> 
-
-						<p style="padding-top: 18px;">Logged in as: <strong><security:authentication property="principal.username"/></strong>
-						</p>
-					</li>
-					<li>
-					<c:url value="" var="logoutUrl" />
-						<a href="<%=request.getContextPath()%>/j_spring_security_logout" style="padding-top: 18px;">Logout</a>
-					
-						
-									<!--
-						<c:url value="" var="logoutUrl" />
-						<a href="<%=request.getContextPath()%>/j_spring_security_logout" style="padding-top: 18px;">Logout</a>
-						<!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
-					</li>
-				</ul>
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<form action="<%=request.getContextPath()%>/j_spring_security_logout" method="post">
+					<ul class="nav navbar-nav navbar-right">
+						<li> 
+							<p style="padding-top: 18px;">Logged in as: <strong><security:authentication property="principal.username"/></strong>
+							</p>
+						</li>
+						<li>
+							<button type="submit" style="padding-top: 18px;">Logout</button>
+						</li>
+					</ul>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				</form>	
 			</div>
 		</div>

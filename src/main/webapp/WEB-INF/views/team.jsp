@@ -576,6 +576,9 @@
 
 <script>
 
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+
 $('#allMentorsTable').DataTable();
 $('#allStudentsTable').DataTable();
 var meetingsTable = $('#meetingsTable').DataTable();
@@ -633,6 +636,9 @@ function getFreeMentors() {
 			    },	        
 		    contentType: "application/json; charset=utf-8",
 		    dataType: "json",
+		    beforeSend: function(xhr) {
+	            xhr.setRequestHeader(header, token);
+	        },
 		    dataSrc: function ( json ) {
 			    for(var i=0, ien=json.data.length; i<ien ; i++ ) {
 			        json.data[i]["role"] = '<button type="button" class="btn btn-xs btn-success" onclick="addMentor(' + json.data[i]["id"] + ');">Add</button>';
@@ -665,6 +671,9 @@ function getFreeStudents() {
 			    },	        
 		    contentType: "application/json; charset=utf-8",
 		    dataType: "json",
+		    beforeSend: function(xhr) {
+	            xhr.setRequestHeader(header, token);
+	        },
 		    dataSrc: function ( json ) {
 			    for(var i=0, ien=json.data.length; i<ien ; i++ ) {
 			    	json.data[i]["role"] = '<button type="button" class="btn btn-xs btn-success" onclick="addStudent(' + json.data[i]["id"] + ');">Add</button>';
@@ -699,7 +708,10 @@ function updateTeamName() {
 	    },
 	    type: "POST",
 	    dataType : "text",
-		timeout: 15000
+		timeout: 15000,
+		beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(message) {
 		$('#teamName').text(name);
@@ -727,7 +739,10 @@ function deleteTeam() {
 	    },
 	    type: "POST",
 	    dataType : "text",
-		timeout: 15000
+		timeout: 15000,
+		beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(message) {
 	    $('#loadingModal').modal('hide');
@@ -768,7 +783,10 @@ function createMeeting() {
 	    },
 	    type: "POST",
 	    dataType : "text",
-		timeout: 15000
+		timeout: 15000,
+		beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(meetingId) {
 	    $('#loadingModal').modal('hide');
@@ -802,7 +820,10 @@ function createMeetings() {
 	    },
 	    type: "POST",
 	    dataType : "text",
-		timeout: 15000
+		timeout: 15000,
+		beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(meetingId) {
 	    $('#loadingModal').modal('hide');
@@ -829,7 +850,10 @@ function deleteMeeting() {
 	    },
 	    type: "POST",
 	    dataType : "text",
-		timeout: 15000
+		timeout: 15000,
+		beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(message) {
 		meetingsTable.row('.meet-tr-' + id).remove().draw(false);
@@ -858,7 +882,10 @@ function addMentor(userId) {
 	    },
 	    type: "POST",
 	    dataType : "json",
-		timeout: 15000
+		timeout: 15000,
+		beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(user) {
 		var isPhoto = (user.linkToPhoto != null);
@@ -915,7 +942,10 @@ function addStudent(userId) {
 	    },
 	    type: "POST",
 	    dataType : "json",
-		timeout: 15000
+		timeout: 15000,
+		beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function( user ) {
 		var isPhoto = (user.linkToPhoto != null);
@@ -989,7 +1019,10 @@ function deleteUser() {
 	    },
 	    type: "POST",
 	    dataType : "text",
-		timeout: 15000
+		timeout: 15000,
+		beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(message) {
 		$('#user-'+ userId).remove();
@@ -1054,7 +1087,10 @@ function changeStatus(){
 	    },
 	    type: "POST",
 	    dataType : "text",
-		timeout: 15000
+		timeout: 15000,
+		beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(message) {
 		if (newStatus == 0){

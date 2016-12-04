@@ -30,7 +30,12 @@
 						</tr>
 					</thead>
 				</table>
+				
 				<script type="text/javascript">
+				
+				var token = $("meta[name='_csrf']").attr("content");
+		        var header = $("meta[name='_csrf_header']").attr("content");
+		        
 					$('#projectsTable').DataTable( {
 
 					    serverSide: true,
@@ -39,9 +44,12 @@
 					        type: 'POST',
 					        data: function ( d ) {
 							      return JSON.stringify( d );
-							    },	        
+							    },
 						    contentType: "application/json; charset=utf-8",
 						    dataType: "json",
+						    beforeSend: function(xhr) {
+					            xhr.setRequestHeader(header, token);
+					        },
 						    dataSrc: function ( json ) {
 						    	for(var i=0, ien=json.data.length; i<ien ; i++ ) {
 						        	json.data[i]["name"] = '<a href="<%=request.getContextPath()%>/project/view/'+json.data[i]["id"]+'/">'+json.data[i]["name"]+'</a>';
@@ -75,6 +83,7 @@
 	      </div>
 	      <form name="createProjectForm" id="createProjectForm" onsubmit="onSubmitCreateProjectForm();"
 	        	action="<%=request.getContextPath()%>/project/create/" method="post">
+	        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	      	<div class="modal-body">
 	        
 				<div class="form-group">
@@ -169,6 +178,10 @@
 							</thead>
 						</table>
 						<script type="text/javascript">
+						
+						var token = $("meta[name='_csrf']").attr("content");
+				        var header = $("meta[name='_csrf_header']").attr("content");
+				        
 							$('#usersTable').DataTable( {
 
 							    serverSide: true,
@@ -177,7 +190,10 @@
 							        type: 'POST',
 							        data: function ( d ) {
 									      return JSON.stringify( d );
-									    },	        
+									    },
+									    beforeSend: function(xhr) {
+								            xhr.setRequestHeader(header, token);
+								        },
 								    contentType: "application/json; charset=utf-8",
 								    dataType: "json",
 								    dataSrc: function ( json ) {

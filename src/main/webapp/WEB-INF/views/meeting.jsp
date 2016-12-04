@@ -200,6 +200,9 @@
 </security:authorize>	
 <script>
 
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+
 	$('#membersTable').DataTable();
 	
 	function addParticipant(userId){
@@ -216,7 +219,10 @@
 		    },
 		    type: "POST",
 		    dataType : "text",
-			timeout: 15000
+		    timeout: 15000,
+		    beforeSend: function(xhr) {
+	            xhr.setRequestHeader(header, token);
+	        }
 		})
 		.done(function(message) {
 			document.getElementById('input-false').onclick=function(){
@@ -248,7 +254,10 @@
 		    },
 		    type: "POST",
 		    dataType : "text",
-			timeout: 15000
+			timeout: 15000,
+			beforeSend: function(xhr) {
+	            xhr.setRequestHeader(header, token);
+	        }
 		})
 		.done(function(message) {
 			document.getElementById('input-true').onclick=function(){
@@ -285,7 +294,10 @@
 		    },
 		    type: "POST",
 		    dataType : "text",
-			timeout: 15000
+			timeout: 15000,
+			beforeSend: function(xhr) {
+	            xhr.setRequestHeader(header, token);
+	        }
 		})
 		.done(function(message) {
 			$('#meetingTopic').text(topic);
@@ -314,7 +326,10 @@
 		    },
 		    type: "POST",
 		    dataType : "text",
-			timeout: 15000
+			timeout: 15000,
+			beforeSend: function(xhr) {
+	            xhr.setRequestHeader(header, token);
+	        },
 		})
 		.done(function(message) {
 		    $('#loadingModal').modal('hide');

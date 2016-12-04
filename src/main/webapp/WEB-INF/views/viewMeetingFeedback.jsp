@@ -8,6 +8,7 @@
 	  action="<%=request.getContextPath()%>/meetingFeedback/update/${meetingFeedback.id}/" method="post">
 	  <input type="hidden" name="studentId" value="${meetingFeedback.student.id}">
 	  <input type="hidden" name="meetingId" value="${meetingFeedback.meeting.id}">
+	  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 <div class="row">
 	<div class="col-sm-offset-1 col-sm-10">
 

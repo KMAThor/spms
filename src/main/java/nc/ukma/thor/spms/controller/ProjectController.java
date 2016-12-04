@@ -233,7 +233,6 @@ public class ProjectController {
 			System.out.println("Fetching file");
 			MultipartFile multipartFile = fileBucket.getFile();
 
-			//Now do something with file...
 			FileCopyUtils.copy(fileBucket.getFile().getBytes(), new java.io.File(fileUploadLocation + fileBucket.getFile().getOriginalFilename()));
 
 			String fileName = multipartFile.getOriginalFilename();

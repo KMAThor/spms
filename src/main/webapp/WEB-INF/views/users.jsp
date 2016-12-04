@@ -22,6 +22,10 @@
 				</thead>
 			</table>
 			<script type="text/javascript">
+			
+			var token = $("meta[name='_csrf']").attr("content");
+	        var header = $("meta[name='_csrf_header']").attr("content");
+	        
 				$('#usersTable').DataTable( {
 
 				    serverSide: true,
@@ -33,6 +37,9 @@
 						    },	        
 					    contentType: "application/json; charset=utf-8",
 					    dataType: "json",
+					    beforeSend: function(xhr) {
+				            xhr.setRequestHeader(header, token);
+				        },
 					    dataSrc: function ( json ) {
 					    	for(var i=0, ien=json.data.length; i<ien ; i++ ) {
 					        	json.data[i]["email"] = '<a class="clickable" href="<%=request.getContextPath()%>/user/view/'+json.data[i]["id"]+'/">'+json.data[i]["email"]+'</a>';

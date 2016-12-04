@@ -152,6 +152,7 @@
       	<form name="createProjectForm" id="createProjectForm" onsubmit="onSubmitEditProjectForm();"
         	action="<%=request.getContextPath()%>/project/update/" method="post">
         <input type="hidden" name="id" value="${project.id}">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
       	<div class="modal-body">
 			<div class="form-group">
 				<label for="name">Project name:</label>
@@ -263,6 +264,7 @@
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 					<button type="submit" value="Submit" class="btn btn-danger">Delete Project</button>
 				</div>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 		</div>
 	</div>
@@ -292,6 +294,10 @@
 						</thead>
 					</table>
 					<script type="text/javascript">
+					
+					var token = $("meta[name='_csrf']").attr("content");
+			        var header = $("meta[name='_csrf_header']").attr("content");
+			        
 						$('#usersTable').DataTable( {
 
 						    serverSide: true,
@@ -303,6 +309,9 @@
 								    },	        
 							    contentType: "application/json; charset=utf-8",
 							    dataType: "json",
+							    beforeSend: function(xhr) {
+						            xhr.setRequestHeader(header, token);
+						        },
 							    dataSrc: function ( json ) {
 							    	for(var i=0, ien=json.data.length; i<ien ; i++ ) {
 							        	json.data[i]["email"] = '<a class="clickable" onclick="chooseChiefMentor('+json.data[i]["id"]+',&quot;'+json.data[i]["firstName"]+" "+json.data[i]["lastName"]+'&quot;'+');">'+json.data[i]["email"]+'</a>';
@@ -440,12 +449,16 @@
 					<button class="btn btn-default" data-dismiss="modal">Cancel</button>
 					<button type="submit" class="btn btn-warning">Upload</button>
 				</div>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 		</div>
 	</div>
 </div>
 
 <script>
+
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
 
 	$(document).ready ( function(){
 		if ("${project.isCompleted}" === "true"){
@@ -470,7 +483,10 @@
 	    	},
 	    	type: "POST",
 	    	dataType : "text",
-			timeout: 15000
+			timeout: 15000,
+			beforeSend: function(xhr) {
+	            xhr.setRequestHeader(header, token);
+	        }
 		})
 		.done(function(teamId) {
 	    	$('#loadingModal').modal('hide');

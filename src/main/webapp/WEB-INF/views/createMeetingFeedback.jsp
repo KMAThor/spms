@@ -18,6 +18,7 @@
 	  action="<%=request.getContextPath()%>/meetingFeedback/create/" method="POST">
 	  <input type="hidden" name="studentId" value="${student.id}">
 	  <input type="hidden" name="meetingId" value="${meeting.id}">
+	  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 <div class="row">
 	<div class="col-sm-offset-1 col-sm-10">
 		<c:forEach var="traitCategory" items="${traitCategories}">
