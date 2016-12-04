@@ -16,7 +16,7 @@
 		</h1>
 	</div>
 	
-	<security:authorize access="hasAuthority('hr')">
+	<security:authorize access="hasAnyAuthority('admin','hr')">
 		<div class="btn-group">
 			<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					Report

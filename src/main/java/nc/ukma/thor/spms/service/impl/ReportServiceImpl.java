@@ -28,7 +28,6 @@ public class ReportServiceImpl implements ReportService{
 		CreationHelper createHelper = wb.getCreationHelper();
 		Sheet sheet = wb.createSheet();
 			
-		
 		Row row = sheet.createRow(0);
 		row.createCell(0).setCellValue("Project Report");
 		
