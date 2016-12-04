@@ -8,6 +8,13 @@
 	<div class="col-sm-10 col-sm-offset-1">
 		<h1>${project.name}
 	    	<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
+	    		<security:authorize access="hasAnyAuthority('admin','hr') || ${isUserChiefMentorOfThisProject}">
+	    		<a type="button" class="btn btn-success"
+			  		  href="<c:url value="/project/report/${project.id}/" />" >
+			  		<i class="fa fa-bars" aria-hidden="true"></i>
+			  		Generate Report
+			  	</a>
+			  	</security:authorize>
 	    		<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfThisProject}">
 	    		<button type="button" class="btn btn-primary"
 			  		  data-toggle="modal" data-target="#projectTraitsManagerModal"
@@ -34,15 +41,15 @@
 		  
 		</h1>
 		<h3>Description</h3>
-		<p> <c:choose>
+		 <c:choose>
 				<c:when test="${empty project.description}">
-					Empty
+					<p>Empty</p>
 				</c:when>
 				<c:otherwise>
-					${project.description}
+					<p>${project.description}</p>
 				</c:otherwise>
 			</c:choose>
-		</p>
+		
 	</div>
 </div>
 <div class="row">
@@ -169,7 +176,7 @@
 			</div>
 			<div class="form-group">
 				<label for="description">Project description:</label>
-			    <textarea class="form-control" rows="3" name="description" id="newProjectDescription" placeholder="Enter project description" ></textarea>
+			    <textarea class="form-control" rows="3" name="description" id="newProjectDescription" placeholder="Enter project description" >${project.description}</textarea>
 			</div>
 			<div class="form-group">
 	        	<label for="startDate">Start date:</label>

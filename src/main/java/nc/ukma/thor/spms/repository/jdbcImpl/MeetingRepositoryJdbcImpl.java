@@ -42,6 +42,10 @@ public class MeetingRepositoryJdbcImpl implements MeetingRepository{
 			+ "WHERE id = ?;";
 	private static final String GET_MEETINGS_BY_TEAM_SQL = "SELECT * FROM meeting WHERE team_id = ?;";
 	private static final String GET_PRESENCE_FOR_MEETING_SQL = "SELECT * FROM presence WHERE meeting_id = ?;";
+	private static final String IS_PROJECT_COMPLETED_BY_MEETING_SQL = "SELECT is_completed FROM project "
+			+ "INNER JOIN team ON project.id = team.project_id "
+			+ "INNER JOIN meeting ON team.id = meeting.team_id "
+			+ "WHERE meeting.id = ?;";
 	
 	private static final RowMapper<Meeting> MEETING_MAPPER = new MeetingMapper();
 	private static final MeetingExtractor MEETING_EXTRACTOR = new MeetingExtractor();
@@ -174,5 +178,10 @@ public class MeetingRepositoryJdbcImpl implements MeetingRepository{
 			meetings.add(meeting);
 			return meetings;
 		}
+	}
+
+	@Override
+	public boolean isProjectCompleted(long meetingId) {
+		return jdbcTemplate.queryForObject(IS_PROJECT_COMPLETED_BY_MEETING_SQL, new Object[] {meetingId}, Boolean.class);
 	}
 }

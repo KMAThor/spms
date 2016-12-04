@@ -20,6 +20,7 @@ import nc.ukma.thor.spms.entity.Status;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.entity.UserStatus;
+import nc.ukma.thor.spms.entity.report.StudentReport;
 import nc.ukma.thor.spms.repository.UserRepository;
 import nc.ukma.thor.spms.util.SortingOrder;
 
@@ -470,4 +471,11 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			return result;
 		}
 	}
+
+	public StudentReport getStudentReport(long studentId, long projectId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 }

@@ -62,7 +62,7 @@
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header menuitem">
-				<a href="<%=request.getContextPath()%>/" class="navbar-brand" style="padding-top: 20px;">SPMS</a>
+				<a href="<%=request.getContextPath()%>/" class="navbar-brand" style="padding-top: 20px;"><i class="fa fa-home" aria-hidden="true"></i>SPMS</a>
 			</div>
 			<div>
 				<ul class="nav navbar-nav">
@@ -106,7 +106,11 @@
 							</p>
 						</li>
 						<li>
+<<<<<<< HEAD
 							<button type="submit" class="submitButtomToLink">Logout</button>
+=======
+							<button style="padding-top: 5px;" type="submit" class="submitButtomToLink">Logout</button>
+>>>>>>> f599abe5cf8f74c986e019367466e8c131ca3b1d
 						</li>
 					</ul>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

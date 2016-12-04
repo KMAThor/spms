@@ -41,4 +41,9 @@ public class MeetingServiceImpl extends AbstractService<Meeting> implements Meet
 		return meetingRepository.getWithParticipantsById(meetingId);
 	}
 
+	@Override
+	public boolean isProjectCompleted(long meetingId) {
+		return meetingRepository.isProjectCompleted(meetingId);
+	}
+
 }

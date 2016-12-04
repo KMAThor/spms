@@ -1,10 +1,15 @@
 package nc.ukma.thor.spms.service.impl;
 
 import nc.ukma.thor.spms.entity.*;
+
+import nc.ukma.thor.spms.entity.report.ProjectReport;
 import nc.ukma.thor.spms.repository.*;
 import nc.ukma.thor.spms.service.ProjectService;
 import nc.ukma.thor.spms.service.WorksWithFilesService;
+import nc.ukma.thor.spms.service.ReportService;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +21,8 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 
     @Autowired
 	private ProjectRepository projectRepository;
+    @Autowired
+	private ReportService reportService;
 
     @Autowired
     private TeamRepository teamRepository;
@@ -143,6 +150,7 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
         return null;
     }
     
+
     @Override
     public List<String> getFileNames(long projectId) {
     	return fileRepository.getFilesByProject(projectId)
@@ -151,4 +159,21 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
     			.collect(Collectors.toList());
     }
     
+
+	@Override
+	public ProjectReport getProjectReport(Project project) {
+		return projectRepository.getProjectReport(project.getId());
+	}
+
+	@Override
+	public Workbook getProjectReportInXlsFormat(Project project) {
+		return reportService.projectReportToWorkbook(getProjectReport(project));
+	}
+
+
+	@Override
+	public List<Project> getProjectsByUser(long userId) {
+		return projectRepository.getProjectsByUser(userId);
+	}
+
 }

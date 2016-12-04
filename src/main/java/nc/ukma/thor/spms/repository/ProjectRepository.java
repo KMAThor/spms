@@ -10,6 +10,7 @@ public interface ProjectRepository extends MyRepository<Project>{
 
 	public List<Project> getAllActiveProjects();
 	public List<Project> getAllProjects();
+	public List<Project> getProjectsByUser(long userId);
 	public void addTraitToProject(Long traitId, Long projectId);
 	public void deleteTraitFromProject(Long traitId, Long projectId);
 	public int[] addTraitCategoryToProject(Short traitCategoryId, Long projectId);
@@ -43,6 +44,6 @@ public interface ProjectRepository extends MyRepository<Project>{
 	public Long countProjectsByMentor(String value, Long id);
 	public List<Project> getProjectsByMentor(int start, int length, int column, SortingOrder dir, String value,
 			Long id);
-	public ProjectReport getProjectReport(Long projectId);
+	public ProjectReport getProjectReport(long projectId);
 
 }

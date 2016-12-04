@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nc.ukma.thor.spms.entity.*;
+import nc.ukma.thor.spms.entity.report.PersonInfo;
+import nc.ukma.thor.spms.entity.report.ProjectInfo;
 import nc.ukma.thor.spms.entity.report.ProjectReport;
 import nc.ukma.thor.spms.repository.ProjectRepository;
 import nc.ukma.thor.spms.repository.TraitRepository;
@@ -38,6 +40,11 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	private static final String GET_PROJECT_BY_ID_SQL = "SELECT * FROM project WHERE id=?;";
 	private static final String GET_ALL_ACTIVE_PROJECTS_SQL = "SELECT * FROM project WHERE is_completed = FALSE;";
 	private static final String GET_ALL_PROJECTS_SQL = "SELECT * FROM project;";
+	private static final String GET_PROJECTS_BY_USER_SQL = "SELECT * FROM project "
+			+ "INNER JOIN team ON project.id = team.project_id "
+			+ "INNER JOIN user_team ON team.id = user_team.team_id "
+			+ "INNER JOIN \"user\" ON user_team.user_id = \"user\".id "
+			+ "WHERE \"user\".id = ?;";
 	
 	private static final String ADD_TRAIT_TO_PROJECT_SQL = "INSERT INTO trait_project (trait_id, project_id) VALUES(?,?);";
 	private static final String DELETE_TRAIT_FROM_PROJECT_SQL = "DELETE FROM trait_project WHERE trait_id=? AND project_id=?;";
@@ -113,6 +120,13 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			+ "INNER JOIN user_role ON user_team.user_id=user_role.user_id "
 			+ "INNER JOIN role ON user_role.role_id=role.id "
 			+ "INNER JOIN status ON user_team.status_id=status.id "
+			+ "WHERE project.id = ? AND role.role='student' AND status.name='active') AS numberOfParticipantsWhoCompletedSuccessfully, "
+			+ "(SELECT COUNT (*) FROM user_team "
+			+ "INNER JOIN team ON user_team.team_id=team.id "
+			+ "INNER JOIN project ON team.project_id=project.id "
+			+ "INNER JOIN user_role ON user_team.user_id=user_role.user_id "
+			+ "INNER JOIN role ON user_role.role_id=role.id "
+			+ "INNER JOIN status ON user_team.status_id=status.id "
 			+ "WHERE project.id = ? AND role.role='student' AND status.name='left_project') AS numberOfParticipantsWhoLeft, "
 			+ "(SELECT COUNT (*) FROM user_team "
 			+ "INNER JOIN team ON user_team.team_id=team.id "
@@ -127,7 +141,20 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			+ "INNER JOIN user_role ON user_team.user_id=user_role.user_id "
 			+ "INNER JOIN role ON user_role.role_id=role.id "
 			+ "INNER JOIN status ON user_team.status_id=status.id "
-			+ "WHERE project.id = ? AND role.role='student' AND status.name='got_job_offer') AS numberOfParticipantsWhoGotJobOffer;";
+			+ "WHERE project.id = ? AND role.role='student' AND status.name='got_job_offer') AS numberOfParticipantsWhoGotJobOffer, "
+			+ "name, description, start_date, end_date, is_completed "
+			+ "FROM project "
+			+ "WHERE id=?;";
+			
+	private static final String GET_STUDENTS_WHO_LEFT_PROJECT_AND_REASON_WHY_SQL = "SELECT * FROM user_team "
+			+ "INNER JOIN team ON user_team.team_id=team.id "
+			+ "INNER JOIN project ON team.project_id=project.id "
+			+ "INNER JOIN user_role ON user_team.user_id=user_role.user_id "
+			+ "INNER JOIN role ON user_role.role_id=role.id "
+			+ "INNER JOIN status ON user_team.status_id=status.id "
+			+ "INNER JOIN \"user\" ON user_team.user_id=\"user\".id "
+			+ "WHERE project.id = ? AND role.role='student' AND status.name='left_project';";
+			
 	private static final RowMapper<Project> PROJECT_MAPPER = new ProjectMapper();
 	private static final RowMapper<ProjectReport> PROJECT_REPORT_MAPPER = new ProjectReportMapper();
 
@@ -186,11 +213,20 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	}
 	
 	@Override
-	public ProjectReport getProjectReport(Long id){
+	public ProjectReport getProjectReport(long id){
 		try{
-			return jdbcTemplate.queryForObject(GET_PROJECT_REPORT_SQL,
-						new Object[] { id, id, id, id },
+			ProjectReport projectReport = jdbcTemplate.queryForObject(GET_PROJECT_REPORT_SQL,
+						new Object[] { id, id, id, id, id, id},
 						PROJECT_REPORT_MAPPER);
+			jdbcTemplate.queryForObject(GET_STUDENTS_WHO_LEFT_PROJECT_AND_REASON_WHY_SQL,
+					new Object[] { id}, (rs,rowNum)->{
+						projectReport.addParticipantsWhoLeftAndReasonWhy(
+								new PersonInfo(rs.getString("first_name"),
+										rs.getString("second_name"),
+										rs.getString("last_name") ), rs.getString("comment"));
+						return null;
+					});
+			return projectReport;
 		}catch(EmptyResultDataAccessException e){
 			return null;
 		}
@@ -307,6 +343,11 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
         		prepareTraitsToBanchUpdate(traits, projectId));
 	}
 	
+	@Override
+	public List<Project> getProjectsByUser(long userId) {
+		return jdbcTemplate.query(GET_PROJECTS_BY_USER_SQL, new Object[] { userId }, PROJECT_MAPPER);
+	}
+	
 	private List<Object[]> prepareTraitsToBanchUpdate(List<Trait> traits, Long projectId){
 
 		List<Object[]> batch = new ArrayList<Object[]>();
@@ -339,7 +380,14 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 		@Override
 		public ProjectReport mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ProjectReport pr = new ProjectReport();
+			pr.setProjectInfo(new ProjectInfo(rs.getString("name"),
+					rs.getString("description"), 
+					rs.getTimestamp("start_date"),
+					rs.getTimestamp("end_date"),
+					rs.getBoolean("is_completed")
+					));
 			pr.setNumberOfParticipants(rs.getInt("numberOfParticipants"));
+			pr.setNumberOfParticipantsWhoCompletedSuccessfully(rs.getInt("numberOfParticipantsWhoCompletedSuccessfully"));
 			pr.setNumberOfParticipantsWhoGotJobOffer(rs.getInt("numberOfParticipantsWhoGotJobOffer"));
 			pr.setNumberOfParticipantsWhoLeft(rs.getInt("numberOfParticipantsWhoLeft"));
 			pr.setNumberOfParticipantsWhomInterviewWasScheduled(rs.getInt("numberOfParticipantsWhomInterviewWasScheduled"));

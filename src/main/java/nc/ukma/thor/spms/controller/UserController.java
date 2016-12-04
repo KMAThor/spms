@@ -1,9 +1,13 @@
 package nc.ukma.thor.spms.controller;
 
+import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -17,15 +21,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import nc.ukma.thor.spms.dto.dataTable.DataTableRequestDTO;
 import nc.ukma.thor.spms.dto.dataTable.DataTableResponseDTO;
 import nc.ukma.thor.spms.dto.dataTable.UserTableDTO;
+import nc.ukma.thor.spms.entity.HrFeedback;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.repository.UserRepository;
+import nc.ukma.thor.spms.service.HrFeedbackService;
+import nc.ukma.thor.spms.service.ProjectService;
 import nc.ukma.thor.spms.service.UserService;
+import nc.ukma.thor.spms.service.impl.HrFeedbackServiceImpl;
 
 @Controller
 @RequestMapping("/user/")
 public class UserController {
+	
+	@Autowired
+	private ProjectService projectService;
 	
 	@Autowired
 	private UserService userService;
@@ -33,17 +44,21 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private HrFeedbackService hrFeedbackService;
+	
 	@RequestMapping(path="/", method = RequestMethod.GET)
 	public String usersPage(Model model){
         return "users";
     }
 	
 	@RequestMapping(path="/view/{id}/", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('admin') || hasAuthority('hr') ")
-    public String viewProject(@PathVariable long id, Model model ){
+    public String viewProject(@PathVariable long id, Model model, Principal principal){
     	User user = userService.getUserById(id);
     	if(user == null) return "redirect:/404/";
     	model.addAttribute("user", user);
+    	List<Project> projects = projectService.getProjectsByUser(id);
+    	model.addAttribute("projects", projects);
         return "user";
     }
 	
@@ -111,5 +126,20 @@ public class UserController {
 		userService.changeUserStatus(teamId, userId, newStatus, newComment);
     	return "success";
     }
-
+	
+	@RequestMapping(path="/report/{studentId}/{projectId}/", method = RequestMethod.GET)
+    public void viewUserReport(@PathVariable long studentId, @PathVariable long projectId, HttpServletResponse response){
+		User student = userService.getUserById(studentId);
+		System.out.println(student);
+    	Workbook wb = userService.getReportStudentActivityInProjectInXlsFormat(student, new Project(projectId));
+    	response.setContentType("application/xls");
+    	response.setHeader("Content-disposition", "attachment; filename=Report_about_"+student.getEmail()+".xls");
+        try {
+			wb.write(response.getOutputStream());
+	        response.flushBuffer();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 }
