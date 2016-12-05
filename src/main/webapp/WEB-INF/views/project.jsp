@@ -300,7 +300,7 @@
 					<table id="usersTable" class="table table-striped table-hover table-bordered">
 						<thead>
 							<tr>
-								<td>Id</td>
+								<!--<td>Id</td>-->
 								<td>Email</td>
 								<td>First Name</td>
 								<td>Second Name</td>
@@ -335,7 +335,7 @@
 								}
 						    },
 						    columns: [
-							    { data: "id" },
+							    /*{ data: "id" },*/
 							    { data: "email" },
 							    { data: "firstName" },
 							    { data: "secondName" },
@@ -458,6 +458,7 @@
 					<h4 class="modal-title" id="myModalLabel2">Upload</h4>
 				</div>
 				<div class="modal-body">
+					<!--<p>File upload limit is 2MB</p>-->
 					<input type="file" id="file" name="file" />
 				</div>
 				<div class="modal-footer">

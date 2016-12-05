@@ -404,7 +404,7 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	}
 	
 	private static enum OrdableColumn {
-		ID("id"), NAME("name"), START_DATE("start_date"), END_DATE("end_date"), IS_CMPLETED("is_completed");
+		NAME("name"), START_DATE("start_date"), END_DATE("end_date"), IS_CMPLETED("is_completed");
 		private String columnName;
 
 		private OrdableColumn(String columnName) {

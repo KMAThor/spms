@@ -439,7 +439,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 	
 	
 	public static enum OrderableColumn {
-		ID("id"), EMAIL("email"), FIRST_NAME("first_name"), SECOND_NAME("second_name"), LAST_NAME("last_name");
+		EMAIL("email"), FIRST_NAME("first_name"), SECOND_NAME("second_name"), LAST_NAME("last_name");
 
 		private String columnName;
 

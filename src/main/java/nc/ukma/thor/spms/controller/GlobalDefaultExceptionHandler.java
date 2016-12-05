@@ -1,5 +1,6 @@
 package nc.ukma.thor.spms.controller;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.dao.DataAccessException;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
@@ -41,7 +43,7 @@ public class GlobalDefaultExceptionHandler {
 		e.printStackTrace();
 		return "redirect:/404/";
 	}
-	
+		
 	@ExceptionHandler(Exception.class)
 	public String defaultErrorHandler(Model model, Exception e) throws Exception {
 		// If the exception is annotated with @ResponseStatus rethrow it and let

@@ -5,6 +5,7 @@ import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +28,7 @@ public class HelloWorldController {
 
 	
     @RequestMapping(value="/", method = RequestMethod.GET)
-    public String sayHello(ModelMap model, Principal principal) {
+    public String sayHello() {
     	/*Temp solution*/
     	/*User user = userService.getUser(principal.getName());
     	boolean isCheifMentor = false;
@@ -43,35 +44,49 @@ public class HelloWorldController {
 
     }
     @RequestMapping(value="/something/", method = RequestMethod.GET)
-    public String justForTest(ModelMap model, Principal principal) {
+    public String justForTest(Model model, Principal principal) {
     
     return "index";
 
     }
     
     @RequestMapping(value="/403/", method = RequestMethod.GET)
-    public String accessDiniedErrorPage(ModelMap model, Principal principal) {
+    public String accessDiniedErrorPage(Model model) {
     	model.addAttribute("httpStatus", HttpStatus.FORBIDDEN.value());
 		model.addAttribute("message", "Access denied");
 		return "error";
     }
     
     @RequestMapping(value="/404/", method = RequestMethod.GET)
-    public String notFound(ModelMap model, Principal principal) {
+    public String notFound(Model model) {
     	model.addAttribute("httpStatus", HttpStatus.NOT_FOUND.value());
 		model.addAttribute("message", "Such page does not exist");
 		return "error";
     }
     
+    @RequestMapping(value="/fileLimitError/", method = RequestMethod.GET)
+    public String fileLimitError(Model model) {
+    	model.addAttribute("httpStatus", "Your file is too big");
+		return "error";
+    }
+    
+    @RequestMapping(value="/fileNotFound/", method = RequestMethod.GET)
+    public String fileNotFound(Model model) {
+    	model.addAttribute("httpStatus", HttpStatus.NOT_FOUND.value());
+		model.addAttribute("message", "file not found");
+		model.addAttribute("descrioption", "Probably server with this file is currently unavailable, try again later.");
+		return "error";
+    }
+    
     @RequestMapping(value="/databaseError/", method = RequestMethod.GET)
-    public String databaseErrorPage(ModelMap model, Principal principal) {
+    public String databaseErrorPage(Model model) {
     	model.addAttribute("httpStatus", HttpStatus.INTERNAL_SERVER_ERROR.value());
     	model.addAttribute("message", "Database error, please try again later.");
 		return "error";
     }
     
     @RequestMapping(value="/500/", method = RequestMethod.GET)
-    public String internalServerError(ModelMap model, Principal principal) {
+    public String internalServerError(Model model, Principal principal) {
 		model.addAttribute("httpStatus", HttpStatus.INTERNAL_SERVER_ERROR.value());
 		model.addAttribute("message", "INTERNAL SERVER ERROR");
 		return "unknownError";
