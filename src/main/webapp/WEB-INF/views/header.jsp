@@ -106,7 +106,7 @@
 							</p>
 						</li>
 						<li>
-							<button type="submit" class="submitButtomToLink">Logout</button>
+							<button style="padding-top: 4px;" type="submit" class="submitButtomToLink">Logout</button>
 						</li>
 					</ul>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

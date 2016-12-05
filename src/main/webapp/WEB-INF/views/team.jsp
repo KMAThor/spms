@@ -37,7 +37,7 @@
 
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="#meetings" data-toggle="tab">Meetings</a></li>
-			<li><a href="#files" data-toggle="tab">Files</a></li>
+			<!-- <li><a href="#files" data-toggle="tab">Files</a></li> -->
 			<li><a href="#mentors" data-toggle="tab">Mentors</a></li>
 			<li><a href="#students" data-toggle="tab">Students</a></li>
 
@@ -71,7 +71,9 @@
 							<c:forEach items="${team.meetings}" var="meeting">
 								<tr class="meet-tr-${meeting.id}">
 									<td>${meeting.topic}</td>
-									<td>${meeting.startDate}</td>
+									<td>
+										${meeting.startDate}
+									</td>
 									<td>
 										<a class="btn btn-xs btn-primary" href="<c:url value="/meeting/view/${meeting.id}/" />">View</a>
 									</td>
@@ -989,7 +991,7 @@ function addStudent(userId) {
 			$('#block-students').append('<div class="col-lg-3" id="user-' + user.id + '">\
 											<div id="div-color-' + user.id + '" style="border-radius: 5px; margin-right: 15px; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">\
 												<img src="<%=request.getContextPath()%>/resources/img/photos/' + user.linkToPhoto + '" class="img-rounded" style="width: 80%">\
-												<p style="padding-top: 10px"><a href="<%=request.getContextPath()%>/user/view/${user.id}/">' + user.firstName + ' ' + user.lastName +'</a></p>\
+												<p style="padding-top: 10px"><a href="<%=request.getContextPath()%>/user/view/' + user.id + '/">' + user.firstName + ' ' + user.lastName +'</a></p>\
 												<h6>' + user.email + '</h6>\
 												<abbr id="tStatusName-' + user.id + '" title="" class="initialism"><p id="pStatusName-' + user.id + '">ACTIVE<i class="fa fa-info-circle" aria-hidden="true"></i></p></abbr>\
 												<p style="padding-top: 10px">\
@@ -1007,7 +1009,7 @@ function addStudent(userId) {
 			$('#block-students').append('<div class="col-lg-3" id="user-' + user.id + '">\
 											<div id="div-color-' + user.id + '" style="border-radius: 5px; margin-right: 15px; padding-top: 15px; padding-bottom: 5px; margin-bottom: 20px;">\
 												<img src="<%=request.getContextPath()%>/resources/img/photos/anonymous.png" class="img-rounded" style="width: 80%">\
-												<p style="padding-top: 10px"><a href="<%=request.getContextPath()%>/user/view/${user.id}/">' + user.firstName + ' ' + user.lastName +'</a></p>\
+												<p style="padding-top: 10px"><a href="<%=request.getContextPath()%>/user/view/' + user.id + '/">' + user.firstName + ' ' + user.lastName +'</a></p>\
 												<h6>' + user.email + '</h6>\
 												<abbr id="tStatusName-' + user.id + '" title="" class="initialism"><p id="pStatusName-' + user.id + '">ACTIVE<i class="fa fa-info-circle" aria-hidden="true"></i></p></abbr>\
 												<p style="padding-top: 10px">\
@@ -1131,19 +1133,19 @@ function changeStatus(){
 	.done(function(message) {
 		if (newStatus == 0){
 			document.getElementById("div-color-" + userId).style.backgroundColor = '#FFFFFF';
-			document.getElementById("pStatusName-" + userId).innerHTML = "ACTIVE";
+			document.getElementById("pStatusName-" + userId).innerHTML = "ACTIVE <i class='fa fa-info-circle' aria-hidden='true'></i>";
 		}
 		if (newStatus == 1){
 			document.getElementById("div-color-" + userId).style.backgroundColor = '#E0E0E0';
-			document.getElementById("pStatusName-" + userId).innerHTML = "LEFT PROJECT";
+			document.getElementById("pStatusName-" + userId).innerHTML = "LEFT PROJECT <i class='fa fa-info-circle' aria-hidden='true'></i>";
 		}
 		if (newStatus == 2){
 			document.getElementById("div-color-" + userId).style.backgroundColor = '#D3FFAA';
-			document.getElementById("pStatusName-" + userId).innerHTML = "INTERVIEW WAS SCHEDULED";
+			document.getElementById("pStatusName-" + userId).innerHTML = "INTERVIEW WAS SCHEDULED <i class='fa fa-info-circle' aria-hidden='true'></i>";
 		}
 		if (newStatus == 3){
 			document.getElementById("div-color-" + userId).style.backgroundColor = '#D8F2FF';
-			document.getElementById("pStatusName-" + userId).innerHTML = "GOT JOB OFFER";
+			document.getElementById("pStatusName-" + userId).innerHTML = "GOT JOB OFFER <i class='fa fa-info-circle' aria-hidden='true'></i>";
 		}
 		document.getElementById('tStatusName-' + userId).title = newComment;
 		var element = document.getElementById('butStatus-' + userId);
