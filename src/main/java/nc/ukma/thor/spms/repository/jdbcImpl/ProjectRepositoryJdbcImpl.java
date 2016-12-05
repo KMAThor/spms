@@ -81,7 +81,7 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			+ "OR to_char(end_date, 'HH12:MI:SS') ILIKE ?) AND chief_mentor_id=?;";
 	
 	/*For mentor*/
-	private static final String GET_PROJECTS_BY_MENTOR_BY_PAGE_SQL = "SELECT DISTINCT ON (project.id) * FROM project "
+	private static final String GET_PROJECTS_BY_MENTOR_BY_PAGE_SQL = "SELECT DISTINCT ON (project.%s, project.id) * FROM project "
 			+ "LEFT JOIN team ON project.id = team.project_id "
 			+ "LEFT JOIN user_team ON team.id = user_team.team_id "
 			+ "LEFT JOIN \"user\" ON user_team.user_id = \"user\".id "
@@ -273,11 +273,12 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	@Override
 	public List<Project> getProjectsByMentor(int start, int length, int orderBy, SortingOrder order, String searchValue,
 			Long id) {
+		String ordableColumnName = OrdableColumn.values()[orderBy].getColumnName();
 		String query = String.format(GET_PROJECTS_BY_MENTOR_BY_PAGE_SQL,
-				OrdableColumn.values()[orderBy].getColumnName(), order);
+				ordableColumnName, ordableColumnName, order);
 		String searchParam = "%" + searchValue + "%";
 		return jdbcTemplate.query(query,
-				new Object[] { searchParam, searchParam, searchParam,  id, id, Role.MENTOR.getName(), length, start }, PROJECT_MAPPER);
+				new Object[] {searchParam, searchParam, searchParam,  id, id, Role.MENTOR.getName(), length, start }, PROJECT_MAPPER);
 	}
 
 	@Override

@@ -127,7 +127,6 @@ public class ProjectController {
     	if(chiefMentor != null) project.setChiefMentor(userService.getUserById(chiefMentor.getId()));
     	model.addAttribute("project", project);
     	model.addAttribute("files", fileService.getFilesByProject(id));
-    	System.out.println(fileService.getFilesByProject(id).stream().map(f -> "name: "+f.getName()).collect(Collectors.toList()));
     	model.addAttribute("teams", teamService.getTeamsByProject(project));
     	model.addAttribute("traitCategories", traitCategoryService.getAllCategoriesWithTraits());
     	model.addAttribute("traitsAssociatedWithProject", traitService.getTraitsWithoutNamesByProject(project));

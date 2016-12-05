@@ -467,6 +467,10 @@
 				</div>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
+			<script> $('#file').bind('change', function() { 
+				if (this.files[0].size > 1024*1024) 
+				alert("Your file is larger than 2mb. SPMS do not suppot uploading file with size more than 2mb"); 
+			});</script>
 		</div>
 	</div>
 </div>
