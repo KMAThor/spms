@@ -4,15 +4,22 @@ import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.Meeting;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
+import nc.ukma.thor.spms.entity.Trait;
+import nc.ukma.thor.spms.entity.TraitCategory;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.entity.UserStatus;
 import nc.ukma.thor.spms.entity.report.ProjectReport;
 import nc.ukma.thor.spms.entity.report.StudentReport;
+import nc.ukma.thor.spms.entity.report.TraitCategoryInfo;
+import nc.ukma.thor.spms.entity.report.TraitInfo;
 import nc.ukma.thor.spms.repository.jdbcImpl.UserRepositoryJdbcImpl;
 import nc.ukma.thor.spms.service.ReportService;
+import nc.ukma.thor.spms.service.TraitCategoryService;
+import nc.ukma.thor.spms.service.TraitService;
 import nc.ukma.thor.spms.service.UserService;
 import nc.ukma.thor.spms.util.SortingOrder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +35,12 @@ public class UserServiceImpl implements UserService {
 	private UserRepositoryJdbcImpl userRepo;
     @Autowired
 	private ReportService reportService;
+    
+    @Autowired
+	private TraitCategoryService traitCategoryService;
+    
+    @Autowired
+    private TraitService traitService;
     
     @Override
     public User getUser(String email) {
@@ -81,7 +94,27 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public StudentReport getReportStudentActivityInProject(User student, Project project) {
-		return userRepo.getStudentReport(student.getId(),project.getId());
+		StudentReport studentReport = userRepo.getStudentReport(student.getId(),project.getId());
+		List<TraitCategory> traitCategories = traitCategoryService.getAllCategoriesWithTraitsByProject(project.getId());
+		List<TraitCategoryInfo> traitCategoriesInfo = new ArrayList<>();
+		for(TraitCategory traitCategory: traitCategories){
+			TraitCategoryInfo traitCategoryInfo = new TraitCategoryInfo();
+			traitCategoryInfo.setName(traitCategory.getName());
+			
+			List<TraitInfo> traitsInfo = new ArrayList<>();
+			for(Trait trait: traitCategory.getTraits()){
+				TraitInfo traitInfo = new TraitInfo();
+				traitInfo.setName(trait.getName());
+				traitInfo.setAverageScore(userRepo.countAverageScoreForStudentByProjectAndTrait(student, project, trait));
+				traitInfo.setMeetingsTraitFeedbackInfo(userRepo.getMeetingTraitFeedbackInfoBy(student, project, trait));
+				traitsInfo.add(traitInfo);
+			}
+			traitCategoryInfo.setTraitInfo(traitsInfo);
+			traitCategoriesInfo.add(traitCategoryInfo);
+		}
+		studentReport.setTraitCategoriesInfo(traitCategoriesInfo);
+		studentReport.setHrFeedbacksInfo(userRepo.getHrFeedbacksInfo(student));
+		return studentReport;
 	}
 	@Override
 	public Workbook getReportStudentActivityInProjectInXlsFormat(User student,  Project project) {

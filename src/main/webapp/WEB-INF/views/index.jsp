@@ -22,7 +22,7 @@
 				<table id="projectsTable" class="table table-striped table-hover table-bordered">
 					<thead>
 						<tr>
-							<td>Id</td>
+							<!--<td>Id</td>-->
 							<td>Name</td>
 							<td>Start Date</td>
 							<td>End Date</td>
@@ -61,12 +61,13 @@
 							}
 					    },
 					    columns: [
-						    { data: "id" },
+						   // { data: "id" },
 						    { data: "name" },
 						    { data: "startDate" },
 						    { data: "endDate" },
 						    { data: "completed" }
 						  ]
+						
 					} );
 				</script>
 			</div>

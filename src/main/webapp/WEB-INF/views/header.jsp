@@ -66,7 +66,7 @@
 			</div>
 			<div>
 				<ul class="nav navbar-nav">
-					<security:authorize access="hasAnyAuthority('admin','hr')">
+					<!--<security:authorize access="hasAnyAuthority('admin','hr')">
 					<li>
 						<a href="<%=request.getContextPath()%>/reports/">
 							<img src="<%=request.getContextPath()%>/resources/img/view_reports.png" style="width:30px; height:30px">
@@ -74,7 +74,7 @@
 						</a>
 					</li>
 					</security:authorize>
-					<!--<li>
+					<li>
                         <a href="<%=request.getContextPath()%>/archive/">
                             <img src="<%=request.getContextPath()%>/resources/img/project_archive.png" style="width:30px; height:30px">
                             Project Archive
