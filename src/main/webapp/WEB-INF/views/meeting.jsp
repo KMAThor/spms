@@ -3,7 +3,7 @@
 		<div class="col-sm-10 col-sm-offset-1">
 			<h1>
 				<p id="meetingTopic">${meeting.topic}</p>
-				<p id="meetingStartDate">${meeting.startDate}</p>
+				<p id="meetingStartDate"></p>
 				<security:authorize access="hasAnyAuthority('admin','mentor')">
 		    	<div class="btn-group btn-group-sm" role="group" aria-label="..."  >
 				  	<button type="button" class="btn btn-warning"
@@ -225,6 +225,7 @@
 				<script type="text/javascript">
 				    $(function () {
 				        $('#datetimepicker').datetimepicker({
+				        	format: 'DD/MM/YYYY hh:mm a',
 				            useCurrent: false
 				        });
 				        $('#datetimepicker').data("DateTimePicker").date(moment('${meeting.startDate}'));
@@ -265,6 +266,23 @@
 	  	</div>
 	</div>
 </security:authorize>	
+
+<div id='datetimepickerSt' style="visibility: hidden;">
+	<input type='text' class="form-control" disabled/>
+</div>
+<script>
+	$(function () {
+		$('#datetimepickerSt').datetimepicker({
+			format: 'DD/MM/YYYY hh:mm a',
+			useCurrent: false
+		});
+		$('#datetimepickerSt').data("DateTimePicker").date(moment('${meeting.startDate}'));
+		
+		var meetingStartDate = $("#datetimepickerSt").find("input").val();
+		$('#meetingStartDate').text(meetingStartDate);
+	});
+</script>
+
 <script>
 
 var token = $("meta[name='_csrf']").attr("content");
@@ -355,12 +373,10 @@ if ("${isProjectCompleted}" === "true"){
 		$('#loadingModal').modal('show');
 		
 		var topic = $('#topic').val();
-		alert(topic);
 		var startDate = $("#datetimepicker").find("input").val();
-		alert(startDate);
 		
 		$.ajax({
-		    url: getContextPath()+"/update/meeting/",
+		    url: getContextPath()+"/meeting/update/",
 		    data: {
 		    	id: id,
 		    	topic: topic,
