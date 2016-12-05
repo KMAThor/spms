@@ -41,15 +41,15 @@
 		  
 		</h1>
 		<h3>Description</h3>
-		<p> <c:choose>
+		 <c:choose>
 				<c:when test="${empty project.description}">
-					Empty
+					<p>Empty</p>
 				</c:when>
 				<c:otherwise>
-					${project.description}
+					<p>${project.description}</p>
 				</c:otherwise>
 			</c:choose>
-		</p>
+		
 	</div>
 </div>
 <div class="row">
@@ -97,7 +97,16 @@
 <hr>
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
-		<h2>Files
+		<h2>Files</h2>
+		<ul>
+			<c:forEach items="${files}" var="file">
+				<li>
+					<a href="<%=request.getContextPath()%>/project/${project.id}/downloadFile/${file.name}/" >
+						${file.name} <br />
+					</a>
+				</li>
+			</c:forEach>
+		</ul>
 		<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfThisProject}">
 			<button type="button" class="btn btn-success"
 				data-toggle="modal" data-target="#addFileToProjectModal" onclick="toggleFileDialog();">
@@ -167,7 +176,7 @@
 			</div>
 			<div class="form-group">
 				<label for="description">Project description:</label>
-			    <textarea class="form-control" rows="3" name="description" id="newProjectDescription" placeholder="Enter project description" ></textarea>
+			    <textarea class="form-control" rows="3" name="description" id="newProjectDescription" placeholder="Enter project description" >${project.description}</textarea>
 			</div>
 			<div class="form-group">
 	        	<label for="startDate">Start date:</label>

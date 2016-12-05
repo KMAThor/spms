@@ -70,6 +70,18 @@ public class Team {
 	public void setMeetings(List<Meeting> meetings) {
 		this.meetings = meetings;
 	}
+	
+	public boolean userHasAccessToFile(User user, String fileName) {
+		return user.getRole() == Role.ADMIN || (hasUser(user) && files.stream().anyMatch(f -> f.getName() == fileName));
+	}
+	
+	public boolean hasUser(User user) {
+		return members
+				.keySet()
+				.stream()
+				.map(member -> member.getId())
+				.anyMatch(id -> id == user.getId());
+	}
 
 	@Override
 	public String toString() {

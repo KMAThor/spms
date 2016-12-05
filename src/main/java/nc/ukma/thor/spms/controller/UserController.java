@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,11 +24,11 @@ import nc.ukma.thor.spms.entity.HrFeedback;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.entity.report.StudentReport;
 import nc.ukma.thor.spms.repository.UserRepository;
 import nc.ukma.thor.spms.service.HrFeedbackService;
 import nc.ukma.thor.spms.service.ProjectService;
 import nc.ukma.thor.spms.service.UserService;
-import nc.ukma.thor.spms.service.impl.HrFeedbackServiceImpl;
 
 @Controller
 @RequestMapping("/user/")
@@ -136,7 +135,7 @@ public class UserController {
 		System.out.println(student);
     	Workbook wb = userService.getReportStudentActivityInProjectInXlsFormat(student, new Project(projectId));
     	response.setContentType("application/xls");
-    	response.setHeader("Content-disposition", "attachment; filename=Report about "+student.getEmail()+".xls");
+    	response.setHeader("Content-disposition", "attachment; filename=Report_about_"+student.getEmail()+".xls");
         try {
 			wb.write(response.getOutputStream());
 	        response.flushBuffer();
@@ -144,5 +143,12 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+	
+	@ResponseBody
+	@RequestMapping(path="/report/test/{studentId}/{projectId}/", method = RequestMethod.GET)
+    public StudentReport viewTestUserReport(@PathVariable long studentId, @PathVariable long projectId, HttpServletResponse response){
+		User student = userService.getUserById(studentId);
+    	return userService.getReportStudentActivityInProject(student, new Project(projectId));
     }
 }

@@ -16,7 +16,10 @@ function traitCheckboxAction(checkboxElem, traitId, projectId) {
 	    	projectId: projectId,
 	    	traitId: traitId
 	    },
-		timeout: 15000
+		timeout: 15000,
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function( json ) {
 	    $('#loadingModal').modal('hide');
@@ -38,7 +41,10 @@ function traitCheckboxAction(checkboxElem, traitId, projectId) {
 	    	projectId: projectId,
 	    	traitId: traitId
 	    },
-		timeout: 15000
+		timeout: 15000,
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function( json ) {
 	    $('#loadingModal').modal('hide');
@@ -63,7 +69,10 @@ function selectAllTraitAction(traitCategoryId, projectId) {
 	    	projectId: projectId,
 	    	traitCategoryId: traitCategoryId
 	    },
-		timeout: 15000
+		timeout: 15000,
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function( json ) {
 		$('#category-'+traitCategoryId+'-traits [type=checkbox]').prop('checked', true);
@@ -88,7 +97,10 @@ function deselectAllTraitAction(traitCategoryId, projectId) {
 	    	projectId: projectId,
 	    	traitCategoryId: traitCategoryId
 	    },
-		timeout: 15000
+		timeout: 15000,
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function( json ) {
 		$('#category-'+traitCategoryId+'-traits [type=checkbox]').prop('checked', false);

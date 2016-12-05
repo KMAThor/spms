@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
     	http.authorizeRequests().antMatchers("/resources/**").permitAll();
     	http
-    		.csrf().disable()
+    		//.csrf().disable()
 			.authorizeRequests()
 				.antMatchers("/traitManager/**",
 							"/traitCategory/**",
@@ -133,16 +133,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 			.formLogin()
 				.loginPage("/authentication")
-				.loginProcessingUrl("/j_spring_security_check")
+				.loginProcessingUrl("/login")
 				.failureUrl("/authentication?error")
-				.usernameParameter("j_username")
-				.passwordParameter("j_password")
+				.usernameParameter("userName")
+				.passwordParameter("userPassword")
 				.permitAll()
 	   			.and()
 			.logout()
 	   	        .permitAll()
-	   	        .logoutUrl("/j_spring_security_logout")// .logoutUrl("/j_spring_security_logout")
-	   	        .logoutSuccessUrl("/authentication?logout") //or "/authentication?logout"
+	   	        .logoutUrl("/logout")
+	   	        .logoutSuccessUrl("/authentication?logout")
 	   	        .invalidateHttpSession(true)
 	   	        .and()
 	   		.exceptionHandling()

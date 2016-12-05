@@ -9,17 +9,18 @@ import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.TraitCategory;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.entity.report.ProjectReport;
+import nc.ukma.thor.spms.repository.FileRepository;
 import nc.ukma.thor.spms.repository.ProjectRepository;
 import nc.ukma.thor.spms.service.FileService;
 import nc.ukma.thor.spms.service.ProjectService;
-import nc.ukma.thor.spms.service.ReportService;
 import nc.ukma.thor.spms.service.TeamService;
 import nc.ukma.thor.spms.service.TraitCategoryService;
 import nc.ukma.thor.spms.service.TraitService;
 import nc.ukma.thor.spms.service.UserService;
 import nc.ukma.thor.spms.util.DateUtil;
 import nc.ukma.thor.spms.util.FileBucket;
-import nc.ukma.thor.spms.util.FileValidator;
+import org.apache.commons.io.IOUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,11 +35,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,14 +62,12 @@ public class ProjectController {
     private TraitCategoryService traitCategoryService;
     @Autowired
     private TraitService traitService;
-    @Autowired
-	private CommonsMultipartResolver multipartResolver;
 	@Autowired
 	private String fileUploadLocation;
 	@Autowired
-	private FileValidator fileValidator;
-	@Autowired
 	private FileService fileService;
+	@Autowired
+	private FileRepository fileRepository;
 
     @ResponseBody
 	@RequestMapping(path = "/all/view/", method = RequestMethod.POST)
@@ -125,6 +126,8 @@ public class ProjectController {
     	User chiefMentor = project.getChiefMentor();
     	if(chiefMentor != null) project.setChiefMentor(userService.getUserById(chiefMentor.getId()));
     	model.addAttribute("project", project);
+    	model.addAttribute("files", fileService.getFilesByProject(id));
+    	System.out.println(fileService.getFilesByProject(id).stream().map(f -> "name: "+f.getName()).collect(Collectors.toList()));
     	model.addAttribute("teams", teamService.getTeamsByProject(project));
     	model.addAttribute("traitCategories", traitCategoryService.getAllCategoriesWithTraits());
     	model.addAttribute("traitsAssociatedWithProject", traitService.getTraitsWithoutNamesByProject(project));
@@ -136,7 +139,7 @@ public class ProjectController {
     	Project project = projectService.getById(id);
     	Workbook wb = projectService.getProjectReportInXlsFormat(project);
     	response.setContentType("application/xls");
-    	response.setHeader("Content-disposition", "attachment; filename="+project.getName()+" Project Report.xls");
+    	response.setHeader("Content-disposition", "attachment; filename="+project.getName()+"_Project_Report.xls");
         try {
 			wb.write(response.getOutputStream());
 	        response.flushBuffer();
@@ -144,6 +147,12 @@ public class ProjectController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+    
+    @ResponseBody
+    @RequestMapping(path="/report/test/{id}/", method = RequestMethod.GET)
+    public ProjectReport testviewProjectReport(@PathVariable long id, HttpServletResponse response ){
+    	return projectService.getProjectReport(new Project(id));
     }
     
     @RequestMapping(path="/create/", method = RequestMethod.POST)
@@ -239,14 +248,45 @@ public class ProjectController {
 		} else {
 			System.out.println("Fetching file");
 			MultipartFile multipartFile = fileBucket.getFile();
-
-			FileCopyUtils.copy(fileBucket.getFile().getBytes(), new java.io.File(fileUploadLocation + fileBucket.getFile().getOriginalFilename()));
-
 			String fileName = multipartFile.getOriginalFilename();
-			File file = new File(fileName, new Project(id));
-			fileService.create(file);
+			String location = fileUploadLocation + fileName;
+			FileCopyUtils.copy(multipartFile.getBytes(), new java.io.File(location));
+
+			Project project = projectRepository.getById(id);
+			File file = new File(location, project);
+			file.setName(fileName);
+			System.out.println("uploaded: "+ file.getName());
+			if (project.getFiles() == null) {
+				project.setFiles(new ArrayList<File>());
+			}
+			project.getFiles().add(file);
+			projectRepository.update(project);
+			fileRepository.add(file);
+			
 			return "redirect:/project/view/"+id+"/";
 		}
 	}
 
+    @RequestMapping(path="/{projectId}/downloadFile/{fileName}/", method = RequestMethod.GET)
+    public void downloadFile(
+    		@PathVariable String fileName,
+    		@PathVariable long projectId, 
+    		Principal principal,
+    	    HttpServletResponse response) throws IOException {
+    	Project project = projectRepository.getById(projectId);
+    	User user = userService.getUser(principal.getName());
+    	if (project.userHasAccessToFile(user, fileName)) {
+    		File file = fileRepository.getByName(fileName);
+
+
+    		if (file != null) {
+    	        response.setContentType("application/octet-stream");
+        		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        		
+    			InputStream is = new FileInputStream(file);
+   				IOUtils.copy(is, response.getOutputStream());
+  				response.flushBuffer();
+    		}
+		} 
+    }
 }

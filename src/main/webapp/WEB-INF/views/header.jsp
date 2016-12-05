@@ -66,7 +66,7 @@
 			</div>
 			<div>
 				<ul class="nav navbar-nav">
-					<security:authorize access="hasAnyAuthority('admin','hr')">
+					<!--<security:authorize access="hasAnyAuthority('admin','hr')">
 					<li>
 						<a href="<%=request.getContextPath()%>/reports/">
 							<img src="<%=request.getContextPath()%>/resources/img/view_reports.png" style="width:30px; height:30px">
@@ -74,7 +74,7 @@
 						</a>
 					</li>
 					</security:authorize>
-					<!--<li>
+					<li>
                         <a href="<%=request.getContextPath()%>/archive/">
                             <img src="<%=request.getContextPath()%>/resources/img/project_archive.png" style="width:30px; height:30px">
                             Project Archive
@@ -99,14 +99,14 @@
 				</ul>
 			</div>
 			<div>
-				<form action="<%=request.getContextPath()%>/j_spring_security_logout" method="post">
+				<form action="<%=request.getContextPath()%>/logout" method="post">
 					<ul class="nav navbar-nav navbar-right">
 						<li> 
 							<p style="padding-top: 18px;">Logged in as: <strong><security:authentication property="principal.username"/></strong>
 							</p>
 						</li>
 						<li>
-							<button style="padding-top: 5px;" type="submit" class="submitButtomToLink">Logout</button>
+							<button type="submit" class="submitButtomToLink">Logout</button>
 						</li>
 					</ul>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

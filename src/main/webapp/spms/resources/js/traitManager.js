@@ -21,7 +21,10 @@ function createTraitCategory() {
 		},
 		type : "POST",
 		dataType : "json",
-		timeout: 15000
+		timeout: 15000,
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(category) {
 		$( "#categoriesPanelGroup" ).append( '<div id="category-'+category.id+'" class="panel panel-default">\
@@ -87,7 +90,10 @@ function createTrait() {
 		},
 		type : "POST",
 		dataType : "json",
-		timeout: 15000
+		timeout: 15000,
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(trait) {
 		$('#category-'+trait.traitCategory.id+'-traits').append('<ul id="trait-'+trait.id+'" class="list-group traits-list">\
@@ -152,7 +158,10 @@ function updateTraitCategory() {
 	    },
 	    type: "POST",
 	    dataType : "text",
-		timeout: 15000
+		timeout: 15000,
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(message) {
 		$('#traitCategory-'+id+'-name').text(name);
@@ -195,7 +204,10 @@ function updateTrait() {
 	    },
 	    type: "POST",
 	    dataType : "text",
-		timeout: 15000
+		timeout: 15000,
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(message) {
 		$('#trait-'+id+'-name').text(name);
@@ -218,7 +230,10 @@ function deleteTraitCategory(id) {
 	    },
 	    type: "POST",
 	    dataType : "text",
-		timeout: 15000
+		timeout: 15000,
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(response) {
 		if(response === '"success"'){
@@ -250,7 +265,10 @@ function forceDeleteTraitCategory(id) {
 	    },
 	    type: "POST",
 	    dataType : "text",
-		timeout: 15000
+		timeout: 15000,
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(response) {
 		$('#category-'+ id).remove();
@@ -274,7 +292,10 @@ function deleteTrait(id) {
 	    },
 	    type: "POST",
 	    dataType : "text",
-		timeout: 15000
+		timeout: 15000,
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(response) {
 	    if(response === '"success"'){
@@ -307,7 +328,10 @@ function forceDeleteTrait(id) {
 	    },
 	    type: "POST",
 	    dataType : "text",
-		timeout: 15000
+		timeout: 15000,
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        }
 	})
 	.done(function(response) {
 		$('#trait-'+ id).remove();	

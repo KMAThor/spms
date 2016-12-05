@@ -15,11 +15,16 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import nc.ukma.thor.spms.entity.Meeting;
+import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.Status;
 import nc.ukma.thor.spms.entity.Team;
+import nc.ukma.thor.spms.entity.Trait;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.entity.UserStatus;
+import nc.ukma.thor.spms.entity.report.HrFeedbackInfo;
+import nc.ukma.thor.spms.entity.report.MeetingTraitFeedbackInfo;
+import nc.ukma.thor.spms.entity.report.PersonInfo;
 import nc.ukma.thor.spms.entity.report.StudentReport;
 import nc.ukma.thor.spms.repository.UserRepository;
 import nc.ukma.thor.spms.util.SortingOrder;
@@ -199,10 +204,52 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "INNER JOIN user_team ON team.id=user_team.team_id "
 			+ "WHERE chief_mentor_id=? AND user_team.user_id=?);";
 
-
 	private static final String CHANGE_USER_STATUS_SQL = "UPDATE user_team "
 			+ "SET status_id = ?, comment = ? "
 			+ "WHERE team_id = ? AND user_id = ?";
+	
+	private static final String GET_STUDENT_REPORT_BY_STUDENT_AND_PROJECT = "SELECT first_name, "
+			+ "second_name, last_name, photo_scope, project.name AS project_name, "
+			+ "team.name AS team_name, status.name as status_name, comment "
+			+ "FROM \"user\" "
+			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
+			+ "INNER JOIN user_team ON \"user\".id=user_team.user_id "
+			+ "INNER JOIN status ON user_team.status_id=status.id "
+			+ "INNER JOIN team ON user_team.team_id=team.id "
+			+ "INNER JOIN project ON team.project_id=project.id "
+			+ "WHERE \"user\".id=? AND project.id=?;";
+	
+	private static final String COUNT_AVERAGE_SCORE_FOR_STUDENT_BY_PROJECT_AND_TRAIT  = "SELECT coalesce(avg(score), 0) "
+			+ "FROM user_team "
+			+ "INNER JOIN team ON user_team.team_id=team.id "
+			+ "INNER JOIN project ON team.project_id=team.project_id "
+			+ "INNER JOIN meeting ON team.id=meeting.team_id "
+			+ "INNER JOIN meeting_feedback ON meeting.id=meeting_feedback.meeting_id "
+			+ "INNER JOIN trait_feedback ON meeting_feedback.id=trait_feedback.meeting_feedback_id "
+			+ "WHERE user_id=? AND project.id=? AND trait_id=?;";
+	
+	private static final String GET_HR_FEEDBACKS_INFO = "SELECT topic, summary, "
+			+ "AUTHOR.first_name AS author_first_name, "
+			+ "AUTHOR.second_name AS author_second_name, "
+			+ "AUTHOR.last_name AS author_last_name, "
+			+ "ADDED_BY.first_name AS added_by_first_name, "
+			+ "ADDED_BY.second_name AS added_by_second_name, "
+			+ "ADDED_BY.last_name AS added_by_last_name "
+			+ "FROM hr_feedback "
+			+ "INNER JOIN \"user\" AS AUTHOR ON hr_feedback.author_id=AUTHOR.id "
+			+ "INNER JOIN \"user\" AS ADDED_BY ON hr_feedback.added_by_id=ADDED_BY.id "
+			+ "WHERE student_id=?";
+	
+	private static final String GET_MEETING_TRAIT_FEEDBACK_INTO_BY_STUDENT_PROJECT_TRAIT = "SELECT topic, "
+			+ "start_date, first_name, second_name, last_name, trait_feedback.comment AS comment, score "
+			+ "FROM user_team "
+			+ "INNER JOIN team ON user_team.team_id=team.id "
+			+ "INNER JOIN meeting ON team.id=meeting.team_id "
+			+ "INNER JOIN meeting_feedback ON meeting.id=meeting_feedback.meeting_id "
+			+ "INNER JOIN \"user\" ON meeting_feedback.author_id=\"user\".id "
+			+ "INNER JOIN trait_feedback ON meeting_feedback.id=trait_feedback.meeting_feedback_id "
+			+ "WHERE user_id=? AND project_id=? AND trait_id=? "
+			+ "ORDER BY start_date;";
 	
 	private static final RowMapper<User> USER_MAPPER = new UserMapper();
 	private static final TeamStudentsExtractor TEAM_STUDENTS_EXTRACTOR = new TeamStudentsExtractor();
@@ -447,7 +494,6 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			HashMap<User, UserStatus> students = new HashMap<User, UserStatus>();
 			
 			while(rs.next()){
-
 				User user = new User();
 				user.setId(rs.getLong("user_id"));
 				user.setEmail(rs.getString("user_email"));
@@ -465,17 +511,65 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 					
 				students.put(user, userStatus);				
 			}
-			
 			result.add(students);
-			
 			return result;
 		}
 	}
 
 	public StudentReport getStudentReport(long studentId, long projectId) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			StudentReport studentReport = jdbcTemplate.queryForObject(
+					GET_STUDENT_REPORT_BY_STUDENT_AND_PROJECT,
+					new Object[] { studentId, projectId }, (rs, rn)->{
+						StudentReport sr = new StudentReport();
+						sr.setPersonInfo(new PersonInfo(rs.getString("first_name"),
+								rs.getString("second_name"),
+								rs.getString("last_name")));
+						sr.setLinkToPhoto(rs.getString("photo_scope"));
+						sr.setProjectName(rs.getString("project_name"));
+						sr.setTeamName(rs.getString("team_name"));
+						sr.setStatus(rs.getString("status_name"));
+						sr.setStatusComment(rs.getString("comment"));
+						return sr;
+					});
+			return studentReport;
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
 	}
 
+	public double countAverageScoreForStudentByProjectAndTrait(User student, Project project, Trait trait) {
+		return jdbcTemplate.queryForObject(COUNT_AVERAGE_SCORE_FOR_STUDENT_BY_PROJECT_AND_TRAIT,
+				new Object[] {student.getId(), project.getId(), trait.getId()}, Double.class);
+	}
+	
+	public List<MeetingTraitFeedbackInfo> getMeetingTraitFeedbackInfoBy(User student, Project project, Trait trait) {
+		return jdbcTemplate.query(GET_MEETING_TRAIT_FEEDBACK_INTO_BY_STUDENT_PROJECT_TRAIT,
+				new Object[]{student.getId(), project.getId(), trait.getId() }, (rs, rn) -> {
+			MeetingTraitFeedbackInfo meetingTraitFeedbackInfo = new MeetingTraitFeedbackInfo();
+			meetingTraitFeedbackInfo.setMeetingTopic(rs.getString("topic"));
+			meetingTraitFeedbackInfo.setStartDate(rs.getTimestamp("start_date"));
+			meetingTraitFeedbackInfo.setMentor(new PersonInfo(rs.getString("first_name"),
+					rs.getString("second_name"),
+					rs.getString("last_name")));
+			meetingTraitFeedbackInfo.setComment(rs.getString("comment"));
+			meetingTraitFeedbackInfo.setScore(rs.getShort("score"));
+			return meetingTraitFeedbackInfo;
+		});
+	}
+	
+	public List<HrFeedbackInfo> getHrFeedbacksInfo(User student) {
+		return jdbcTemplate.query(GET_HR_FEEDBACKS_INFO,
+				new Object[]{student.getId()},(rs, rn)->{
+					HrFeedbackInfo hrFeedbackInfo = new HrFeedbackInfo();
+					hrFeedbackInfo.setTopic(rs.getString("topic"));
+					hrFeedbackInfo.setSummary(rs.getString("summary"));
+					hrFeedbackInfo.setAuthor(new PersonInfo(rs.getString("author_first_name"),
+							rs.getString("author_first_name"),rs.getString("author_first_name")));
+					hrFeedbackInfo.setAdded_by(new PersonInfo(rs.getString("added_by_first_name"),
+							rs.getString("added_by_first_name"),rs.getString("added_by_first_name")));
+					return hrFeedbackInfo;
+				});
+	}
 
 }

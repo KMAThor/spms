@@ -7,10 +7,10 @@ import java.util.Date;
 
 public class DateUtil {
 	
-	private static final String dataFormat = "dd/MM/yyyy hh:mm a";
+	public static final String DEFAULT_DATE_FORMAT= "dd/MM/yyyy hh:mm a";
 
 	public static Timestamp getTimeStamp(String dateTimeString) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(dataFormat);
+		SimpleDateFormat dateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
 		Date parsedDate;
 		try {
 			parsedDate = dateFormat.parse(dateTimeString);
@@ -24,7 +24,7 @@ public class DateUtil {
 	}
 
 	public static String getStringRepresentation(Timestamp timestamp) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(dataFormat);
+		SimpleDateFormat dateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
 		Date date = new Date(timestamp.getTime());
 		return dateFormat.format(date);
 	}

@@ -1,12 +1,13 @@
 package nc.ukma.thor.spms.entity.report;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TraitInfo {
 
 	private String name;
 	private double averageScore;
-	private List<MeetingTraitFeedbackInfo> meetingsTraitFeedbackInfo;
+	private List<MeetingTraitFeedbackInfo> meetingsTraitFeedbackInfo = new ArrayList<>();;
 	
 	public TraitInfo(){}
 

@@ -1,6 +1,7 @@
 package nc.ukma.thor.spms.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,13 +9,18 @@ import org.springframework.stereotype.Service;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.User;
+import nc.ukma.thor.spms.repository.FileRepository;
 import nc.ukma.thor.spms.repository.TeamRepository;
 import nc.ukma.thor.spms.service.TeamService;
+import nc.ukma.thor.spms.service.WorksWithFilesService;
 
 @Service
-public class TeamServiceImpl extends AbstractService<Team> implements TeamService{
+public class TeamServiceImpl extends AbstractService<Team> implements TeamService, WorksWithFilesService {
 	
 	private TeamRepository teamRepository;
+	
+    @Autowired
+    private FileRepository fileRepository;
 
 	@Autowired
 	public TeamServiceImpl(TeamRepository repository) {
@@ -46,7 +52,12 @@ public class TeamServiceImpl extends AbstractService<Team> implements TeamServic
 	public Team getFullTeamById(long teamId) {
 		return teamRepository.getFullTeamById(teamId);
 	}
-	
 
-
+	@Override
+	public List<String> getFileNames(long teamId) {
+		return fileRepository.getFilesByTeam(teamId)
+				.stream()
+				.map(file -> file.getPath())
+				.collect(Collectors.toList());
+	}
 }

@@ -191,7 +191,7 @@ public class TraitCategoryRepositoryJdbcImpl implements TraitCategoryRepository{
 					currentTraitCategory.addTrait(trait);
 				}
 			}
-			traitCategories.add(currentTraitCategory);
+			if(currentTraitCategory != null)traitCategories.add(currentTraitCategory);////
 			return traitCategories;
 		}
 	}

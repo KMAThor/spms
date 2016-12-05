@@ -22,10 +22,12 @@ import java.util.List;
 @Repository
 public class FileRepositoryJdbcImpl implements FileRepository {
 	
-	private static final String INSERT_FILE_SQL = "INSERT INTO file (path, project_id, team_id) VALUES(?, ?, ?);";
+	private static final String INSERT_FILE_SQL = "INSERT INTO file (path, project_id, team_id, name) VALUES(?, ?, ?, ?);";
 	private static final String UPDATE_FILE_SQL = "UPDATE file SET path=?, project_id=?, team_id=? WHERE id = ?;";
 	private static final String DELETE_FILE_SQL = "DELETE FROM file WHERE id = ?;";
+	private static final String DELETE_ALL_FILES_SQL = "DELETE FROM file;";
 	private static final String GET_FILE_BY_ID_SQL = "SELECT * FROM file WHERE id = ?;";
+	private static final String GET_FILE_BY_NAME_SQL = "SELECT * FROM file WHERE name = ?;";
 	private static final String GET_FILES_BY_PROJECT_SQL = "SELECT * FROM file WHERE project_id = ?;";
 	private static final String GET_FILES_BY_TEAM_SQL = "SELECT * FROM file WHERE team_id = ?;";
 	
@@ -44,6 +46,8 @@ public class FileRepositoryJdbcImpl implements FileRepository {
 			else ps.setNull(2, java.sql.Types.BIGINT);
 			if(f.getTeam() != null) ps.setLong(3, f.getTeam().getId());
 			else ps.setNull(3, java.sql.Types.BIGINT);
+			ps.setString(4, f.getName());
+			//ps = connection.prepareStatement(DELETE_ALL_FILES_SQL);
 			return ps;
 		}, keyHolder);
 		f.setId(keyHolder.getKey().longValue());
@@ -91,11 +95,24 @@ public class FileRepositoryJdbcImpl implements FileRepository {
 			File file = new File();
 			file.setId(rs.getLong("id"));
 			file.setPath(rs.getString("path"));
+			file.setName(rs.getString("name"));
 			Long projectId = rs.getLong("project_id");
 			if(!rs.wasNull()) file.setProject(new Project(projectId));
 			Long teamId = rs.getLong("team_id");
 			if(!rs.wasNull()) file.setTeam(new Team(teamId));
+		
 			return file;
 		}
 	}
+
+	@Override
+	public File getByName(String fileName) {
+		try {
+			return jdbcTemplate.queryForObject(GET_FILE_BY_NAME_SQL,
+						new Object[] { fileName },
+						FILE_MAPPER);
+		} catch(EmptyResultDataAccessException e) {
+			return null;
+		}
+    }
 }

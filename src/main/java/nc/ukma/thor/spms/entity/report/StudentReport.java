@@ -1,5 +1,6 @@
 package nc.ukma.thor.spms.entity.report;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentReport {
@@ -11,8 +12,8 @@ public class StudentReport {
 	private String status;
 	private String statusComment;
 	
-	private List<TraitCategoryInfo> traitCategoriesInfo;
-	private List<HrFeedbackInfo> hrFeedbacksInfo;
+	private List<TraitCategoryInfo> traitCategoriesInfo = new ArrayList<>();
+	private List<HrFeedbackInfo> hrFeedbacksInfo = new ArrayList<>();
 	
 	public StudentReport(){}
 	

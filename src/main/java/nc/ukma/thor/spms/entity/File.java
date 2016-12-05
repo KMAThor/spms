@@ -1,15 +1,17 @@
 package nc.ukma.thor.spms.entity;
 
-public class File {
-
+public class File extends java.io.File {
+	
 	private Long id;
 	private String path;
+	private String name;
 	private Project project;
 	private Team team;
 	
-	public File() {}
+	public File() { super(""); }
 	
 	public File(String path, Project project) {
+		super("");
 		this.path = path;
 		this.project = project;
 	}
@@ -44,6 +46,14 @@ public class File {
 
 	public void setTeam(Team team) {
 		this.team = team;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	@Override
