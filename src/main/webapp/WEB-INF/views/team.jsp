@@ -14,11 +14,23 @@
 						data-target="#editTeamNameModal">
 						<i class="fa fa-pencil" aria-hidden="true"></i> Edit Team Name
 					</button>
-					<button type="button" class="btn btn-danger" data-toggle="modal"
-						data-target="#deleteModal" id="deleteTeamButton"
-						onclick="deleteInit('team', ${team.id});">
-						<i class="fa fa-trash" aria-hidden="true"></i> Delete Team
-					</button>
+					<c:choose>
+						<c:when test="${team.project.isCompleted}">
+							<button type="button" class="btn btn-danger" data-toggle="modal"
+								title="Cannot delete a team in completed project"
+								data-target="#deleteModal" id="deleteTeamButton"
+								onclick="deleteInit('team', ${team.id});" disabled>
+								<i class="fa fa-trash" aria-hidden="true"></i> Delete Team
+							</button>
+						</c:when>
+						<c:otherwise>
+							<button type="button" class="btn btn-danger" data-toggle="modal"
+								data-target="#deleteModal" id="deleteTeamButton"
+								onclick="deleteInit('team', ${team.id});">
+								<i class="fa fa-trash" aria-hidden="true"></i> Delete Team
+							</button>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</security:authorize>
 			</p>
@@ -47,12 +59,25 @@
 			<div class="tab-pane fade in active" id="meetings">
 				<div class="panel-center">
 					<security:authorize access="hasAnyAuthority('admin','mentor')">
-						<button type="button" id="createMeetingButton"
-							class="btn btn-success" data-toggle="modal"
-							data-target="#createMeetingModal">
-							<i class="fa fa-plus-circle" aria-hidden="true"></i> 
-							Create meeting
-						</button>
+						<c:choose>
+							<c:when test="${team.project.isCompleted}">
+								<button type="button" id="createMeetingButton"
+									title="Cannot create a meeting in completed project"
+									class="btn btn-success" data-toggle="modal"
+									data-target="#createMeetingModal" disabled>
+									<i class="fa fa-plus-circle" aria-hidden="true" ></i> 
+									Create meeting
+								</button>
+							</c:when>
+							<c:otherwise>
+								<button type="button" id="createMeetingButton"
+									class="btn btn-success" data-toggle="modal"
+									data-target="#createMeetingModal">
+									<i class="fa fa-plus-circle" aria-hidden="true"></i> 
+									Create meeting
+								</button>
+							</c:otherwise>
+						</c:choose>
 					</security:authorize>
 				</div>
 				<div class="div-table">
@@ -154,11 +179,23 @@
 			<div class="tab-pane fade" id="mentors">
 				<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfProjectWithThisTeam}">
 					<div class="panel-center">
-						<button type="button" id="addMentorButton" class="btn btn-success" 
-							data-toggle="modal" data-target="#addMentorModal" 
-							onclick="getFreeMentors();">
-							<i class="fa fa-plus-circle" aria-hidden="true"></i> Add mentor
-						</button>
+						<c:choose>
+							<c:when test="${team.project.isCompleted}">
+								<button type="button" id="addMentorButton" class="btn btn-success" 
+									title="Cannot add a mentor to completed project"
+									data-toggle="modal" data-target="#addMentorModal" 
+									onclick="getFreeMentors();" disabled>
+									<i class="fa fa-plus-circle" aria-hidden="true"></i> Add mentor
+								</button>
+							</c:when>
+							<c:otherwise>
+								<button type="button" id="addMentorButton" class="btn btn-success" 
+									data-toggle="modal" data-target="#addMentorModal" 
+									onclick="getFreeMentors();">
+									<i class="fa fa-plus-circle" aria-hidden="true"></i> Add mentor
+								</button>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</security:authorize>
 				<hr>
@@ -210,11 +247,23 @@
 			<div class="tab-pane fade" id="students">
 				<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfProjectWithThisTeam}">
 					<div class="panel-center">
-						<button type="button" id="addStudentButton" class="btn btn-success" 
-							data-toggle="modal" data-target="#addStudentModal" 
-							onclick="getFreeStudents();">
-							<i class="fa fa-plus-circle" aria-hidden="true"></i> Add student
-						</button>
+						<c:choose>
+							<c:when test="${team.project.isCompleted}">
+								<button type="button" id="addStudentButton" class="btn btn-success" 
+									title="Cannot add a student to completed project"
+									data-toggle="modal" data-target="#addStudentModal" 
+									onclick="getFreeStudents();" disabled>
+									<i class="fa fa-plus-circle" aria-hidden="true"></i> Add student
+								</button>
+							</c:when>
+							<c:otherwise>
+								<button type="button" id="addStudentButton" class="btn btn-success" 
+									data-toggle="modal" data-target="#addStudentModal" 
+									onclick="getFreeStudents();">
+									<i class="fa fa-plus-circle" aria-hidden="true"></i> Add student
+								</button>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</security:authorize>
 				<hr>
@@ -622,19 +671,6 @@ var meetingsTable = $('#meetingsTable').DataTable();
 
 var entityToDelete = "null";
 var idToDelete = 0;
-
-if ("${team.project.isCompleted}" === "true"){
-	document.getElementById('deleteTeamButton').disabled = true;
-	$("#deleteTeamButton").attr("title", "Cannot delete a team in completed project.");
-	document.getElementById('createMeetingButton').disabled = true;
-	$("#createMeetingButton").attr("title", "Cannot create a meeting in completed project.");
-	document.getElementById('addFileButton').disabled = true;
-	$("#addFileButton").attr("title", "Cannot add file to completed project.");
-	document.getElementById('addMentorButton').disabled = true;
-	$("#addMentorButton").attr("title", "Cannot add mentor to completed project.");
-	document.getElementById('addStudentButton').disabled = true;
-	$("#addStudentButton").attr("title", "Cannot add student to completed project.");
-}
 
 function deleteInit(entity, id) {
 	entityToDelete = entity;

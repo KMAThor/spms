@@ -67,12 +67,12 @@
 											<c:choose>
 												<c:when test="${participates}">
 										    		<div>
-  														<input id="left-input-true" title="Cannot mark a presence for student, who left project" type="checkbox" checked disabled>
+  														<input id="left-input-true" type="checkbox" checked disabled>
 													</div>
 												</c:when>
 												<c:otherwise>
 													<div>
-  														<input id="left-input-false" title="Cannot mark a presence for student, who left project" type="checkbox" disabled>
+  														<input id="left-input-false" type="checkbox" disabled>
 													</div>
 												</c:otherwise>
 											</c:choose>
@@ -81,12 +81,12 @@
    											<c:choose>
 												<c:when test="${participates}">
 										    		<div>
-  														<input id="input-true" type="checkbox" onclick="deleteParticipant(${member.key.id});" checked>
+  														<input class="input-true" type="checkbox" onclick="deleteParticipant(${member.key.id});" checked>
 													</div>
 												</c:when>
 												<c:otherwise>
 													<div>
-  														<input id="input-false" type="checkbox" onclick="addParticipant(${member.key.id});">
+  														<input class="input-false" type="checkbox" onclick="addParticipant(${member.key.id});">
 													</div>
 												</c:otherwise>
 											</c:choose>
@@ -113,7 +113,7 @@
    									<c:choose>
 										<c:when test="${empty feedbacks[loop.index]}">
 											<c:choose>
-												<c:when test="${isProjectCompleted}">
+												<c:when test="${isProjectCompleted || member.value.status.name == 'left_project'}">
 										    		<a href="<c:url value="/meetingFeedback/create/${member.key.id}/${meeting.id}/" />" class="btn btn-success disabled">
 										    			<i class="fa fa-plus-circle" aria-hidden="true"></i>
 										    			Leave feedback
@@ -129,7 +129,7 @@
 										</c:when>
 										<c:otherwise>
 											<c:choose>
-												<c:when test="${isProjectCompleted}">
+												<c:when test="${isProjectCompleted || member.value.status.name == 'left_project'}">
 													<a href="<c:url value="/meetingFeedback/edit/${feedbacks[loop.index].id}/" />" class="btn btn-warning disabled">
 										    			<i class="fa fa-pencil" aria-hidden="true"></i>
 										   				Edit my feedback
@@ -291,12 +291,16 @@ var header = $("meta[name='_csrf_header']").attr("content");
 if ("${isProjectCompleted}" === "true"){
 	document.getElementById('deleteMeetingButton').disabled = true;
 	$("#deleteMeetingButton").attr("title", "Cannot delete a meeting in completed project.");
-	document.getElementById('input-true').disabled = true;
-	$("#input-true").attr("title", "Cannot mark a presence in completed project.");
-	document.getElementById('input-false').disabled = true;
-	$("#input-false").attr("title", "Cannot mark a presence in completed project.");
-	$("#left-input-true").attr("title", "Cannot mark a presence in completed project.");
-	$("#left-input-false").attr("title", "Cannot mark a presence in completed project.");
+	var x = document.getElementsByClassName("input-true");
+	var i;
+	for (i = 0; i < x.length; i++) {
+	    x[i].disabled = true;
+	}
+	var y = document.getElementsByClassName("input-false");
+	var j;
+	for (j = 0; j < y.length; j++) {
+	    y[j].disabled = true;
+	}
 }
 
 	$('#membersTable').DataTable();
