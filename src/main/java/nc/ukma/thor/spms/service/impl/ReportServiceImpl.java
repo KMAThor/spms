@@ -2,6 +2,7 @@ package nc.ukma.thor.spms.service.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -22,22 +23,42 @@ import nc.ukma.thor.spms.service.ReportService;
 @Service
 public class ReportServiceImpl implements ReportService {
 
+	
 	@Override
 	public Workbook studentReportToWorkbook(StudentReport studentReport) {
 		Workbook wb = new HSSFWorkbook();
 		CreationHelper helper = wb.getCreationHelper();
 		// create sheet
 		Sheet sheet = wb.createSheet();
+		CellStyle borders = wb.createCellStyle();
+		borders.setBorderBottom(CellStyle.BORDER_THIN);
+		borders.setBorderTop(CellStyle.BORDER_THIN);
+		borders.setBorderRight(CellStyle.BORDER_THIN);
+		borders.setBorderLeft(CellStyle.BORDER_THIN);
 		
 		CellStyle categoryHeaderStyle = wb.createCellStyle();
-		//categoryHeaderStyle.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
-		//categoryHeaderStyle.setFillPattern(CellStyle.SQUARES);
+		categoryHeaderStyle.setBorderBottom(CellStyle.BORDER_THICK);
+		categoryHeaderStyle.setBorderTop(CellStyle.BORDER_THICK);
+		categoryHeaderStyle.setBorderRight(CellStyle.BORDER_THICK);
+		categoryHeaderStyle.setBorderLeft(CellStyle.BORDER_THICK);
 
 		CellStyle traitHeaderStyle = wb.createCellStyle();
-		//traitHeaderStyle.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
-		//setFillPattern(CellStyle.DIAMONDS);
+		traitHeaderStyle.setBorderBottom(CellStyle.BORDER_MEDIUM);
+		traitHeaderStyle.setBorderTop(CellStyle.BORDER_MEDIUM);
+		traitHeaderStyle.setBorderRight(CellStyle.BORDER_MEDIUM);
+		traitHeaderStyle.setBorderLeft(CellStyle.BORDER_MEDIUM);
 		
+		CellStyle traitHeaderScoreStyle = wb.createCellStyle();
+		traitHeaderScoreStyle.setBorderBottom(CellStyle.BORDER_MEDIUM);
+		traitHeaderScoreStyle.setBorderTop(CellStyle.BORDER_MEDIUM);
+		traitHeaderScoreStyle.setBorderRight(CellStyle.BORDER_MEDIUM);
+		traitHeaderScoreStyle.setBorderLeft(CellStyle.BORDER_MEDIUM);
+		traitHeaderScoreStyle.setAlignment(CellStyle.ALIGN_RIGHT);
 		CellStyle dateCellStyle = wb.createCellStyle();
+		dateCellStyle.setBorderBottom(CellStyle.BORDER_THIN);
+		dateCellStyle.setBorderTop(CellStyle.BORDER_THIN);
+		dateCellStyle.setBorderRight(CellStyle.BORDER_THIN);
+		dateCellStyle.setBorderLeft(CellStyle.BORDER_THIN);
 		dateCellStyle.setDataFormat(helper.createDataFormat().getFormat(nc.ukma.thor.spms.util.DateUtil.DEFAULT_DATE_FORMAT));
 		
 		
@@ -58,13 +79,13 @@ public class ReportServiceImpl implements ReportService {
 			return wb;
 		}
 
-		studentReportHeaderHelp((short) 0,"First Name", studentReport.getPersonInfo().getFirstName(), sheet);
-		studentReportHeaderHelp((short) 1,"Second Name", studentReport.getPersonInfo().getSecondName(), sheet);
-		studentReportHeaderHelp((short) 2,"Last Name", studentReport.getPersonInfo().getLastName(), sheet);
-		studentReportHeaderHelp((short) 3,"Project Name", studentReport.getProjectName(), sheet);
-		studentReportHeaderHelp((short) 4,"Team Name", studentReport.getTeamName(), sheet);
-		studentReportHeaderHelp((short) 5,"Status", studentReport.getStatus(), sheet);
-		studentReportHeaderHelp((short) 6,"Status comment", studentReport.getStatusComment(), sheet);
+		studentReportHeaderHelp((short) 0,"First Name", studentReport.getPersonInfo().getFirstName(), sheet, borders);
+		studentReportHeaderHelp((short) 1,"Second Name", studentReport.getPersonInfo().getSecondName(), sheet, borders);
+		studentReportHeaderHelp((short) 2,"Last Name", studentReport.getPersonInfo().getLastName(), sheet, borders);
+		studentReportHeaderHelp((short) 3,"Project Name", studentReport.getProjectName(), sheet, borders);
+		studentReportHeaderHelp((short) 4,"Team Name", studentReport.getTeamName(), sheet, borders);
+		studentReportHeaderHelp((short) 5,"Status", studentReport.getStatus(), sheet, borders);
+		studentReportHeaderHelp((short) 6,"Status comment", studentReport.getStatusComment(), sheet, borders);
 		Row row = sheet.createRow(7);
 		row = sheet.createRow(8);
 		row = sheet.createRow(9);
@@ -87,45 +108,56 @@ public class ReportServiceImpl implements ReportService {
 				cell.setCellValue(traitInfo.getName());
 				cell.setCellStyle(traitHeaderStyle);
 				cell = row.createCell(9);
-				cell.setCellValue(traitInfo.getAverageScore());
-				cell.setCellStyle(traitHeaderStyle);
+				cell.setCellValue(String.format("%.1f",  traitInfo.getAverageScore()));
+				cell.setCellStyle(traitHeaderScoreStyle);
 				sheet.addMergedRegion(new CellRangeAddress(sheet.getLastRowNum(),sheet.getLastRowNum(), 0, 8));
 				if(!traitInfo.getMeetingsTraitFeedbackInfo().isEmpty()){
 					row = sheet.createRow(sheet.getLastRowNum()+1);
 					cell = row.createCell(0);
 					cell.setCellValue("Meeting topic");
+					cell.setCellStyle(borders);
 					sheet.addMergedRegion(new CellRangeAddress(sheet.getLastRowNum(),sheet.getLastRowNum(), 0, 1));
 					cell = row.createCell(2);
 					cell.setCellValue("Date");
+					cell.setCellStyle(borders);
 					cell.setCellStyle(dateCellStyle);
 					sheet.addMergedRegion(new CellRangeAddress(sheet.getLastRowNum(),sheet.getLastRowNum(), 2, 3));
 					cell = row.createCell(4);
 					cell.setCellValue("Mentor Name");
+					cell.setCellStyle(borders);
 					sheet.addMergedRegion(new CellRangeAddress(sheet.getLastRowNum(),sheet.getLastRowNum(), 4, 5));
 					cell = row.createCell(6);
 					cell.setCellValue("Comment");
+					cell.setCellStyle(borders);
 					sheet.addMergedRegion(new CellRangeAddress(sheet.getLastRowNum(),sheet.getLastRowNum(), 6, 8));
 					cell = row.createCell(9);
 					cell.setCellValue("Score");
+					cell.setCellStyle(borders);
 				}
 				for(MeetingTraitFeedbackInfo meetingTraitFeedbackInfo: traitInfo.getMeetingsTraitFeedbackInfo()){
 					row = sheet.createRow(sheet.getLastRowNum()+1);
 					cell = row.createCell(0);
 					cell.setCellValue(meetingTraitFeedbackInfo.getMeetingTopic());
+					cell.setCellStyle(borders);
 					sheet.addMergedRegion(new CellRangeAddress(sheet.getLastRowNum(),sheet.getLastRowNum(), 0, 1));
 					cell = row.createCell(2);
 					cell.setCellValue(meetingTraitFeedbackInfo.getStartDate());
+					cell.setCellStyle(borders);
 					cell.setCellStyle(dateCellStyle);
 					sheet.addMergedRegion(new CellRangeAddress(sheet.getLastRowNum(),sheet.getLastRowNum(), 2, 3));
 					cell = row.createCell(4);
 					cell.setCellValue(meetingTraitFeedbackInfo.getMentor().getFirstName());
+					cell.setCellStyle(borders);
 					cell = row.createCell(5);
 					cell.setCellValue(meetingTraitFeedbackInfo.getMentor().getLastName());
+					cell.setCellStyle(borders);
 					cell = row.createCell(6);
 					cell.setCellValue(meetingTraitFeedbackInfo.getComment());
+					cell.setCellStyle(borders);
 					sheet.addMergedRegion(new CellRangeAddress(sheet.getLastRowNum(),sheet.getLastRowNum(), 6, 8));
 					cell = row.createCell(9);
 					cell.setCellValue(meetingTraitFeedbackInfo.getScore());
+					cell.setCellStyle(borders);
 				}
 			}
 		}
@@ -145,33 +177,42 @@ public class ReportServiceImpl implements ReportService {
 			row = sheet.createRow(sheet.getLastRowNum()+1);
 			cell = row.createCell(0);
 			cell.setCellValue(hrFeedbackInfo.getSummary());
+			cell.setCellStyle(borders);
 			sheet.addMergedRegion(new CellRangeAddress(sheet.getLastRowNum(),sheet.getLastRowNum(), 0, 9));
 			row.setHeight((short) 0);
 			row = sheet.createRow(sheet.getLastRowNum()+1);
 			cell = row.createCell(0);
 			cell.setCellValue("Author");
+			cell.setCellStyle(borders);
 			sheet.addMergedRegion(new CellRangeAddress(sheet.getLastRowNum(),sheet.getLastRowNum(), 0, 4));
 			cell = row.createCell(5);
 			cell.setCellValue("Added By");
+			cell.setCellStyle(borders);
 			sheet.addMergedRegion(new CellRangeAddress(sheet.getLastRowNum(),sheet.getLastRowNum(), 5, 9));
 			
 			row = sheet.createRow(sheet.getLastRowNum()+1);
 			cell = row.createCell(0);
 			cell.setCellValue(hrFeedbackInfo.getAuthor().toString());
+			cell.setCellStyle(borders);
 			sheet.addMergedRegion(new CellRangeAddress(sheet.getLastRowNum(),sheet.getLastRowNum(), 0, 4));
 			cell = row.createCell(5);
 			cell.setCellValue(hrFeedbackInfo.getAdded_by().toString());
+			cell.setCellStyle(borders);
 			sheet.addMergedRegion(new CellRangeAddress(sheet.getLastRowNum(),sheet.getLastRowNum(), 5, 9));
+			row = sheet.createRow(sheet.getLastRowNum()+1);
+			cell = row.createCell(0);
 		}
 		return wb;
 	}
 
-	private void studentReportHeaderHelp(short index, String name, String value, Sheet sheet) {
+	private void studentReportHeaderHelp(short index, String name, String value, Sheet sheet, CellStyle style) {
 		Row row = sheet.createRow(index);
 		Cell cell = row.createCell(3);
 		cell.setCellValue(name);
+		cell.setCellStyle(style);
 		cell = row.createCell(6);
 		cell.setCellValue(value);
+		cell.setCellStyle(style);
 		sheet.addMergedRegion(new CellRangeAddress(index, index, 3, 5));
 		sheet.addMergedRegion(new CellRangeAddress(index, index, 6, 9));
 	}

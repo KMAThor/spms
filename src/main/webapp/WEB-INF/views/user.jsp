@@ -24,7 +24,7 @@
 			<div class="btn-group">
 				<button type="button" class="btn btn-success dropdown-toggle"
 					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Report <span class="caret"></span>
+					Get Report About Student Activity In Project <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu">
 					<c:forEach items="${projects}" var="project">
@@ -85,5 +85,4 @@
 	</div>
 </div>
 <script type="text/javascript">  $('#hrFeedbackTable').DataTable();</script>
-
 <%@include file="footer.jsp"%>
