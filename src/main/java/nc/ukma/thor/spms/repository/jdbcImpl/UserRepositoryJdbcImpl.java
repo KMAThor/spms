@@ -248,7 +248,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "INNER JOIN meeting_feedback ON meeting.id=meeting_feedback.meeting_id "
 			+ "INNER JOIN \"user\" ON meeting_feedback.author_id=\"user\".id "
 			+ "INNER JOIN trait_feedback ON meeting_feedback.id=trait_feedback.meeting_feedback_id "
-			+ "WHERE user_id=? AND project_id=? AND trait_id=? "
+			+ "WHERE user_id=? AND project_id=? AND trait_id=? AND user_id=student_id "
 			+ "ORDER BY start_date;";
 	
 	private static final RowMapper<User> USER_MAPPER = new UserMapper();
@@ -565,9 +565,9 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 					hrFeedbackInfo.setTopic(rs.getString("topic"));
 					hrFeedbackInfo.setSummary(rs.getString("summary"));
 					hrFeedbackInfo.setAuthor(new PersonInfo(rs.getString("author_first_name"),
-							rs.getString("author_first_name"),rs.getString("author_first_name")));
+							rs.getString("author_second_name"),rs.getString("author_last_name")));
 					hrFeedbackInfo.setAdded_by(new PersonInfo(rs.getString("added_by_first_name"),
-							rs.getString("added_by_first_name"),rs.getString("added_by_first_name")));
+							rs.getString("added_by_second_name"),rs.getString("added_by_last_name")));
 					return hrFeedbackInfo;
 				});
 	}

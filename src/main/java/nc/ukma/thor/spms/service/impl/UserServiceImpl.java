@@ -105,7 +105,6 @@ public class UserServiceImpl implements UserService {
 			for(Trait trait: traitCategory.getTraits()){
 				TraitInfo traitInfo = new TraitInfo();
 				traitInfo.setName(trait.getName());
-				traitInfo.setAverageScore(userRepo.countAverageScoreForStudentByProjectAndTrait(student, project, trait));
 				traitInfo.setMeetingsTraitFeedbackInfo(userRepo.getMeetingTraitFeedbackInfoBy(student, project, trait));
 				traitsInfo.add(traitInfo);
 			}
