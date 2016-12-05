@@ -4,10 +4,8 @@
 		<h1>Leave Feedback for ${student.firstName} ${student.lastName}</h1>
 	</div>
 </div>
-<c:forEach items="${hrFeedbacks }" var="hrFeedback">
-
 <form name="createHrFeedback"
-	action="<%=request.getContextPath()%>/hrFeedback/edit/${hrFeedback.student.id}/"
+	action="<%=request.getContextPath()%>/hrFeedback/edit/${hrFeedback.id}/"
 	method="post">
 	<div class="row">
 		<div class="col-sm-offset-1 col-sm-10">
@@ -64,6 +62,5 @@
 		</div>
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form>
-</c:forEach>
 
 <%@include file="footer.jsp"%>

@@ -58,7 +58,10 @@ public class UserController {
     	if(user == null) return "redirect:/404/";
     	model.addAttribute("user", user);
     	List<Project> projects = projectService.getProjectsByUser(id);
+    	List<HrFeedback> feedbacks = hrFeedbackService.getHrFeedbacksByStudent(user);
+    	
     	model.addAttribute("projects", projects);
+    	model.addAttribute("feedbacks", feedbacks);
         return "user";
     }
 	

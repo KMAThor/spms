@@ -57,12 +57,9 @@ public class HrFeedbackController {
 	}
 	
 	
-	@RequestMapping(path= "/edit/{studentId}/", method = RequestMethod.GET)
-	public String editHrFeedbackForm(Model model, @PathVariable long studentId){
-		User student = userService.getUserById(studentId);
-		List<HrFeedback> hrFeedbacks = hrFeedbackService.getHrFeedbacksByStudent(student);
-		System.out.println(Arrays.toString(hrFeedbacks.toArray()));
-		model.addAttribute("hrFeedbacks", hrFeedbacks);
+	@RequestMapping(path= "/edit/{id}/", method = RequestMethod.GET)
+	public String editHrFeedbackForm(Model model, @PathVariable long id){
+		model.addAttribute("hrFeedback", hrFeedbackService.getById(id));
 		return "editHrFeedback";
 	}
 	

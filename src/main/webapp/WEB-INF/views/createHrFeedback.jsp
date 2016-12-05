@@ -35,7 +35,7 @@
 				<strong>Topic</strong>
 			</h4>
 			<input name="topic" class="form-control"
-				placeholder="This field is required">
+				placeholder="This field is required" required>
 		</div>
 
 		<div class="col-sm-9">
@@ -43,7 +43,7 @@
 				<strong>Summary</strong>
 			</h4>
 			<textarea name="summary" class="gradeComment form-control"
-				placeholder="This field is required"></textarea>
+				placeholder="This field is required" required></textarea>
 		</div>
 		<div class="col-sm-9"></div>
 
