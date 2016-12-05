@@ -61,7 +61,7 @@ public class ReportServiceImpl implements ReportService {
 		dateCellStyle.setBorderLeft(CellStyle.BORDER_THIN);
 		dateCellStyle.setDataFormat(helper.createDataFormat().getFormat(nc.ukma.thor.spms.util.DateUtil.DEFAULT_DATE_FORMAT));
 		
-		if (!studentReport.getLinkToPhoto().isEmpty()) {
+		if (!(studentReport.getLinkToPhoto() == null || studentReport.getLinkToPhoto().isEmpty())) {
 			InputStream is = getClass().getResourceAsStream("/photos/" + studentReport.getLinkToPhoto());
 			byte[] bytes;
 			try {

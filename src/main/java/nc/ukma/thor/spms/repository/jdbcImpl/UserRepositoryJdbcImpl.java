@@ -213,10 +213,10 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 			+ "team.name AS team_name, status.name as status_name, comment "
 			+ "FROM \"user\" "
 			+ "LEFT JOIN application_form ON \"user\".id = application_form.user_id "
-			+ "INNER JOIN user_team ON \"user\".id=user_team.user_id "
-			+ "INNER JOIN status ON user_team.status_id=status.id "
-			+ "INNER JOIN team ON user_team.team_id=team.id "
-			+ "INNER JOIN project ON team.project_id=project.id "
+			+ "LEFT JOIN user_team ON \"user\".id=user_team.user_id "
+			+ "LEFT JOIN status ON user_team.status_id=status.id "
+			+ "LEFT JOIN team ON user_team.team_id=team.id "
+			+ "LEFT JOIN project ON team.project_id=project.id "
 			+ "WHERE \"user\".id=? AND project.id=?;";
 	
 	private static final String COUNT_AVERAGE_SCORE_FOR_STUDENT_BY_PROJECT_AND_TRAIT  = "SELECT coalesce(avg(score), 0) "
