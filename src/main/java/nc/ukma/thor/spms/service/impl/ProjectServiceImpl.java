@@ -38,6 +38,11 @@ public class ProjectServiceImpl extends AbstractService<Project> implements Proj
 		super(repository);
 		this.projectRepository = repository;
 	}
+    @Override
+    public void create(Project project){
+    	projectRepository.add(project);
+    	projectRepository.addAllTraitCategoriesToProject(project.getId());
+    }
 
 
     @Override

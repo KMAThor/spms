@@ -1,3 +1,6 @@
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+
 $(document).on('click', '[data-toggle=collapse] .btn-group', function(e) {
 	e.stopPropagation();
 });

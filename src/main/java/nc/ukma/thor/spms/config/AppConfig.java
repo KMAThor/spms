@@ -56,9 +56,7 @@ public class AppConfig {
     @Bean(name="filterMultipartResolver")
     public CommonsMultipartResolver getResolver() throws IOException {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-
-        resolver.setMaxUploadSizePerFile(oneMB * 50);
-
+        resolver.setMaxUploadSizePerFile(oneMB * 2);
         return resolver;
     }
 

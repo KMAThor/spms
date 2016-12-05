@@ -38,6 +38,7 @@
 	</div>
 
 </div>
+<security:authorize access="hasAnyAuthority('admin','hr')">
 <div class="row">
 	<div class="col-sm-offset-9 col-sm-2">
 		<a class="btn btn-success"
@@ -84,5 +85,6 @@
 		</div>
 	</div>
 </div>
+</security:authorize>
 <script type="text/javascript">  $('#hrFeedbackTable').DataTable();</script>
 <%@include file="footer.jsp"%>

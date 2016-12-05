@@ -11,10 +11,10 @@ public interface ProjectRepository extends MyRepository<Project>{
 	public List<Project> getAllActiveProjects();
 	public List<Project> getAllProjects();
 	public List<Project> getProjectsByUser(long userId);
-	public void addTraitToProject(Long traitId, Long projectId);
-	public void deleteTraitFromProject(Long traitId, Long projectId);
-	public int[] addTraitCategoryToProject(Short traitCategoryId, Long projectId);
-	public int[] deleteTraitCategoryFromProject(Short traitCategoryId, Long projectId);
+	public void addTraitToProject(long traitId, long projectId);
+	public void deleteTraitFromProject(long traitId, long projectId);
+	public int[] addTraitCategoryToProject(short traitCategoryId, long projectId);
+	public int[] deleteTraitCategoryFromProject(short traitCategoryId, long projectId);
 	public long count();
 	public long count(String string);
 	public List<Project> getProjects(long offset, int length, int column, SortingOrder sortingOrder, String searchValue);
@@ -45,5 +45,6 @@ public interface ProjectRepository extends MyRepository<Project>{
 	public List<Project> getProjectsByMentor(int start, int length, int column, SortingOrder dir, String value,
 			Long id);
 	public ProjectReport getProjectReport(long projectId);
+	public void addAllTraitCategoriesToProject(long projectId);
 
 }

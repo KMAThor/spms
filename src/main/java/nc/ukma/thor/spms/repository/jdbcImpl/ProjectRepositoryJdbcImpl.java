@@ -48,7 +48,10 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	
 	private static final String ADD_TRAIT_TO_PROJECT_SQL = "INSERT INTO trait_project (trait_id, project_id) VALUES(?,?);";
 	private static final String DELETE_TRAIT_FROM_PROJECT_SQL = "DELETE FROM trait_project WHERE trait_id=? AND project_id=?;";
-	
+	private static final String ADD_ALL_TRAIT_CATEGORIES_TO_PROJECT = "INSERT INTO trait_project "
+			+ "SELECT trait.id AS trait_id, ? AS project_id "
+			+ "FROM trait_category "
+			+ "INNER JOIN trait ON trait_category.id=trait.category_id;";
 	private static final String GET_PROJECTS_BY_PAGE_SQL = "SELECT * FROM project "
 			+ "WHERE name ILIKE ? "
 			+ "OR to_char(start_date, 'HH12:MI:SS') ILIKE ? "
@@ -218,7 +221,7 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			ProjectReport projectReport = jdbcTemplate.queryForObject(GET_PROJECT_REPORT_SQL,
 						new Object[] { id, id, id, id, id, id},
 						PROJECT_REPORT_MAPPER);
-			jdbcTemplate.queryForObject(GET_STUDENTS_WHO_LEFT_PROJECT_AND_REASON_WHY_SQL,
+			jdbcTemplate.query(GET_STUDENTS_WHO_LEFT_PROJECT_AND_REASON_WHY_SQL,
 					new Object[] { id}, (rs,rowNum)->{
 						projectReport.addParticipantsWhoLeftAndReasonWhy(
 								new PersonInfo(rs.getString("first_name"),
@@ -321,23 +324,28 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 	}
 	
 	@Override
-	public void addTraitToProject(Long traitId, Long projectId) {
+	public void addTraitToProject(long traitId, long projectId) {
 		jdbcTemplate.update(ADD_TRAIT_TO_PROJECT_SQL, traitId, projectId);
 	}	
 	@Override
-	public void deleteTraitFromProject(Long traitId, Long projectId) {
+	public void deleteTraitFromProject(long traitId, long projectId) {
 		jdbcTemplate.update(DELETE_TRAIT_FROM_PROJECT_SQL, traitId, projectId);
+	}
+	
+	@Override
+	public void addAllTraitCategoriesToProject(long projectId) {
+		jdbcTemplate.update(ADD_ALL_TRAIT_CATEGORIES_TO_PROJECT, projectId);
 	}
 
 	@Override
-	public int[] addTraitCategoryToProject(Short traitCategoryId, Long projectId) {
+	public int[] addTraitCategoryToProject(short traitCategoryId, long projectId) {
 		List<Trait> traits = traitRepository.getTraitsByTraitCategoryAndNotFromProject(traitCategoryId, projectId);
         return jdbcTemplate.batchUpdate(ADD_TRAIT_TO_PROJECT_SQL,
         		prepareTraitsToBanchUpdate(traits, projectId));
 	}	
 
 	@Override
-	public int[] deleteTraitCategoryFromProject(Short traitCategoryId, Long projectId) {
+	public int[] deleteTraitCategoryFromProject(short traitCategoryId, long projectId) {
 		List<Trait> traits = traitRepository.getTraitsByTraitCategoryAndProject(traitCategoryId, projectId);
 		return jdbcTemplate.batchUpdate(DELETE_TRAIT_FROM_PROJECT_SQL,
         		prepareTraitsToBanchUpdate(traits, projectId));
@@ -406,5 +414,7 @@ public class ProjectRepositoryJdbcImpl implements ProjectRepository{
 			return columnName;
 		}
 	}
+
+
 
 }

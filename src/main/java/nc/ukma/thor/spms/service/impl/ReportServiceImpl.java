@@ -61,24 +61,24 @@ public class ReportServiceImpl implements ReportService {
 		dateCellStyle.setBorderLeft(CellStyle.BORDER_THIN);
 		dateCellStyle.setDataFormat(helper.createDataFormat().getFormat(nc.ukma.thor.spms.util.DateUtil.DEFAULT_DATE_FORMAT));
 		
-		
-		InputStream is = getClass().getResourceAsStream("/photos/" + studentReport.getLinkToPhoto());
-		byte[] bytes;
-		try {
-			bytes = IOUtils.toByteArray(is);
-			int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
-			Drawing drawing = sheet.createDrawingPatriarch();//
-			ClientAnchor anchor = helper.createClientAnchor();
-			anchor.setCol1(0);
-			anchor.setRow1(0);
-			Picture pict = drawing.createPicture(anchor, pictureIdx);//
-			pict.resize(0.25);//
-			is.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return wb;
+		if (!studentReport.getLinkToPhoto().isEmpty()) {
+			InputStream is = getClass().getResourceAsStream("/photos/" + studentReport.getLinkToPhoto());
+			byte[] bytes;
+			try {
+				bytes = IOUtils.toByteArray(is);
+				int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
+				Drawing drawing = sheet.createDrawingPatriarch();//
+				ClientAnchor anchor = helper.createClientAnchor();
+				anchor.setCol1(0);
+				anchor.setRow1(0);
+				Picture pict = drawing.createPicture(anchor, pictureIdx);//
+				pict.resize(0.25);//
+				is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return wb;
+			}
 		}
-
 		studentReportHeaderHelp((short) 0,"First Name", studentReport.getPersonInfo().getFirstName(), sheet, borders);
 		studentReportHeaderHelp((short) 1,"Second Name", studentReport.getPersonInfo().getSecondName(), sheet, borders);
 		studentReportHeaderHelp((short) 2,"Last Name", studentReport.getPersonInfo().getLastName(), sheet, borders);

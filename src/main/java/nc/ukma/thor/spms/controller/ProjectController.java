@@ -177,7 +177,8 @@ public class ProjectController {
     	project.setStartDate(DateUtil.getTimeStamp(request.getParameter("startDate")));
     	project.setEndDate(DateUtil.getTimeStamp(request.getParameter("endDate")));
     	if(request.getParameter("isCompleted") != null) project.setIsCompleted(true);
-    	project.setChiefMentor(new User(Long.valueOf(request.getParameter("cheifMentorId"))));
+    	String cheifMentorId = request.getParameter("cheifMentorId");
+    	if(!cheifMentorId.isEmpty()) project.setChiefMentor(new User(Long.valueOf(cheifMentorId)));
     	projectService.update(project);
         return "redirect:/project/view/"+id+"/";
     }
@@ -255,7 +256,6 @@ public class ProjectController {
 			Project project = projectRepository.getById(id);
 			File file = new File(location, project);
 			file.setName(fileName);
-			System.out.println("uploaded: "+ file.getName());
 			if (project.getFiles() == null) {
 				project.setFiles(new ArrayList<File>());
 			}
@@ -277,7 +277,6 @@ public class ProjectController {
     	User user = userService.getUser(principal.getName());
     	if (project.userHasAccessToFile(user, fileName)) {
     		File file = fileRepository.getByName(fileName);
-
 
     		if (file != null) {
     	        response.setContentType("application/octet-stream");
