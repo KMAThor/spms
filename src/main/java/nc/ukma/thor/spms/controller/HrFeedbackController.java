@@ -21,6 +21,7 @@ import nc.ukma.thor.spms.entity.MeetingFeedback;
 import nc.ukma.thor.spms.entity.Project;
 import nc.ukma.thor.spms.entity.Role;
 import nc.ukma.thor.spms.entity.SpmsUserDetails;
+import nc.ukma.thor.spms.entity.Team;
 import nc.ukma.thor.spms.entity.TraitFeedback;
 import nc.ukma.thor.spms.entity.User;
 import nc.ukma.thor.spms.service.HrFeedbackService;
@@ -37,7 +38,7 @@ public class HrFeedbackController {
 	@Autowired
 	private UserService userService;
 	
-	@ResponseBody
+	
     @RequestMapping(path="/get/by_student/{studentId}", method = RequestMethod.GET)
     public String createHrFeedback(@PathVariable Long studentId){
 		User student = new User();
@@ -59,16 +60,20 @@ public class HrFeedbackController {
 	
 	@RequestMapping(path= "/edit/{id}/", method = RequestMethod.GET)
 	public String editHrFeedbackForm(Model model, @PathVariable long id){
-		model.addAttribute("hrFeedback", hrFeedbackService.getById(id));
+		HrFeedback hrFeedback = hrFeedbackService.getById(id);
+		User student = userService.getUserById(hrFeedback.getStudent().getId());
+		model.addAttribute("hrFeedback", hrFeedback);
+		model.addAttribute("student", student);
 		return "editHrFeedback";
 	}
 	
-	@RequestMapping(path= "/edit/{studentId}/", method = RequestMethod.POST)
+	@RequestMapping(path= "/edit/{feedbackId}/", method = RequestMethod.POST)
 	public String editHrFeedback(Model model,
-			@PathVariable Long studentId,
+			@PathVariable Long feedbackId,
 			@RequestParam Long id,
 			@RequestParam String topic,
 			@RequestParam String summary,
+			@RequestParam Long studentId,
 			@RequestParam(required=false) Long authorId,
 			Authentication authentication){
 		User user = new User(((SpmsUserDetails) authentication.getPrincipal()).getId());
@@ -78,7 +83,7 @@ public class HrFeedbackController {
 		
 		hrFeedbackService.update(hrFeedback);
 		
-		return "redirect:/hrFeedback/edit/"+studentId+"/";
+		return "redirect:/user/view/"+studentId+"/";
 	}
 
 	
@@ -98,6 +103,31 @@ public class HrFeedbackController {
 		
 		return "redirect:/user/view/"+studentId+"/";
 	}
+	
+	
+	@RequestMapping(path= "/view/{id}/", method = RequestMethod.GET)
+	public String viewHrFeedbackForm(Model model, @PathVariable long id){
+		HrFeedback hrFeedback = hrFeedbackService.getById(id);
+		User student = userService.getUserById(hrFeedback.getStudent().getId());
+		User author = userService.getUserById(hrFeedback.getAuthor().getId());
+		User addedBy = userService.getUserById(hrFeedback.getAdded_by().getId());
+		model.addAttribute("hrFeedback", hrFeedback);
+		model.addAttribute("student", student);
+		model.addAttribute("author", author);
+		model.addAttribute("addedBy", addedBy);
+		return "viewHrFeedback";
+	}
+	
+	
+	@RequestMapping(path="/delete/{feedbackId}", method = RequestMethod.GET)
+    public String deleteHrFeedback(Model model,
+			@PathVariable Long feedbackId, HttpServletRequest request){
+		
+		HrFeedback hrFeedback = new HrFeedback(feedbackId);
+    	hrFeedbackService.delete(hrFeedback);
+    	String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
+    }
 
 	
 }

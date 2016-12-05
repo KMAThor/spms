@@ -7,18 +7,19 @@
 <form name="createHrFeedback"
 	action="<%=request.getContextPath()%>/hrFeedback/create/${student.id}/"
 	method="post">
+	<hr/>
 	<div class="row">
 		<div class="col-sm-offset-1 col-sm-10">
 
 
 			<div class="row">
-				<hr />
+				
 				<div class="col-sm-offset-1 col-sm-11"></div>
 			</div>
 
 
 		</div>
-		<hr />
+		
 
 		<div class="col-sm-offset-9 col-sm-2">
 			<h4>
@@ -61,4 +62,5 @@
 		</div>
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form>
+
 <%@include file="footer.jsp"%>
