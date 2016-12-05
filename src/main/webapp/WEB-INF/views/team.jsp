@@ -7,7 +7,7 @@
 <div class="row">
 	<div class="col-sm-10 col-sm-offset-1">
 		<h1>
-			<p id="teamName">${team.name}</p>
+			<p id="teamName">${team.name}
 			<security:authorize access="hasAuthority('admin') || ${isUserChiefMentorOfProjectWithThisTeam}">
 				<div class="btn-group btn-group-sm" role="group" aria-label="...">
 					<button type="button" class="btn btn-warning" data-toggle="modal"
@@ -21,6 +21,7 @@
 					</button>
 				</div>
 			</security:authorize>
+			</p>
 		</h1>
 		<h6>
 			<a href="<%=request.getContextPath()%>/project/view/${team.project.id}/"><--- Back to
@@ -72,7 +73,7 @@
 									<td>${meeting.topic}</td>
 									<td>${meeting.startDate}</td>
 									<td>
-										<a class="btn btn-xs btn-warning" href="<c:url value="/meeting/view/${meeting.id}/" />">View</a>
+										<a class="btn btn-xs btn-primary" href="<c:url value="/meeting/view/${meeting.id}/" />">View</a>
 									</td>
 									<td>
 									<security:authorize access="hasAnyAuthority('admin','mentor')">

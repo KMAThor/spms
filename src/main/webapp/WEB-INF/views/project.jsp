@@ -124,7 +124,7 @@
 		<security:authorize access="hasAuthority('admin') || hasAuthority('hr') || ${isUserChiefMentorOfThisProject}">
 		<c:forEach items="${teams}" var="team">
 				<h3>
-					<a href="<c:url value="/team/view/${team.id}/" />" class="btn btn-warning">${team.name}</a>
+					<a href="<c:url value="/team/view/${team.id}/" />" class="btn btn-primary">${team.name}</a>
 				</h3>
 		</c:forEach>
 		</security:authorize>
@@ -132,7 +132,7 @@
 		<c:forEach items="${teams}" var="team">
 				<h3>
 					
-						<button class="btn btn-warning" onclick="window.location.href='<c:url value="/team/view/${team.id}/" />' "
+						<button class="btn btn-primary" onclick="window.location.href='<c:url value="/team/view/${team.id}/" />' "
 						<security:authorize access="!@spmsWebSecurityService.isUserMemberOfTeam(principal, #team.id)">
 							disabled
 						</security:authorize>
@@ -430,7 +430,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-warning" onclick="createTeam();">Create</button>
+					<button type="button" class="btn btn-success" onclick="createTeam();">Create</button>
 				</div>
 			</form>
 		</div>
@@ -453,7 +453,7 @@
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<button type="submit" class="btn btn-warning">Upload</button>
+					<button type="submit" class="btn btn-success">Upload</button>
 				</div>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>

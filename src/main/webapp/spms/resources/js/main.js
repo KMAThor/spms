@@ -108,3 +108,9 @@ function chooseChiefMentor(id, name) {
 	$('#cheifMentorId').val(id);
 	$('#chooseChiefMentorModal').modal('hide');
 }
+
+function chooseAuthor(id, name) {
+	$('#hrFeedbackAuthorName').text(name);
+	$('#hrFeedbackAuthorId').val(id);
+	$('#chooseAuthorModal').modal('hide');
+}

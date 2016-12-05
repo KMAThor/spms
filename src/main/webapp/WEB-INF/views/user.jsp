@@ -70,11 +70,13 @@
 								href="<c:url value="/hrFeedback/view/${feedback.id}/" />">View</a>
 							</td>
 							<td><a class="btn btn-xs btn-warning"
-								href="<c:url value="/hrFeedback/edit/${feedback.id}/" />">Edit</a>
+								href="<c:url value="/hrFeedback/edit/${feedback.id}/" />">
+									<i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
 							</td>
 							<td>
 								<a class="btn btn-xs btn-danger"
-								href="<c:url value="/hrFeedback/delete/${feedback.id}/" />">Delete</a>
+								href="<c:url value="/hrFeedback/delete/${feedback.id}/" />">
+									<i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
 							</td>
 						</tr>
 					</c:forEach>

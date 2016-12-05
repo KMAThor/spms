@@ -11,11 +11,11 @@
 <div class="row">
 	<div class="col-sm-5 col-sm-offset-1">
 		<h3>Author</h3>
-		<p> ${author.firstName} ${author.secondName} </p>
+		<p> ${author.firstName} ${author.lastName} </p>
 	</div>
 	<div class="col-sm-5">
 		<h3>Added by</h3>
-		<p>${addedBy.firstName} ${addedBy.secondName}</p>
+		<p>${addedBy.firstName} ${addedBy.lastName}</p>
 	</div>
 </div>
 

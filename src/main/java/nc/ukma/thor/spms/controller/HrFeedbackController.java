@@ -62,8 +62,10 @@ public class HrFeedbackController {
 	public String editHrFeedbackForm(Model model, @PathVariable long id){
 		HrFeedback hrFeedback = hrFeedbackService.getById(id);
 		User student = userService.getUserById(hrFeedback.getStudent().getId());
+		User author = userService.getUserById(hrFeedback.getAuthor().getId());
 		model.addAttribute("hrFeedback", hrFeedback);
 		model.addAttribute("student", student);
+		model.addAttribute("author", author);
 		return "editHrFeedback";
 	}
 	
