@@ -255,11 +255,6 @@ public class ProjectController {
 			Project project = projectRepository.getById(id);
 			File file = new File(location, project);
 			file.setName(fileName);
-			if (project.getFiles() == null) {
-				project.setFiles(new ArrayList<File>());
-			}
-			project.getFiles().add(file);
-			projectRepository.update(project);
 			fileRepository.add(file);
 			
 			return "redirect:/project/view/"+id+"/";
