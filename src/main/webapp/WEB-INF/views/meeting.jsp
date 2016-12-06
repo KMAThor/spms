@@ -81,12 +81,12 @@
    											<c:choose>
 												<c:when test="${participates}">
 										    		<div>
-  														<input class="input-true" type="checkbox" onclick="deleteParticipant(${member.key.id});" checked>
+  														<input id="input-true-${member.key.id}" type="checkbox" onclick="deleteParticipant(${member.key.id});" checked>
 													</div>
 												</c:when>
 												<c:otherwise>
 													<div>
-  														<input class="input-false" type="checkbox" onclick="addParticipant(${member.key.id});">
+  														<input id="input-false-${member.key.id}" type="checkbox" onclick="addParticipant(${member.key.id});">
 													</div>
 												</c:otherwise>
 											</c:choose>
@@ -291,16 +291,6 @@ var header = $("meta[name='_csrf_header']").attr("content");
 if ("${isProjectCompleted}" === "true"){
 	document.getElementById('deleteMeetingButton').disabled = true;
 	$("#deleteMeetingButton").attr("title", "Cannot delete a meeting in completed project.");
-	var x = document.getElementsByClassName("input-true");
-	var i;
-	for (i = 0; i < x.length; i++) {
-	    x[i].disabled = true;
-	}
-	var y = document.getElementsByClassName("input-false");
-	var j;
-	for (j = 0; j < y.length; j++) {
-	    y[j].disabled = true;
-	}
 }
 
 	$('#membersTable').DataTable();
@@ -324,10 +314,7 @@ if ("${isProjectCompleted}" === "true"){
 	        }
 		})
 		.done(function(message) {
-			document.getElementById('input-false').onclick=function(){
-				deleteParticipant(userId);
-			}
-		    $('#loadingModal').modal('hide');
+			window.location = "<%=request.getContextPath()%>/meeting/view/" + meetingId + "/";
 		})
 		.fail(function( xhr, status, errorThrown ) {
 			$('#loadingModal').modal('hide');
@@ -357,10 +344,7 @@ if ("${isProjectCompleted}" === "true"){
 	        }
 		})
 		.done(function(message) {
-			document.getElementById('input-true').onclick=function(){
-				addParticipant(userId);
-			}
-		    $('#loadingModal').modal('hide');
+			window.location = "<%=request.getContextPath()%>/meeting/view/" + meetingId + "/";
 		})
 		.fail(function( xhr, status, errorThrown ) {
 			$('#loadingModal').modal('hide');
